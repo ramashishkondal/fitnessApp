@@ -12,15 +12,20 @@ export type User = {
 export type rootStackParamList = {
   Onboarding: undefined;
 };
-export type LandingPageProps = NativeStackScreenProps<
+export type OnboardingScreenProps = NativeStackScreenProps<
   rootStackParamList,
   "Onboarding"
 >;
 
 export type onboardingStackParamList = {
   LandingPage: undefined;
+  SignIn: undefined;
 };
 export type LandingPageProps = NativeStackScreenProps<
   onboardingStackParamList,
   "LandingPage"
+>;
+export type SignInProps = NativeStackScreenProps<
+  onboardingStackParamList,
+  "SignIn"
 >;
