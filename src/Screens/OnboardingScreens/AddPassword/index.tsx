@@ -24,6 +24,7 @@ const AddPassword = () => {
         parentStyle={[[SPACING.mtMedium, SPACING.mh1]]}
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
+        autoFocus
       />
       <PasswordChecks
         lengthCheck={password.length >= 8}

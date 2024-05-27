@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 import { styles } from "./styles";
 
@@ -11,6 +11,8 @@ export type CustomTextInputProps = {
     text: string
   ) => void | React.Dispatch<React.SetStateAction<string>>;
   icon?: any;
+  autoFocus?: boolean;
+  hasError?: boolean;
 };
 
 const CustomTextInput = ({
@@ -20,9 +22,17 @@ const CustomTextInput = ({
   textInputStyle,
   onChangeText,
   icon,
+  autoFocus,
+  hasError,
 }: CustomTextInputProps) => {
   return (
-    <View style={[styles.parent, parentStyle]}>
+    <View
+      style={[
+        styles.parent,
+        parentStyle,
+        hasError ? styles.parentError : null,
+      ]}
+    >
       {icon ? <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View> : null}
       <TextInput
         placeholder={placeHolder}
@@ -30,7 +40,7 @@ const CustomTextInput = ({
         onChangeText={onChangeText}
         autoCapitalize="none"
         autoCorrect={false}
-        autoFocus={true}
+        autoFocus={autoFocus}
       />
     </View>
   );

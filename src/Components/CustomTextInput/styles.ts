@@ -22,4 +22,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: SIZES.font13,
   },
+  parentError: {
+    borderWidth: 0.5,
+    borderColor: "red",
+  },
+  parentFocused: {
+    borderWidth: 0.5,
+    borderColor: COLORS.PRIMARY.PURPLE,
+  },
 });

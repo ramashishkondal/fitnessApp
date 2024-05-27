@@ -26,6 +26,7 @@ const EmailLogIn = ({ navigation }: EmailLogInProps) => {
         parentStyle={[SPACING.mh2, SPACING.mt5]}
         textInputStyle={styles.textInput}
         onChangeText={setEmail}
+        autoFocus
       />
       {email && !RegExp(emailRegex).exec(email) ? <Text>Error</Text> : null}
       <CustomButton

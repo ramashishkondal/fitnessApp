@@ -24,6 +24,8 @@ const SignIn = () => {
         icon={ICONS.User({ width: 18, height: 18 })}
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
+        autoFocus
+        hasError={!!email && !RegExp(emailRegex).test(email)}
       />
       {email && !RegExp(emailRegex).exec(email) ? <Text>Error</Text> : null}
       <CustomTextInput
