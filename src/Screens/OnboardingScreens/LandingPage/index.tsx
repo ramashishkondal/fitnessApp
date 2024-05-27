@@ -2,22 +2,18 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
-// components
-import WithOnboarding from "../../../Components/WithOnboarding";
-
-// styles
+// custom
+import { CustomButton, WithOnboarding } from "../../../Components";
+import { SPACING, STRING, IMAGES } from "../../../Constants/";
+import { LandingPageProps } from "../../../Defs";
 import { styles } from "./styles";
 
-// constants
-import { SPACING } from "../../../Constants/commonStyles";
-import CustomButton from "../../../Components/CustomButton";
-import { STRING } from "../../../Constants/strings";
-import { IMAGES } from "../../../Constants/images";
-import { LandingPageProps } from "../../../Defs";
-
-const LandingPage = WithOnboarding(({ navigation }: LandingPageProps) => {
+const LandingPage = ({ navigation }: LandingPageProps) => {
   const goToSignIn = () => {
     navigation.push("SignIn");
+  };
+  const goToStarting = () => {
+    navigation.push("EmailLogIn");
   };
   return (
     <View style={styles.parent}>
@@ -29,6 +25,7 @@ const LandingPage = WithOnboarding(({ navigation }: LandingPageProps) => {
       <CustomButton
         title={STRING.LANDING_PAGE.BUTTON_TEXT}
         parentStyle={SPACING.mt4}
+        onPress={goToStarting}
       />
       <TouchableOpacity
         style={{ justifyContent: "center", alignItems: "center" }}
@@ -36,12 +33,11 @@ const LandingPage = WithOnboarding(({ navigation }: LandingPageProps) => {
       >
         <Text style={[styles.signInText1, SPACING.m2]}>
           {STRING.LANDING_PAGE.SIGNIN_1}
-          {"  "}
           <Text style={styles.signInText2}>{STRING.LANDING_PAGE.SIGNIN_2}</Text>
         </Text>
       </TouchableOpacity>
     </View>
   );
-});
+};
 
-export default LandingPage;
+export default WithOnboarding(LandingPage);

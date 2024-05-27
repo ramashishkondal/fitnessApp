@@ -4,7 +4,7 @@ import { COLORS, SIZES } from "../../Constants/commonStyles";
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: "row",
-    height: 45,
+    height: 42,
     borderRadius: SIZES.rounding2,
     backgroundColor: COLORS.SECONDARY.WHITE,
   },
@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 4,
     minWidth: 20,
+    paddingHorizontal: 14,
     justifyContent: "center",
     alignItems: "center",
   },

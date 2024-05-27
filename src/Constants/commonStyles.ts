@@ -1,4 +1,3 @@
-import { MatrixRTCSessionManagerEvents } from "matrix-js-sdk/lib/matrixrtc/MatrixRTCSessionManager";
 import { Dimensions, StyleSheet } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -18,14 +17,16 @@ const HEADER_CONST = DeviceInfo.isTablet() ? RFValue(11) : RFValue(13);
 export const SIZES = {
   icon: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13),
   spacing: DeviceInfo.isTablet() ? RFValue(7) : RFValue(8),
+  rounding0: 3,
   rounding: 5,
-  rounding2: 7,
+  rounding2: 10,
   rounding3: 25,
   width: Dimensions.get("screen").width,
   height: Dimensions.get("screen").height,
 
   font11: DeviceInfo.isTablet() ? RFValue(10) : RFValue(11),
-  font13: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13),
+  font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12),
+  font13: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13.5),
   font14: DeviceInfo.isTablet() ? RFValue(13) : RFValue(14),
   font15: DeviceInfo.isTablet() ? RFValue(13) : RFValue(15),
   font17: DeviceInfo.isTablet() ? RFValue(16) : RFValue(17),
@@ -36,7 +37,7 @@ export const SIZES = {
   fontH2: RFValue(HEADER_CONST * 1.8),
   fontH3: RFValue(HEADER_CONST * 1.6),
   fontH4: RFValue(HEADER_CONST * 1.4),
-  fontH5: RFValue(HEADER_CONST * 1.2),
+  fontH5: RFValue(HEADER_CONST * 1.3),
   fontH6: RFValue(HEADER_CONST * 1.0),
   fontH7: RFValue(HEADER_CONST * 0.9),
   fontBold0: "bold" as const,
@@ -73,5 +74,23 @@ export const SPACING = StyleSheet.create({
   },
   mt4: {
     marginTop: 30,
+  },
+  mt5: {
+    marginTop: 38,
+  },
+  mtMedium: {
+    marginTop: 54,
+  },
+  mtLarge: {
+    marginTop: 104,
+  },
+  mtXLarge: {
+    marginTop: 128,
+  },
+  mh1: {
+    marginHorizontal: 8,
+  },
+  mh2: {
+    marginHorizontal: 40,
   },
 });

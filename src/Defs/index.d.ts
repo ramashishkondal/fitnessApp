@@ -20,6 +20,8 @@ export type OnboardingScreenProps = NativeStackScreenProps<
 export type onboardingStackParamList = {
   LandingPage: undefined;
   SignIn: undefined;
+  EmailLogIn: undefined;
+  AddPassword: undefined;
 };
 export type LandingPageProps = NativeStackScreenProps<
   onboardingStackParamList,
@@ -28,4 +30,12 @@ export type LandingPageProps = NativeStackScreenProps<
 export type SignInProps = NativeStackScreenProps<
   onboardingStackParamList,
   "SignIn"
+>;
+export type EmailLogInProps = NativeStackScreenProps<
+  onboardingStackParamList,
+  "EmailLogIn"
+>;
+export type AddPasswordProps = NativeStackScreenProps<
+  onboardingStackParamList,
+  "AddPassword"
 >;

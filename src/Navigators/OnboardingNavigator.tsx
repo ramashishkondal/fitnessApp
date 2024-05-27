@@ -2,26 +2,30 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// types
+// custom
+import {
+  LandingPage,
+  SignIn,
+  EmailLogIn,
+  AddPassword,
+} from "../Screens/OnboardingScreens";
+import { CustomHeader } from "../Components";
 import { onboardingStackParamList } from "../Defs";
-
-// screens
-import LandingPage from "../Screens/OnboardingScreens";
-import Header from "../Components/CustomHeader";
-import SignIn from "../Screens/OnboardingScreens/SignIn";
 
 const Stack = createNativeStackNavigator<onboardingStackParamList>();
 
-const Onboarding = () => {
+const OnboardingNav = () => {
   return (
     <Stack.Navigator
       initialRouteName="LandingPage"
-      screenOptions={{ header: Header }}
+      screenOptions={{ header: CustomHeader }}
     >
       <Stack.Screen name="LandingPage" component={LandingPage} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="EmailLogIn" component={EmailLogIn} />
+      <Stack.Screen name="AddPassword" component={AddPassword} />
     </Stack.Navigator>
   );
 };
 
-export default Onboarding;
+export default OnboardingNav;

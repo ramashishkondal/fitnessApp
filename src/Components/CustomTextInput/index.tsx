@@ -7,7 +7,9 @@ export type CustomTextInputProps = {
   parentStyle?: StyleProp<ViewStyle>;
   iconCtrStyle?: StyleProp<ViewStyle>;
   textInputStyle?: StyleProp<TextStyle>;
-  onChangeText?: (text: string) => void;
+  onChangeText?: (
+    text: string
+  ) => void | React.Dispatch<React.SetStateAction<string>>;
   icon?: any;
 };
 
@@ -26,9 +28,12 @@ const CustomTextInput = ({
         placeholder={placeHolder}
         style={[styles.textInput, textInputStyle]}
         onChangeText={onChangeText}
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoFocus={true}
       />
     </View>
   );
 };
 
-export default CustomTextInput;
+export default React.memo(CustomTextInput);

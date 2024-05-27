@@ -2,11 +2,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// types
+// custom
 import { rootStackParamList } from "../Defs";
 
 // navigators
-import Onboarding from "./OnboardingNavigator";
+import OnboardingNav from "./OnboardingNavigator";
 
 const Stack = createNativeStackNavigator<rootStackParamList>();
 
@@ -16,7 +16,7 @@ const AppNavigator = () => {
       initialRouteName="Onboarding"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Onboarding" component={Onboarding} />
+      <Stack.Screen name="Onboarding" component={OnboardingNav} />
     </Stack.Navigator>
   );
 };
