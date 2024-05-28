@@ -28,4 +28,23 @@ export const STRING = {
       NUMBER: "At least 1 number",
     },
   },
+  ADD_FINGERPRINT: {
+    TITLE: "Enable Fingerprint",
+    TITLE_DESCRIPTION:
+      "If you enable touch ID, you don't need to enter your password when you login.",
+    SUBMIT_BUTTON_TEXT: "Continue",
+    REJECT_BUTTON_TEXT: "Not Now",
+  },
+  ADD_PROFILE_PICTURE: {
+    TITLE: "Profile Picture",
+    TITLE_DESCRIPTION:
+      "You can select photo from one of this emoji or add your own photo as profile picture",
+    ADD_PHOTO_BUTTON: "Add Custom Photo",
+    BUTTON_TEXT: "Continue",
+  },
+  ADD_PREFERENCES: {
+    TITLE: "Let us know how we can help you",
+    TITLE_DESCRIPTION: "You always can change this later",
+    BUTTON_TEXT: "Continue",
+  },
 };

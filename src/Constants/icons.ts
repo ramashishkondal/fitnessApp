@@ -6,6 +6,20 @@ import Lock from "../Assets/Svgs/lock.svg";
 import GoogleLogo from "../Assets/Svgs/googleLogo.svg";
 import FacebookLogo from "../Assets/Svgs/facebookLogo.svg";
 import TwitterLogo from "../Assets/Svgs/twitterLogo.svg";
+import Fingerprint from "../Assets/Svgs/fingerprint.svg";
+import Gallery from "../Assets/Svgs/gallery.svg";
+import Camera from "../Assets/Svgs/camera.svg";
+
+import {
+  Avatar1,
+  Avatar2,
+  Avatar3,
+  Avatar4,
+  Avatar5,
+  Avatar6,
+  Avatar7,
+  Avatar8,
+} from "../Assets/Svgs/Avatars";
 
 const iconStyle = ({
   width = 0,
@@ -30,10 +44,29 @@ export const ICONS = {
   Logo: (params: iconProps) => Logo({ ...iconStyle({ ...params }) }),
   User: (params: iconProps) => User({ ...iconStyle({ ...params }) }),
   Lock: (params: iconProps) => Lock({ ...iconStyle({ ...params }) }),
+  Camera: (params: iconProps) => Camera({ ...iconStyle({ ...params }) }),
+  Gallery: (params: iconProps) => Gallery({ ...iconStyle({ ...params }) }),
+  Fingerprint: (params: iconProps) =>
+    Fingerprint({ ...iconStyle({ ...params }) }),
   GoogleLogo: (params: iconProps) =>
     GoogleLogo({ ...iconStyle({ ...params }) }),
   FacebookLogo: (params: iconProps) =>
     FacebookLogo({ ...iconStyle({ ...params }) }),
   TwitterLogo: (params: iconProps) =>
     TwitterLogo({ ...iconStyle({ ...params }) }),
+};
+
+const AVATAR_SIZE = {
+  width: 75,
+  height: 75,
+};
+export const AVATARS = {
+  Avatar1: () => Avatar1({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar2: () => Avatar2({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar3: () => Avatar3({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar4: () => Avatar4({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar5: () => Avatar5({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar6: () => Avatar6({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar7: () => Avatar7({ ...iconStyle(AVATAR_SIZE) }),
+  Avatar8: () => Avatar8({ ...iconStyle(AVATAR_SIZE) }),
 };

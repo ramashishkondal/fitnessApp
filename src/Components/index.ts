@@ -4,3 +4,6 @@ export { default as CustomTextInput } from "./CustomTextInput";
 export { default as SocialLogins } from "./SocialLogins";
 export { default as WithOnboarding } from "./WithOnboarding";
 export { default as PasswordChecks } from "./PasswordChecks";
+export { default as SelectAvatars } from "./SelectAvatars";
+export { default as SelectCustomPhoto } from "./SelectCustomPhoto";
+export { default as PreferenceItem } from "./PreferenceItem";

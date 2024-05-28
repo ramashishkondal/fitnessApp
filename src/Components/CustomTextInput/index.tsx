@@ -15,35 +15,39 @@ export type CustomTextInputProps = {
   hasError?: boolean;
 };
 
-const CustomTextInput = ({
-  placeHolder,
-  parentStyle,
-  iconCtrStyle,
-  textInputStyle,
-  onChangeText,
-  icon,
-  autoFocus,
-  hasError,
-}: CustomTextInputProps) => {
-  return (
-    <View
-      style={[
-        styles.parent,
-        parentStyle,
-        hasError ? styles.parentError : null,
-      ]}
-    >
-      {icon ? <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View> : null}
-      <TextInput
-        placeholder={placeHolder}
-        style={[styles.textInput, textInputStyle]}
-        onChangeText={onChangeText}
-        autoCapitalize="none"
-        autoCorrect={false}
-        autoFocus={autoFocus}
-      />
-    </View>
-  );
-};
+const CustomTextInput = React.memo(
+  ({
+    placeHolder,
+    parentStyle,
+    iconCtrStyle,
+    textInputStyle,
+    onChangeText,
+    icon,
+    autoFocus,
+    hasError,
+  }: CustomTextInputProps) => {
+    return (
+      <View
+        style={[
+          styles.parent,
+          parentStyle,
+          hasError ? styles.parentError : null,
+        ]}
+      >
+        {icon ? (
+          <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View>
+        ) : null}
+        <TextInput
+          placeholder={placeHolder}
+          style={[styles.textInput, textInputStyle]}
+          onChangeText={onChangeText}
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoFocus={autoFocus}
+        />
+      </View>
+    );
+  }
+);
 
-export default React.memo(CustomTextInput);
+export default CustomTextInput;

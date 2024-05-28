@@ -11,9 +11,22 @@ import {
   WithOnboarding,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
+import { isValidPassword } from "../../../Utils/checkValidity";
+import { AddPasswordProps } from "../../../Defs";
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateNewUser } from "../../../Redux/Reducers/newUser";
 
-const AddPassword = () => {
-  const [password, setPassword] = useState("");
+const AddPassword = ({ navigation }: AddPasswordProps) => {
+  const [password, setPassword] = useState<string>("");
+  const dispatch = useAppDispatch();
+
+  const goToAddFingerprint = () => {
+    if (isValidPassword.checkAll(password)) {
+      dispatch(updateNewUser({ password }));
+      navigation.push("AddFingerprint");
+    }
+  };
+
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh2]}>
       <View style={styles.titleCtr}>
@@ -27,13 +40,14 @@ const AddPassword = () => {
         autoFocus
       />
       <PasswordChecks
-        lengthCheck={password.length >= 8}
-        caseCheck={RegExp(/[A-Z]/).test(password)}
-        numberCheck={RegExp(/[0-9]/).test(password)}
+        lengthCheck={isValidPassword.lengthCheck(password)}
+        caseCheck={isValidPassword.caseCheck(password)}
+        numberCheck={isValidPassword.numberCheck(password)}
       />
       <CustomButton
         title={STRING.ADD_PASSWORD.BUTTON_TEXT}
         parentStyle={SPACING.mtLarge}
+        onPress={goToAddFingerprint}
       />
     </View>
   );

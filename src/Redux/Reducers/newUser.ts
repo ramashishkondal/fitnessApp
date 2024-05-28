@@ -1,23 +1,34 @@
-// import { createSlice } from "@reduxjs/toolkit";
-// import { User } from "../../Defs";
+import { createSlice } from "@reduxjs/toolkit";
+import { User } from "../../Defs";
 
-// const initialState: { data: {} | User } = {
-//   data: {},
-// };
+const initialState: { data: User & { password: string } } = {
+  data: {
+    email: "",
+    password: "",
+    finger: false,
+    firstName: "",
+    lastName: "",
+    gender: null,
+    interests: [],
+    photo: "",
+    preferences: [],
+  },
+};
 
-// export const currentUserSlice = createSlice({
-//   name: "newUser",
-//   initialState,
-//   reducers: {
-//     addedEmail: (state, action) => {
-//       state.data.email = action.payload;
-//     },
-//     userLoggedOut: (state) => {
-//       state.data = null;
-//     },
-//   },
-// });
+export const currentUserSlice = createSlice({
+  name: "newUser",
+  initialState,
+  reducers: {
+    updateNewUser: (state, action) => {
+      state.data = { ...state.data, ...action.payload };
+    },
+    resetNewUser: (state) => {
+      state.data = initialState.data;
+    },
+  },
+});
 
-// const { actions, reducer } = currentUserSlice;
+const { actions, reducer } = currentUserSlice;
+export const { resetNewUser, updateNewUser } = actions;
 
-// export default reducer;
+export default reducer;

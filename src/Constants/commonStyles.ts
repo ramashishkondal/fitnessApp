@@ -25,7 +25,7 @@ export const SIZES = {
   height: Dimensions.get("screen").height,
 
   font11: DeviceInfo.isTablet() ? RFValue(10) : RFValue(11),
-  font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12),
+  font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12.5),
   font13: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13.5),
   font14: DeviceInfo.isTablet() ? RFValue(13) : RFValue(14),
   font15: DeviceInfo.isTablet() ? RFValue(13) : RFValue(15),
@@ -42,6 +42,7 @@ export const SIZES = {
   fontH7: RFValue(HEADER_CONST * 0.9),
   fontBold0: "bold" as const,
   fontBold1: "600" as const,
+  fontBold2: "500" as const,
 };
 
 export const SPACING = StyleSheet.create({
@@ -92,5 +93,8 @@ export const SPACING = StyleSheet.create({
   },
   mh2: {
     marginHorizontal: 40,
+  },
+  mhMedium: {
+    marginHorizontal: 20,
   },
 });

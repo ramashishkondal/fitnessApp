@@ -9,15 +9,19 @@ import {
   WithOnboarding,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
-import { EmailLogInProps } from "../../../Defs";
+import { AddEmailLogInProps } from "../../../Defs";
 import { styles } from "./styles";
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateNewUser } from "../../../Redux/Reducers/newUser";
+import { isValidEmail } from "../../../Utils/checkValidity";
 
-const emailRegex = /^[\w-.]+@([\w-]+.)+[\w]{1,}$/;
-const EmailLogIn = ({ navigation }: EmailLogInProps) => {
+const EmailLogIn = ({ navigation }: AddEmailLogInProps) => {
   const [email, setEmail] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   const goToAddPassword = () => {
-    if (email && RegExp(emailRegex).exec(email)) {
+    if (email && isValidEmail(email)) {
+      dispatch(updateNewUser({ email }));
       navigation.push("AddPassword", { email: email });
     }
   };
@@ -31,9 +35,9 @@ const EmailLogIn = ({ navigation }: EmailLogInProps) => {
         textInputStyle={styles.textInput}
         onChangeText={setEmail}
         autoFocus
-        hasError={!!email && !RegExp(emailRegex).exec(email)}
+        hasError={!!email && !isValidEmail(email)}
       />
-      {email && !RegExp(emailRegex).exec(email) ? <Text>Error</Text> : null}
+      {email && !isValidEmail(email) ? <Text>Error</Text> : null}
       <CustomButton
         title={STRING.EMAIL_LOG_IN.BUTTON_TEXT}
         parentStyle={SPACING.mtXLarge}

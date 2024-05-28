@@ -13,7 +13,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
     navigation.push("SignIn");
   };
   const goToStarting = () => {
-    navigation.push("EmailLogIn");
+    navigation.push("AddEmail");
   };
   return (
     <View style={styles.parent}>
