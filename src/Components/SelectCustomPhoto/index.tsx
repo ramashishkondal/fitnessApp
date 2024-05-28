@@ -1,6 +1,6 @@
 // libs
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Pressable, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import {
   CameraOptions,
   ImagePickerResponse,
