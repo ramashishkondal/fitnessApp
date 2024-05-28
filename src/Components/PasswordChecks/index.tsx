@@ -9,6 +9,7 @@ type PasswordChecksProps = {
   caseCheck: boolean;
   numberCheck: boolean;
 };
+
 const PasswordChecks = ({
   lengthCheck,
   caseCheck,

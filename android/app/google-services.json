@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "330526479136",
+    "project_id": "fitnessapp-44851",
+    "storage_bucket": "fitnessapp-44851.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330526479136:android:102478b4dbf10db4067d45",
+        "android_client_info": {
+          "package_name": "com.chicmic.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330526479136-afcv2ho1od518sm2g2cnaat3vqq6gd4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chicmic.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD-ZmRnSluv8-sHZbkzLUenonutsWV1sE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "330526479136-roetu8aldkq38nd4apvnck1h2k9rvb0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chicmic.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

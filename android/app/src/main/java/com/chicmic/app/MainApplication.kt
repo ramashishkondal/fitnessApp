@@ -1,4 +1,4 @@
-package com.fitness
+package com.chicmic.app
 
 import android.app.Application
 import com.facebook.react.PackageList

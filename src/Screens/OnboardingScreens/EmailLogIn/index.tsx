@@ -1,11 +1,14 @@
+// libs
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { SPACING, STRING } from "../../../Constants";
+
+// custom
 import {
   CustomButton,
   CustomTextInput,
   WithOnboarding,
 } from "../../../Components";
+import { SPACING, STRING } from "../../../Constants";
 import { EmailLogInProps } from "../../../Defs";
 import { styles } from "./styles";
 
@@ -15,9 +18,10 @@ const EmailLogIn = ({ navigation }: EmailLogInProps) => {
 
   const goToAddPassword = () => {
     if (email && RegExp(emailRegex).exec(email)) {
-      navigation.push("AddPassword");
+      navigation.push("AddPassword", { email: email });
     }
   };
+
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
       <Text style={styles.titleText}>{STRING.EMAIL_LOG_IN.TITLE}</Text>
@@ -27,6 +31,7 @@ const EmailLogIn = ({ navigation }: EmailLogInProps) => {
         textInputStyle={styles.textInput}
         onChangeText={setEmail}
         autoFocus
+        hasError={!!email && !RegExp(emailRegex).exec(email)}
       />
       {email && !RegExp(emailRegex).exec(email) ? <Text>Error</Text> : null}
       <CustomButton

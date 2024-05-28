@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>330526479136-roetu8aldkq38nd4apvnck1h2k9rvb0n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.330526479136-roetu8aldkq38nd4apvnck1h2k9rvb0n</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>330526479136-afcv2ho1od518sm2g2cnaat3vqq6gd4j.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCSjzWRi1W1eGsZLxNdLKq19XgWCiZhNUs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>330526479136</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.chicmic.app</string>
+	<key>PROJECT_ID</key>
+	<string>fitnessapp-44851</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fitnessapp-44851.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:330526479136:ios:433d57c05e67fea7067d45</string>
+</dict>
+</plist>

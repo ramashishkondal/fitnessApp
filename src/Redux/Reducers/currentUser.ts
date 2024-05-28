@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "matrix-js-sdk";
+import { User } from "../../Defs";
 
 const initialState: { data: null | CurrentUser } = {
   data: null,
@@ -8,6 +8,7 @@ const initialState: { data: null | CurrentUser } = {
 export interface CurrentUser {
   data: null | User;
 }
+
 export const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
