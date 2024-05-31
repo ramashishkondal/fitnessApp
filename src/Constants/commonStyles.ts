@@ -10,7 +10,15 @@ export const COLORS = {
   SECONDARY: {
     GREY: "#B0B1C8",
     WHITE: "#FFFFFF",
+    RED: "#ff0033",
   },
+};
+
+export const ANIMATIONS = {
+  sizeNormal: 1,
+  sizeIncrease1: 1.05,
+  sizeIncrease2: 1.1,
+  sizeIncrease3: 1.15,
 };
 
 const HEADER_CONST = DeviceInfo.isTablet() ? RFValue(11) : RFValue(13);

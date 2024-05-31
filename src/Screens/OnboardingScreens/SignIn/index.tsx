@@ -1,6 +1,7 @@
 // libs
 import React, { useState } from "react";
 import { Text, View } from "react-native";
+import auth from "@react-native-firebase/auth";
 
 // custom
 import {
@@ -8,14 +9,23 @@ import {
   CustomButton,
   CustomTextInput,
   SocialLogins,
+  CustomErrorText,
 } from "../../../Components";
 import { STRING, ICONS, SPACING } from "../../../Constants";
 import { styles } from "./styles";
+import { isValidEmail } from "../../../Utils/checkValidity";
 
-const emailRegex = /^[\w-.]+@([\w-]+.)+[\w]{1,}$/;
 const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const handleSignIn = async () => {
+    try {
+      auth().signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      console.log("error with sign in ", e);
+    }
+  };
 
   return (
     <View style={styles.parent}>
@@ -25,9 +35,8 @@ const SignIn = () => {
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
         autoFocus
-        hasError={!!email && !RegExp(emailRegex).test(email)}
       />
-      {email && !RegExp(emailRegex).exec(email) ? <Text>Error</Text> : null}
+      {email && !isValidEmail(email) ? <CustomErrorText text="Error" /> : null}
       <CustomTextInput
         placeHolder={STRING.SIGNIN.PASSWORD}
         icon={ICONS.Lock({ width: 18, height: 18 })}
@@ -41,6 +50,7 @@ const SignIn = () => {
       <CustomButton
         title={STRING.SIGNIN.BUTTON_TEXT}
         parentStyle={styles.customButtonParent}
+        onPress={handleSignIn}
       />
     </View>
   );

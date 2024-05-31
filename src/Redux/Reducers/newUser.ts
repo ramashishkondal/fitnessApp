@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../../Defs";
 
-const initialState: { data: User & { password: string } } = {
+const initialState: { data: User } = {
   data: {
     email: "",
-    password: "",
     finger: false,
     firstName: "",
     lastName: "",

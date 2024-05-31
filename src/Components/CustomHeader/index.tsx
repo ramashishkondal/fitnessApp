@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Dimensions, TouchableOpacity, View, SafeAreaView } from "react-native";
 
 // types
@@ -7,14 +7,18 @@ import { ICONS } from "../../Constants/icons";
 import { styles } from "./styles";
 
 const CustomHeader = (props: NativeStackHeaderProps) => {
-  const goBack = () => {
+  const goBack = useCallback(() => {
     props.navigation.goBack();
-  };
+  }, []);
+
   return (
     <SafeAreaView
       style={[
         {
-          height: Dimensions.get("screen").height / 4.5,
+          height:
+            props.route.name === "AddInterests"
+              ? Dimensions.get("screen").height / 7
+              : Dimensions.get("screen").height / 4.5,
         },
         styles.parent,
       ]}

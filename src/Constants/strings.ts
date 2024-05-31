@@ -13,10 +13,11 @@ export const STRING = {
     SIGN_IN_WITH: "Sign in with",
     BUTTON_TEXT: "Continue",
   },
-  EMAIL_LOG_IN: {
+  ADD_EMAIL: {
     TITLE: "What is your email address?",
     TEXT_INPUT_PLACEHOLDER: "Enter your email address",
     BUTTON_TEXT: "Continue",
+    EMAIL_ERROR: "INVALID EMAIL ADDRESS",
   },
   ADD_PASSWORD: {
     TITLE: "Now let's setup your password",
@@ -45,6 +46,17 @@ export const STRING = {
   ADD_PREFERENCES: {
     TITLE: "Let us know how we can help you",
     TITLE_DESCRIPTION: "You always can change this later",
+    BUTTON_TEXT: "Continue",
+  },
+  ADD_INTERESTS: {
+    TITLE: "Time to customize your interests",
+    BUTTON_TEXT: "Continue",
+  },
+  ADD_GENDER: {
+    TITLE: "Which one are you?",
+    MALE: "Male",
+    FEMALE: "Female",
+    DESCRIPTION: "To give you a better experience we need to know your gender",
     BUTTON_TEXT: "Continue",
   },
 };

@@ -20,7 +20,7 @@ const AddPassword = ({ navigation }: AddPasswordProps) => {
   const [password, setPassword] = useState<string>("");
   const dispatch = useAppDispatch();
 
-  const goToAddFingerprint = () => {
+  const handleSubmit = () => {
     if (isValidPassword.checkAll(password)) {
       dispatch(updateNewUser({ password }));
       navigation.push("AddFingerprint");
@@ -47,7 +47,7 @@ const AddPassword = ({ navigation }: AddPasswordProps) => {
       <CustomButton
         title={STRING.ADD_PASSWORD.BUTTON_TEXT}
         parentStyle={SPACING.mtLarge}
-        onPress={goToAddFingerprint}
+        onPress={handleSubmit}
       />
     </View>
   );

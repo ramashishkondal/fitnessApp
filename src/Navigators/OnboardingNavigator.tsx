@@ -24,7 +24,7 @@ const OnboardingNav = () => {
   return (
     <Stack.Navigator
       initialRouteName="LandingPage"
-      screenOptions={{ header: CustomHeader }}
+      screenOptions={{ header: CustomHeader, animationDuration: 500 }}
     >
       <Stack.Screen name="LandingPage" component={LandingPage} />
       <Stack.Screen name="SignIn" component={SignIn} />
@@ -35,7 +35,11 @@ const OnboardingNav = () => {
       <Stack.Screen name="AddPreferences" component={AddPreferences} />
       <Stack.Screen name="AddInterests" component={AddInterests} />
       <Stack.Screen name="AddGender" component={AddGender} />
-      <Stack.Screen name="DetailsCompleted" component={DetailsCompleted} />
+      <Stack.Screen
+        name="DetailsCompleted"
+        component={DetailsCompleted}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

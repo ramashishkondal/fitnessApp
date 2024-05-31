@@ -11,12 +11,15 @@ import {
 import { SPACING, STRING } from "../../../Constants";
 import { AddProfilePictureProps } from "../../../Defs";
 import { styles } from "./styles";
+import { useAppDispatch } from "../../../Redux/Store";
 
 const AddProfilePicture = ({ navigation }: AddProfilePictureProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const openModal = () => setModalVisible(true);
 
-  const goToAddPreferences = () => navigation.push("AddPreferences");
+  const handleSubmit = () => {
+    navigation.push("AddPreferences");
+  }
 
   return (
     <View style={styles.parent}>
@@ -33,7 +36,7 @@ const AddProfilePicture = ({ navigation }: AddProfilePictureProps) => {
       <CustomButton
         title={STRING.ADD_PROFILE_PICTURE.BUTTON_TEXT}
         parentStyle={SPACING.mtMedium}
-        onPress={goToAddPreferences}
+        onPress={handleSubmit}
       />
       <SelectCustomPhoto
         modalVisible={modalVisible}

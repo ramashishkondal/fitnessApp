@@ -13,7 +13,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
     navigation.push("SignIn");
   };
   const goToStarting = () => {
-    navigation.push("AddEmail");
+    navigation.navigate("AddEmail");
   };
   return (
     <View style={styles.parent}>
@@ -32,7 +32,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
         onPress={goToSignIn}
       >
         <Text style={[styles.signInText1, SPACING.m2]}>
-          {STRING.LANDING_PAGE.SIGNIN_1}
+          {STRING.LANDING_PAGE.SIGNIN_1}{" "}
           <Text style={styles.signInText2}>{STRING.LANDING_PAGE.SIGNIN_2}</Text>
         </Text>
       </TouchableOpacity>

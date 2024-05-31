@@ -1,52 +1,57 @@
 // libs
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import BouncyCheckbox from "react-native-bouncy-checkbox/build/dist/BouncyCheckbox";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSequence,
   withSpring,
 } from "react-native-reanimated";
-import BouncyCheckbox from "react-native-bouncy-checkbox/build/dist/BouncyCheckbox";
 
 // custom
-import { COLORS, ANIMATIONS } from "../../Constants";
 import { styles } from "./styles";
+import { ANIMATIONS, COLORS } from "../../Constants";
+import { User } from "../../Defs";
 
-type PreferenceItemProps = {
-  title?: string;
+const size = {
+  width: 80,
+  height: 90,
 };
-const PreferenceItem = ({ title }: PreferenceItemProps) => {
-  const scale = useSharedValue(1);
+
+type CardProps = {
+  text: string;
+  icon: any;
+  onToggle: () => void;
+  isChecked: boolean;
+};
+const Card = ({ text, icon, onToggle, isChecked }: CardProps) => {
+  const scale = useSharedValue(ANIMATIONS.sizeNormal);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  const toogleIsChecked = () => {
-    setIsChecked(!isChecked);
-  };
   const handleOnPress = () => {
+    onToggle();
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease1),
       withSpring(ANIMATIONS.sizeNormal)
     );
-    setIsChecked(!isChecked);
   };
   return (
-    <Animated.View style={[styles.parent, animatedStyle]}>
-      <Pressable onPress={handleOnPress}>
-        <View style={styles.childCtr}>
-          <View style={styles.textCtr}>
-            <Text style={styles.text}>{title}</Text>
-          </View>
+    <Animated.View style={animatedStyle}>
+      <Pressable style={styles.parent} onPress={handleOnPress}>
+        <View style={styles.child}>
+          <View style={styles.iconCtr}>{icon(size)}</View>
+          <Text style={styles.text}>{text}</Text>
+        </View>
+        <View style={styles.checkboxCtr}>
           <BouncyCheckbox
-            size={28}
+            size={25}
             fillColor={COLORS.PRIMARY.PURPLE}
             unFillColor={COLORS.PRIMARY.GREY}
             innerIconStyle={{ borderColor: COLORS.PRIMARY.GREY }}
-            onPress={toogleIsChecked}
+            onPress={onToggle}
             isChecked={isChecked}
           />
         </View>
@@ -55,4 +60,4 @@ const PreferenceItem = ({ title }: PreferenceItemProps) => {
   );
 };
 
-export default PreferenceItem;
+export default Card;

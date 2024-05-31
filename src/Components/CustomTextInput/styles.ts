@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   parentError: {
     borderWidth: 0.5,
-    borderColor: "red",
+    borderColor: COLORS.SECONDARY.RED,
   },
   parentFocused: {
     borderWidth: 0.5,

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 import { styles } from "./styles";
+import Animated from "react-native-reanimated";
 
 export type CustomTextInputProps = {
   placeHolder?: string;
@@ -27,7 +28,7 @@ const CustomTextInput = React.memo(
     hasError,
   }: CustomTextInputProps) => {
     return (
-      <View
+      <Animated.View
         style={[
           styles.parent,
           parentStyle,
@@ -45,7 +46,7 @@ const CustomTextInput = React.memo(
           autoCorrect={false}
           autoFocus={autoFocus}
         />
-      </View>
+      </Animated.View>
     );
   }
 );

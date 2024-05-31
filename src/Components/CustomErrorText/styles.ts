@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../../Constants";
+import { COLORS } from "../../Constants";
 
 export const styles = StyleSheet.create({
   parent: {
+    padding: 8,
     flex: 1,
-    backgroundColor: COLORS.PRIMARY.PURPLE,
-    alignItems: "center",
+  },
+  text: {
+    color: COLORS.SECONDARY.RED,
   },
 });

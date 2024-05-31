@@ -7,3 +7,7 @@ export { default as PasswordChecks } from "./PasswordChecks";
 export { default as SelectAvatars } from "./SelectAvatars";
 export { default as SelectCustomPhoto } from "./SelectCustomPhoto";
 export { default as PreferenceItem } from "./PreferenceItem";
+export { default as Avatar } from "./Avatar";
+export { default as InterestItem } from "./InterestItem";
+export { default as Card } from "./Card";
+export { default as CustomErrorText } from "./CustomErrorText";
