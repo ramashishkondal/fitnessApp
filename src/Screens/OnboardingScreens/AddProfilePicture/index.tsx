@@ -1,6 +1,6 @@
 //libs
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 
 // custom
 import {
@@ -12,18 +12,30 @@ import { SPACING, STRING } from "../../../Constants";
 import { AddProfilePictureProps } from "../../../Defs";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddProfilePicture = ({ navigation }: AddProfilePictureProps) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useAppDispatch();
+  const [avatar, setAvatar] = useState<string>("");
+  const [customPhoto, setCustomPhoto] = useState<string>();
   const openModal = () => setModalVisible(true);
-
   const handleSubmit = () => {
-    navigation.push("AddPreferences");
-  }
-
+    if (avatar || customPhoto) {
+      console.log("photo is ", customPhoto ?? avatar);
+      dispatch(updateUserData({ photo: customPhoto ?? avatar }));
+      navigation.push("AddPreferences");
+    } else {
+      Alert.alert("You have to select a photo");
+    }
+  };
   return (
     <View style={styles.parent}>
-      <SelectAvatars />
+      {customPhoto ? (
+        <Image source={{ uri: customPhoto }} style={styles.photo} />
+      ) : (
+        <SelectAvatars photo={avatar} setPhoto={setAvatar} />
+      )}
       <Text style={styles.titleText}>{STRING.ADD_PROFILE_PICTURE.TITLE}</Text>
       <Text style={styles.titleDescriptionText}>
         {STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION}
@@ -41,6 +53,7 @@ const AddProfilePicture = ({ navigation }: AddProfilePictureProps) => {
       <SelectCustomPhoto
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        setPhoto={setCustomPhoto}
       />
     </View>
   );

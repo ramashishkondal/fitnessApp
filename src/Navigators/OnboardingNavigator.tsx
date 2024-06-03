@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator<onboardingStackParamList>();
 const OnboardingNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="LandingPage"
+      initialRouteName={"LandingPage"}
       screenOptions={{ header: CustomHeader, animationDuration: 500 }}
     >
       <Stack.Screen name="LandingPage" component={LandingPage} />

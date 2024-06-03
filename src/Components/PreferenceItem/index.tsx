@@ -14,32 +14,33 @@ import { COLORS, ANIMATIONS } from "../../Constants";
 import { styles } from "./styles";
 
 type PreferenceItemProps = {
-  title?: string;
+  item: { title: string; selected: boolean };
 };
-const PreferenceItem = ({ title }: PreferenceItemProps) => {
+const PreferenceItem = ({ item }: PreferenceItemProps) => {
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(item.selected);
 
   const toogleIsChecked = () => {
     setIsChecked(!isChecked);
+    item.selected = !item.selected;
   };
   const handleOnPress = () => {
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease1),
       withSpring(ANIMATIONS.sizeNormal)
     );
-    setIsChecked(!isChecked);
+    toogleIsChecked();
   };
   return (
     <Animated.View style={[styles.parent, animatedStyle]}>
       <Pressable onPress={handleOnPress}>
         <View style={styles.childCtr}>
           <View style={styles.textCtr}>
-            <Text style={styles.text}>{title}</Text>
+            <Text style={styles.text}>{item.title}</Text>
           </View>
           <BouncyCheckbox
             size={28}

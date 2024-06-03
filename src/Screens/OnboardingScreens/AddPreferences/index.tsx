@@ -1,5 +1,5 @@
 // libs
-import React from "react";
+import React, { useRef } from "react";
 import { Text, View } from "react-native";
 
 // custom
@@ -11,19 +11,27 @@ import {
 import { styles } from "./styles";
 import { SPACING, STRING } from "../../../Constants";
 import { AddPreferencesProps } from "../../../Defs";
-
-const PREFERENCES = [
-  "Weight Loss",
-  "Better sleeping habit",
-  "Track my nutrition",
-  "Improve overall fitness",
-];
-const Preferences = PREFERENCES.map((val, index) => (
-  <PreferenceItem title={val} key={index} />
-));
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddPreferences = ({ navigation }: AddPreferencesProps) => {
+  const dispatch = useAppDispatch();
+  const PREFERENCES = useRef([
+    { title: "Weight Loss", selected: false },
+    { title: "Better sleeping habit", selected: false },
+    { title: "Track my nutrition", selected: false },
+    { title: "Improve overall fitness", selected: false },
+  ]);
+  const Preferences = PREFERENCES.current.map((val, index) => (
+    <PreferenceItem item={val} key={index} />
+  ));
   const goToAddInterests = () => {
+    console.log("value of preff", PREFERENCES.current);
+    dispatch(
+      updateUserData({
+        preferences: PREFERENCES.current.filter((item) => item.selected),
+      })
+    );
     navigation.push("AddInterests");
   };
   return (

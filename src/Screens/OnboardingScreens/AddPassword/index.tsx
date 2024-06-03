@@ -14,16 +14,18 @@ import { SPACING, STRING } from "../../../Constants";
 import { isValidPassword } from "../../../Utils/checkValidity";
 import { AddPasswordProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
-import { updateNewUser } from "../../../Redux/Reducers/newUser";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddPassword = ({ navigation }: AddPasswordProps) => {
   const [password, setPassword] = useState<string>("");
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
-    if (isValidPassword.checkAll(password)) {
-      dispatch(updateNewUser({ password }));
-      navigation.push("AddFingerprint");
+    if (isValidPassword.checkAllValidations(password)) {
+      dispatch(updateUserData({ password }));
+      navigation.reset({
+        routes: [{ name: "AddFingerprint" }],
+      });
     }
   };
 

@@ -1,12 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import currentUserReducer from "./currentUser";
+import userReducer from "./currentUser";
 import themeReducer from "./theme";
-import newUserReducer from "./newUser";
+import currentlyOnScreenReducer from "./currentlyOnScreen";
 
 const rootReducer = combineReducers({
-  currentUser: currentUserReducer,
+  User: userReducer,
   theme: themeReducer,
-  newUser: newUserReducer,
+  currentlyOnScreen: currentlyOnScreenReducer,
 });
 
 export type RootReducer = typeof rootReducer;

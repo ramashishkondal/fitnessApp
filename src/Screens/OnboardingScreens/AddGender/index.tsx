@@ -7,17 +7,20 @@ import { ICONS, SPACING, STRING } from "../../../Constants";
 import { Card, CustomButton } from "../../../Components";
 import { AddGenderProps, User } from "../../../Defs";
 import { styles } from "./styles";
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddGender = ({ navigation }: AddGenderProps) => {
   const [selectedGender, setSelectedGender] = useState<User["gender"] | null>(
     null
   );
-
+  const dispatch = useAppDispatch();
   const toggleCheckBox = (gender: User["gender"]) => {
     setSelectedGender(gender);
   };
   const handleSubmit = () => {
     if (selectedGender !== null) {
+      dispatch(updateUserData({ gender: selectedGender }));
       navigation.push("DetailsCompleted");
     }
   };

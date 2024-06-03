@@ -11,3 +11,5 @@ export { default as Avatar } from "./Avatar";
 export { default as InterestItem } from "./InterestItem";
 export { default as Card } from "./Card";
 export { default as CustomErrorText } from "./CustomErrorText";
+export { default as CustomDrawerButton } from "./CustomDrawerButton";
+export { default as CustomDrawerRight } from "./CustomDrawerRight";

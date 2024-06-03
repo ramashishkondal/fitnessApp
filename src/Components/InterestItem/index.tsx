@@ -13,11 +13,10 @@ import { styles } from "./styles";
 import { ANIMATIONS } from "../../Constants";
 
 type InterestItemProps = {
-  title: string;
-  icon: any;
+  item: { title: string; icon: any; selected: boolean };
 };
 
-const InterestItem = ({ title, icon }: InterestItemProps) => {
+const InterestItem = ({ item }: InterestItemProps) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const scale = useSharedValue(ANIMATIONS.sizeNormal);
@@ -26,6 +25,7 @@ const InterestItem = ({ title, icon }: InterestItemProps) => {
   }));
   const handlePress = () => {
     setIsSelected(!isSelected);
+    item.selected = !item.selected;
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease3),
       withSpring(ANIMATIONS.sizeNormal)
@@ -42,10 +42,10 @@ const InterestItem = ({ title, icon }: InterestItemProps) => {
             animatedStyle,
           ]}
         >
-          {icon}
+          {item.icon}
         </Animated.View>
         <View style={styles.textCtr}>
-          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.text}>{item.title}</Text>
         </View>
       </TouchableOpacity>
     </View>

@@ -1,23 +1,42 @@
 // libs
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 // custom
-import { rootStackParamList } from "../Defs";
+import { CustomDrawerButton, CustomDrawerRight } from "../Components";
+import { appStackParamList } from "../Defs";
+import { Home } from "../Screens/MainScreens";
 
-// navigators
-import OnboardingNav from "./OnboardingNavigator";
-
-const Stack = createNativeStackNavigator<rootStackParamList>();
+const Drawer = createDrawerNavigator<appStackParamList>();
 
 const AppNavigator = () => {
+  const headerLeft = () => {
+    return <CustomDrawerButton />;
+  };
+  const headerRight = () => {
+    return <CustomDrawerRight />;
+  };
   return (
-    <Stack.Navigator
-      initialRouteName="Onboarding"
-      screenOptions={{ headerShown: false }}
+    <Drawer.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        title: "Home",
+        headerTitle: "",
+        headerStyle: {
+          backgroundColor: "#ECECEC",
+          shadowOpacity: 0,
+          height: 150,
+        },
+        headerRight,
+        headerLeft,
+        drawerStyle: {
+          borderWidth: 1,
+          justifyContent: "center",
+        },
+      }}
     >
-      <Stack.Screen name="Onboarding" component={OnboardingNav} />
-    </Stack.Navigator>
+      <Drawer.Screen name="Home" component={Home} />
+    </Drawer.Navigator>
   );
 };
 

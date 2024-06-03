@@ -1,5 +1,5 @@
 // libs
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, ListRenderItem } from "react-native";
 
 // custom
@@ -7,9 +7,19 @@ import { AVATARS } from "../../Constants/icons";
 import Avatar from "../Avatar";
 import { styles } from "./styles";
 
-const AvatarArray = Object.values(AVATARS).map((val) => val());
-const SelectAvatars = () => {
-  const renderItem: ListRenderItem<any> = ({ item }) => <Avatar item={item} />;
+const AvatarArray = Object.values(AVATARS).map((val) => ({
+  icon: val(),
+  name: val.name,
+}));
+type SelectAvatarsProps = {
+  photo: string;
+  setPhoto: React.Dispatch<React.SetStateAction<string>>;
+};
+const SelectAvatars = ({ photo, setPhoto }: SelectAvatarsProps) => {
+  // const [selectedItem, setSelectedItem] = useState("");
+  const renderItem: ListRenderItem<any> = ({ item }) => (
+    <Avatar item={item} selectedItem={photo} setSelectedItem={setPhoto} />
+  );
   return (
     <FlatList
       data={AvatarArray}

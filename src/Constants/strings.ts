@@ -59,4 +59,15 @@ export const STRING = {
     DESCRIPTION: "To give you a better experience we need to know your gender",
     BUTTON_TEXT: "Continue",
   },
+  DETAILS_COMPLETED: {
+    TITLE: "You are ready to go!",
+    TITLE_DESCRIPTION:
+      "Thanks for taking your time to create account with us. Now this is the fun part, let's explore the app",
+  },
+  HOME_SCREEN: {
+    TITLE: "Good Morning,",
+    DESCRIPTION:
+      "Eat the right amount of food and stay hydrated through the day",
+    MORE_DETAILS: "More details",
+  },
 };

@@ -20,6 +20,7 @@ import { styles } from "./styles";
 export type SelectCustomPhotoProps = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setPhoto: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 const iconSize = 60;
@@ -27,10 +28,13 @@ const iconSize = 60;
 const SelectCustomPhoto = ({
   modalVisible,
   setModalVisible,
+  setPhoto,
 }: SelectCustomPhotoProps) => {
   useEffect(() => {
     if (modalVisible) {
       bottomSheetModalRef.current?.present();
+    } else {
+      bottomSheetModalRef.current?.dismiss();
     }
   }, [modalVisible]);
 
@@ -38,22 +42,36 @@ const SelectCustomPhoto = ({
     mediaType: "photo",
   };
   const openCamera = async () => {
-    const result: ImagePickerResponse = await launchCamera(options);
-    console.log(result);
+    try {
+      const result: ImagePickerResponse = await launchCamera(options);
+      if (result.assets !== undefined) {
+        setPhoto(result?.assets[0]?.uri);
+      }
+    } catch (e) {
+      console.log("error uploading photo from camera - ", e);
+    }
   };
   const openGallery = async () => {
-    const result: ImagePickerResponse = await launchImageLibrary(options);
-    console.log(result);
+    try {
+      const result: ImagePickerResponse = await launchImageLibrary(options);
+      if (result.assets !== undefined) {
+        setPhoto(result?.assets[0]?.uri);
+      }
+      setModalVisible(false);
+    } catch (e) {
+      console.log("error uploading photo from library - ", e);
+    }
   };
 
   // bottom sheet
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%"], []);
   const handleSheetChanges = useCallback((index: number) => {
-    setModalVisible(false);
-    console.log("handleSheetChanges", index);
+    console.log("sheet changes", index);
   }, []);
-
+  const onDismiss = () => {
+    setModalVisible(false);
+  };
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
@@ -61,6 +79,7 @@ const SelectCustomPhoto = ({
         index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
+        onDismiss={onDismiss}
         backgroundStyle={{
           borderRadius: SIZES.rounding3,
         }}

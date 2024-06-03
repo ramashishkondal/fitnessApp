@@ -11,19 +11,18 @@ import {
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { AddEmailLogInProps } from "../../../Defs";
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateNewUser } from "../../../Redux/Reducers/newUser";
 import { isValidEmail } from "../../../Utils/checkValidity";
 import { styles } from "./styles";
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
-const EmailLogIn = ({ navigation }: AddEmailLogInProps) => {
+const AddEmail = ({ navigation }: AddEmailLogInProps) => {
   const [email, setEmail] = useState<string>("");
-
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
     if (email && isValidEmail(email)) {
-      dispatch(updateNewUser({ email }));
+      dispatch(updateUserData({ email }));
       navigation.push("AddPassword");
     }
   };
@@ -37,7 +36,6 @@ const EmailLogIn = ({ navigation }: AddEmailLogInProps) => {
         textInputStyle={styles.textInput}
         onChangeText={setEmail}
         autoFocus
-        // hasError={!!email && !isValidEmail(email)}
       />
       {email && !isValidEmail(email) ? (
         <CustomErrorText text={STRING.ADD_EMAIL.EMAIL_ERROR} />
@@ -51,4 +49,4 @@ const EmailLogIn = ({ navigation }: AddEmailLogInProps) => {
   );
 };
 
-export default WithOnboarding(EmailLogIn);
+export default WithOnboarding(AddEmail);

@@ -11,6 +11,8 @@ import Gallery from "../Assets/Svgs/gallery.svg";
 import Camera from "../Assets/Svgs/camera.svg";
 import Female from "../Assets/Svgs/female.svg";
 import Male from "../Assets/Svgs/male.svg";
+import DoubleArrow from "../Assets/Svgs/doubleArrow.svg";
+import Drawer from "../Assets/Svgs/drawerIcon.svg";
 
 import {
   Avatar1,
@@ -61,6 +63,9 @@ export const ICONS = {
   Gallery: (params: iconProps) => Gallery({ ...iconStyle({ ...params }) }),
   Female: (params: iconProps) => Female({ ...iconStyle({ ...params }) }),
   Male: (params: iconProps) => Male({ ...iconStyle({ ...params }) }),
+  Drawer: (params: iconProps) => Drawer({ ...iconStyle({ ...params }) }),
+  DoubleArrow: (params: iconProps) =>
+    DoubleArrow({ ...iconStyle({ ...params }) }),
   Fingerprint: (params: iconProps) =>
     Fingerprint({ ...iconStyle({ ...params }) }),
   GoogleLogo: (params: iconProps) =>
