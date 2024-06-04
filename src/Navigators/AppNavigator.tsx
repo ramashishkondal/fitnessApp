@@ -1,42 +1,33 @@
 // libs
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 
 // custom
-import { CustomDrawerButton, CustomDrawerRight } from "../Components";
-import { appStackParamList } from "../Defs";
-import { Home } from "../Screens/MainScreens";
+import { DailySteps, Nutrition, WaterIntake } from "../Screens/MainScreens";
+import { homeStackParamList } from "../Defs/navigators";
 
-const Drawer = createDrawerNavigator<appStackParamList>();
+// navigators
+import HomeNavigator from "./HomeDrawerNavigator";
 
+const Stack = createNativeStackNavigator<homeStackParamList>();
 const AppNavigator = () => {
-  const headerLeft = () => {
-    return <CustomDrawerButton />;
-  };
-  const headerRight = () => {
-    return <CustomDrawerRight />;
-  };
   return (
-    <Drawer.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        title: "Home",
-        headerTitle: "",
-        headerStyle: {
-          backgroundColor: "#ECECEC",
-          shadowOpacity: 0,
-          height: 150,
-        },
-        headerRight,
-        headerLeft,
-        drawerStyle: {
-          borderWidth: 1,
-          justifyContent: "center",
-        },
-      }}
-    >
-      <Drawer.Screen name="Home" component={Home} />
-    </Drawer.Navigator>
+    <Stack.Navigator initialRouteName="HomeNavigator">
+      <Stack.Screen
+        name="HomeNavigator"
+        component={HomeNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Nutrition"
+        component={Nutrition}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen name="DailySteps" component={DailySteps} />
+      <Stack.Screen name="WaterIntake" component={WaterIntake} />
+    </Stack.Navigator>
   );
 };
 

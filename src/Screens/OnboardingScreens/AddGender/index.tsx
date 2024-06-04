@@ -1,6 +1,6 @@
 // libs
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 // custom
 import { ICONS, SPACING, STRING } from "../../../Constants";
@@ -21,7 +21,11 @@ const AddGender = ({ navigation }: AddGenderProps) => {
   const handleSubmit = () => {
     if (selectedGender !== null) {
       dispatch(updateUserData({ gender: selectedGender }));
-      navigation.push("DetailsCompleted");
+      navigation.reset({
+        routes: [{ name: "DetailsCompleted" }],
+      });
+    } else {
+      Alert.alert("You have to select your gender");
     }
   };
   return (
@@ -54,5 +58,4 @@ const AddGender = ({ navigation }: AddGenderProps) => {
     </View>
   );
 };
-
 export default AddGender;

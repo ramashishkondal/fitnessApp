@@ -13,3 +13,5 @@ export { default as Card } from "./Card";
 export { default as CustomErrorText } from "./CustomErrorText";
 export { default as CustomDrawerButton } from "./CustomDrawerButton";
 export { default as CustomDrawerRight } from "./CustomDrawerRight";
+export { default as CustomHomeDetailsCard } from "./CustomHomeDetailsCard";
+export { default as CustomLoading } from "./CustomLoading";

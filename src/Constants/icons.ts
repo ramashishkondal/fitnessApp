@@ -13,6 +13,12 @@ import Female from "../Assets/Svgs/female.svg";
 import Male from "../Assets/Svgs/male.svg";
 import DoubleArrow from "../Assets/Svgs/doubleArrow.svg";
 import Drawer from "../Assets/Svgs/drawerIcon.svg";
+import Home from "../Assets/Svgs/home.svg";
+import Settings from "../Assets/Svgs/settings.svg";
+import Community from "../Assets/Svgs/community.svg";
+import Notification from "../Assets/Svgs/bell.svg";
+import Premium from "../Assets/Svgs/crown.svg";
+import LogOut from "../Assets/Svgs/logout.svg";
 
 import {
   Avatar1,
@@ -54,7 +60,18 @@ type iconProps = {
   borderColor?: string;
 };
 
+const DRAWER = {
+  Home: (params: iconProps) => Home({ ...iconStyle({ ...params }) }),
+  Settings: (params: iconProps) => Settings({ ...iconStyle({ ...params }) }),
+  Community: (params: iconProps) => Community({ ...iconStyle({ ...params }) }),
+  Notification: (params: iconProps) =>
+    Notification({ ...iconStyle({ ...params }) }),
+  Premium: (params: iconProps) => Premium({ ...iconStyle({ ...params }) }),
+  LogOut: (params: iconProps) => LogOut({ ...iconStyle({ ...params }) }),
+};
+
 export const ICONS = {
+  ...DRAWER,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
   Logo: (params: iconProps) => Logo({ ...iconStyle({ ...params }) }),
   User: (params: iconProps) => User({ ...iconStyle({ ...params }) }),

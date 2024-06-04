@@ -8,6 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { styles } from "./styles";
+import { CustomLoading } from "..";
 
 export type CustomButtonProps = {
   title?: string;
@@ -15,6 +16,7 @@ export type CustomButtonProps = {
   parentStyle?: StyleProp<ViewStyle>;
   buttonCtrStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  isLoading?: boolean;
 };
 const CustomButton = ({
   title,
@@ -22,11 +24,16 @@ const CustomButton = ({
   parentStyle,
   buttonCtrStyle,
   textStyle,
+  isLoading,
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity style={[styles.parent, parentStyle]} onPress={onPress}>
       <View style={[styles.buttonCtr, buttonCtrStyle]}>
-        <Text style={[styles.text, textStyle]}>{title}</Text>
+        {isLoading ? (
+          <CustomLoading />
+        ) : (
+          <Text style={[styles.text, textStyle]}>{title}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

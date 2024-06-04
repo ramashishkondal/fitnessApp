@@ -70,4 +70,7 @@ export const STRING = {
       "Eat the right amount of food and stay hydrated through the day",
     MORE_DETAILS: "More details",
   },
+  SETTINGS: {
+    TITLE: "Settings",
+  },
 };

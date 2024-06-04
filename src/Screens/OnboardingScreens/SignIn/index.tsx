@@ -1,6 +1,6 @@
 // libs
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import auth from "@react-native-firebase/auth";
 
 // custom
@@ -14,16 +14,33 @@ import {
 import { STRING, ICONS, SPACING } from "../../../Constants";
 import { styles } from "./styles";
 import { isValidEmail } from "../../../Utils/checkValidity";
+import { FirestoreError } from "@react-native-firebase/firestore";
 
 const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSignIn = async () => {
     try {
-      auth().signInWithEmailAndPassword(email, password);
+      setIsLoading(true);
+      await auth().signInWithEmailAndPassword(email, password);
     } catch (e) {
-      console.log("error with sign in ", e);
+      const error = e as FirestoreError;
+      let message = error.message;
+      if (
+        error.message.includes("auth/invalid-email") ||
+        error.message.includes("auth/wrong-password") ||
+        error.message.includes("auth/invalid-credential")
+      ) {
+        message = "Entered email or password is invalid";
+      } else if (error.message.includes("auth/user-not-found")) {
+        message = "Account not registered";
+      }
+      Alert.alert(message);
+      console.log("error with sign in ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,7 +53,9 @@ const SignIn = () => {
         onChangeText={setEmail}
         autoFocus
       />
-      {email && !isValidEmail(email) ? <CustomErrorText text="Error" /> : null}
+      {email && !isValidEmail(email) ? (
+        <CustomErrorText text="Invalid Email Address" />
+      ) : null}
       <CustomTextInput
         placeHolder={STRING.SIGNIN.PASSWORD}
         icon={ICONS.Lock({ width: 18, height: 18 })}
@@ -51,6 +70,7 @@ const SignIn = () => {
         title={STRING.SIGNIN.BUTTON_TEXT}
         parentStyle={styles.customButtonParent}
         onPress={handleSignIn}
+        isLoading={isLoading}
       />
     </View>
   );

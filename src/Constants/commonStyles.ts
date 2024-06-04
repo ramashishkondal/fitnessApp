@@ -6,6 +6,7 @@ export const COLORS = {
   PRIMARY: {
     GREY: "#F4F6FA",
     PURPLE: "#7265E3",
+    DARK_GREY: "#ECECEC",
   },
   SECONDARY: {
     GREY: "#B0B1C8",
@@ -43,7 +44,7 @@ export const SIZES = {
 
   fontH1: RFValue(HEADER_CONST * 2),
   fontH2: RFValue(HEADER_CONST * 1.8),
-  fontH3: RFValue(HEADER_CONST * 1.6),
+  fontH3: RFValue(HEADER_CONST * 1.65),
   fontH4: RFValue(HEADER_CONST * 1.4),
   fontH5: RFValue(HEADER_CONST * 1.3),
   fontH6: RFValue(HEADER_CONST * 1.0),

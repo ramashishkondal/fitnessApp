@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "firestore"
-    ]
+        "firestore",
+        "Svgs"
+    ],
+    "svg.preview.background": "dark-transparent"
 }

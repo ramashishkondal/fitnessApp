@@ -8,10 +8,10 @@ export {
   AddProfilePictureProps,
   DetailsCompletedProps,
   LandingPageProps,
-  OnboardingScreenProps,
+  HomeScreenProps,
   SignInProps,
   onboardingStackParamList,
-  appStackParamList,
+  appDrawerParamList,
 } from "./navigators";
 
 export { User } from "./user";

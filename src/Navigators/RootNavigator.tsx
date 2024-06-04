@@ -17,7 +17,6 @@ const RootNavigator = () => {
     if (initializing) setInitializing(false);
   }
   useEffect(() => {
-    // auth().signOut();
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
