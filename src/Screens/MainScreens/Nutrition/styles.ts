@@ -6,4 +6,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.DARK_GREY,
   },
+  titleText: {},
+  pieChart: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  statisticsCtr: {},
+  foodCtr: {},
 });
