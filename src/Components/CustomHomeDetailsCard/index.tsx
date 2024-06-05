@@ -10,6 +10,7 @@ type CustomHomeDetailsCardProps = {
   handleOnPress: () => void;
   status: string;
   icon: any;
+  markerPercentage: number;
 };
 
 const size = {
@@ -22,6 +23,7 @@ const CustomHomeDetailsCard = ({
   handleOnPress,
   icon,
   status,
+  markerPercentage,
 }: CustomHomeDetailsCardProps) => {
   return (
     <View style={styles.parent}>
@@ -41,7 +43,20 @@ const CustomHomeDetailsCard = ({
               </View>
             </View>
             <View style={styles.lineCtr}>
-              <Text>----------------------------------------</Text>
+              <View style={styles.lines}>
+                <View style={styles.linePurple} />
+                <View style={styles.lineRed} />
+                <View style={styles.lineOrange} />
+              </View>
+              <View
+                style={[
+                  styles.marker,
+                  {
+                    left:
+                      markerPercentage < 100 ? `${markerPercentage}%` : "100%",
+                  },
+                ]}
+              />
             </View>
           </View>
         </View>

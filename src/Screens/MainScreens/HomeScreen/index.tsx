@@ -34,18 +34,21 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           handleOnPress={goToNutrition}
           icon={ICONS.Nutrition}
           status={detailsString(nutrition, 1000, STRING.HOME_SCREEN.CALORIES)}
+          markerPercentage={nutrition / 1000}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.WATER}
           handleOnPress={goToWaterIntake}
           icon={ICONS.Water}
           status={detailsString(waterIntake, 1000, STRING.HOME_SCREEN.GLASSES)}
+          markerPercentage={waterIntake / 1000}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.DAILY_STEPS}
           handleOnPress={goToDailySteps}
           icon={ICONS.ManWalking}
-          status={detailsString(todaysSteps, 1000, STRING.HOME_SCREEN.STEPS)}
+          status={detailsString(todaysSteps, 10000, STRING.HOME_SCREEN.STEPS)}
+          markerPercentage={(todaysSteps / 10000) * 100}
         />
       </View>
     </View>
