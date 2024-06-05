@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../../Constants";
+import { COLORS, SPACING } from "../../../Constants";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,6 +10,12 @@ export const styles = StyleSheet.create({
   pieChart: {
     justifyContent: "center",
     alignItems: "center",
+    // borderWidth: 1,
+  },
+  childCtr: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    ...SPACING.mt4,
   },
   statisticsCtr: {},
   foodCtr: {},

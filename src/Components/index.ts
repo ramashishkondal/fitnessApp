@@ -15,3 +15,4 @@ export { default as CustomDrawerButton } from "./CustomDrawerButton";
 export { default as CustomDrawerRight } from "./CustomDrawerRight";
 export { default as CustomHomeDetailsCard } from "./CustomHomeDetailsCard";
 export { default as CustomLoading } from "./CustomLoading";
+export { default as NutritionHeaderRight } from "./NutritionHeaderRight";

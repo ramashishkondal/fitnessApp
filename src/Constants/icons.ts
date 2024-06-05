@@ -22,6 +22,7 @@ import LogOut from "../Assets/Svgs/logout.svg";
 import Nutrition from "../Assets/Svgs/nutrition.svg";
 import Water from "../Assets/Svgs/water.svg";
 import ManWalking from "../Assets/Svgs/manWalking.svg";
+import PLUS_CIRCLE from "../Assets/Svgs/plusCircle.svg";
 
 import {
   Avatar1,
@@ -80,9 +81,15 @@ const HOME_SCREEN = {
     ManWalking({ ...iconStyle({ ...params }) }),
 };
 
+const NUTRITION = {
+  PLUS_CIRCLE: (params: iconProps) =>
+    PLUS_CIRCLE({ ...iconStyle({ ...params }) }),
+};
+
 export const ICONS = {
   ...DRAWER,
   ...HOME_SCREEN,
+  ...NUTRITION,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
   Logo: (params: iconProps) => Logo({ ...iconStyle({ ...params }) }),
   User: (params: iconProps) => User({ ...iconStyle({ ...params }) }),

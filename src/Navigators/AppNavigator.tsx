@@ -19,6 +19,7 @@ const AppNavigator = () => {
         headerBackTitle: STRING.APP_NAVIGATOR.BACK,
         headerStyle: { backgroundColor: COLORS.PRIMARY.DARK_GREY },
         headerShadowVisible: false,
+        headerTitle: "",
       }}
     >
       <Stack.Screen
@@ -31,7 +32,9 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Nutrition"
         component={Nutrition}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+        }}
       />
       <Stack.Screen name="DailySteps" component={DailySteps} />
       <Stack.Screen name="WaterIntake" component={WaterIntake} />
