@@ -6,9 +6,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.DARK_GREY,
   },
+  calorieText: {
+    color: COLORS.PRIMARY.PURPLE,
+  },
   titleText: {
     fontSize: SIZES.fontH5,
-    fontWeight: SIZES.fontBold1,
+    fontWeight: SIZES.fontBold0,
     textAlign: "center",
     // ...SPACING.mt5,
     ...SPACING.mh2,

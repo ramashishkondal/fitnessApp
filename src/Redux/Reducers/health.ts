@@ -6,6 +6,11 @@ type InitialState = {
     todaysSteps: number;
     waterIntake: number;
     hasPermission: boolean;
+    goal: {
+      totalCalorie: number;
+      noOfGlasses: number;
+      totalSteps: number;
+    };
   };
 };
 const initialState: InitialState = {
@@ -14,6 +19,11 @@ const initialState: InitialState = {
     todaysSteps: 0,
     waterIntake: 0,
     hasPermission: false,
+    goal: {
+      totalCalorie: 1000,
+      noOfGlasses: 6,
+      totalSteps: 10000,
+    },
   },
 };
 

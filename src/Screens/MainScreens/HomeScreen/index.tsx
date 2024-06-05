@@ -3,20 +3,22 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 // custom
-import { ICONS, STRING } from "../../../Constants";
-import { styles } from "./styles";
-import { CustomHomeDetailsCard } from "../../../Components";
-import { HomeScreenProps } from "../../../Defs";
 import { useAppSelector } from "../../../Redux/Store";
+import { CustomHomeDetailsCard } from "../../../Components";
+import { ICONS, STRING } from "../../../Constants";
+import { HomeScreenProps } from "../../../Defs";
+import { styles } from "./styles";
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const goToNutrition = (): void => navigation.push("Nutrition");
   const goToWaterIntake = (): void => navigation.push("WaterIntake");
   const goToDailySteps = (): void => navigation.push("DailySteps");
-  const { todaysSteps, waterIntake, nutrition } = useAppSelector(
-    (state) => state.health.value
-  );
-
+  const {
+    todaysSteps,
+    waterIntake,
+    nutrition,
+    goal: { noOfGlasses, totalSteps, totalCalorie },
+  } = useAppSelector((state) => state.health.value);
   return (
     <View style={styles.parent}>
       <Text style={styles.titleText}>{STRING.HOME_SCREEN.TITLE}</Text>
@@ -33,32 +35,38 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           title={STRING.HOME_SCREEN.NUTRITION}
           handleOnPress={goToNutrition}
           icon={ICONS.Nutrition}
-          status={detailsString(nutrition, 1000, STRING.HOME_SCREEN.CALORIES)}
-          markerPercentage={nutrition / 1000}
+          status={STRING.HOME_SCREEN.detailsString(
+            nutrition,
+            totalCalorie,
+            STRING.HOME_SCREEN.CALORIES
+          )}
+          markerPercentage={(nutrition / totalCalorie) * 100}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.WATER}
           handleOnPress={goToWaterIntake}
           icon={ICONS.Water}
-          status={detailsString(waterIntake, 1000, STRING.HOME_SCREEN.GLASSES)}
-          markerPercentage={waterIntake / 1000}
+          status={STRING.HOME_SCREEN.detailsString(
+            waterIntake,
+            noOfGlasses,
+            STRING.HOME_SCREEN.GLASSES
+          )}
+          markerPercentage={(waterIntake / noOfGlasses) * 100}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.DAILY_STEPS}
           handleOnPress={goToDailySteps}
           icon={ICONS.ManWalking}
-          status={detailsString(todaysSteps, 10000, STRING.HOME_SCREEN.STEPS)}
-          markerPercentage={(todaysSteps / 10000) * 100}
+          status={STRING.HOME_SCREEN.detailsString(
+            todaysSteps,
+            totalSteps,
+            STRING.HOME_SCREEN.STEPS
+          )}
+          markerPercentage={(todaysSteps / totalSteps) * 100}
         />
       </View>
     </View>
   );
 };
-
-const detailsString = (
-  value: string | number,
-  totalValue: string | number,
-  category: string
-) => `${value} ${category} / ${totalValue} ${category}`;
 
 export default HomeScreen;

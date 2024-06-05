@@ -37,7 +37,9 @@ const Nutrition = ({ navigation }: NutritionProps) => {
   }, []);
   return (
     <ScrollView style={styles.parent}>
-      <Text style={styles.titleText}>You burned 300 calories today</Text>
+      <Text style={styles.titleText}>
+        You burned <Text style={styles.calorieText}>300</Text> calories today
+      </Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
           <View style={{ position: "relative" }}>

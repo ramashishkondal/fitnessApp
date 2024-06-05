@@ -75,6 +75,11 @@ export const STRING = {
     CALORIES: "cal",
     GLASSES: "glasses",
     STEPS: "steps",
+    detailsString: (
+      value: string | number,
+      totalValue: string | number,
+      category: string
+    ) => `${value} ${category} / ${totalValue} ${category}`,
   },
   SETTINGS: {
     TITLE: "Settings",

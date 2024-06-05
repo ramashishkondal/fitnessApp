@@ -1,9 +1,14 @@
 // libs
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 
 // custom
 import { styles } from "./styles";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 type CustomHomeDetailsCardProps = {
   title: string;
@@ -25,6 +30,17 @@ const CustomHomeDetailsCard = ({
   status,
   markerPercentage,
 }: CustomHomeDetailsCardProps) => {
+  const left = useSharedValue(0);
+  const animatedMarkerStyle = useAnimatedStyle(() => ({
+    left: `${left.value}%`,
+  }));
+
+  useEffect(
+    useCallback(() => {
+      left.value = withSpring(markerPercentage);
+    }, [])
+  );
+
   return (
     <View style={styles.parent}>
       <TouchableOpacity style={styles.allDetailsCtr} onPress={handleOnPress}>
@@ -48,15 +64,7 @@ const CustomHomeDetailsCard = ({
                 <View style={styles.lineRed} />
                 <View style={styles.lineOrange} />
               </View>
-              <View
-                style={[
-                  styles.marker,
-                  {
-                    left:
-                      markerPercentage < 100 ? `${markerPercentage}%` : "100%",
-                  },
-                ]}
-              />
+              <Animated.View style={[styles.marker, animatedMarkerStyle]} />
             </View>
           </View>
         </View>

@@ -7,5 +7,5 @@ export const styles = StyleSheet.create({
     right: RFValue(10),
     justifyContent: "center",
   },
-  image: { width: 70, height: 70, borderRadius: 200 },
+  image: { width: 60, height: 60, borderRadius: 200 },
 });
