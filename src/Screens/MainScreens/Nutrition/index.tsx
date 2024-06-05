@@ -1,26 +1,28 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 
 // custom
-import { styles } from "./styles";
-import { COLORS } from "../../../Constants";
-import { NutritionProps } from "../../../Defs/navigators";
 import { NutritionHeaderRight } from "../../../Components";
 import AddFoodModal from "../../../Components/AddFoodModal";
+import PieChartInfoItem from "./PieChartInfo";
+import NutritionStats from "./NutritionStats";
+import { COLORS } from "../../../Constants";
+import { NutritionProps } from "../../../Defs/navigators";
+import { styles } from "./styles";
 
 const Nutrition = ({ navigation }: NutritionProps) => {
   const pieData3 = [
-    { value: 63, color: "#F7A56D", text: "" },
+    { value: 63, color: COLORS.SECONDARY.ORANGE, text: "" },
     { value: 37, color: COLORS.PRIMARY.LIGHT_PURPLE },
   ];
   const pieData2 = [
-    { value: 30, color: "#7265E3", text: "" },
+    { value: 30, color: COLORS.PRIMARY.PURPLE, text: "" },
     { value: 70, color: COLORS.PRIMARY.LIGHT_PURPLE },
   ];
   const pieData1 = [
-    { value: 27, color: "#44C7BC", text: "" },
+    { value: 27, color: COLORS.SECONDARY.CYAN, text: "" },
     { value: 73, color: COLORS.PRIMARY.LIGHT_PURPLE },
   ];
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,7 +36,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
     });
   }, []);
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>You burned 300 calories today</Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
@@ -45,10 +47,6 @@ const Nutrition = ({ navigation }: NutritionProps) => {
               radius={80}
               innerRadius={65}
               data={pieData1}
-              edgesRadius={2000}
-              curvedEndEdges={true}
-              curvedStartEdges={true}
-              startAngle={100}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
@@ -74,21 +72,55 @@ const Nutrition = ({ navigation }: NutritionProps) => {
             />
           </View>
         </View>
-        <View>
-          <Text>Protein</Text>
-          <Text>Carb</Text>
-          <Text>Fat</Text>
+        <View style={{}}>
+          <PieChartInfoItem
+            item="Protein"
+            percentage="63"
+            color={COLORS.SECONDARY.CYAN}
+          />
+          <PieChartInfoItem
+            item="Carb"
+            percentage="30"
+            color={COLORS.PRIMARY.PURPLE}
+          />
+          <PieChartInfoItem
+            item="Fat"
+            percentage="27"
+            color={COLORS.SECONDARY.ORANGE}
+          />
         </View>
       </View>
-      <View style={styles.statisticsCtr}>
-        <Text>awd</Text>
-      </View>
-      <View style={styles.foodCtr}></View>
+      <NutritionStats
+        item={{
+          title: "Protein",
+          percentage: 63,
+          quantity: 100,
+          color: COLORS.SECONDARY.CYAN,
+        }}
+      />
+      <View style={styles.line} />
+      <NutritionStats
+        item={{
+          title: "Carb",
+          percentage: 30,
+          quantity: 60,
+          color: COLORS.PRIMARY.PURPLE,
+        }}
+      />
+      <View style={styles.line} />
+      <NutritionStats
+        item={{
+          title: "Fat",
+          percentage: 27,
+          quantity: 20,
+          color: COLORS.SECONDARY.ORANGE,
+        }}
+      />
       <AddFoodModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-    </View>
+    </ScrollView>
   );
 };
 
