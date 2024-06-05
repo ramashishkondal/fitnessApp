@@ -16,3 +16,6 @@ export { default as CustomDrawerRight } from "./CustomDrawerRight";
 export { default as CustomHomeDetailsCard } from "./CustomHomeDetailsCard";
 export { default as CustomLoading } from "./CustomLoading";
 export { default as NutritionHeaderRight } from "./NutritionHeaderRight";
+export { default as PieChartInfoItem } from "./PieChartInfoItem";
+export { default as NutritionStats } from "./NutritionStats";
+export { default as AddFoodModal } from "./AddFoodModal";

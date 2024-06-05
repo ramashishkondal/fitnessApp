@@ -4,10 +4,12 @@ import { Text, View, ScrollView } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 
 // custom
-import { NutritionHeaderRight } from "../../../Components";
-import AddFoodModal from "../../../Components/AddFoodModal";
-import PieChartInfoItem from "./PieChartInfo";
-import NutritionStats from "./NutritionStats";
+import {
+  NutritionHeaderRight,
+  AddFoodModal,
+  PieChartInfoItem,
+  NutritionStats,
+} from "../../../Components";
 import { COLORS } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
 import { styles } from "./styles";
@@ -74,7 +76,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
             />
           </View>
         </View>
-        <View style={{}}>
+        <View>
           <PieChartInfoItem
             item="Protein"
             percentage="63"
