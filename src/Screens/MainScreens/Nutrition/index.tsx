@@ -9,6 +9,7 @@ import {
   AddFoodModal,
   PieChartInfoItem,
   NutritionStats,
+  DietDataFlatList,
 } from "../../../Components";
 import { COLORS } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
@@ -124,6 +125,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
+      <DietDataFlatList />
     </ScrollView>
   );
 };

@@ -4,7 +4,7 @@ import { COLORS, SIZES, SPACING } from "../../../Constants";
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: COLORS.PRIMARY.DARK_GREY,
+    backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
   },
   calorieText: {
     color: COLORS.PRIMARY.PURPLE,
@@ -13,24 +13,23 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
     textAlign: "center",
-    // ...SPACING.mt5,
     ...SPACING.mh2,
   },
   pieChart: {
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 1,
     minWidth: 250,
   },
   childCtr: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     ...SPACING.mt4,
+    marginBottom: 16,
   },
   line: {
     borderWidth: 1,
     marginHorizontal: 10,
-    borderColor: "#DCDDE0",
+    borderColor: COLORS.SECONDARY.LIGHT_GREY,
   },
   statisticsCtr: {},
   foodCtr: {},

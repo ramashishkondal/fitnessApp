@@ -17,9 +17,9 @@ const AppNavigator = () => {
       initialRouteName="HomeNavigator"
       screenOptions={{
         headerBackTitle: STRING.APP_NAVIGATOR.BACK,
-        headerStyle: { backgroundColor: COLORS.PRIMARY.DARK_GREY },
         headerShadowVisible: false,
         headerTitle: "",
+        headerStyle: { backgroundColor: COLORS.PRIMARY.LIGHT_GREY },
       }}
     >
       <Stack.Screen
