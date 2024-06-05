@@ -7,11 +7,15 @@ import { ICONS, STRING } from "../../../Constants";
 import { styles } from "./styles";
 import { CustomHomeDetailsCard } from "../../../Components";
 import { HomeScreenProps } from "../../../Defs";
+import { useAppSelector } from "../../../Redux/Store";
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const goToNutrition = (): void => navigation.push("Nutrition");
   const goToWaterIntake = (): void => navigation.push("WaterIntake");
   const goToDailySteps = (): void => navigation.push("DailySteps");
+  const { todaysSteps, waterIntake, nutrition } = useAppSelector(
+    (state) => state.health.value
+  );
 
   return (
     <View style={styles.parent}>
@@ -29,23 +33,29 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           title={STRING.HOME_SCREEN.NUTRITION}
           handleOnPress={goToNutrition}
           icon={ICONS.Nutrition}
-          status="100 cal/ 900 cal"
+          status={detailsString(nutrition, 1000, STRING.HOME_SCREEN.CALORIES)}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.WATER}
           handleOnPress={goToWaterIntake}
           icon={ICONS.Water}
-          status="100 cal/ 900 cal"
+          status={detailsString(waterIntake, 1000, STRING.HOME_SCREEN.GLASSES)}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.DAILY_STEPS}
           handleOnPress={goToDailySteps}
           icon={ICONS.ManWalking}
-          status="100 cal/ 900 cal"
+          status={detailsString(todaysSteps, 1000, STRING.HOME_SCREEN.STEPS)}
         />
       </View>
     </View>
   );
 };
+
+const detailsString = (
+  value: string | number,
+  totalValue: string | number,
+  category: string
+) => `${value} ${category} / ${totalValue} ${category}`;
 
 export default HomeScreen;

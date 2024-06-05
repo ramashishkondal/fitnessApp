@@ -72,6 +72,9 @@ export const STRING = {
     NUTRITION: "Nutrition",
     WATER: "Water",
     DAILY_STEPS: "Daily Steps",
+    CALORIES: "cal",
+    GLASSES: "glasses",
+    STEPS: "steps",
   },
   SETTINGS: {
     TITLE: "Settings",
