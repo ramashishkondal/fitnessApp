@@ -69,22 +69,8 @@ export const STRING = {
     DESCRIPTION:
       "Eat the right amount of food and stay hydrated through the day",
     MORE_DETAILS: "More details",
-    NUTRITION: "Nutrition",
-    WATER: "Water",
-    DAILY_STEPS: "Daily Steps",
-    CALORIES: "cal",
-    GLASSES: "glasses",
-    STEPS: "steps",
-    detailsString: (
-      value: string | number,
-      totalValue: string | number,
-      category: string
-    ) => `${value} ${category} / ${totalValue} ${category}`,
   },
   SETTINGS: {
     TITLE: "Settings",
-  },
-  APP_NAVIGATOR: {
-    BACK: "Back",
   },
 };
