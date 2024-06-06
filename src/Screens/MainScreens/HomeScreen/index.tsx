@@ -8,6 +8,7 @@ import { CustomHomeDetailsCard } from "../../../Components";
 import { ICONS, STRING } from "../../../Constants";
 import { HomeScreenProps } from "../../../Defs";
 import { styles } from "./styles";
+import Animated, { SlideInLeft, Easing } from "react-native-reanimated";
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const goToNutrition = (): void => navigation.push("Nutrition");
@@ -20,7 +21,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     goal: { noOfGlasses, totalSteps, totalCalorie },
   } = useAppSelector((state) => state.health.value);
   return (
-    <View style={styles.parent}>
+    <Animated.View
+      style={styles.parent}
+      entering={SlideInLeft.easing(Easing.ease)}
+    >
       <Text style={styles.titleText}>{STRING.HOME_SCREEN.TITLE}</Text>
       <Text style={styles.descriptionText}>
         {STRING.HOME_SCREEN.DESCRIPTION}
@@ -65,7 +69,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           markerPercentage={(todaysSteps / totalSteps) * 100}
         />
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

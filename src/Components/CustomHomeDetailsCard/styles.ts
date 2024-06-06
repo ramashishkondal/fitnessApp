@@ -16,11 +16,11 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  iconCtr: {},
+  iconCtr: {flex: 1,},
   childCtr: {
     flexDirection: "column",
     paddingHorizontal: 20,
-    flex: 1,
+    flex: 5,
   },
   buttonTextCtr: {
     borderRadius: SIZES.rounding3,
