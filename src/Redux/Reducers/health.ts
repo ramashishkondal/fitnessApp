@@ -1,18 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { HealthData } from "../../Defs";
 
-type InitialState = {
-  value: {
-    nutrition: number;
-    todaysSteps: number;
-    waterIntake: number;
-    hasPermission: boolean;
-    goal: {
-      totalCalorie: number;
-      noOfGlasses: number;
-      totalSteps: number;
-    };
-  };
+export type InitialState = {
+  value: HealthData;
 };
+
 const initialState: InitialState = {
   value: {
     nutrition: 0,
@@ -24,6 +16,7 @@ const initialState: InitialState = {
       noOfGlasses: 6,
       totalSteps: 10000,
     },
+    currentDate: new Date().toDateString(),
   },
 };
 
@@ -37,10 +30,21 @@ export const healthSlice = createSlice({
     ) => {
       state.value = { ...state.value, ...action.payload };
     },
+    resetHealthData: (state) => {
+      state.value = {
+        ...state.value,
+        ...{
+          nutrition: 0,
+          todaysSteps: 0,
+          waterIntake: 0,
+          currentDate: new Date().toDateString(),
+        },
+      };
+    },
   },
 });
 
 const { reducer, actions } = healthSlice;
-export const { updateHealthData } = actions;
+export const { updateHealthData, resetHealthData } = actions;
 
 export default reducer;

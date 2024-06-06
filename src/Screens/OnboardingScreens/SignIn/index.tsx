@@ -11,12 +11,14 @@ import {
   SocialLogins,
   CustomErrorText,
 } from "../../../Components";
-import { STRING, ICONS, SPACING } from "../../../Constants";
+import { STRING, ICONS, SPACING, COLORS } from "../../../Constants";
 import { styles } from "./styles";
 import { isValidEmail } from "../../../Utils/checkValidity";
 import { FirestoreError } from "@react-native-firebase/firestore";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SignInProps } from "../../../Defs";
 
-const SignIn = () => {
+const SignIn = ({ navigation }: SignInProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,6 +46,10 @@ const SignIn = () => {
     }
   };
 
+  const handleForgotPassword = () => {
+    navigation.push("ForgotPassword");
+  };
+
   return (
     <View style={styles.parent}>
       <CustomTextInput
@@ -62,6 +68,11 @@ const SignIn = () => {
         parentStyle={[SPACING.mt3, styles.textInput]}
         onChangeText={setPassword}
       />
+      <TouchableOpacity onPress={handleForgotPassword} style={SPACING.mt3}>
+        <Text style={{ color: COLORS.PRIMARY.PURPLE, textAlign: "right" }}>
+          {STRING.SIGNIN.FORGOT_PASSWORD}
+        </Text>
+      </TouchableOpacity>
       <Text style={[styles.text, SPACING.mtMedium]}>
         {STRING.SIGNIN.SIGN_IN_WITH}
       </Text>

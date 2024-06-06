@@ -9,9 +9,19 @@ import { COLORS, STRING } from "../Constants";
 
 // navigators
 import HomeNavigator from "./HomeDrawerNavigator";
+import { useAppDispatch, useAppSelector } from "../Redux/Store";
+import { resetHealthData } from "../Redux/Reducers/health";
+import { storeUserHealthData } from "../Utils/userUtils";
 
 const Stack = createNativeStackNavigator<homeStackParamList>();
 const AppNavigator = () => {
+  const { id } = useAppSelector((state) => state.User.data);
+  const { value: healthData } = useAppSelector((state) => state.health);
+  const dispatch = useAppDispatch();
+  if (new Date().toDateString() !== healthData.currentDate) {
+    storeUserHealthData(healthData, id!);
+    dispatch(resetHealthData());
+  }
   return (
     <Stack.Navigator
       initialRouteName="HomeNavigator"
@@ -29,13 +39,7 @@ const AppNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Nutrition"
-        component={Nutrition}
-        options={{
-          headerShown: true,
-        }}
-      />
+      <Stack.Screen name="Nutrition" component={Nutrition} />
       <Stack.Screen name="DailySteps" component={DailySteps} />
       <Stack.Screen name="WaterIntake" component={WaterIntake} />
     </Stack.Navigator>

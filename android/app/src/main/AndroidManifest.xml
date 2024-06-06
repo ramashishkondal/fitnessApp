@@ -24,7 +24,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity-alias
+    <!-- <activity-alias
       android:name="ViewPermissionUsageActivity"
       android:exported="true"
       android:targetActivity=".PermissionsRationaleActivity"
@@ -33,6 +33,6 @@
         <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
         <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
       </intent-filter>
-    </activity-alias>
+    </activity-alias> -->
   </application>
 </manifest>

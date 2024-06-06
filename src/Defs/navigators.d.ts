@@ -50,6 +50,7 @@ export type onboardingStackParamList = {
   AddInterests: undefined;
   AddGender: undefined;
   DetailsCompleted: undefined;
+  ForgotPassword: undefined;
 };
 export type LandingPageProps = NativeStackScreenProps<
   onboardingStackParamList,
@@ -90,6 +91,10 @@ export type AddGenderProps = NativeStackScreenProps<
 export type DetailsCompletedProps = NativeStackScreenProps<
   onboardingStackParamList,
   "DetailsCompleted"
+>;
+export type ForgotPasswordProps = NativeStackScreenProps<
+  onboardingStackParamList,
+  "ForgotPassword"
 >;
 
 // home stack navigator

@@ -1,6 +1,6 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import { User } from "../Defs";
+import { HealthData, User } from "../Defs";
 
 export const createUser = async (email: string, password: string) => {
   try {
@@ -35,5 +35,21 @@ export const storeUserData = async (
     console.log("User added!");
   } catch (e) {
     console.log("error storing User data - ", e);
+  }
+};
+
+export const storeUserHealthData = async (
+  healthData: HealthData,
+  uid: FirebaseAuthTypes.UserCredential["user"]["uid"]
+) => {
+  try {
+    await firestore()
+      .collection("users")
+      .doc("byId")
+      .update({
+        [uid + ".healthData"]: firestore.FieldValue.arrayUnion(healthData),
+      });
+  } catch (e) {
+    console.log(e);
   }
 };

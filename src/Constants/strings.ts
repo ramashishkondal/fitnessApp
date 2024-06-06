@@ -12,6 +12,7 @@ export const STRING = {
     PASSWORD: "Password",
     SIGN_IN_WITH: "Sign in with",
     BUTTON_TEXT: "Continue",
+    FORGOT_PASSWORD: " Forgot Password?"
   },
   ADD_EMAIL: {
     TITLE: "What is your email address?",
@@ -86,5 +87,9 @@ export const STRING = {
   },
   APP_NAVIGATOR: {
     BACK: "Back",
+  },
+  WATER_INTAKE: {
+    TITLE: (glasses: number | string) =>
+      `You drank ${glasses} glasses of today`,
   },
 };
