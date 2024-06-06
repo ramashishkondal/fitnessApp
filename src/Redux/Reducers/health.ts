@@ -35,7 +35,6 @@ export const healthSlice = createSlice({
       state,
       action: PayloadAction<Partial<InitialState["value"]>>
     ) => {
-      console.log(state.value);
       state.value = { ...state.value, ...action.payload };
     },
   },
