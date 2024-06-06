@@ -5,6 +5,7 @@ import React from "react";
 // custom
 import { DailySteps, Nutrition, WaterIntake } from "../Screens/MainScreens";
 import { homeStackParamList } from "../Defs/navigators";
+import { COLORS, STRING } from "../Constants";
 
 // navigators
 import HomeNavigator from "./HomeDrawerNavigator";
@@ -12,7 +13,15 @@ import HomeNavigator from "./HomeDrawerNavigator";
 const Stack = createNativeStackNavigator<homeStackParamList>();
 const AppNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="HomeNavigator">
+    <Stack.Navigator
+      initialRouteName="HomeNavigator"
+      screenOptions={{
+        headerBackTitle: STRING.APP_NAVIGATOR.BACK,
+        headerShadowVisible: false,
+        headerTitle: "",
+        headerStyle: { backgroundColor: COLORS.PRIMARY.LIGHT_GREY },
+      }}
+    >
       <Stack.Screen
         name="HomeNavigator"
         component={HomeNavigator}
@@ -23,7 +32,9 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Nutrition"
         component={Nutrition}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+        }}
       />
       <Stack.Screen name="DailySteps" component={DailySteps} />
       <Stack.Screen name="WaterIntake" component={WaterIntake} />

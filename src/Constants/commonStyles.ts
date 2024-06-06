@@ -6,12 +6,17 @@ export const COLORS = {
   PRIMARY: {
     GREY: "#F4F6FA",
     PURPLE: "#7265E3",
+    LIGHT_PURPLE: "#E1DDF5",
     DARK_GREY: "#ECECEC",
+    LIGHT_GREY: "#F4F6FA",
   },
   SECONDARY: {
     GREY: "#B0B1C8",
     WHITE: "#FFFFFF",
     RED: "#ff0033",
+    ORANGE: "#F7A56D",
+    CYAN: "#44C7BC",
+    LIGHT_GREY: "#DCDDE0",
   },
 };
 

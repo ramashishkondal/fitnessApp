@@ -2309,6 +2309,8 @@ PODS:
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
   - RecaptchaInterop (100.0.0)
+  - RNAppleHealthKit (1.7.0):
+    - React
   - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNDeviceInfo (11.1.0):
@@ -2348,6 +2350,8 @@ PODS:
     - Yoga
   - RNGoogleSignin (12.1.0):
     - GoogleSignIn (~> 7.1)
+    - React-Core
+  - RNPermissions (4.1.5):
     - React-Core
   - RNReanimated (3.11.0):
     - DoubleConversion
@@ -2456,6 +2460,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNAppleHealthKit (from `../node_modules/react-native-health`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -2463,6 +2468,7 @@ DEPENDENCIES:
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -2608,6 +2614,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleHealthKit:
+    :path: "../node_modules/react-native-health"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
@@ -2622,6 +2630,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -2710,6 +2720,7 @@ SPEC CHECKSUMS:
   React-utils: 8e9c5cd66f0788e156a1fcb5cd69593ec8607611
   ReactCommon: eb4c4a9c43fcc0d93f922d0fdada24638429e515
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  RNAppleHealthKit: 60a6beefdd89a75811e9a8873a5e24f351dee681
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
   RNFBApp: 87e1cdbf128f8574283d415bc58eac36df546a6f
@@ -2717,6 +2728,7 @@ SPEC CHECKSUMS:
   RNFBFirestore: 974889969da6539c48d17b1e8f66e4125e3d0211
   RNGestureHandler: 20a4307fd21cbff339abfcfa68192f3f0a6a518b
   RNGoogleSignin: 97d8ec68fbbe6beb4820b374acf4470acac21756
+  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNReanimated: 82d44098f1640ac390d073bca26264d52a67dc7d
   RNScreens: 30249f9331c3b00ae7cb7922e11f58b3ed369c07
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
