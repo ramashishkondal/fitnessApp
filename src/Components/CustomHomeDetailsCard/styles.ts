@@ -16,14 +16,18 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  iconCtr: {},
+  iconCtr: {flex: 1,},
   childCtr: {
     flexDirection: "column",
     paddingHorizontal: 20,
-    flex: 1,
+    flex: 5,
   },
   buttonTextCtr: {
-    minWidth: 80,
+    borderRadius: SIZES.rounding3,
+    justifyContent: "center",
+    backgroundColor: COLORS.PRIMARY.LIGHT_PURPLE,
+    minWidth: 85,
+    minHeight: 35,
   },
   buttonText: {
     textAlign: "center",
@@ -32,12 +36,10 @@ export const styles = StyleSheet.create({
   },
   detailsCtr: { flexDirection: "column" },
   upperCtr: { flexDirection: "row", justifyContent: "space-between" },
-  descTextCtr: {},
-  buttonCtr: {
-    borderRadius: SIZES.rounding3,
-    justifyContent: "center",
-    backgroundColor: COLORS.PRIMARY.LIGHT_PURPLE,
+  descTextCtr: {
+    maxWidth: 150,
   },
+  buttonCtr: {},
   lineCtr: {
     ...SPACING.mt2,
   },
@@ -48,5 +50,31 @@ export const styles = StyleSheet.create({
   descriptionText: {
     color: COLORS.SECONDARY.GREY,
     fontWeight: SIZES.fontBold1,
+  },
+  lines: {
+    flexDirection: "row",
+  },
+  linePurple: {
+    borderWidth: 2,
+    flex: 1,
+    borderColor: COLORS.PRIMARY.PURPLE,
+  },
+  lineRed: {
+    borderWidth: 2,
+    flex: 1,
+    borderColor: COLORS.SECONDARY.RED,
+  },
+  lineOrange: {
+    borderWidth: 2,
+    flex: 1,
+    borderColor: COLORS.SECONDARY.ORANGE,
+  },
+  marker: {
+    position: "absolute",
+    height: 16,
+    width: 2,
+    top: -6,
+    left: "0%",
+    backgroundColor: "black",
   },
 });

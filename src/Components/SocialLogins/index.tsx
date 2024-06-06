@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { SPACING, ICONS } from "../../Constants";
+import { SPACING, ICONS, COLORS } from "../../Constants";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { styles } from "./styles";
+import CustomLoading from "../CustomLoading";
 const iconSize = 17;
 
 GoogleSignin.configure({
@@ -12,21 +13,31 @@ GoogleSignin.configure({
 });
 
 const googleSignIn = async () => {
-  // Check if your device supports Google Play
-  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  // Get the users ID token
-  const { idToken } = await GoogleSignin.signIn();
+  try {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
 
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
-
-  //TODO handle promise rejection of google sing in.
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  } catch (e) {
+    //TODO handle promise rejection of google sing in.
+    console.log("error e ", e);
+  }
 };
 
 const SocialLogins = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    await googleSignIn();
+    setIsLoading(false);
+  };
   return (
     <View style={[styles.logoCtr, SPACING.mt3]}>
       <TouchableOpacity style={styles.logos}>
@@ -35,12 +46,16 @@ const SocialLogins = () => {
       <TouchableOpacity style={styles.logos}>
         {ICONS.FacebookLogo({ width: iconSize, height: iconSize })}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logos} onPress={googleSignIn}>
-        {ICONS.GoogleLogo({
-          width: iconSize,
-          height: iconSize,
-          color: "#4E4BC7",
-        })}
+      <TouchableOpacity style={styles.logos} onPress={handleGoogleSignIn}>
+        {isLoading ? (
+          <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+        ) : (
+          ICONS.GoogleLogo({
+            width: iconSize,
+            height: iconSize,
+            color: "#4E4BC7",
+          })
+        )}
       </TouchableOpacity>
     </View>
   );

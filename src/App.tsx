@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./Redux/Store";
 import { PersistGate } from "redux-persist/integration/react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ModalPortal } from "react-native-modals";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <RootNavigator />
         </PersistGate>
+        <ModalPortal />
       </Provider>
     </GestureHandlerRootView>
   );
