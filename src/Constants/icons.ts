@@ -19,11 +19,6 @@ import Community from "../Assets/Svgs/community.svg";
 import Notification from "../Assets/Svgs/bell.svg";
 import Premium from "../Assets/Svgs/crown.svg";
 import LogOut from "../Assets/Svgs/logout.svg";
-import Nutrition from "../Assets/Svgs/nutrition.svg";
-import Water from "../Assets/Svgs/water.svg";
-import ManWalking from "../Assets/Svgs/manWalking.svg";
-import PLUS_CIRCLE from "../Assets/Svgs/plusCircle.svg";
-import Close from "../Assets/Svgs/close.svg";
 
 import {
   Avatar1,
@@ -75,24 +70,9 @@ const DRAWER = {
   LogOut: (params: iconProps) => LogOut({ ...iconStyle({ ...params }) }),
 };
 
-const HOME_SCREEN = {
-  Nutrition: (params: iconProps) => Nutrition({ ...iconStyle({ ...params }) }),
-  Water: (params: iconProps) => Water({ ...iconStyle({ ...params }) }),
-  ManWalking: (params: iconProps) =>
-    ManWalking({ ...iconStyle({ ...params }) }),
-};
-
-const NUTRITION = {
-  PLUS_CIRCLE: (params: iconProps) =>
-    PLUS_CIRCLE({ ...iconStyle({ ...params }) }),
-};
-
 export const ICONS = {
   ...DRAWER,
-  ...HOME_SCREEN,
-  ...NUTRITION,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
-  Close: (params: iconProps) => Close({ ...iconStyle({ ...params }) }),
   Logo: (params: iconProps) => Logo({ ...iconStyle({ ...params }) }),
   User: (params: iconProps) => User({ ...iconStyle({ ...params }) }),
   Lock: (params: iconProps) => Lock({ ...iconStyle({ ...params }) }),

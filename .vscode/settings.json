@@ -3,8 +3,5 @@
         "firestore",
         "Svgs"
     ],
-    "svg.preview.background": "dark-transparent",
-    "conventionalCommits.scopes": [
-        "home"
-    ]
+    "svg.preview.background": "dark-transparent"
 }
