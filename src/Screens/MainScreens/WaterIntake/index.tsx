@@ -3,12 +3,11 @@ import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 
 // custom
-import { CustomGlass } from "../../../Components";
+import { CustomGlass, DataInfoCompare } from "../../../Components";
 import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 import { updateHealthData } from "../../../Redux/Reducers/health";
-import { ICONS, SPACING, STRING } from "../../../Constants";
+import { ICONS } from "../../../Constants";
 import { styles } from "./styles";
-import WaterDrankInfo from "./atoms/WaterDrankInfo";
 import WarningLabel from "./atoms/WarningLabel";
 
 const simleySize = {
@@ -53,7 +52,10 @@ const WaterIntake = () => {
         })}
       </View>
       <View>
-        <WaterDrankInfo glassesDrank={waterIntake} totalGlasses={noOfGlasses} />
+        <DataInfoCompare
+          glassesDrank={waterIntake}
+          totalGlasses={noOfGlasses}
+        />
         {waterIntake < noOfGlasses ? <WarningLabel /> : null}
       </View>
       <View style={styles.performanceCtr}>

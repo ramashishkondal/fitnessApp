@@ -1,4 +1,4 @@
-export type WaterDrankInfoProps = {
+export type DataInfoCompareProps = {
   totalGlasses: number;
   glassesDrank: number;
 };

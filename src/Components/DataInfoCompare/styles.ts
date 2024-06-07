@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../../../Constants";
-
+import { COLORS, SPACING, SIZES } from "../../Constants";
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: "row",

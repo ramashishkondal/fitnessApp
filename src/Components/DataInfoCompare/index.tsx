@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { WaterDrankInfoProps } from "./types";
+import { DataInfoCompareProps } from "./types";
 import { styles } from "./styles";
 
-const WaterDrankInfo = ({
+const DataInfoCompare = ({
   totalGlasses,
   glassesDrank,
-}: WaterDrankInfoProps) => {
+}: DataInfoCompareProps) => {
   return (
     <View style={styles.parent}>
       <View style={styles.leftCtr}>
@@ -21,4 +21,4 @@ const WaterDrankInfo = ({
   );
 };
 
-export default WaterDrankInfo;
+export default DataInfoCompare;
