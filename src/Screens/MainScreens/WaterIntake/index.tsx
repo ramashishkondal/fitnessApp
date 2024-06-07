@@ -3,7 +3,11 @@ import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 
 // custom
-import { CustomGlass, DataInfoCompare } from "../../../Components";
+import {
+  CustomGlass,
+  DataInfoCompare,
+  PerformanceCard,
+} from "../../../Components";
 import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 import { updateHealthData } from "../../../Redux/Reducers/health";
 import { ICONS } from "../../../Constants";
@@ -41,41 +45,40 @@ const WaterIntake = () => {
         <Text style={styles.highlightedText}>{waterIntake} glasses</Text> today
       </Text>
       <View style={styles.glassesCtr}>
-        {glasses.map((val) => {
+        {glasses.map((val, i) => {
           return (
             <CustomGlass
               isFilled={val}
               handleOnPress={handleGlassDrank}
               handleDelete={handleGlassEmpty}
+              key={i}
             />
           );
         })}
       </View>
       <View>
         <DataInfoCompare
-          glassesDrank={waterIntake}
-          totalGlasses={noOfGlasses}
+          doneItems={waterIntake}
+          total={noOfGlasses}
+          doneItemsInfoName="Water Drank"
+          doneItemsSuffix="ml"
+          totalSuffix="glasses"
+          totalInfoName="Daily Goal"
         />
         {waterIntake < noOfGlasses ? <WarningLabel /> : null}
       </View>
-      <View style={styles.performanceCtr}>
-        <View style={styles.bestPerformanceCtr}>
-          <View style={styles.iconCtr}>{ICONS.SmileyGood(simleySize)}</View>
-          <View style={styles.titleAndDescContainer}>
-            <Text style={styles.descTitleText}>Best Performance</Text>
-            <Text style={styles.descText}>Monday</Text>
-          </View>
-          <Text style={styles.valueText}>10</Text>
-        </View>
-        <View style={styles.worstPerformanceCtr}>
-          <View style={styles.iconCtr}>{ICONS.SmileyBad(simleySize)}</View>
-          <View style={styles.titleAndDescContainer}>
-            <Text style={styles.descTitleText}>Worst Performance</Text>
-            <Text style={styles.descText}>Sunday</Text>
-          </View>
-          <Text style={styles.valueText}>6</Text>
-        </View>
-      </View>
+      <PerformanceCard
+        icon={ICONS.SmileyGood(simleySize)}
+        performanceText="Best Performance"
+        onDay="Monday"
+        value={10}
+      />
+      <PerformanceCard
+        icon={ICONS.SmileyBad(simleySize)}
+        performanceText="Worst Performance"
+        onDay="Sunday"
+        value={2}
+      />
     </View>
   );
 };

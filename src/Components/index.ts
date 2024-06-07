@@ -23,3 +23,4 @@ export { default as DietDataFlatList } from "./DietDataList";
 export { default as DietDataItem } from "./DietDataItem";
 export { default as CustomGlass } from "./CustomGlass";
 export { default as DataInfoCompare } from "./DataInfoCompare";
+export { default as PerformanceCard } from "./PerformanceCard";

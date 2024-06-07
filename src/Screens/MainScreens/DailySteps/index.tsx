@@ -1,50 +1,130 @@
 // libs
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Text, View, ScrollView } from "react-native";
+import { LineChart, PieChart } from "react-native-gifted-charts";
+import AppleHealthKit, { HealthValue } from "react-native-health";
 
 // custom
+import { DataInfoCompare, PerformanceCard } from "../../../Components";
+import { COLORS, ICONS, SIZES, SPACING, STRING } from "../../../Constants";
+import InsidePieChart from "./atoms/InsidePieChart";
 import { styles } from "./styles";
-import { PieChart } from "react-native-gifted-charts";
-import { COLORS, ICONS } from "../../../Constants";
 import { useAppSelector } from "../../../Redux/Store";
+import { getPercentage, getStartOfDay } from "../../../Utils/commonUtils";
 
 const DailySteps = () => {
+  const [lineData, setLineData] = useState<HealthValue[]>([]);
   const {
     todaysSteps,
-    goal: { totalSteps },
+    nutrition,
+    goal: { totalSteps, totalCalorie },
   } = useAppSelector((state) => state.health.value);
-  const percentage = ~~((todaysSteps / totalSteps) * 100);
+  useEffect(() => {
+    AppleHealthKit.getActiveEnergyBurned(
+      {
+        startDate,
+        endDate,
+        includeManuallyAdded: true,
+      },
+      (err, results) => {
+        console.log(results);
+        if (err || results.length === 0) {
+          return;
+        }
+        setLineData(
+          results
+            .slice(0)
+            .reverse()
+            .map((val) => ({
+              ...val,
+              value: Math.ceil(getPercentage(val.value, totalCalorie)),
+            }))
+        );
+      }
+    );
+  }, []);
+  const startDate = getStartOfDay().toISOString();
+  const endDate = new Date().toISOString();
+  const stepsCompletionPercentage = ~~getPercentage(todaysSteps, totalSteps);
   const pieData = [
-    { value: percentage, color: COLORS.PRIMARY.PURPLE },
-    { value: 100 - percentage, color: "lightgray" },
+    { value: stepsCompletionPercentage, color: COLORS.PRIMARY.PURPLE },
+    { value: 100 - stepsCompletionPercentage, color: COLORS.SECONDARY.WHITE },
   ];
+  const centerLabelComponent = useCallback(() => {
+    return <InsidePieChart percentage={stepsCompletionPercentage} />;
+  }, [stepsCompletionPercentage]);
+
   return (
-    <View style={styles.parent}>
-      <Text>awdawd awd afwaf wf</Text>
-      <PieChart
-        donut
-        innerRadius={105}
-        data={pieData}
-        centerLabelComponent={() => {
-          return (
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {ICONS.ManWalking({ width: 50, height: 50 })}
-              <Text
-                style={{ fontSize: 30, textAlign: "center", marginTop: 10 }}
-              >
-                {percentage}%
-              </Text>
-              <Text style={{ fontSize: 24 }}>of daily goal</Text>
-            </View>
-          );
-        }}
+    <ScrollView style={styles.parent}>
+      <Text style={styles.titleText}>
+        {STRING.DAILY_STEPS.TITLE[1]}{" "}
+        <Text style={styles.stepCountText}>{todaysSteps}</Text>{" "}
+        {STRING.DAILY_STEPS.TITLE[2]}
+      </Text>
+      <View style={{ alignSelf: "center" }}>
+        <PieChart
+          donut
+          isAnimated
+          radius={100}
+          innerRadius={85}
+          innerCircleColor={COLORS.PRIMARY.LIGHT_GREY}
+          data={pieData}
+          centerLabelComponent={centerLabelComponent}
+        />
+      </View>
+      <DataInfoCompare
+        doneItems={nutrition}
+        total={totalSteps}
+        doneItemsInfoName="Cal Burned"
+        totalInfoName="Daily Goal"
+        parentStyle={SPACING.mtMedium}
       />
-    </View>
+      <View style={{ backgroundColor: "white", paddingHorizontal: 8 }}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: SIZES.font17,
+            marginVertical: 32,
+          }}
+        >
+          Statistics
+        </Text>
+        <LineChart
+          isAnimated
+          adjustToWidth
+          curved
+          yAxisLabelSuffix="%"
+          yAxisOffset={-2}
+          initialSpacing={0}
+          data={lineData}
+          hideOrigin
+          areaChart
+          startFillColor="#F8B631"
+          endFillColor1="#FBDA95"
+          hideDataPoints
+          hideRules
+          thickness={4}
+          yAxisTextStyle={{ color: COLORS.SECONDARY.GREY }}
+          yAxisColor="#ffff"
+          xAxisColor="#ffff"
+          color="#F7A608"
+        />
+      </View>
+      <View style={SPACING.mV3}>
+        <PerformanceCard
+          icon={ICONS.SmileyGood({ width: 20, height: 20 })}
+          onDay="Wednesday"
+          value={"40"}
+          performanceText="Best Performance"
+        />
+        <PerformanceCard
+          icon={ICONS.SmileyBad({ width: 20, height: 20 })}
+          onDay="Wednesday"
+          value={"40"}
+          performanceText="Best Performance"
+        />
+      </View>
+    </ScrollView>
   );
 };
 

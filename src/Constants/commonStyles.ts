@@ -78,6 +78,15 @@ export const SPACING = StyleSheet.create({
   p3: {
     padding: 24,
   },
+  mV1: {
+    marginVertical: 8,
+  },
+  mV2: {
+    marginVertical: 16,
+  },
+  mV3: {
+    marginVertical: 24,
+  },
   mt1: {
     marginTop: 8,
   },

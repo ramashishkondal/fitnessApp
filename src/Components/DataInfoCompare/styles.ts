@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SPACING, SIZES } from "../../Constants";
+import { COLORS, SIZES } from "../../Constants";
+import { RFValue } from "react-native-responsive-fontsize";
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: "row",
@@ -10,17 +11,22 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRightWidth: 1,
     borderColor: COLORS.SECONDARY.GREY,
-    ...SPACING.mh2,
+    paddingLeft: "10%",
+    // alignItems: "center",
   },
   rightCtr: {
     flex: 1,
+    // alignItems: "center",
+    paddingRight: "10%",
+    alignItems: "flex-end",
   },
   mainInfoText: {
-    fontSize: SIZES.font15,
+    fontSize: SIZES.font17,
     fontWeight: SIZES.fontBold2,
   },
   descriptionText: {
     color: COLORS.SECONDARY.GREY,
     fontWeight: SIZES.fontBold2,
+    fontSize: RFValue(12),
   },
 });

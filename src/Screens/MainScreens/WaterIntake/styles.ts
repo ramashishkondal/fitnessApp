@@ -25,10 +25,6 @@ export const styles = StyleSheet.create({
   highlightedText: {
     color: COLORS.PRIMARY.PURPLE,
   },
-  performanceCtr: {
-    paddingHorizontal: 10,
-    backgroundColor: COLORS.SECONDARY.WHITE,
-  },
   bestPerformanceCtr: {
     padding: 20,
     flexDirection: "row",

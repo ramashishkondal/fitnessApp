@@ -21,6 +21,7 @@ const permissions = {
     read: [
       AppleHealthKit.Constants.Permissions.HeartRate,
       AppleHealthKit.Constants.Permissions.Steps,
+      AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
     ],
     write: [],
   },

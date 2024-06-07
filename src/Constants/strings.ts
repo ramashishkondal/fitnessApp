@@ -92,4 +92,10 @@ export const STRING = {
     TITLE: (glasses: number | string) =>
       `You drank ${glasses} glasses of today`,
   },
+  DAILY_STEPS: {
+    TITLE: {
+      1: "You walked",
+      2: "steps today",
+    },
+  },
 };
