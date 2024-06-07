@@ -2,14 +2,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
+// navigators
+import HomeNavigator from "./HomeDrawerNavigator";
+
 // custom
+import { useAppDispatch, useAppSelector } from "../Redux/Store";
 import { DailySteps, Nutrition, WaterIntake } from "../Screens/MainScreens";
 import { homeStackParamList } from "../Defs/navigators";
 import { COLORS, STRING } from "../Constants";
-
-// navigators
-import HomeNavigator from "./HomeDrawerNavigator";
-import { useAppDispatch, useAppSelector } from "../Redux/Store";
 import { resetHealthData } from "../Redux/Reducers/health";
 import { storeUserHealthData } from "../Utils/userUtils";
 
