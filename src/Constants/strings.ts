@@ -98,4 +98,7 @@ export const STRING = {
       2: "steps today",
     },
   },
+  COMMUNITY:{
+    TITLE:"Community"
+  }
 };

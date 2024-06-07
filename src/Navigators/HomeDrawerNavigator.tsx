@@ -33,9 +33,9 @@ const HomeNavigator = () => {
       initialRouteName="HomeScreen"
       screenOptions={{
         headerTitle: "",
+        headerShadowVisible: false,
         headerStyle: {
-          backgroundColor: COLORS.PRIMARY.DARK_GREY,
-          shadowOpacity: 0,
+          backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
           height: 130,
         },
         headerLeft,
@@ -57,6 +57,9 @@ const HomeNavigator = () => {
             return <View style={{ left: 20 }}>{ICONS.Home(iconSize)}</View>;
           },
           headerRight,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY.DARK_GREY,
+          },
         }}
       />
       <Drawer.Screen
