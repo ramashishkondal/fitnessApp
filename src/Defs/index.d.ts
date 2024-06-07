@@ -14,4 +14,4 @@ export {
   appDrawerParamList,
 } from "./navigators";
 
-export { User } from "./user";
+export { User, HealthData } from "./user";

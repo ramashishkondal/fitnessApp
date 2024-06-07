@@ -14,6 +14,7 @@ import {
   AddInterests,
   AddGender,
   DetailsCompleted,
+  ForgotPassword,
 } from "../Screens/OnboardingScreens";
 import { CustomHeader } from "../Components";
 import { onboardingStackParamList } from "../Defs";
@@ -40,6 +41,7 @@ const OnboardingNav = () => {
         component={DetailsCompleted}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 };

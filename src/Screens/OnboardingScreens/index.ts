@@ -8,3 +8,4 @@ export { default as AddPreferences } from "./AddPreferences";
 export { default as AddInterests } from "./AddInterests";
 export { default as AddGender } from "./AddGender";
 export { default as DetailsCompleted } from "./DetailsCompleted";
+export { default as ForgotPassword } from "./ForgotPassword";

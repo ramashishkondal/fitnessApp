@@ -24,6 +24,11 @@ import Water from "../Assets/Svgs/water.svg";
 import ManWalking from "../Assets/Svgs/manWalking.svg";
 import PLUS_CIRCLE from "../Assets/Svgs/plusCircle.svg";
 import Close from "../Assets/Svgs/close.svg";
+import GlassWater from "../Assets/Svgs/glassWater.svg";
+import GlassWaterEmpty from "../Assets/Svgs/glassWaterEmpty.svg";
+import Plus from "../Assets/Svgs/plus.svg";
+import SmileyGood from "../Assets/Svgs/smileyGood.svg";
+import SmileyBad from "../Assets/Svgs/smileyBad.svg";
 
 import {
   Avatar1,
@@ -92,6 +97,14 @@ export const ICONS = {
   ...HOME_SCREEN,
   ...NUTRITION,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
+  SmileyGood: (params: iconProps) =>
+    SmileyGood({ ...iconStyle({ ...params }) }),
+  SmileyBad: (params: iconProps) => SmileyBad({ ...iconStyle({ ...params }) }),
+  Plus: (params: iconProps) => Plus({ ...iconStyle({ ...params }) }),
+  GlassWaterEmpty: (params: iconProps) =>
+    GlassWaterEmpty({ ...iconStyle({ ...params }) }),
+  GlassWater: (params: iconProps) =>
+    GlassWater({ ...iconStyle({ ...params }) }),
   Close: (params: iconProps) => Close({ ...iconStyle({ ...params }) }),
   Logo: (params: iconProps) => Logo({ ...iconStyle({ ...params }) }),
   User: (params: iconProps) => User({ ...iconStyle({ ...params }) }),

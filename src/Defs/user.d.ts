@@ -9,3 +9,15 @@ export type User = {
   preferences: Array<{ title: string; selected: boolean }> | null;
   interests: Array<string> | null;
 };
+export type HealthData = {
+  nutrition: number;
+  todaysSteps: number;
+  waterIntake: number;
+  hasPermission: boolean;
+  goal: {
+    totalCalorie: number;
+    noOfGlasses: number;
+    totalSteps: number;
+  };
+  currentDate: string;
+};
