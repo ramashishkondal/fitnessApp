@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { COLORS } from "../../Constants";
 
 type CustomHomeDetailsCardProps = {
   title: string;
@@ -39,6 +40,23 @@ const CustomHomeDetailsCard = ({
     left.value = withSpring(markerPercentage);
   }, [markerPercentage]);
 
+  let button = {
+    style: {
+      backgroundColor: "#F4DCDC",
+    },
+    text: "Warning",
+    textStyle: {
+      color: "#F5797A",
+    },
+  };
+  if (markerPercentage > 33 && markerPercentage < 66) {
+    button.style.backgroundColor = "#fad3b9";
+  } else if (markerPercentage > 66) {
+    button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
+    button.text = "On";
+    button.textStyle.color = COLORS.PRIMARY.PURPLE;
+  }
+
   return (
     <View style={styles.parent}>
       <TouchableOpacity style={styles.allDetailsCtr} onPress={handleOnPress}>
@@ -50,8 +68,10 @@ const CustomHomeDetailsCard = ({
               <Text style={styles.descriptionText}>{status}</Text>
             </View>
             <View style={styles.buttonCtr}>
-              <View style={styles.buttonTextCtr}>
-                <Text style={styles.buttonText}>On</Text>
+              <View style={[styles.buttonTextCtr, button.style]}>
+                <Text style={[styles.buttonText, button.textStyle]}>
+                  {button.text}
+                </Text>
               </View>
             </View>
           </View>
