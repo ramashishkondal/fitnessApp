@@ -40,7 +40,7 @@ export const storeUserData = async (
       });
     await firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(firebaseDB.documents.users.allIds)
       .update({
         ids: firestore.FieldValue.arrayUnion(userCredential.user.uid),
       });

@@ -1,12 +1,12 @@
 // libs
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 // custom
 import { styles } from "./styles";
 import { ICONS, STRING } from "../../../Constants";
 import { FlatList } from "react-native-gesture-handler";
-import { Story } from "../../../Components";
+import { Story, UserPost } from "../../../Components";
 
 const postSignSize = {
   width: 20,
@@ -22,21 +22,46 @@ const Community = () => {
   const handleAddStory = () => {};
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <View style={styles.titleCtr}>
         <Text style={styles.titleText}>{STRING.COMMUNITY.TITLE}</Text>
         <TouchableOpacity onPress={handleAddStory} style={styles.iconCtr}>
           {ICONS.PostSign(postSignSize)}
         </TouchableOpacity>
       </View>
-      <View style={styles.storiesCtr}>
-        <FlatList
-          data={dummyStoryData}
-          renderItem={({ item }) => <Story photo={item} />}
-          horizontal
+
+      <FlatList
+        data={dummyStoryData}
+        renderItem={({ item }) => <Story photo={item} />}
+        horizontal
+        style={{ marginVertical: 24 }}
+      />
+
+      <View>
+        <UserPost
+          postData={{
+            caption: "Smashed",
+            noOfComments: 1,
+            noOfLikes: 2,
+            photo: dummyStoryData[1],
+            postedOn: "10 mins ago",
+            userName: "adaw awd",
+            userPhoto: dummyStoryData[0],
+          }}
+        />
+        <UserPost
+          postData={{
+            caption: "awdawda",
+            noOfComments: 1,
+            noOfLikes: 2,
+            photo: dummyStoryData[0],
+            postedOn: "10 mins ago",
+            userName: "saman singh",
+            userPhoto: dummyStoryData[1],
+          }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -5,8 +5,8 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   photo: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     borderRadius: 200,
   },
 });

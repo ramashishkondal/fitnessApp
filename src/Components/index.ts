@@ -25,3 +25,4 @@ export { default as CustomGlass } from "./CustomGlass";
 export { default as DataInfoCompare } from "./DataInfoCompare";
 export { default as PerformanceCard } from "./PerformanceCard";
 export { default as Story } from "./Story";
+export { default as UserPost } from "./UserPost";
