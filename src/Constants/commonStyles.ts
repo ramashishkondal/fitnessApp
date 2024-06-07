@@ -108,6 +108,9 @@ export const SPACING = StyleSheet.create({
   mh2: {
     marginHorizontal: 40,
   },
+  mh3: {
+    marginHorizontal: 50,
+  },
   mhMedium: {
     marginHorizontal: 20,
   },

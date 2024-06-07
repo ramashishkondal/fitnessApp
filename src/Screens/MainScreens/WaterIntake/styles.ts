@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
     textAlign: "center",
-    ...SPACING.mh2,
+    ...SPACING.mh3,
   },
   highlightedText: {
     color: COLORS.PRIMARY.PURPLE,

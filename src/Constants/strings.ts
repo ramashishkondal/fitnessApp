@@ -12,7 +12,7 @@ export const STRING = {
     PASSWORD: "Password",
     SIGN_IN_WITH: "Sign in with",
     BUTTON_TEXT: "Continue",
-    FORGOT_PASSWORD: " Forgot Password?"
+    FORGOT_PASSWORD: " Forgot Password?",
   },
   ADD_EMAIL: {
     TITLE: "What is your email address?",
