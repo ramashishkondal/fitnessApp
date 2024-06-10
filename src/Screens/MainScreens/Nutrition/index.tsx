@@ -129,7 +129,9 @@ const Nutrition = ({ navigation }: NutritionProps) => {
       <AddFoodModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      >
+        <Text>1231s</Text>
+      </AddFoodModal>
       <DietDataFlatList />
     </ScrollView>
   );

@@ -18,7 +18,7 @@ export { default as CustomLoading } from "./CustomLoading";
 export { default as NutritionHeaderRight } from "./NutritionHeaderRight";
 export { default as PieChartInfoItem } from "./PieChartInfoItem";
 export { default as NutritionStats } from "./NutritionStats";
-export { default as AddFoodModal } from "./AddFoodModal";
+export { default as AddFoodModal } from "./WithModal";
 export { default as DietDataFlatList } from "./DietDataList";
 export { default as DietDataItem } from "./DietDataItem";
 export { default as CustomGlass } from "./CustomGlass";
