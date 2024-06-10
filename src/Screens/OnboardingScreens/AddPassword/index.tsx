@@ -24,7 +24,7 @@ const AddPassword = ({ navigation }: AddPasswordProps) => {
     if (isValidPassword.checkAllValidations(password)) {
       dispatch(updateUserData({ password }));
       navigation.reset({
-        routes: [{ name: "AddFingerprint" }],
+        routes: [{ name: "AddFirstName" }],
       });
     }
   };

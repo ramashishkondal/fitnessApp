@@ -44,6 +44,8 @@ export type onboardingStackParamList = {
   SignIn: undefined;
   AddEmail: undefined;
   AddPassword: undefined;
+  AddFirstName: undefined;
+  AddLastName: undefined;
   AddFingerprint: undefined;
   AddProfilePicture: undefined;
   AddPreferences: undefined;

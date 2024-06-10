@@ -21,11 +21,18 @@ const WithModal = ({
         setModalVisible(false);
       }}
       onTouchOutside={() => setModalVisible(false)}
-      style={{ paddingVertical: "25%", paddingHorizontal: "5%" }}
+      style={{
+        paddingVertical: "15%",
+        paddingHorizontal: "5%",
+      }}
       modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
+      rounded
     >
-      <ModalContent>
-        <View style={styles.modalCtr}>{children}</View>
+      <ModalContent style={{ flex: 1 }}>
+        <View style={styles.horizontalLine} />
+        <View style={styles.modalCtr}>
+          {children}
+        </View>
       </ModalContent>
     </Modal>
   );

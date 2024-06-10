@@ -1,19 +1,27 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import "react-native-get-random-values";
+import storage from "@react-native-firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 import { HealthData, User } from "../Defs";
 
 export const firebaseDB = {
   collections: {
     users: "users",
+    posts: "posts",
   },
   documents: {
     users: {
       byId: "byId",
       allIds: "allIds",
     },
+    posts: {
+      allIds: "allIds",
+    },
   },
 };
 
+// user
 export const createUser = async (email: string, password: string) => {
   try {
     const userCredential: FirebaseAuthTypes.UserCredential = await auth().createUserWithEmailAndPassword(
@@ -54,7 +62,6 @@ export const storeUserHealthData = async (
   healthData: HealthData,
   uid: FirebaseAuthTypes.UserCredential["user"]["uid"]
 ) => {
-  console.log();
   try {
     await firestore()
       .collection(firebaseDB.collections.users)
@@ -76,5 +83,58 @@ export const getUserData = async (
     .get();
   const userData = snapshot.get(uid);
   console.log(userData);
-  return userData;
+  return userData as User;
+};
+
+// posts
+
+export type Post = {
+  photo: string;
+  caption: string;
+  createdOn: Timestamp;
+  userId: string;
+  userName: string;
+  userPhoto: string;
+  noOfLikes: number;
+  noOfComments: number;
+};
+
+export const storePost = async (post: Post) => {
+  try {
+    const newPostId = uuidv4();
+    const reference = storage().ref(
+      "media/" + "posts/" + newPostId + "/" + "photo"
+    );
+    await reference.putFile(post.photo);
+    const url = await reference.getDownloadURL();
+    await firestore()
+      .collection(firebaseDB.collections.posts)
+      .doc(newPostId)
+      .set({ ...post, postId: newPostId, photo: url });
+    // await firestore()
+    //   .collection(firebaseDB.collections.posts)
+    //   .doc(firebaseDB.documents.posts.allIds)
+    //   .update({
+    //     ids: firestore.FieldValue.arrayUnion(newPostId),
+    //   });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getAllPost = async () => {
+  try {
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.posts)
+      .get();
+    const data = snapshot.docs;
+    return data.map((val) => val.data()) as Post[];
+  } catch {}
+};
+
+export const addLikes = async (newVal: number, postId: string) => {
+  await firestore()
+    .collection(firebaseDB.collections.posts)
+    .doc(postId)
+    .update({ noOfLikes: newVal });
 };

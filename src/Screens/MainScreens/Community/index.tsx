@@ -1,12 +1,14 @@
 // libs
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 // custom
 import { styles } from "./styles";
 import { ICONS, STRING } from "../../../Constants";
 import { FlatList } from "react-native-gesture-handler";
-import { Story, UserPost } from "../../../Components";
+import { AddPost, Story, UserPost, WithModal } from "../../../Components";
+import { Post, addLikes, firebaseDB } from "../../../Utils/userUtils";
+import firestore, { Timestamp } from "@react-native-firebase/firestore";
 
 const postSignSize = {
   width: 20,
@@ -19,7 +21,22 @@ const dummyStoryData = [
 ];
 
 const Community = () => {
-  const handleAddStory = () => {};
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleAddStory = () => setModalVisible(true);
+  const [postsData, setPostsData] = useState<Post[]>();
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.posts)
+      .orderBy("createdOn", "desc")
+      .onSnapshot((snapshot) => {
+        const data = snapshot.docs;
+        const x = data.map((val) => val.data()) as Post[];
+        console.log(x);
+        setPostsData(x);
+      });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <ScrollView style={styles.parent}>
@@ -38,9 +55,9 @@ const Community = () => {
       />
 
       <View>
-        <UserPost
+        {/* <UserPost
           postData={{
-            caption: "Smashed",
+            caption: "adw",
             noOfComments: 1,
             noOfLikes: 2,
             photo: dummyStoryData[1],
@@ -51,7 +68,7 @@ const Community = () => {
         />
         <UserPost
           postData={{
-            caption: "awdawda",
+            caption: "awdaw",
             noOfComments: 1,
             noOfLikes: 2,
             photo: dummyStoryData[0],
@@ -59,8 +76,35 @@ const Community = () => {
             userName: "saman singh",
             userPhoto: dummyStoryData[1],
           }}
-        />
+        /> */}
+        {postsData
+          ? postsData?.map((val) => {
+              return (
+                <UserPost
+                  postData={{
+                    caption: val.caption,
+                    noOfComments: val.noOfComments,
+                    noOfLikes: val.noOfLikes,
+                    photo: val.photo,
+                    postedOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
+                      .toDate()
+                      .toDateString(),
+                    userName: val.userName,
+                    userPhoto: val.userPhoto,
+                  }}
+                  handleCommentsPress={() => {}}
+                  handleLikesPress={() => {
+                    console.log("postId", val.postId);
+                    addLikes(val.noOfLikes + 1, val.postId);
+                  }}
+                />
+              );
+            })
+          : null}
       </View>
+      <WithModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <AddPost setModalVisible={setModalVisible} />
+      </WithModal>
     </ScrollView>
   );
 };

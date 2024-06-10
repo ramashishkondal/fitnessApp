@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, Image } from "react-native";
 import { styles } from "./styles";
 import { UserPostProps } from "./types";
 import { ICONS } from "../../Constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const iconSize = {
   width: 14,
@@ -19,7 +20,10 @@ const UserPost = ({
     postedOn,
     userPhoto,
   },
+  handleCommentsPress,
+  handleLikesPress,
 }: UserPostProps) => {
+  console.log(userPhoto);
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
@@ -32,9 +36,13 @@ const UserPost = ({
       <Text style={{ marginVertical: 10 }}>{caption}</Text>
       <Image source={{ uri: photo }} style={styles.photo} />
       <View style={styles.likesAndCommentsCtr}>
-        {ICONS.HeartLike(iconSize)}
+        <TouchableOpacity onPress={handleLikesPress}>
+          {ICONS.HeartLike(iconSize)}
+        </TouchableOpacity>
         <Text style={styles.likesText}>{noOfLikes}</Text>
-        {ICONS.Comment(iconSize)}
+        <TouchableOpacity onPress={handleCommentsPress}>
+          {ICONS.Comment(iconSize)}
+        </TouchableOpacity>
         <Text style={styles.likesText}>{noOfComments}</Text>
       </View>
     </View>

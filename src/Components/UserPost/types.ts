@@ -8,4 +8,6 @@ export type UserPostProps = {
     noOfLikes: string | number;
     noOfComments: string | number;
   };
+  handleCommentsPress: () => void;
+  handleLikesPress: () => void;
 };

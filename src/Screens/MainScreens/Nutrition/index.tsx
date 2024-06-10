@@ -6,7 +6,7 @@ import { PieChart } from "react-native-gifted-charts";
 // custom
 import {
   NutritionHeaderRight,
-  AddFoodModal,
+  WithModal,
   PieChartInfoItem,
   NutritionStats,
   DietDataFlatList,
@@ -126,12 +126,9 @@ const Nutrition = ({ navigation }: NutritionProps) => {
           color: COLORS.SECONDARY.ORANGE,
         }}
       />
-      <AddFoodModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      >
+      <WithModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
         <Text>1231s</Text>
-      </AddFoodModal>
+      </WithModal>
       <DietDataFlatList />
     </ScrollView>
   );
