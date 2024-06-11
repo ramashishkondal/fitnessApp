@@ -12,27 +12,21 @@ const WithModal = ({
   setModalVisible,
   children,
 }: WithModalProps) => {
+  const setModalFalse = () => setModalVisible(false);
   return (
     <Modal
       visible={modalVisible}
       swipeDirection={["down"]} // can be string or an array
       swipeThreshold={200} // default 100
-      onSwipeOut={() => {
-        setModalVisible(false);
-      }}
-      onTouchOutside={() => setModalVisible(false)}
-      style={{
-        paddingVertical: "15%",
-        paddingHorizontal: "5%",
-      }}
+      onSwipeOut={setModalFalse}
+      onTouchOutside={setModalFalse}
+      style={styles.parent}
       modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
       rounded
     >
-      <ModalContent style={{ flex: 1 }}>
+      <ModalContent style={styles.modalContent}>
         <View style={styles.horizontalLine} />
-        <View style={styles.modalCtr}>
-          {children}
-        </View>
+        <View style={styles.modalCtr}>{children}</View>
       </ModalContent>
     </Modal>
   );

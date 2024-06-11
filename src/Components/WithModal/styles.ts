@@ -2,6 +2,13 @@ import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../Constants";
 
 export const styles = StyleSheet.create({
+  parent: {
+    paddingVertical: "15%",
+    paddingHorizontal: "5%",
+  },
+  modalContent: {
+    flex: 1,
+  },
   modalCtr: {
     minWidth: "100%",
     minHeight: "100%",

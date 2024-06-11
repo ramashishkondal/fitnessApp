@@ -98,7 +98,36 @@ export const STRING = {
       2: "steps today",
     },
   },
-  COMMUNITY:{
-    TITLE:"Community"
-  }
+  COMMUNITY: {
+    TITLE: "Community",
+  },
+  ADD_POST: {
+    TITLE: "Create a Post",
+    CAPTION: "Add a Caption",
+  },
+  CUSTOM_HOME_DETAILS_CARD: {
+    BUTTON_TEXT_WARNING: "WARNING",
+    BUTTON_TEXT_SAFE: "On",
+  },
+  ADD_FIRST_NAME: {
+    TITLE: "What is your First Name ?",
+    BUTTON_TEXT: "CONTINUE",
+    TEXT_INPUT_PLACE_HOLDER: "First Name",
+  },
+  ADD_LAST_NAME: {
+    TITLE: "What is your Last Name ?",
+    BUTTON_TEXT: "CONTINUE",
+    TEXT_INPUT_PLACE_HOLDER: "Last Name",
+  },
+  NUTRITION: {
+    TITLE: {
+      1: "You burned",
+      2: "calories today",
+    },
+    NUTRITION_STATS: {
+      PROTEIN: "Protein",
+      CARB: "Carb",
+      FAT: "Fat",
+    },
+  },
 };

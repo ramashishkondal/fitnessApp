@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 
-import { COLORS, ICONS, SIZES } from "../../Constants";
+import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
 import {
   CameraOptions,
   ImagePickerResponse,
@@ -79,9 +79,9 @@ const AddPost = ({
   return (
     <View style={styles.parent}>
       <View>
-        <Text style={styles.titleText}>Create a Post</Text>
+        <Text style={styles.titleText}>{STRING.ADD_POST.TITLE}</Text>
         {photo ? <Image source={{ uri: photo }} style={styles.image} /> : null}
-        <Text style={styles.captionText}>Add a Caption</Text>
+        <Text style={styles.captionText}>{STRING.ADD_POST.CAPTION}</Text>
         <TextInput
           autoFocus
           maxLength={100}
@@ -90,7 +90,7 @@ const AddPost = ({
         />
       </View>
       <View style={styles.footerCtr}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={styles.childFooterCtr}>
           <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
             {ICONS.Camera({
               width: 24,

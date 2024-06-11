@@ -24,7 +24,6 @@ const UserPost = ({
   handleCommentsPress,
   handleLikesPress,
 }: UserPostProps) => {
-  console.log(userPhoto);
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
