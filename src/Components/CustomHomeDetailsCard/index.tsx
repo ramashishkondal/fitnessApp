@@ -44,7 +44,7 @@ const CustomHomeDetailsCard = ({
     left.value = withSpring(markerPercentage);
   }, [markerPercentage]);
 
-  let button = {
+  const button = {
     style: {
       backgroundColor: "#F4DCDC",
     },

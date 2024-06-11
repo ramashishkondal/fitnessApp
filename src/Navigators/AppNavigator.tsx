@@ -8,7 +8,12 @@ import HomeNavigator from "./HomeDrawerNavigator";
 
 // custom
 import { useAppDispatch, useAppSelector } from "../Redux/Store";
-import { DailySteps, Nutrition, WaterIntake } from "../Screens/MainScreens";
+import {
+  DailySteps,
+  Nutrition,
+  PostScreen,
+  WaterIntake,
+} from "../Screens/MainScreens";
 import { homeStackParamList } from "../Defs/navigators";
 import { COLORS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
@@ -73,6 +78,7 @@ const AppNavigator = () => {
       <Stack.Screen name="Nutrition" component={Nutrition} />
       <Stack.Screen name="DailySteps" component={DailySteps} />
       <Stack.Screen name="WaterIntake" component={WaterIntake} />
+      <Stack.Screen name="PostScreen" component={PostScreen} />
     </Stack.Navigator>
   );
 };

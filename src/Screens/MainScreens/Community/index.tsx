@@ -1,15 +1,27 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 // custom
 import { styles } from "./styles";
 import { ICONS, STRING } from "../../../Constants";
 import { FlatList } from "react-native-gesture-handler";
-import { AddPost, Story, UserPost, WithModal } from "../../../Components";
-import { Post, addLikes, firebaseDB } from "../../../Utils/userUtils";
+import {
+  AddComment,
+  AddPost,
+  Story,
+  UserPost,
+  WithModal,
+} from "../../../Components";
+import {
+  Post,
+  addLikes,
+  firebaseDB,
+  storePostComment,
+} from "../../../Utils/userUtils";
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import { useAppSelector } from "../../../Redux/Store";
+import { CommunityProps } from "../../../Defs/navigators";
 
 const postSignSize = {
   width: 20,
@@ -21,11 +33,16 @@ const dummyStoryData = [
   "https://i.pinimg.com/736x/f7/27/88/f72788284c5f79abe0b744aad2255bae.jpg",
 ];
 
-const Community = () => {
-  const handleAddStory = () => setModalVisible(true);
+const Community = ({ navigation }: CommunityProps) => {
+  const handleAddStory = () => setPostModalVisible(true);
+  const postId = useRef<string>();
+  const goToPostScreen = (postId: string) => {
+    return () => navigation.navigate("PostScreen", { postId });
+  };
 
   // useState
-  const [modalVisible, setModalVisible] = useState(false);
+  const [postModalVisible, setPostModalVisible] = useState(false);
+  const [commentModalVisible, setCommentModalVisible] = useState(false);
   const [postsData, setPostsData] = useState<Post[]>();
 
   // redux use
@@ -63,28 +80,6 @@ const Community = () => {
       />
 
       <View>
-        {/* <UserPost
-          postData={{
-            caption: "adw",
-            noOfComments: 1,
-            noOfLikes: 2,
-            photo: dummyStoryData[1],
-            postedOn: "10 mins ago",
-            userName: "adaw awd",
-            userPhoto: dummyStoryData[0],
-          }}
-        />
-        <UserPost
-          postData={{
-            caption: "awdaw",
-            noOfComments: 1,
-            noOfLikes: 2,
-            photo: dummyStoryData[0],
-            postedOn: "10 mins ago",
-            userName: "saman singh",
-            userPhoto: dummyStoryData[1],
-          }}
-        /> */}
         {postsData
           ? postsData?.map((val) => {
               const isLiked = val.likedByUsersId.includes(userId!);
@@ -92,7 +87,7 @@ const Community = () => {
                 <UserPost
                   postData={{
                     caption: val.caption,
-                    noOfComments: val.noOfComments,
+                    noOfComments: val.comments?.length,
                     noOfLikes: val.likedByUsersId?.length ?? 0,
                     photo: val.photo,
                     postedOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
@@ -101,18 +96,21 @@ const Community = () => {
                     userName: val.userName,
                     userPhoto: val.userPhoto,
                     isLiked,
+                    id: val.postId!,
                   }}
-                  handleCommentsPress={() => {}}
+                  goToPostScreen={goToPostScreen(val.postId!)}
+                  handleCommentsPress={() => {
+                    postId.current = val.postId;
+                    setCommentModalVisible(true);
+                  }}
                   handleLikesPress={() => {
-                    // console.log("postId", val.postId);
-                    // addLikes(val.noOfLikes + 1, val.postId);
                     if (isLiked) {
                       addLikes(
-                        val.postId,
+                        val.postId!,
                         val.likedByUsersId.filter((value) => value !== userId)
                       );
                     } else {
-                      addLikes(val.postId, val.likedByUsersId.concat(userId!));
+                      addLikes(val.postId!, val.likedByUsersId.concat(userId!));
                     }
                   }}
                 />
@@ -120,8 +118,20 @@ const Community = () => {
             })
           : null}
       </View>
-      <WithModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-        <AddPost setModalVisible={setModalVisible} />
+      <WithModal
+        modalVisible={postModalVisible}
+        setModalVisible={setPostModalVisible}
+      >
+        <AddPost setModalVisible={setPostModalVisible} />
+      </WithModal>
+      <WithModal
+        modalVisible={commentModalVisible}
+        setModalVisible={setCommentModalVisible}
+      >
+        <AddComment
+          setModalVisible={setCommentModalVisible}
+          postId={postId.current!}
+        />
       </WithModal>
     </ScrollView>
   );

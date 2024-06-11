@@ -1,5 +1,9 @@
 // libs
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 
 // custom
@@ -7,10 +11,14 @@ import { useAppSelector } from "../../Redux/Store";
 import CustomButton from "../CustomButton";
 import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
 import { styles } from "./styles";
+import { storePostComment } from "../../Utils/userUtils";
+import { Timestamp } from "@react-native-firebase/firestore";
 
-const AddPost = ({
+const AddComment = ({
   setModalVisible,
+  postId,
 }: {
+  postId: string;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [comment, setComment] = useState("");
@@ -22,7 +30,12 @@ const AddPost = ({
     try {
       if (userId !== null && userPhoto !== null) {
         setIsLoading(true);
-
+        await storePostComment(postId, {
+          userName: firstName! + " " + lastName!,
+          userPhoto,
+          comment,
+          createdOn: Timestamp.fromDate(new Date()),
+        });
         setModalVisible(false);
       }
     } catch (e) {
@@ -65,4 +78,4 @@ const AddPost = ({
   );
 };
 
-export default AddPost;
+export default AddComment;

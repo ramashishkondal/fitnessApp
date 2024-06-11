@@ -1,24 +1,25 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+// libs
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 
-import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
+// 3rd party libs
+import { Timestamp } from "@react-native-firebase/firestore";
 import {
   CameraOptions,
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
 } from "react-native-image-picker";
+
+// custom
 import CustomButton from "../CustomButton";
-import { styles } from "./styles";
+import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
 import { storePost } from "../../Utils/userUtils";
 import { useAppSelector } from "../../Redux/Store";
-import { Timestamp } from "@react-native-firebase/firestore";
+import { styles } from "./styles";
+import { AddPostProps } from "./types";
 
-const AddPost = ({
-  setModalVisible,
-}: {
-  setModalVisible: Dispatch<SetStateAction<boolean>>;
-}) => {
+const AddPost = ({ setModalVisible }: AddPostProps) => {
   const [photo, setPhoto] = useState("");
   const [caption, setCaption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +63,7 @@ const AddPost = ({
           userId,
           createdOn: Timestamp.now(),
           photo,
-          noOfComments: 0,
+          comments: [],
           likedByUsersId: [],
           userName: firstName && lastName ? firstName + " " + lastName : "",
           userPhoto,

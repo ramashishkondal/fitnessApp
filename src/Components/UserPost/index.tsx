@@ -1,5 +1,8 @@
+// libs
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+
+// custom
 import { styles } from "./styles";
 import { UserPostProps } from "./types";
 import { COLORS, ICONS } from "../../Constants";
@@ -20,12 +23,14 @@ const UserPost = ({
     postedOn,
     userPhoto,
     isLiked,
+    id,
   },
+  goToPostScreen,
   handleCommentsPress,
   handleLikesPress,
 }: UserPostProps) => {
   return (
-    <View style={styles.parent}>
+    <TouchableOpacity style={styles.parent} onPress={goToPostScreen}>
       <View style={styles.userInfoCtr}>
         <Image source={{ uri: userPhoto }} style={styles.userPhoto} />
         <View style={styles.userTextCtr}>
@@ -51,7 +56,7 @@ const UserPost = ({
           <Text style={styles.likesText}>{noOfComments}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

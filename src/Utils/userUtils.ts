@@ -96,7 +96,7 @@ export type Post = {
   userName: string;
   userPhoto: string;
   likedByUsersId: Array<string>;
-  noOfComments: number;
+  comments: Array<{ userName: string; userPhoto: string; comment: string }>;
   postId?: string;
 };
 
@@ -115,6 +115,22 @@ export const storePost = async (post: Post) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export type Comment = {
+  userName: string;
+  userPhoto: string;
+  comment: string;
+  createdOn: Timestamp;
+};
+
+export const storePostComment = async (postId: string, comment: Comment) => {
+  await firestore()
+    .collection(firebaseDB.collections.posts)
+    .doc(postId)
+    .update({
+      comments: firestore.FieldValue.arrayUnion(comment),
+    });
 };
 
 export const getAllPost = async () => {

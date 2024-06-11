@@ -105,6 +105,7 @@ export type homeStackParamList = {
   Nutrition: undefined;
   WaterIntake: undefined;
   DailySteps: undefined;
+  PostScreen: { postId: string };
 };
 export type NutritionProps = NativeStackScreenProps<
   homeStackParamList,
@@ -121,4 +122,8 @@ export type WaterIntakeProps = NativeStackScreenProps<
 export type DailyStepsProps = NativeStackScreenProps<
   homeStackParamList,
   "DailySteps"
+>;
+export type PostScreenProps = NativeStackScreenProps<
+  homeStackParamList,
+  "PostScreen"
 >;

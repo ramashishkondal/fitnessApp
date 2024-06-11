@@ -27,3 +27,4 @@ export { default as PerformanceCard } from "./PerformanceCard";
 export { default as Story } from "./Story";
 export { default as UserPost } from "./UserPost";
 export { default as AddPost } from "./AddPost";
+export { default as AddComment } from "./AddComment";

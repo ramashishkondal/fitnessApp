@@ -12,6 +12,18 @@ export {
   SignInProps,
   onboardingStackParamList,
   appDrawerParamList,
+  CommunityProps,
+  DailyStepsProps,
+  ForgotPasswordProps,
+  GetPremiumProps,
+  HomeNavigatorProps,
+  LogOutProps,
+  NotificationsProps,
+  NutritionProps,
+  PostScreenProps,
+  SettingsProps,
+  WaterIntakeProps,
+  homeStackParamList,
 } from "./navigators";
 
 export { User, HealthData } from "./user";

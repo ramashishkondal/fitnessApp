@@ -8,7 +8,9 @@ export type UserPostProps = {
     noOfLikes: string | number;
     noOfComments: string | number;
     isLiked: boolean;
+    id: string;
   };
   handleCommentsPress: () => void;
   handleLikesPress: () => void;
+  goToPostScreen: () => void;
 };
