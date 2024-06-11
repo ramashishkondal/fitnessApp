@@ -15,6 +15,7 @@ const LandingPage = ({ navigation }: LandingPageProps) => {
   const goToStarting = () => {
     navigation.navigate("AddEmail");
   };
+  console.log("onboarding screen rendered");
   return (
     <View style={styles.parent}>
       <Text style={styles.titleText}>{STRING.LANDING_PAGE.TITLE}</Text>

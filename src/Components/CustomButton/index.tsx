@@ -26,6 +26,7 @@ const CustomButton = ({
   textStyle,
   isLoading,
 }: CustomButtonProps) => {
+  console.log("custom button rendered");
   return (
     <TouchableOpacity style={[styles.parent, parentStyle]} onPress={onPress}>
       <View style={[styles.buttonCtr, buttonCtrStyle]}>

@@ -26,7 +26,7 @@ const AddProfilePicture = ({ navigation }: AddProfilePictureProps) => {
       dispatch(updateUserData({ photo: customPhoto ?? avatar }));
       navigation.push("AddPreferences");
     } else {
-      Alert.alert("You have to select a photo");
+      Alert.alert("You have to select a photo", "Select one of the avatars");
     }
   };
   return (

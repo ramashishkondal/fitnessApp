@@ -1,6 +1,6 @@
 // libs
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { Alert, Text, View } from "react-native";
 
 // custom
 import {
@@ -17,14 +17,34 @@ import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddEmail = ({ navigation }: AddEmailLogInProps) => {
+  // state use
   const [email, setEmail] = useState<string>("");
+
+  // ref use
+  const emailRef = useRef(email);
+
+  // redux use
   const dispatch = useAppDispatch();
 
-  const handleSubmit = () => {
-    if (email && isValidEmail(email)) {
-      dispatch(updateUserData({ email }));
+  // functions
+  const handleSubmit = useCallback(() => {
+    const currentEmail = emailRef.current;
+    if (currentEmail === "") {
+      Alert.alert("Email address cant be empty");
+    } else if (currentEmail && isValidEmail(currentEmail)) {
+      dispatch(updateUserData({ email: currentEmail }));
       navigation.push("AddPassword");
+    } else {
+      Alert.alert(
+        "Invalid email address",
+        "Make sure entered email address is valid"
+      );
     }
+  }, [navigation, dispatch]);
+
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+    emailRef.current = text;
   };
 
   return (
@@ -34,7 +54,7 @@ const AddEmail = ({ navigation }: AddEmailLogInProps) => {
         placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
         parentStyle={[SPACING.mh2, SPACING.mt5]}
         textInputStyle={styles.textInput}
-        onChangeText={setEmail}
+        onChangeText={handleEmailChange}
         autoFocus
       />
       {email && !isValidEmail(email) ? (

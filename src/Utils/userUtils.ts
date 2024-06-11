@@ -1,9 +1,9 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { HealthData, User } from "../Defs";
+import { HealthData, User, Post, Comment } from "../Defs";
 
 export const firebaseDB = {
   collections: {
@@ -36,7 +36,7 @@ export const createUser = async (email: string, password: string) => {
 
 export const storeUserData = async (
   user: User,
-  userCredential: FirebaseAuthTypes.UserCredential
+  userId: FirebaseAuthTypes.UserCredential["user"]["uid"]
 ) => {
   try {
     console.log(user);
@@ -44,13 +44,13 @@ export const storeUserData = async (
       .collection("users")
       .doc("byId")
       .update({
-        [userCredential.user.uid]: user,
+        [userId]: user,
       });
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(firebaseDB.documents.users.allIds)
       .update({
-        ids: firestore.FieldValue.arrayUnion(userCredential.user.uid),
+        ids: firestore.FieldValue.arrayUnion(userId),
       });
     console.log("User added!");
   } catch (e) {
@@ -87,19 +87,6 @@ export const getUserData = async (
 };
 
 // posts
-
-export type Post = {
-  photo: string;
-  caption: string;
-  createdOn: Timestamp;
-  userId: string;
-  userName: string;
-  userPhoto: string;
-  likedByUsersId: Array<string>;
-  comments: Array<{ userName: string; userPhoto: string; comment: string }>;
-  postId?: string;
-};
-
 export const storePost = async (post: Post) => {
   try {
     const newPostId = post.postId ?? uuidv4();
@@ -116,14 +103,6 @@ export const storePost = async (post: Post) => {
     console.log(e);
   }
 };
-
-export type Comment = {
-  userName: string;
-  userPhoto: string;
-  comment: string;
-  createdOn: Timestamp;
-};
-
 export const storePostComment = async (postId: string, comment: Comment) => {
   await firestore()
     .collection(firebaseDB.collections.posts)

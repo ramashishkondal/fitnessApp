@@ -34,7 +34,7 @@ const SignIn = ({ navigation }: SignInProps) => {
       } = await auth().signInWithEmailAndPassword(email, password);
       const user = await getUserData(uid);
       if (user) {
-        dispatch(updateUserData(user as User));
+        dispatch(updateUserData(user));
       } else {
         throw Error("SignIn Screen Error: user data null or undefined");
       }

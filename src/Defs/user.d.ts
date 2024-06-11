@@ -1,13 +1,13 @@
 export type User = {
   id: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
-  finger: boolean | null;
-  photo: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  finger: boolean;
+  photo: string;
   gender: "male" | "female" | null;
-  preferences: Array<{ title: string; selected: boolean }> | null;
-  interests: Array<string> | null;
+  preferences: Array<{ title: string; selected: boolean }>;
+  interests: Array<string>;
 };
 export type HealthData = {
   nutrition: number;
@@ -20,4 +20,23 @@ export type HealthData = {
     totalSteps: number;
   };
   currentDate: string;
+};
+
+export type Post = {
+  photo: string;
+  caption: string;
+  createdOn: Timestamp;
+  userId: string;
+  userName: string;
+  userPhoto: string;
+  likedByUsersId: Array<string>;
+  comments: Array<Comment>;
+  postId?: string;
+};
+
+export type Comment = {
+  userName: string;
+  userPhoto: string;
+  comment: string;
+  createdOn: Timestamp;
 };

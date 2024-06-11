@@ -1,18 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../Defs";
 
-const initialState: { data: User & { password: string } } = {
+const initialState: { data: User & { password: string | null } } = {
   data: {
     id: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    finger: null,
-    gender: null,
-    interests: null,
-    photo: null,
-    preferences: null,
-    password: "",
+    firstName: "John",
+    lastName: "Doe",
+    email: "johnDoe@gmail.com",
+    finger: false,
+    gender: "male",
+    interests: [],
+    photo: "",
+    preferences: [],
+    password: null,
   },
 };
 
@@ -22,7 +22,7 @@ export const currentUserSlice = createSlice({
   reducers: {
     updateUserData: (
       state,
-      action: PayloadAction<Partial<User & { password: string }>>
+      action: PayloadAction<Partial<User & { password: string | null }>>
     ) => {
       state.data = { ...state.data, ...action.payload };
     },

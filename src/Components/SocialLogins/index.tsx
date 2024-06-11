@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SPACING, ICONS, COLORS } from "../../Constants";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { styles } from "./styles";
 import CustomLoading from "../CustomLoading";
+import { useAppDispatch } from "../../Redux/Store";
+import { updateUserData } from "../../Redux/Reducers/currentUser";
+import { storeUserData } from "../../Utils/userUtils";
 const iconSize = 17;
 
 GoogleSignin.configure({
@@ -31,11 +34,43 @@ const googleSignIn = async () => {
 };
 
 const SocialLogins = () => {
+  // state use
   const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
+  const dispatch = useAppDispatch();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
-    await googleSignIn();
+    const userData = await googleSignIn();
+    if (userData?.additionalUserInfo?.isNewUser) {
+      const { email, displayName, photoURL: photo, uid: id } = userData.user;
+      if (email !== null && photo !== null) {
+        dispatch(
+          updateUserData({
+            email,
+            firstName: displayName?.split(" ")[0],
+            lastName: displayName?.split(" ")[1],
+            photo,
+            id,
+          })
+        );
+        storeUserData(
+          {
+            email,
+            firstName: displayName?.split(" ")[0] ?? "",
+            lastName: displayName?.split(" ")[1] ?? "",
+            photo,
+            id,
+            finger: false,
+            gender: null,
+            interests: [],
+            preferences: [],
+          },
+          id
+        );
+      }
+    }
     setIsLoading(false);
   };
   return (

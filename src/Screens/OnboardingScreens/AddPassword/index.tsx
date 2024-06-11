@@ -1,7 +1,7 @@
 // libs
 import React, { useState } from "react";
 import { styles } from "./styles";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 // custom
 import {
@@ -21,11 +21,18 @@ const AddPassword = ({ navigation }: AddPasswordProps) => {
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
-    if (isValidPassword.checkAllValidations(password)) {
+    if (password === "") {
+      Alert.alert("Password cant be empty");
+    } else if (isValidPassword.checkAllValidations(password)) {
       dispatch(updateUserData({ password }));
       navigation.reset({
         routes: [{ name: "AddFirstName" }],
       });
+    } else {
+      Alert.alert(
+        "Invalid Password",
+        " Make sure your password is 8+ characters long and contains atleast 1 uppercase character and 1 number."
+      );
     }
   };
 

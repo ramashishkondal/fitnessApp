@@ -26,4 +26,4 @@ export {
   homeStackParamList,
 } from "./navigators";
 
-export { User, HealthData } from "./user";
+export { User, HealthData, Comment, Post } from "./user";

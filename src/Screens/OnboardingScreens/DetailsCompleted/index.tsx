@@ -1,14 +1,14 @@
 // libs
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import storage from "@react-native-firebase/storage";
 
 // custom
-import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
+import { useAppSelector } from "../../../Redux/Store";
 import { storeUserData, createUser } from "../../../Utils/userUtils";
 import { COLORS, ICONS, STRING } from "../../../Constants";
 import { styles } from "./style";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { CustomLoading } from "../../../Components";
 
 const size = {
   width: 40,
@@ -19,27 +19,38 @@ const arrowSize = {
   height: 30,
 };
 const DetailsCompleted = () => {
+  // state use
+  const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
   const {
     data: { password, ...user },
   } = useAppSelector((state) => state.User);
+
+  // functions
   const handleSubmit = async () => {
-    if (user.email !== null && password !== "") {
-      const userCredentials = await createUser(user.email, password);
-
-      const reference = storage().ref(
-        "media/" + userCredentials?.user.uid + "/" + "photo"
-      );
-
-      await reference.putFile(user.photo!);
-      const url = await reference.getDownloadURL();
-      console.log("the url is -", url);
-      if (userCredentials !== undefined) {
-        user.photo = url;
-        user.id = userCredentials.user.uid;
-        await storeUserData(user, userCredentials);
+    try {
+      setIsLoading(true);
+      if (password !== null) {
+        const userCredentials = await createUser(user.email, password);
+        const reference = storage().ref(
+          "media/profilePictures" + userCredentials?.user.uid + "/" + "photo"
+        );
+        await reference.putFile(user.photo);
+        const url = await reference.getDownloadURL();
+        if (userCredentials !== undefined) {
+          user.photo = url;
+          user.id = userCredentials.user.uid;
+          await storeUserData(user, user.id);
+        }
       }
+    } catch (e) {
+      console.log("error in creating user - ", e);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.parent}>
       <View style={styles.childCtr}>
@@ -49,7 +60,11 @@ const DetailsCompleted = () => {
           {STRING.DETAILS_COMPLETED.TITLE_DESCRIPTION}
         </Text>
         <TouchableOpacity style={styles.arrowCtr} onPress={handleSubmit}>
-          {ICONS.DoubleArrow({ color: COLORS.SECONDARY.WHITE, ...arrowSize })}
+          {isLoading ? (
+            <CustomLoading color={COLORS.SECONDARY.WHITE} />
+          ) : (
+            ICONS.DoubleArrow({ color: COLORS.SECONDARY.WHITE, ...arrowSize })
+          )}
         </TouchableOpacity>
       </View>
     </View>
