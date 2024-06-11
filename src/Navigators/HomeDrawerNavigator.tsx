@@ -20,7 +20,13 @@ const iconSize = {
   width: 25,
   height: 25,
 };
-const drawerIcon = (icon: any) => {
+const drawerIcon = (
+  icon: (size: {
+    width: number;
+    height: number;
+    color?: string;
+  }) => React.ReactNode
+) => {
   return () => {
     return <View style={{ left: 20 }}>{icon(iconSize)}</View>;
   };

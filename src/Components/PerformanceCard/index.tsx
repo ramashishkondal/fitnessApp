@@ -8,7 +8,7 @@ const PerformanceCard = ({
   onDay,
   value,
 }: {
-  icon: any;
+  icon: React.ReactNode;
   performanceText: string;
   onDay: string;
   value: string | number;

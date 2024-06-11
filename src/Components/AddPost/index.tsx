@@ -77,70 +77,35 @@ const AddPost = ({
   };
 
   return (
-    <View
-      style={{
-        maxWidth: "100%",
-        justifyContent: "space-between",
-        flex: 1,
-      }}
-    >
+    <View style={styles.parent}>
       <View>
         <Text style={styles.titleText}>Create a Post</Text>
-        {photo ? (
-          <Image
-            source={{ uri: photo }}
-            style={{
-              height: 200,
-              width: "100%",
-              borderRadius: SIZES.rounding2,
-            }}
-          />
-        ) : null}
-        <Text style={{ marginTop: 8, fontSize: SIZES.font13 }}>
-          Add a Caption
-        </Text>
+        {photo ? <Image source={{ uri: photo }} style={styles.image} /> : null}
+        <Text style={styles.captionText}>Add a Caption</Text>
         <TextInput
           autoFocus
           maxLength={100}
           onChangeText={setCaption}
-          style={{ marginVertical: 10 }}
+          style={styles.textInput}
         />
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          borderTopWidth: 1,
-          marginHorizontal: 8,
-          borderColor: COLORS.SECONDARY.GREY,
-          padding: 10,
-          paddingVertical: 20,
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingBottom: 60,
-        }}
-      >
+      <View style={styles.footerCtr}>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            onPress={openCamera}
-            style={{ marginHorizontal: 8 }}
-          >
+          <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
             {ICONS.Camera({
               width: 24,
               height: 24,
               color: COLORS.SECONDARY.GREY,
             })}
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={openGallery}
-            style={{ marginHorizontal: 8 }}
-          >
+          <TouchableOpacity onPress={openGallery} style={styles.iconsCtr}>
             {ICONS.Gallery({
               width: 24,
               height: 24,
               color: COLORS.SECONDARY.GREY,
             })}
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginHorizontal: 8 }}>
+          <TouchableOpacity style={styles.iconsCtr}>
             {ICONS.SmileyGood({
               width: 24,
               height: 24,
@@ -150,7 +115,7 @@ const AddPost = ({
         </View>
         <CustomButton
           title="Post"
-          parentStyle={{ maxWidth: 100, maxHeight: 40 }}
+          parentStyle={styles.buttonParentStyle}
           textStyle={{ fontSize: SIZES.font13 }}
           onPress={handlePost}
           isLoading={isLoading}

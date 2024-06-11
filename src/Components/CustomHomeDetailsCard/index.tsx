@@ -15,7 +15,11 @@ type CustomHomeDetailsCardProps = {
   title: string;
   handleOnPress: () => void;
   status: string;
-  icon: any;
+  icon: (size: {
+    width: number;
+    height: number;
+    color?: string;
+  }) => React.ReactNode;
   markerPercentage: number;
 };
 

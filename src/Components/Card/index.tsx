@@ -1,5 +1,5 @@
 // libs
-import React, { useState } from "react";
+import React from "react";
 import { Pressable, Text, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox/build/dist/BouncyCheckbox";
 import Animated, {
@@ -12,7 +12,6 @@ import Animated, {
 // custom
 import { styles } from "./styles";
 import { ANIMATIONS, COLORS } from "../../Constants";
-import { User } from "../../Defs";
 
 const size = {
   width: 80,
@@ -21,7 +20,11 @@ const size = {
 
 type CardProps = {
   text: string;
-  icon: any;
+  icon: (size: {
+    width: number;
+    height: number;
+    color?: string;
+  }) => React.ReactNode;
   onToggle: () => void;
   isChecked: boolean;
 };

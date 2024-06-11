@@ -11,7 +11,7 @@ export type CustomTextInputProps = {
   onChangeText?: (
     text: string
   ) => void | React.Dispatch<React.SetStateAction<string>>;
-  icon?: any;
+  icon?: React.ReactNode;
   autoFocus?: boolean;
   hasError?: boolean;
   value?: string;

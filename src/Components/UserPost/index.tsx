@@ -33,7 +33,7 @@ const UserPost = ({
           <Text>{postedOn}</Text>
         </View>
       </View>
-      <Text style={{ marginVertical: 10 }}>{caption}</Text>
+      <Text style={styles.captionText}>{caption}</Text>
       <Image source={{ uri: photo }} style={styles.photo} />
       <View style={styles.likesAndCommentsCtr}>
         <TouchableOpacity onPress={handleLikesPress}>

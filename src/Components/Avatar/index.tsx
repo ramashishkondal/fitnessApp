@@ -16,7 +16,7 @@ const Avatar = ({
   selectedItem,
   setSelectedItem,
 }: {
-  item: { icon: any; name: "string" };
+  item: { icon: React.ReactNode; name: string };
   selectedItem: string;
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
 }) => {

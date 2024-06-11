@@ -34,7 +34,7 @@ const INTERESETS = [
 
 const renderItem: ListRenderItem<{
   title: string;
-  icon: any;
+  icon: React.ReactNode;
   selected: boolean;
 }> = ({ item }) => <InterestItem item={item} />;
 const AddInterests = ({ navigation }: AddInterestsProps) => {

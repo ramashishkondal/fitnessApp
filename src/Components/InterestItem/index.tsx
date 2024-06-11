@@ -13,7 +13,7 @@ import { styles } from "./styles";
 import { ANIMATIONS } from "../../Constants";
 
 type InterestItemProps = {
-  item: { title: string; icon: any; selected: boolean };
+  item: { title: string; icon: React.ReactNode; selected: boolean };
 };
 
 const InterestItem = ({ item }: InterestItemProps) => {

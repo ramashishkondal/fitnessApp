@@ -38,4 +38,5 @@ export const styles = StyleSheet.create({
     fontWeight: SIZES.fontBold0,
     fontSize: SIZES.font12,
   },
+  captionText: { marginVertical: 10 },
 });
