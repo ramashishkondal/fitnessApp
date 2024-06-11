@@ -1,5 +1,5 @@
 // libs
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 
 // custom
@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { COLORS } from "../../Constants";
+import { COLORS, STRING } from "../../Constants";
 
 type CustomHomeDetailsCardProps = {
   title: string;
@@ -48,7 +48,7 @@ const CustomHomeDetailsCard = ({
     style: {
       backgroundColor: "#F4DCDC",
     },
-    text: "Warning",
+    text: STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_WARNING,
     textStyle: {
       color: "#F5797A",
     },
@@ -57,7 +57,7 @@ const CustomHomeDetailsCard = ({
     button.style.backgroundColor = "#fad3b9";
   } else if (markerPercentage > 66) {
     button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
-    button.text = "On";
+    button.text = STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_SAFE;
     button.textStyle.color = COLORS.PRIMARY.PURPLE;
   }
 

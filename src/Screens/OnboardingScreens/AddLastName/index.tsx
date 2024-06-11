@@ -33,17 +33,17 @@ const AddLastName = ({ navigation }: AddEmailLogInProps) => {
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
-      <Text style={styles.titleText}>What is Your Last Name?</Text>
+      <Text style={styles.titleText}>{STRING.ADD_LAST_NAME.TITLE}</Text>
       <CustomTextInput
         value={lastName}
-        placeHolder={"Last Name"}
+        placeHolder={STRING.ADD_LAST_NAME.TEXT_INPUT_PLACE_HOLDER}
         parentStyle={[SPACING.mh2, SPACING.mt5]}
         textInputStyle={styles.textInput}
         onChangeText={handleChangeText}
         autoFocus
       />
       <CustomButton
-        title={STRING.ADD_EMAIL.BUTTON_TEXT}
+        title={STRING.ADD_LAST_NAME.BUTTON_TEXT}
         parentStyle={SPACING.mtXLarge}
         onPress={handleSubmit}
       />

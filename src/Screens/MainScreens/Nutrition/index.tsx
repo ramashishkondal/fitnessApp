@@ -11,7 +11,7 @@ import {
   NutritionStats,
   DietDataFlatList,
 } from "../../../Components";
-import { COLORS } from "../../../Constants";
+import { COLORS, STRING } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
 import { styles } from "./styles";
 import { useAppSelector } from "../../../Redux/Store";
@@ -45,8 +45,9 @@ const Nutrition = ({ navigation }: NutritionProps) => {
   return (
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
-        You burned <Text style={styles.calorieText}>{caloriesBurned}</Text>{" "}
-        calories today
+        {STRING.NUTRITION.TITLE[1]}{" "}
+        <Text style={styles.calorieText}>{caloriesBurned}</Text>{" "}
+        {STRING.NUTRITION.TITLE[2]}
       </Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
@@ -84,17 +85,17 @@ const Nutrition = ({ navigation }: NutritionProps) => {
         </View>
         <View>
           <PieChartInfoItem
-            item="Protein"
+            item={STRING.NUTRITION.NUTRITION_STATS.PROTEIN}
             percentage="63"
             color={COLORS.SECONDARY.CYAN}
           />
           <PieChartInfoItem
-            item="Carb"
+            item={STRING.NUTRITION.NUTRITION_STATS.CARB}
             percentage="30"
             color={COLORS.PRIMARY.PURPLE}
           />
           <PieChartInfoItem
-            item="Fat"
+            item={STRING.NUTRITION.NUTRITION_STATS.FAT}
             percentage="27"
             color={COLORS.SECONDARY.ORANGE}
           />
@@ -102,7 +103,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
       </View>
       <NutritionStats
         item={{
-          title: "Protein",
+          title: STRING.NUTRITION.NUTRITION_STATS.PROTEIN,
           percentage: 63,
           quantity: 100,
           color: COLORS.SECONDARY.CYAN,
@@ -111,7 +112,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
       <View style={styles.line} />
       <NutritionStats
         item={{
-          title: "Carb",
+          title: STRING.NUTRITION.NUTRITION_STATS.CARB,
           percentage: 30,
           quantity: 60,
           color: COLORS.PRIMARY.PURPLE,
@@ -120,7 +121,7 @@ const Nutrition = ({ navigation }: NutritionProps) => {
       <View style={styles.line} />
       <NutritionStats
         item={{
-          title: "Fat",
+          title: STRING.NUTRITION.NUTRITION_STATS.FAT,
           percentage: 27,
           quantity: 20,
           color: COLORS.SECONDARY.ORANGE,

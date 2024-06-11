@@ -97,11 +97,12 @@ export type Post = {
   userPhoto: string;
   likedByUsersId: Array<string>;
   noOfComments: number;
+  postId?: string;
 };
 
 export const storePost = async (post: Post) => {
   try {
-    const newPostId = uuidv4();
+    const newPostId = post.postId ?? uuidv4();
     const reference = storage().ref(
       "media/" + "posts/" + newPostId + "/" + "photo"
     );
@@ -111,12 +112,6 @@ export const storePost = async (post: Post) => {
       .collection(firebaseDB.collections.posts)
       .doc(newPostId)
       .set({ ...post, postId: newPostId, photo: url });
-    // await firestore()
-    //   .collection(firebaseDB.collections.posts)
-    //   .doc(firebaseDB.documents.posts.allIds)
-    //   .update({
-    //     ids: firestore.FieldValue.arrayUnion(newPostId),
-    //   });
   } catch (e) {
     console.log(e);
   }

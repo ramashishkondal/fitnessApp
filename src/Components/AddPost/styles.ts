@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 60,
   },
+  childFooterCtr: { flexDirection: "row" },
   iconsCtr: { marginHorizontal: 8 },
   buttonParentStyle: {
     maxWidth: SIZES.width / 4,

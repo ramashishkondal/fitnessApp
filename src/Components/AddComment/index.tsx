@@ -1,60 +1,51 @@
-import React from "react";
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import { SIZES, COLORS, ICONS } from "../../Constants";
-import CustomButton from "../CustomButton";
-import { styles } from "../CustomButton/styles";
+// libs
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 
-const AddComment = () => {
-    
+// custom
+import { useAppSelector } from "../../Redux/Store";
+import CustomButton from "../CustomButton";
+import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
+import { styles } from "./styles";
+
+const AddPost = ({
+  setModalVisible,
+}: {
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(
+    (state) => state.User.data
+  );
+  const handlePost = async () => {
+    try {
+      if (userId !== null && userPhoto !== null) {
+        setIsLoading(true);
+
+        setModalVisible(false);
+      }
+    } catch (e) {
+      console.log("error", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <View
-      style={{
-        maxWidth: "100%",
-        justifyContent: "space-between",
-        flex: 1,
-      }}
-    >
+    <View style={styles.parent}>
       <View>
-        <Text style={styles.titleText}>Create a Post</Text>
-        {photo ? (
-          <Image
-            source={{ uri: photo }}
-            style={{
-              height: 200,
-              width: "100%",
-              borderRadius: SIZES.rounding2,
-            }}
-          />
-        ) : null}
-        {photo ? (
-          <>
-            <Text style={{ marginTop: 8, fontSize: SIZES.font13 }}>
-              Add a Caption
-            </Text>
-            <TextInput
-              autoFocus
-              maxLength={100}
-              onChangeText={setCaption}
-              style={{ marginHorizontal: 10 }}
-            />
-          </>
-        ) : null}
+        <Text style={styles.titleText}>{STRING.ADD_Comment.TITLE}</Text>
+        <TextInput
+          autoFocus
+          maxLength={100}
+          onChangeText={setComment}
+          style={styles.textInput}
+        />
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          borderTopWidth: 1,
-          marginHorizontal: 8,
-          borderColor: COLORS.SECONDARY.GREY,
-          padding: 10,
-          paddingVertical: 20,
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingBottom: 60,
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={{ marginHorizontal: 8 }}>
+      <View style={styles.footerCtr}>
+        <View style={styles.childFooterCtr}>
+          <TouchableOpacity style={styles.iconsCtr}>
             {ICONS.SmileyGood({
               width: 24,
               height: 24,
@@ -64,7 +55,7 @@ const AddComment = () => {
         </View>
         <CustomButton
           title="Post"
-          parentStyle={{ maxWidth: 100, maxHeight: 40 }}
+          parentStyle={styles.buttonParentStyle}
           textStyle={{ fontSize: SIZES.font13 }}
           onPress={handlePost}
           isLoading={isLoading}
@@ -74,4 +65,4 @@ const AddComment = () => {
   );
 };
 
-export default AddComment;
+export default AddPost;
