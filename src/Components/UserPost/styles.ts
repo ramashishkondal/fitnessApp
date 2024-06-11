@@ -3,6 +3,7 @@ import { COLORS, SIZES } from "../../Constants";
 
 export const styles = StyleSheet.create({
   parent: {
+    flex: 1,
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderRadius: SIZES.rounding2,
     padding: 20,
@@ -13,6 +14,7 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   likesAndCommentsCtr: {
+    flex: 1,
     flexDirection: "row",
     marginVertical: 16,
     marginHorizontal: 8,
@@ -39,4 +41,15 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
   },
   captionText: { marginVertical: 10 },
+  userNameText: {
+    fontWeight: SIZES.fontBold1,
+  },
+  likeCtr: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  commentCtr: {
+    flex: 4.5,
+    flexDirection: "row",
+  },
 });

@@ -95,7 +95,7 @@ export type Post = {
   userId: string;
   userName: string;
   userPhoto: string;
-  noOfLikes: number;
+  likedByUsersId: Array<string>;
   noOfComments: number;
 };
 
@@ -132,9 +132,14 @@ export const getAllPost = async () => {
   } catch {}
 };
 
-export const addLikes = async (newVal: number, postId: string) => {
+export const addLikes = async (
+  postId: string,
+  likedByUsersId: Array<string>
+) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
     .doc(postId)
-    .update({ noOfLikes: newVal });
+    .update({
+      likedByUsersId: likedByUsersId,
+    });
 };

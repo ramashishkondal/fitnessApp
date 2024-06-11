@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     marginVertical: 24,
   },
   image: {
-    height: 200,
+    height: SIZES.height / 2,
     width: "100%",
     borderRadius: SIZES.rounding2,
   },
@@ -32,5 +32,8 @@ export const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   iconsCtr: { marginHorizontal: 8 },
-  buttonParentStyle: { maxWidth: 100, maxHeight: 40 },
+  buttonParentStyle: {
+    maxWidth: SIZES.width / 4,
+    maxHeight: SIZES.height / 22,
+  },
 });

@@ -14,7 +14,7 @@ import {
 } from "@gorhom/bottom-sheet";
 
 // custom
-import { ICONS, SIZES } from "../../Constants";
+import { COLORS, ICONS, SIZES } from "../../Constants";
 import { styles } from "./styles";
 
 export type SelectCustomPhotoProps = {
@@ -87,10 +87,18 @@ const SelectCustomPhoto = ({
         <BottomSheetView style={styles.modalCtr}>
           <View style={styles.iconsCtr}>
             <TouchableOpacity style={styles.icons} onPress={openCamera}>
-              {ICONS.Camera({ width: iconSize, height: iconSize })}
+              {ICONS.Camera({
+                width: iconSize,
+                height: iconSize,
+                color: COLORS.PRIMARY.PURPLE,
+              })}
             </TouchableOpacity>
             <TouchableOpacity style={styles.icons} onPress={openGallery}>
-              {ICONS.Gallery({ width: iconSize, height: iconSize })}
+              {ICONS.Gallery({
+                width: iconSize,
+                height: iconSize,
+                color: COLORS.PRIMARY.PURPLE,
+              })}
             </TouchableOpacity>
           </View>
         </BottomSheetView>

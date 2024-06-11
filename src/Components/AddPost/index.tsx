@@ -63,7 +63,7 @@ const AddPost = ({
           createdOn: Timestamp.now(),
           photo,
           noOfComments: 0,
-          noOfLikes: 0,
+          likedByUsersId: [],
           userName: firstName && lastName ? firstName + " " + lastName : "",
           userPhoto,
         });

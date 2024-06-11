@@ -7,6 +7,7 @@ export type UserPostProps = {
     photo: string;
     noOfLikes: string | number;
     noOfComments: string | number;
+    isLiked: boolean;
   };
   handleCommentsPress: () => void;
   handleLikesPress: () => void;

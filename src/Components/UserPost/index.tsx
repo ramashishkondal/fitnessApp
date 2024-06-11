@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Text, View, Image } from "react-native";
+import React from "react";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { UserPostProps } from "./types";
-import { ICONS } from "../../Constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { COLORS, ICONS } from "../../Constants";
 
-const iconSize = {
-  width: 14,
-  height: 14,
+const icon = {
+  width: 16,
+  height: 16,
+  color: COLORS.SECONDARY.GREY,
 };
 
 const UserPost = ({
@@ -19,6 +19,7 @@ const UserPost = ({
     photo,
     postedOn,
     userPhoto,
+    isLiked,
   },
   handleCommentsPress,
   handleLikesPress,
@@ -29,21 +30,27 @@ const UserPost = ({
       <View style={styles.userInfoCtr}>
         <Image source={{ uri: userPhoto }} style={styles.userPhoto} />
         <View style={styles.userTextCtr}>
-          <Text>{userName}</Text>
+          <Text style={styles.userNameText}>{userName}</Text>
           <Text>{postedOn}</Text>
         </View>
       </View>
       <Text style={styles.captionText}>{caption}</Text>
       <Image source={{ uri: photo }} style={styles.photo} />
       <View style={styles.likesAndCommentsCtr}>
-        <TouchableOpacity onPress={handleLikesPress}>
-          {ICONS.HeartLike(iconSize)}
+        <TouchableOpacity onPress={handleLikesPress} style={styles.likeCtr}>
+          {ICONS.HeartLike({
+            ...icon,
+            color: isLiked ? COLORS.PRIMARY.PURPLE : COLORS.SECONDARY.GREY,
+          })}
+          <Text style={styles.likesText}>{noOfLikes}</Text>
         </TouchableOpacity>
-        <Text style={styles.likesText}>{noOfLikes}</Text>
-        <TouchableOpacity onPress={handleCommentsPress}>
-          {ICONS.Comment(iconSize)}
+        <TouchableOpacity
+          onPress={handleCommentsPress}
+          style={styles.commentCtr}
+        >
+          {ICONS.Comment(icon)}
+          <Text style={styles.likesText}>{noOfComments}</Text>
         </TouchableOpacity>
-        <Text style={styles.likesText}>{noOfComments}</Text>
       </View>
     </View>
   );

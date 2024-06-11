@@ -9,6 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { AddPost, Story, UserPost, WithModal } from "../../../Components";
 import { Post, addLikes, firebaseDB } from "../../../Utils/userUtils";
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import { useAppSelector } from "../../../Redux/Store";
 
 const postSignSize = {
   width: 20,
@@ -21,9 +22,16 @@ const dummyStoryData = [
 ];
 
 const Community = () => {
-  const [modalVisible, setModalVisible] = useState(false);
   const handleAddStory = () => setModalVisible(true);
+
+  // useState
+  const [modalVisible, setModalVisible] = useState(false);
   const [postsData, setPostsData] = useState<Post[]>();
+
+  // redux use
+  const { id: userId } = useAppSelector((state) => state.User.data);
+
+  // useEffect
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
@@ -79,23 +87,33 @@ const Community = () => {
         /> */}
         {postsData
           ? postsData?.map((val) => {
+              const isLiked = val.likedByUsersId.includes(userId!);
               return (
                 <UserPost
                   postData={{
                     caption: val.caption,
                     noOfComments: val.noOfComments,
-                    noOfLikes: val.noOfLikes,
+                    noOfLikes: val.likedByUsersId?.length ?? 0,
                     photo: val.photo,
                     postedOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
                       .toDate()
                       .toDateString(),
                     userName: val.userName,
                     userPhoto: val.userPhoto,
+                    isLiked,
                   }}
                   handleCommentsPress={() => {}}
                   handleLikesPress={() => {
-                    console.log("postId", val.postId);
-                    addLikes(val.noOfLikes + 1, val.postId);
+                    // console.log("postId", val.postId);
+                    // addLikes(val.noOfLikes + 1, val.postId);
+                    if (isLiked) {
+                      addLikes(
+                        val.postId,
+                        val.likedByUsersId.filter((value) => value !== userId)
+                      );
+                    } else {
+                      addLikes(val.postId, val.likedByUsersId.concat(userId!));
+                    }
                   }}
                 />
               );

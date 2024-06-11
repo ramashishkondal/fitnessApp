@@ -16,7 +16,6 @@ type SelectAvatarsProps = {
   setPhoto: React.Dispatch<React.SetStateAction<string>>;
 };
 const SelectAvatars = ({ photo, setPhoto }: SelectAvatarsProps) => {
-  // const [selectedItem, setSelectedItem] = useState("");
   const renderItem: ListRenderItem<{
     icon: React.ReactNode;
     name: string;

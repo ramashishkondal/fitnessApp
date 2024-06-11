@@ -22,7 +22,6 @@ const DetailsCompleted = () => {
   const {
     data: { password, ...user },
   } = useAppSelector((state) => state.User);
-  const dispatch = useAppDispatch();
   const handleSubmit = async () => {
     if (user.email !== null && password !== "") {
       const userCredentials = await createUser(user.email, password);
@@ -34,10 +33,10 @@ const DetailsCompleted = () => {
       await reference.putFile(user.photo!);
       const url = await reference.getDownloadURL();
       console.log("the url is -", url);
-      dispatch(updateUserData({ photo: url }));
       if (userCredentials !== undefined) {
+        user.photo = url;
         user.id = userCredentials.user.uid;
-        storeUserData(user, userCredentials);
+        await storeUserData(user, userCredentials);
       }
     }
   };
