@@ -39,7 +39,6 @@ export const storeUserData = async (
   userId: FirebaseAuthTypes.UserCredential["user"]["uid"]
 ) => {
   try {
-    console.log(user);
     await firestore()
       .collection("users")
       .doc("byId")
@@ -103,6 +102,7 @@ export const storePost = async (post: Post) => {
     console.log(e);
   }
 };
+
 export const storePostComment = async (postId: string, comment: Comment) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
@@ -110,6 +110,15 @@ export const storePostComment = async (postId: string, comment: Comment) => {
     .update({
       comments: firestore.FieldValue.arrayUnion(comment),
     });
+};
+
+export const getPost = async (postId: string) => {
+  const snapshot = await firestore()
+    .collection(firebaseDB.collections.posts)
+    .doc(postId)
+    .get();
+  console.log("post data", snapshot.data());
+  return snapshot.data();
 };
 
 export const getAllPost = async () => {

@@ -1,26 +1,19 @@
 // libs
-import React, {
-  Dispatch,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
+
+// 3rd party libs
+import { Timestamp } from "@react-native-firebase/firestore";
 
 // custom
 import { useAppSelector } from "../../Redux/Store";
 import CustomButton from "../CustomButton";
 import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
-import { styles } from "./styles";
 import { storePostComment } from "../../Utils/userUtils";
-import { Timestamp } from "@react-native-firebase/firestore";
+import { AddCommentProps } from "./type";
+import { styles } from "./styles";
 
-const AddComment = ({
-  setModalVisible,
-  postId,
-}: {
-  postId: string;
-  setModalVisible: Dispatch<SetStateAction<boolean>>;
-}) => {
+const AddComment = ({ setModalVisible, postId }: AddCommentProps) => {
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(

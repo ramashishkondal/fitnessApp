@@ -1,6 +1,12 @@
 // libs
 import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // custom
 import { styles } from "./styles";
@@ -13,15 +19,11 @@ import {
   UserPost,
   WithModal,
 } from "../../../Components";
-import {
-  Post,
-  addLikes,
-  firebaseDB,
-  storePostComment,
-} from "../../../Utils/userUtils";
+import { addLikes, firebaseDB } from "../../../Utils/userUtils";
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import { useAppSelector } from "../../../Redux/Store";
 import { CommunityProps } from "../../../Defs/navigators";
+import { Post } from "../../../Defs";
 
 const postSignSize = {
   width: 20,
@@ -84,36 +86,42 @@ const Community = ({ navigation }: CommunityProps) => {
           ? postsData?.map((val) => {
               const isLiked = val.likedByUsersId.includes(userId!);
               return (
-                <UserPost
-                  postData={{
-                    caption: val.caption,
-                    noOfComments: val.comments?.length,
-                    noOfLikes: val.likedByUsersId?.length ?? 0,
-                    photo: val.photo,
-                    postedOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
-                      .toDate()
-                      .toDateString(),
-                    userName: val.userName,
-                    userPhoto: val.userPhoto,
-                    isLiked,
-                    id: val.postId!,
-                  }}
-                  goToPostScreen={goToPostScreen(val.postId!)}
-                  handleCommentsPress={() => {
-                    postId.current = val.postId;
-                    setCommentModalVisible(true);
-                  }}
-                  handleLikesPress={() => {
-                    if (isLiked) {
-                      addLikes(
-                        val.postId!,
-                        val.likedByUsersId.filter((value) => value !== userId)
-                      );
-                    } else {
-                      addLikes(val.postId!, val.likedByUsersId.concat(userId!));
-                    }
-                  }}
-                />
+                <Pressable onPress={goToPostScreen(val.postId!)}>
+                  <UserPost
+                    postData={{
+                      caption: val.caption,
+                      noOfComments: val.comments?.length,
+                      noOfLikes: val.likedByUsersId?.length ?? 0,
+                      photo: val.photo,
+                      postedOn: Timestamp.fromMillis(
+                        val.createdOn.seconds * 1000
+                      )
+                        .toDate()
+                        .toDateString(),
+                      userName: val.userName,
+                      userPhoto: val.userPhoto,
+                      isLiked,
+                      id: val.postId!,
+                    }}
+                    handleCommentsPress={() => {
+                      postId.current = val.postId;
+                      setCommentModalVisible(true);
+                    }}
+                    handleLikesPress={() => {
+                      if (isLiked) {
+                        addLikes(
+                          val.postId!,
+                          val.likedByUsersId.filter((value) => value !== userId)
+                        );
+                      } else {
+                        addLikes(
+                          val.postId!,
+                          val.likedByUsersId.concat(userId!)
+                        );
+                      }
+                    }}
+                  />
+                </Pressable>
               );
             })
           : null}

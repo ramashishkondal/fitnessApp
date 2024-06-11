@@ -23,14 +23,12 @@ const UserPost = ({
     postedOn,
     userPhoto,
     isLiked,
-    id,
   },
-  goToPostScreen,
   handleCommentsPress,
   handleLikesPress,
 }: UserPostProps) => {
   return (
-    <TouchableOpacity style={styles.parent} onPress={goToPostScreen}>
+    <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
         <Image source={{ uri: userPhoto }} style={styles.userPhoto} />
         <View style={styles.userTextCtr}>
@@ -56,7 +54,7 @@ const UserPost = ({
           <Text style={styles.likesText}>{noOfComments}</Text>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

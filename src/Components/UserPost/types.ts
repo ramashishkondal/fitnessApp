@@ -12,5 +12,4 @@ export type UserPostProps = {
   };
   handleCommentsPress: () => void;
   handleLikesPress: () => void;
-  goToPostScreen: () => void;
 };
