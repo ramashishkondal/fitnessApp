@@ -15,6 +15,8 @@ import {
   AddGender,
   DetailsCompleted,
   ForgotPassword,
+  AddFirstName,
+  AddLastName,
 } from "../Screens/OnboardingScreens";
 import { CustomHeader } from "../Components";
 import { onboardingStackParamList } from "../Defs";
@@ -31,6 +33,8 @@ const OnboardingNav = () => {
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="AddEmail" component={AddEmail} />
       <Stack.Screen name="AddPassword" component={AddPassword} />
+      <Stack.Screen name="AddFirstName" component={AddFirstName} />
+      <Stack.Screen name="AddLastName" component={AddLastName} />
       <Stack.Screen name="AddFingerprint" component={AddFingerprint} />
       <Stack.Screen name="AddProfilePicture" component={AddProfilePicture} />
       <Stack.Screen name="AddPreferences" component={AddPreferences} />

@@ -66,7 +66,7 @@ export const STRING = {
       "Thanks for taking your time to create account with us. Now this is the fun part, let's explore the app",
   },
   HOME_SCREEN: {
-    TITLE: "Good Morning,",
+    TITLE: "Good",
     DESCRIPTION:
       "Eat the right amount of food and stay hydrated through the day",
     MORE_DETAILS: "More details",
@@ -98,4 +98,7 @@ export const STRING = {
       2: "steps today",
     },
   },
+  COMMUNITY:{
+    TITLE:"Community"
+  }
 };

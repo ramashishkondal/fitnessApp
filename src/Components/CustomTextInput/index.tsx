@@ -11,9 +11,10 @@ export type CustomTextInputProps = {
   onChangeText?: (
     text: string
   ) => void | React.Dispatch<React.SetStateAction<string>>;
-  icon?: any;
+  icon?: React.ReactNode;
   autoFocus?: boolean;
   hasError?: boolean;
+  value?: string;
 };
 
 const CustomTextInput = React.memo(
@@ -26,6 +27,7 @@ const CustomTextInput = React.memo(
     icon,
     autoFocus,
     hasError,
+    value,
   }: CustomTextInputProps) => {
     return (
       <Animated.View
@@ -45,6 +47,7 @@ const CustomTextInput = React.memo(
           autoCapitalize="none"
           autoCorrect={false}
           autoFocus={autoFocus}
+          value={value}
         />
       </Animated.View>
     );

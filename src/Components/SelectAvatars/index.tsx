@@ -1,5 +1,5 @@
 // libs
-import React, { useState } from "react";
+import React from "react";
 import { FlatList, ListRenderItem } from "react-native";
 
 // custom
@@ -16,8 +16,10 @@ type SelectAvatarsProps = {
   setPhoto: React.Dispatch<React.SetStateAction<string>>;
 };
 const SelectAvatars = ({ photo, setPhoto }: SelectAvatarsProps) => {
-  // const [selectedItem, setSelectedItem] = useState("");
-  const renderItem: ListRenderItem<any> = ({ item }) => (
+  const renderItem: ListRenderItem<{
+    icon: React.ReactNode;
+    name: string;
+  }> = ({ item }) => (
     <Avatar item={item} selectedItem={photo} setSelectedItem={setPhoto} />
   );
   return (

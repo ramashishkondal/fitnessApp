@@ -6,7 +6,7 @@ import { PieChart } from "react-native-gifted-charts";
 // custom
 import {
   NutritionHeaderRight,
-  AddFoodModal,
+  WithModal,
   PieChartInfoItem,
   NutritionStats,
   DietDataFlatList,
@@ -14,21 +14,25 @@ import {
 import { COLORS } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
 import { styles } from "./styles";
+import { useAppSelector } from "../../../Redux/Store";
 
+const pieData3 = [
+  { value: 63, color: COLORS.SECONDARY.ORANGE, text: "" },
+  { value: 37, color: COLORS.PRIMARY.LIGHT_PURPLE },
+];
+const pieData2 = [
+  { value: 30, color: COLORS.PRIMARY.PURPLE, text: "" },
+  { value: 70, color: COLORS.PRIMARY.LIGHT_PURPLE },
+];
+const pieData1 = [
+  { value: 27, color: COLORS.SECONDARY.CYAN, text: "" },
+  { value: 73, color: COLORS.PRIMARY.LIGHT_PURPLE },
+];
 const Nutrition = ({ navigation }: NutritionProps) => {
-  const pieData3 = [
-    { value: 63, color: COLORS.SECONDARY.ORANGE, text: "" },
-    { value: 37, color: COLORS.PRIMARY.LIGHT_PURPLE },
-  ];
-  const pieData2 = [
-    { value: 30, color: COLORS.PRIMARY.PURPLE, text: "" },
-    { value: 70, color: COLORS.PRIMARY.LIGHT_PURPLE },
-  ];
-  const pieData1 = [
-    { value: 27, color: COLORS.SECONDARY.CYAN, text: "" },
-    { value: 73, color: COLORS.PRIMARY.LIGHT_PURPLE },
-  ];
   const [modalVisible, setModalVisible] = useState(false);
+  const { nutrition: caloriesBurned } = useAppSelector(
+    (state) => state.health.value
+  );
   const handleOnPress = () => setModalVisible(true);
   const headerRight = () => (
     <NutritionHeaderRight handleOnPress={handleOnPress} />
@@ -41,7 +45,8 @@ const Nutrition = ({ navigation }: NutritionProps) => {
   return (
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
-        You burned <Text style={styles.calorieText}>300</Text> calories today
+        You burned <Text style={styles.calorieText}>{caloriesBurned}</Text>{" "}
+        calories today
       </Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
@@ -121,10 +126,9 @@ const Nutrition = ({ navigation }: NutritionProps) => {
           color: COLORS.SECONDARY.ORANGE,
         }}
       />
-      <AddFoodModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
+      <WithModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <Text>1231s</Text>
+      </WithModal>
       <DietDataFlatList />
     </ScrollView>
   );

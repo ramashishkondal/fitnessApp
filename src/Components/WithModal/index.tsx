@@ -1,13 +1,17 @@
 // libs
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 
 // custom
-import { AddFoodModalProps } from "./types";
+import { WithModalProps } from "./types";
 import { styles } from "./styles";
 
-const AddFoodModal = ({ modalVisible, setModalVisible }: AddFoodModalProps) => {
+const WithModal = ({
+  modalVisible,
+  setModalVisible,
+  children,
+}: WithModalProps) => {
   return (
     <Modal
       visible={modalVisible}
@@ -17,18 +21,21 @@ const AddFoodModal = ({ modalVisible, setModalVisible }: AddFoodModalProps) => {
         setModalVisible(false);
       }}
       onTouchOutside={() => setModalVisible(false)}
-      style={{ paddingVertical: "25%", paddingHorizontal: "5%" }}
+      style={{
+        paddingVertical: "15%",
+        paddingHorizontal: "5%",
+      }}
       modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
+      rounded
     >
-      <ModalContent>
+      <ModalContent style={{ flex: 1 }}>
+        <View style={styles.horizontalLine} />
         <View style={styles.modalCtr}>
-          <View style={styles.horizontalLine} />
-          <View></View>
-          <Text>something</Text>
+          {children}
         </View>
       </ModalContent>
     </Modal>
   );
 };
 
-export default AddFoodModal;
+export default WithModal;

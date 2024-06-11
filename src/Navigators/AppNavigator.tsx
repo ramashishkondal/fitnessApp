@@ -42,7 +42,6 @@ const AppNavigator = () => {
         includeManuallyAdded: true, // optional
       },
       (err, results) => {
-        console.log(results);
         if (err || results.length === 0) {
           return;
         }

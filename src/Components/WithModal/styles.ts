@@ -2,18 +2,15 @@ import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../Constants";
 
 export const styles = StyleSheet.create({
-  parent: {
-    flex: 1,
-  },
   modalCtr: {
     minWidth: "100%",
     minHeight: "100%",
     backgroundColor: COLORS.SECONDARY.WHITE,
-    alignItems: "center",
+    // paddingVertical: 16,
   },
   iconsCtr: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    // flexDirection: "row",
+    // justifyContent: "space-around",
   },
   horizontalLineCtr: {
     alignItems: "center",
@@ -23,5 +20,6 @@ export const styles = StyleSheet.create({
     width: "45%",
     height: 5,
     borderRadius: SIZES.rounding3,
+    alignSelf: "center",
   },
 });

@@ -58,7 +58,7 @@ const WaterIntake = () => {
       </View>
       <View>
         <DataInfoCompare
-          doneItems={waterIntake}
+          doneItems={waterIntake * 250}
           total={noOfGlasses}
           doneItemsInfoName="Water Drank"
           doneItemsSuffix="ml"

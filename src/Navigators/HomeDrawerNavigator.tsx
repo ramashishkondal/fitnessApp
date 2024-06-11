@@ -16,11 +16,22 @@ import { appDrawerParamList } from "../Defs";
 import { COLORS, ICONS, SIZES } from "../Constants";
 import { View } from "react-native";
 
-const Drawer = createDrawerNavigator<appDrawerParamList>();
 const iconSize = {
   width: 25,
   height: 25,
 };
+const drawerIcon = (
+  icon: (size: {
+    width: number;
+    height: number;
+    color?: string;
+  }) => React.ReactNode
+) => {
+  return () => {
+    return <View style={{ left: 20 }}>{icon(iconSize)}</View>;
+  };
+};
+const Drawer = createDrawerNavigator<appDrawerParamList>();
 const HomeNavigator = () => {
   const headerLeft = () => {
     return <CustomDrawerButton />;
@@ -33,10 +44,10 @@ const HomeNavigator = () => {
       initialRouteName="HomeScreen"
       screenOptions={{
         headerTitle: "",
+        headerShadowVisible: false,
         headerStyle: {
-          backgroundColor: COLORS.PRIMARY.DARK_GREY,
-          shadowOpacity: 0,
-          height: 130,
+          backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
+          height: 140,
         },
         headerLeft,
         drawerStyle: {
@@ -53,63 +64,47 @@ const HomeNavigator = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          drawerIcon: () => {
-            return <View style={{ left: 20 }}>{ICONS.Home(iconSize)}</View>;
-          },
+          drawerIcon: drawerIcon(ICONS.Home),
           headerRight,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY.DARK_GREY,
+            height: 140,
+          },
         }}
       />
       <Drawer.Screen
         name="Community"
         component={Community}
         options={{
-          drawerIcon: () => {
-            return (
-              <View style={{ left: 20 }}>{ICONS.Community(iconSize)}</View>
-            );
-          },
+          drawerIcon: drawerIcon(ICONS.Community),
         }}
       />
       <Drawer.Screen
         name="Notifications"
         component={Notifications}
         options={{
-          drawerIcon: () => {
-            return (
-              <View style={{ left: 20 }}>{ICONS.Notification(iconSize)}</View>
-            );
-          },
+          drawerIcon: drawerIcon(ICONS.Notification),
         }}
       />
       <Drawer.Screen
         name="Settings"
         component={Settings}
         options={{
-          drawerIcon: () => {
-            return <View style={{ left: 20 }}>{ICONS.Settings(iconSize)}</View>;
-          },
+          drawerIcon: drawerIcon(ICONS.Settings),
         }}
       />
       <Drawer.Screen
         name="GetPremium"
         component={GetPremium}
         options={{
-          drawerIcon: () => {
-            return <View style={{ left: 20 }}>{ICONS.Premium(iconSize)}</View>;
-          },
+          drawerIcon: drawerIcon(ICONS.Premium),
         }}
       />
       <Drawer.Screen
         name="LogOut"
         component={LogOut}
         options={{
-          drawerIcon: () => {
-            return (
-              <View style={{ left: 20, transform: [{ rotate: "180deg" }] }}>
-                {ICONS.LogOut(iconSize)}
-              </View>
-            );
-          },
+          drawerIcon: drawerIcon(ICONS.LogOut),
         }}
       />
     </Drawer.Navigator>

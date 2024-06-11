@@ -10,6 +10,7 @@ import { HomeScreenProps } from "../../../Defs";
 import { styles } from "./styles";
 import Animated, { SlideInLeft, Easing } from "react-native-reanimated";
 
+const currentTime = new Date().getHours();
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const goToNutrition = (): void => navigation.push("Nutrition");
   const goToWaterIntake = (): void => navigation.push("WaterIntake");
@@ -20,12 +21,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     nutrition,
     goal: { noOfGlasses, totalSteps, totalCalorie },
   } = useAppSelector((state) => state.health.value);
+  const { firstName } = useAppSelector((state) => state.User.data);
   return (
     <Animated.View
       style={styles.parent}
       entering={SlideInLeft.easing(Easing.ease)}
     >
-      <Text style={styles.titleText}>{STRING.HOME_SCREEN.TITLE}</Text>
+      <Text style={styles.titleText}>
+        {STRING.HOME_SCREEN.TITLE} {currentTime > 13 ? "Evening" : "Morning"}{" "}
+        {firstName}
+      </Text>
       <Text style={styles.descriptionText}>
         {STRING.HOME_SCREEN.DESCRIPTION}
       </Text>
