@@ -105,6 +105,9 @@ export const STRING = {
     TITLE: "Create a Post",
     CAPTION: "Add a Caption",
   },
+  ADD_Comment: {
+    TITLE: "Create Comment",
+  },
   CUSTOM_HOME_DETAILS_CARD: {
     BUTTON_TEXT_WARNING: "WARNING",
     BUTTON_TEXT_SAFE: "On",
