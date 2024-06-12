@@ -26,7 +26,7 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalVisible, postId }) => {
   // functions
   const handlePost = async () => {
     try {
-      if (userId !== null && userPhoto !== null) {
+      if (userId !== null) {
         setIsLoading(true);
         await storePostComment(postId, {
           userName: firstName + " " + lastName,

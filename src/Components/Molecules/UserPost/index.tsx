@@ -1,11 +1,13 @@
 // libs
 import React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 
 // custom
 import { styles } from "./styles";
 import { UserPostProps } from "./types";
-import { COLORS, ICONS } from "../../../Constants";
+import { COLORS, ICONS, SIZES } from "../../../Constants";
+import { CustomImage, DescriptionText } from "../../Atoms";
+import { getTimePassed } from "../../../Utils/commonUtils";
 
 const icon = {
   width: 16,
@@ -20,7 +22,7 @@ const UserPost = ({
     noOfComments,
     noOfLikes,
     photo,
-    postedOn,
+    timeSincePostedInMillis,
     userPhoto,
     isLiked,
   },
@@ -30,14 +32,25 @@ const UserPost = ({
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
-        <Image source={{ uri: userPhoto }} style={styles.userPhoto} />
+        <CustomImage
+          source={{ uri: userPhoto }}
+          imageStyle={styles.userPhoto}
+        />
         <View style={styles.userTextCtr}>
           <Text style={styles.userNameText}>{userName}</Text>
-          <Text>{postedOn}</Text>
+          <DescriptionText
+            text={getTimePassed(timeSincePostedInMillis)}
+            textStyle={{ fontSize: SIZES.font11, textAlign: "left" }}
+          />
         </View>
       </View>
       <Text style={styles.captionText}>{caption}</Text>
-      <Image source={{ uri: photo }} style={styles.photo} />
+      <CustomImage
+        source={{ uri: photo }}
+        parentStyle={styles.photo}
+        imageStyle={{ borderRadius: SIZES.rounding2 }}
+        activityIndicatorSize={"large"}
+      />
       <View style={styles.likesAndCommentsCtr}>
         <TouchableOpacity onPress={handleLikesPress} style={styles.likeCtr}>
           {ICONS.HeartLike({

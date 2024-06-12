@@ -37,4 +37,5 @@ export {
   UserPost,
   WithModal,
   WithOnboarding,
+  AllPosts,
 } from "./Molecules";

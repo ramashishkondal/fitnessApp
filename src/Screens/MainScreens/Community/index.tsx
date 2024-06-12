@@ -1,7 +1,6 @@
 // libs
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Pressable,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -9,23 +8,24 @@ import {
   FlatList,
 } from "react-native";
 
-// 3rd party
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
-
 // custom
-import { ICONS, STRING } from "../../../Constants";
 import {
-  AddComment,
   AddPost,
+  AllPosts,
+  SelectCustomPhoto,
   Story,
-  UserPost,
   WithModal,
 } from "../../../Components";
-import { addLikes, firebaseDB } from "../../../Utils/userUtils";
-import { useAppSelector } from "../../../Redux/Store";
+import { COLORS, ICONS, STRING } from "../../../Constants";
 import { CommunityProps } from "../../../Defs/navigators";
-import { Post } from "../../../Defs";
 import { styles } from "./styles";
+import {
+  firebaseDB,
+  getAllStoriesData,
+  storeStory,
+} from "../../../Utils/userUtils";
+import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 
 const postSignSize = {
   width: 20,
@@ -38,115 +38,104 @@ const dummyStoryData = [
 ];
 
 const Community: React.FC<CommunityProps> = ({ navigation }) => {
-  const handleAddStory = () => setPostModalVisible(true);
-  const postId = useRef<string>();
-  const goToPostScreen = (postId: string) => {
-    return () => navigation.navigate("PostScreen", { postId });
-  };
-
   // state use
   const [postModalVisible, setPostModalVisible] = useState(false);
-  const [commentModalVisible, setCommentModalVisible] = useState(false);
-  const [postsData, setPostsData] = useState<Post[]>();
+  const [storyModalVisible, setStoryModalVisible] = useState(false);
+  const [story, setStory] = useState<string>();
+  const [storiesData, setStoriesData] = useState();
 
   // redux use
-  const { id: userId } = useAppSelector((state) => state.User.data);
+  const { firstName, lastName, photo } = useAppSelector(
+    (state) => state.User.data
+  );
+
+  // ref use
+  const postIdRef = useRef<string>();
 
   // effect use
   useEffect(() => {
+    if (story) {
+      storeStory({
+        storyUrl: story,
+        userName: firstName + " " + lastName,
+        userPhoto: photo,
+      });
+    }
+  }, [story]);
+
+  useEffect(() => {
     const unsubscribe = firestore()
-      .collection(firebaseDB.collections.posts)
-      .orderBy("createdOn", "desc")
+      .collection(firebaseDB.collections.stories)
       .onSnapshot((snapshot) => {
         const data = snapshot.docs;
-        const x = data.map((val) => val.data()) as Post[];
-        console.log(x);
-        setPostsData(x);
+        const x = data.map((val) => val.data());
+        setStoriesData(x);
       });
-
     return () => unsubscribe();
   }, []);
 
+  // functions
+  const goToPostScreen = (postId: string) => {
+    return () => navigation.navigate("PostScreen", { postId: postId });
+  };
+  const handleAddStory = () => setPostModalVisible(true);
+
   return (
-    <ScrollView style={styles.parent}>
-      <View style={styles.titleCtr}>
-        <Text style={styles.titleText}>{STRING.COMMUNITY.TITLE}</Text>
-        <TouchableOpacity onPress={handleAddStory} style={styles.iconCtr}>
-          {ICONS.PostSign(postSignSize)}
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        data={dummyStoryData}
-        renderItem={({ item }) => <Story photo={item} />}
-        horizontal
-        style={{ marginVertical: 24 }}
+    <>
+      <ScrollView style={styles.parent} showsVerticalScrollIndicator={false}>
+        <View style={styles.titleCtr}>
+          <Text style={styles.titleText}>{STRING.COMMUNITY.TITLE}</Text>
+          <TouchableOpacity onPress={handleAddStory} style={styles.iconCtr}>
+            {ICONS.PostSign(postSignSize)}
+          </TouchableOpacity>
+        </View>
+        <WithModal
+          modalVisible={postModalVisible}
+          setModalVisible={setPostModalVisible}
+        >
+          <AddPost setModalVisible={setPostModalVisible} />
+        </WithModal>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Story
+              photo={
+                "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA3gMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EABsQAQEBAAIDAAAAAAAAAAAAAAABESExQWGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APYlXEwAWcAAAFRTACqgESqAFAEwxQEwilBKGGAGGKCBhgCFgAB9Bo7OAAFAAAAAAAAAAACkARQEAAAATo00CgAgANCgAAAAAAAAAAAAAACCggqABpegEoAIAAIDcUAAAAABQEAAAAAAABAAC0qaBTQAEAAQCgA3FAAAAAAAAAAEBRDQANBPK1ABABUAAABFQBIAOioAoAAAAACAABaBqABaIAAACKACAAAAgAJb6B0WGkoCocgYqHILUKAFQtABAVAADQA4EAFQAAAQAAAQAdCAC6agC6miA1qIAAAAgAAAAAAAAAGggAAIAADYaAAAAAAgKgAQwAAAAAAQFQwBUAAADSiAAA2gARQAKAIAAAAigCACpQBQAAAEADyAAgAJQB//2Q=="
+              }
+              onPress={() => setStoryModalVisible(true)}
+            />
+            <TouchableOpacity
+              style={{ position: "absolute" }}
+              onPress={() => {
+                setStoryModalVisible(true);
+                console.log(storyModalVisible);
+              }}
+            >
+              {ICONS.Plus({
+                width: 20,
+                height: 20,
+                color: COLORS.SECONDARY.ORANGE,
+              })}
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={storiesData}
+            renderItem={({ item }) => <Story photo={item.userPhoto} />}
+            horizontal
+            style={{ marginVertical: 24 }}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <AllPosts goToPostScreen={goToPostScreen} postIdRef={postIdRef} />
+      </ScrollView>
+      <SelectCustomPhoto
+        modalVisible={storyModalVisible}
+        setModalVisible={setStoryModalVisible}
+        setPhoto={setStory}
+        parentStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
+        BottomSheetModalStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
+        mediaType="mixed"
       />
-
-      <View>
-        {postsData
-          ? postsData?.map((val) => {
-              const isLiked = val.likedByUsersId.includes(userId!);
-              return (
-                <Pressable
-                  onPress={goToPostScreen(val.postId!)}
-                  key={val.postId}
-                >
-                  <UserPost
-                    postData={{
-                      caption: val.caption,
-                      noOfComments: val.comments?.length,
-                      noOfLikes: val.likedByUsersId?.length ?? 0,
-                      photo: val.photo,
-                      postedOn: Timestamp.fromMillis(
-                        val.createdOn.seconds * 1000
-                      )
-                        .toDate()
-                        .toDateString(),
-                      userName: val.userName,
-                      userPhoto: val.userPhoto,
-                      isLiked,
-                      id: val.postId!,
-                    }}
-                    handleCommentsPress={() => {
-                      postId.current = val.postId;
-                      setCommentModalVisible(true);
-                    }}
-                    handleLikesPress={() => {
-                      if (isLiked) {
-                        addLikes(
-                          val.postId!,
-                          val.likedByUsersId.filter((value) => value !== userId)
-                        );
-                      } else {
-                        addLikes(
-                          val.postId!,
-                          val.likedByUsersId.concat(userId!)
-                        );
-                      }
-                    }}
-                  />
-                </Pressable>
-              );
-            })
-          : null}
-      </View>
-      <WithModal
-        modalVisible={postModalVisible}
-        setModalVisible={setPostModalVisible}
-      >
-        <AddPost setModalVisible={setPostModalVisible} />
-      </WithModal>
-      <WithModal
-        modalVisible={commentModalVisible}
-        setModalVisible={setCommentModalVisible}
-      >
-        <AddComment
-          setModalVisible={setCommentModalVisible}
-          postId={postId.current!}
-        />
-      </WithModal>
-    </ScrollView>
+    </>
   );
 };
 

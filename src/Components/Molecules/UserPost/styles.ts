@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     borderRadius: SIZES.rounding2,
     padding: 20,
     marginBottom: 16,
+    paddingHorizontal: 24,
   },
   userInfoCtr: {
     flexDirection: "row",
@@ -29,10 +30,8 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
   },
   photo: {
-    width: "100%",
-    minHeight: 300,
-    maxHeight: 400,
-    borderRadius: SIZES.rounding2,
+    height: 300,
+    flex: 1,
   },
   likesText: {
     marginHorizontal: 8,

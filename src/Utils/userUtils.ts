@@ -9,6 +9,7 @@ export const firebaseDB = {
   collections: {
     users: "users",
     posts: "posts",
+    stories: "stories",
   },
   documents: {
     users: {
@@ -18,6 +19,7 @@ export const firebaseDB = {
     posts: {
       allIds: "allIds",
     },
+    stories: {},
   },
 };
 
@@ -128,7 +130,9 @@ export const getAllPost = async () => {
       .get();
     const data = snapshot.docs;
     return data.map((val) => val.data()) as Post[];
-  } catch {}
+  } catch (e) {
+    console.log("error with getting posts ", e);
+  }
 };
 
 export const addLikes = async (
@@ -141,4 +145,47 @@ export const addLikes = async (
     .update({
       likedByUsersId: likedByUsersId,
     });
+};
+
+// story
+
+type Story = {
+  id?: string;
+  storyUrl: string;
+  userName: string;
+  userPhoto: string;
+};
+
+export const storeStory = async (story: Story) => {
+  try {
+    const newStoryId = story.id ?? uuidv4();
+    const reference = storage().ref(
+      "media/" + "stories/" + newStoryId + "/" + "photo"
+    );
+    await reference.putFile(story.storyUrl);
+    const url = await reference.getDownloadURL();
+
+    await firestore()
+      .collection(firebaseDB.collections.stories)
+      .doc(newStoryId)
+      .set({
+        ...story,
+        id: newStoryId,
+        storyUrl: url,
+      });
+  } catch (e) {
+    console.log("error posting story", e);
+  }
+};
+
+export const getAllStoriesData = async () => {
+  try {
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.stories)
+      .get();
+    const data = snapshot.docs;
+    return data.map((val) => val.data()) as Story[];
+  } catch (e) {
+    console.log("error with getting stories ", e);
+  }
 };

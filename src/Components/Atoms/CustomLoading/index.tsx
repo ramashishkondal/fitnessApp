@@ -9,8 +9,9 @@ import { COLORS } from "../../../Constants";
 const CustomLoading: React.FC<CustomLoadingProps> = ({
   color = COLORS.SECONDARY.WHITE,
   style,
+  size = "small",
 }) => {
-  return <ActivityIndicator size={"small"} color={color} style={style} />;
+  return <ActivityIndicator size={size} color={color} style={style} />;
 };
 
 export default CustomLoading;

@@ -2,7 +2,7 @@ export type UserPostProps = {
   postData: {
     userPhoto: string;
     userName: string;
-    postedOn: string;
+    timeSincePostedInMillis: number;
     caption: string;
     photo: string;
     noOfLikes: string | number;

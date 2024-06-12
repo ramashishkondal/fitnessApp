@@ -1,6 +1,6 @@
 //libs
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 // custom
 import {
@@ -30,7 +30,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigation }) => {
         text={STRING.LANDING_PAGE.TITLE_DESCRIPTION}
         textStyle={SPACING.mh2}
       />
-      <CustomImage source={IMAGES.LANDING_PAGE} imageStyle={SPACING.mt3} />
+      <Image source={IMAGES.LANDING_PAGE} style={styles.image} />
       <CustomButton
         title={STRING.LANDING_PAGE.BUTTON_TEXT}
         parentStyle={SPACING.mt4}

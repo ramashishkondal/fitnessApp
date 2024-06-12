@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
 
 export const styles = StyleSheet.create({
+  parent: { alignItems: "center", justifyContent: "center" },
   image: {
-    width: SIZES.width,
-    height: SIZES.height / 3.5,
+    width: "100%",
+    height: "100%",
   },
 });

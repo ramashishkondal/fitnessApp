@@ -1,22 +1,40 @@
 // libs
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 
 // custom
 import { CommentProps } from "./types";
 import { styles } from "./styles";
+import { CustomImage, DescriptionText } from "../../Atoms";
+import { getTimePassed } from "../../../Utils/commonUtils";
+import { SIZES } from "../../../Constants";
 
-const Comment = ({
-  comment: { userPhoto, userName, createdOn, comment },
-}: CommentProps) => {
+const Comment: React.FC<CommentProps> = ({
+  comment: { userPhoto, userName, commentCreatedOnInMillis, comment },
+}) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        paddingVertical: 16,
+      }}
+    >
       <View style={styles.userInfoCtr}>
-        <Image source={{ uri: userPhoto }} style={styles.userPhoto} />
+        <View style={{ alignItems: "center" }}>
+          <CustomImage
+            source={{ uri: userPhoto }}
+            imageStyle={styles.userPhoto}
+          />
+        </View>
         <View style={styles.userTextCtr}>
           <Text style={styles.userNameText}>{userName}</Text>
-          <Text>{createdOn}</Text>
-          <Text>{comment}</Text>
+          <DescriptionText
+            text={getTimePassed(commentCreatedOnInMillis)}
+            textStyle={{ fontSize: SIZES.font11, textAlign: "left" }}
+          />
+          <View>
+            <Text style={styles.commentText}>{comment}</Text>
+          </View>
         </View>
       </View>
     </View>

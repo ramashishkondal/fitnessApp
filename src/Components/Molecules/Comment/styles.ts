@@ -18,6 +18,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   userNameText: {
-    fontWeight: SIZES.fontBold1,
+    fontSize: SIZES.font13,
+    fontWeight: SIZES.fontBold0,
+  },
+  commentText: {
+    fontSize: SIZES.font12,
+    marginTop: 20,
   },
 });

@@ -6,9 +6,9 @@ import { Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { StoryProps } from "./types";
 
-const Story = ({ photo }: StoryProps) => {
+const Story: React.FC<StoryProps> = ({ photo, onPress }) => {
   return (
-    <TouchableOpacity style={styles.parent}>
+    <TouchableOpacity style={styles.parent} onPress={onPress}>
       <Image source={{ uri: photo }} style={styles.photo} />
     </TouchableOpacity>
   );

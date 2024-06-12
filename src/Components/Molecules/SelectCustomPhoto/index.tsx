@@ -1,6 +1,6 @@
 // libs
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 
 // 3rd party
 import {
@@ -13,6 +13,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
+  useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 
 // custom
@@ -26,10 +27,13 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   modalVisible,
   setModalVisible,
   setPhoto,
+  parentStyle,
+  BottomSheetModalStyle,
+  mediaType = "photo",
 }) => {
   // constants
   const options: CameraOptions = {
-    mediaType: "photo",
+    mediaType,
   };
 
   // effect use
@@ -81,11 +85,33 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         onDismiss={onDismiss}
-        backgroundStyle={{
-          borderRadius: SIZES.rounding3,
+        backdropComponent={function SheetBackdrop() {
+          const sheet = useBottomSheetModal();
+          return (
+            <Pressable
+              style={{
+                flex: 1,
+                height: "100%",
+                width: "100%",
+                backgroundColor: "",
+                position: "absolute",
+              }}
+              onPress={() => {
+                sheet.dismissAll();
+              }}
+            />
+          );
         }}
+        backgroundStyle={[
+          {
+            borderRadius: SIZES.rounding3,
+            shadowColor: "red",
+            shadowRadius: 100,
+          },
+          BottomSheetModalStyle,
+        ]}
       >
-        <BottomSheetView style={styles.modalCtr}>
+        <BottomSheetView style={[styles.modalCtr, parentStyle]}>
           <View style={styles.iconsCtr}>
             <TouchableOpacity style={styles.icons} onPress={openCamera}>
               {ICONS.Camera({
