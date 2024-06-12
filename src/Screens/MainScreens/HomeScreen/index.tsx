@@ -11,10 +11,9 @@ import { styles } from "./styles";
 import Animated, { SlideInLeft, Easing } from "react-native-reanimated";
 
 const currentTime = new Date().getHours();
-const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const goToNutrition = (): void => navigation.push("Nutrition");
-  const goToWaterIntake = (): void => navigation.push("WaterIntake");
-  const goToDailySteps = (): void => navigation.push("DailySteps");
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  // redux use
   const {
     todaysSteps,
     waterIntake,
@@ -22,6 +21,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     goal: { noOfGlasses, totalSteps, totalCalorie },
   } = useAppSelector((state) => state.health.value);
   const { firstName } = useAppSelector((state) => state.User.data);
+
+  // functions
+  const goToNutrition = (): void => navigation.push("Nutrition");
+  const goToWaterIntake = (): void => navigation.push("WaterIntake");
+  const goToDailySteps = (): void => navigation.push("DailySteps");
+
   return (
     <Animated.View
       style={styles.parent}

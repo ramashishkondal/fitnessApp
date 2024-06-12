@@ -1,6 +1,11 @@
+// libs
 import React, { useState } from "react";
 import { Alert, Text, View } from "react-native";
-import { styles } from "./styles";
+
+// 3rd party
+import auth from "@react-native-firebase/auth";
+
+// custom
 import {
   CustomTextInput,
   CustomErrorText,
@@ -8,12 +13,15 @@ import {
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { isValidEmail } from "../../../Utils/checkValidity";
-import auth from "@react-native-firebase/auth";
 import { ForgotPasswordProps } from "../../../Defs/navigators";
+import { styles } from "./styles";
 
-const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
+  // state use
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // functions
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
@@ -27,6 +35,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.parent}>
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>

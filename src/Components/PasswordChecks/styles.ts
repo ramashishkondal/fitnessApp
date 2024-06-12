@@ -25,6 +25,5 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: SIZES.font12,
-    color: "#A9ABC2",
   },
 });

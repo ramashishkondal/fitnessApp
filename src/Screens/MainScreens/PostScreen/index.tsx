@@ -11,7 +11,7 @@ import { Comment, UserPost } from "../../../Components";
 import { useAppSelector } from "../../../Redux/Store";
 import { COLORS, SIZES } from "../../../Constants";
 
-const PostScreen = ({ route }: PostScreenProps) => {
+const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
   // sate use
   const [postData, setPostData] = useState<Post>();
 
@@ -76,7 +76,13 @@ const PostScreen = ({ route }: PostScreenProps) => {
               }}
             />
           </View>
-          <View style={{ flex: 2, paddingBottom: SIZES.height / 10, paddingHorizontal:24 }}>
+          <View
+            style={{
+              flex: 2,
+              paddingBottom: SIZES.height / 10,
+              paddingHorizontal: 24,
+            }}
+          >
             <Text>Comments</Text>
             {postData.comments.map((val) => {
               return (

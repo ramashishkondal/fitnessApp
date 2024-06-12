@@ -16,19 +16,25 @@ import CustomButton from "../CustomButton";
 import { COLORS, ICONS, SIZES, STRING } from "../../Constants";
 import { storePost } from "../../Utils/userUtils";
 import { useAppSelector } from "../../Redux/Store";
-import { styles } from "./styles";
 import { AddPostProps } from "./types";
+import { styles } from "./styles";
 
-const AddPost = ({ setModalVisible }: AddPostProps) => {
-  const [photo, setPhoto] = useState("");
-  const [caption, setCaption] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(
-    (state) => state.User.data
-  );
+const AddPost: React.FC<AddPostProps> = ({ setModalVisible }) => {
+  // constants
   const options: CameraOptions = {
     mediaType: "photo",
   };
+  // state use
+  const [photo, setPhoto] = useState("");
+  const [caption, setCaption] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
+  const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(
+    (state) => state.User.data
+  );
+
+  // functions
   const openCamera = async () => {
     try {
       const result: ImagePickerResponse = await launchCamera(options);

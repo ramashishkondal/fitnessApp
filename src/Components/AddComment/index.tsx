@@ -1,5 +1,5 @@
 // libs
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 
 // 3rd party libs
@@ -13,18 +13,23 @@ import { storePostComment } from "../../Utils/userUtils";
 import { AddCommentProps } from "./type";
 import { styles } from "./styles";
 
-const AddComment = ({ setModalVisible, postId }: AddCommentProps) => {
+const AddComment: React.FC<AddCommentProps> = ({ setModalVisible, postId }) => {
+  // state ues
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
   const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(
     (state) => state.User.data
   );
+
+  // functions
   const handlePost = async () => {
     try {
       if (userId !== null && userPhoto !== null) {
         setIsLoading(true);
         await storePostComment(postId, {
-          userName: firstName! + " " + lastName!,
+          userName: firstName + " " + lastName,
           userPhoto,
           comment,
           createdOn: Timestamp.fromDate(new Date()),

@@ -14,28 +14,28 @@ export type appDrawerParamList = {
 };
 
 export type HomeScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "Home">
+  DrawerScreenProps<appDrawerParamList, "HomeScreen">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 export type NotificationsProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "Notifications">
+  DrawerScreenProps<appDrawerParamList, "Notifications">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 export type CommunityProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "Community">
+  DrawerScreenProps<appDrawerParamList, "Community">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 export type GetPremiumProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "GetPremium">
+  DrawerScreenProps<appDrawerParamList, "GetPremium">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 export type SettingsProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "Settings">
+  DrawerScreenProps<appDrawerParamList, "Settings">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 export type LogOutProps = CompositeScreenProps<
-  NativeStackScreenProps<homeStackParamList>,
-  DrawerScreenProps<appDrawerParamList, "LogOut">
+  DrawerScreenProps<appDrawerParamList, "LogOut">,
+  NativeStackScreenProps<homeStackParamList>
 >;
 
 // onboarding stack navigator
@@ -101,7 +101,7 @@ export type ForgotPasswordProps = NativeStackScreenProps<
 
 // home stack navigator
 export type homeStackParamList = {
-  HomeNavigator: undefined;
+  HomeNavigator: NavigatorScreenParams<appDrawerParamList>;
   Nutrition: undefined;
   WaterIntake: undefined;
   DailySteps: undefined;
@@ -113,7 +113,7 @@ export type NutritionProps = NativeStackScreenProps<
 >;
 export type HomeNavigatorProps = NativeStackScreenProps<
   homeStackParamList,
-  "HomeScreen"
+  "HomeNavigator"
 >;
 export type WaterIntakeProps = NativeStackScreenProps<
   homeStackParamList,

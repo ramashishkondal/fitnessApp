@@ -1,6 +1,6 @@
 // libs
 import React, { useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // custom
 import { ICONS, SPACING, STRING } from "../../../Constants";
@@ -9,8 +9,9 @@ import { AddGenderProps, User } from "../../../Defs";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { DescriptionText, HeadingText } from "../../../Components/Atoms";
 
-const AddGender = ({ navigation }: AddGenderProps) => {
+const AddGender: React.FC<AddGenderProps> = ({ navigation }) => {
   const [selectedGender, setSelectedGender] = useState<User["gender"] | null>(
     null
   );
@@ -30,7 +31,7 @@ const AddGender = ({ navigation }: AddGenderProps) => {
   };
   return (
     <View style={styles.parent}>
-      <Text style={styles.titleText}>{STRING.ADD_GENDER.TITLE}</Text>
+      <HeadingText text={STRING.ADD_GENDER.TITLE} textStyle={SPACING.mb5} />
       <View style={styles.genderCtr}>
         <View style={styles.genderCardsCtr}>
           <Card
@@ -47,12 +48,13 @@ const AddGender = ({ navigation }: AddGenderProps) => {
           />
         </View>
       </View>
-      <Text style={styles.descriptionText}>
-        {STRING.ADD_GENDER.DESCRIPTION}
-      </Text>
+      <DescriptionText
+        text={STRING.ADD_GENDER.DESCRIPTION}
+        textStyle={SPACING.m4}
+      />
       <CustomButton
         title={STRING.ADD_GENDER.BUTTON_TEXT}
-        parentStyle={SPACING.mtMedium}
+        parentStyle={SPACING.m3}
         onPress={handleSubmit}
       />
     </View>

@@ -4,10 +4,11 @@ import { ActivityIndicator } from "react-native";
 import { CustomLoadingProps } from "./types";
 import { COLORS } from "../../Constants";
 
-const CustomLoading = ({
+const CustomLoading: React.FC<CustomLoadingProps> = ({
   color = COLORS.SECONDARY.WHITE,
-}: CustomLoadingProps) => {
-  return <ActivityIndicator size={"small"} color={color} />;
+  style,
+}) => {
+  return <ActivityIndicator size={"small"} color={color} style={style} />;
 };
 
 export default CustomLoading;

@@ -6,12 +6,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from "react-native";
 
+// 3rd party
+import firestore, { Timestamp } from "@react-native-firebase/firestore";
+
 // custom
-import { styles } from "./styles";
 import { ICONS, STRING } from "../../../Constants";
-import { FlatList } from "react-native-gesture-handler";
 import {
   AddComment,
   AddPost,
@@ -20,10 +22,10 @@ import {
   WithModal,
 } from "../../../Components";
 import { addLikes, firebaseDB } from "../../../Utils/userUtils";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import { useAppSelector } from "../../../Redux/Store";
 import { CommunityProps } from "../../../Defs/navigators";
 import { Post } from "../../../Defs";
+import { styles } from "./styles";
 
 const postSignSize = {
   width: 20,
@@ -35,14 +37,14 @@ const dummyStoryData = [
   "https://i.pinimg.com/736x/f7/27/88/f72788284c5f79abe0b744aad2255bae.jpg",
 ];
 
-const Community = ({ navigation }: CommunityProps) => {
+const Community: React.FC<CommunityProps> = ({ navigation }) => {
   const handleAddStory = () => setPostModalVisible(true);
   const postId = useRef<string>();
   const goToPostScreen = (postId: string) => {
     return () => navigation.navigate("PostScreen", { postId });
   };
 
-  // useState
+  // state use
   const [postModalVisible, setPostModalVisible] = useState(false);
   const [commentModalVisible, setCommentModalVisible] = useState(false);
   const [postsData, setPostsData] = useState<Post[]>();
@@ -50,7 +52,7 @@ const Community = ({ navigation }: CommunityProps) => {
   // redux use
   const { id: userId } = useAppSelector((state) => state.User.data);
 
-  // useEffect
+  // effect use
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
@@ -86,7 +88,10 @@ const Community = ({ navigation }: CommunityProps) => {
           ? postsData?.map((val) => {
               const isLiked = val.likedByUsersId.includes(userId!);
               return (
-                <Pressable onPress={goToPostScreen(val.postId!)}>
+                <Pressable
+                  onPress={goToPostScreen(val.postId!)}
+                  key={val.postId}
+                >
                   <UserPost
                     postData={{
                       caption: val.caption,

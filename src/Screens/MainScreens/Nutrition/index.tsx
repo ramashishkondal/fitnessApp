@@ -1,6 +1,8 @@
 // libs
 import React, { useEffect, useState } from "react";
 import { Text, View, ScrollView } from "react-native";
+
+// 3rd party
 import { PieChart } from "react-native-gifted-charts";
 
 // custom
@@ -28,20 +30,29 @@ const pieData1 = [
   { value: 27, color: COLORS.SECONDARY.CYAN, text: "" },
   { value: 73, color: COLORS.PRIMARY.LIGHT_PURPLE },
 ];
-const Nutrition = ({ navigation }: NutritionProps) => {
+
+const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
+  // state use
   const [modalVisible, setModalVisible] = useState(false);
+
+  // redux use
   const { nutrition: caloriesBurned } = useAppSelector(
     (state) => state.health.value
   );
-  const handleOnPress = () => setModalVisible(true);
-  const headerRight = () => (
-    <NutritionHeaderRight handleOnPress={handleOnPress} />
-  );
+
+  // effect use
   useEffect(() => {
     navigation.setOptions({
       headerRight,
     });
   }, []);
+
+  // functions
+  const handleOnPress = () => setModalVisible(true);
+  const headerRight = () => (
+    <NutritionHeaderRight handleOnPress={handleOnPress} />
+  );
+
   return (
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>

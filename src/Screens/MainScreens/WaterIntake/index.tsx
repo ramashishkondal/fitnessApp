@@ -8,18 +8,18 @@ import {
   DataInfoCompare,
   PerformanceCard,
 } from "../../../Components";
+import WarningLabel from "../../../Components/WarningLabel";
 import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 import { updateHealthData } from "../../../Redux/Reducers/health";
 import { ICONS } from "../../../Constants";
 import { styles } from "./styles";
-import WarningLabel from "./atoms/WarningLabel";
 
 const simleySize = {
   width: 21,
   height: 21,
 };
 
-const WaterIntake = () => {
+const WaterIntake: React.FC = () => {
   const {
     waterIntake,
     goal: { noOfGlasses },

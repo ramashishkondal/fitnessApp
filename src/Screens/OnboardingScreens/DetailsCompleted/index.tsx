@@ -1,6 +1,8 @@
 // libs
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+
+// 3rd party
 import storage from "@react-native-firebase/storage";
 
 // custom
@@ -10,7 +12,7 @@ import { COLORS, ICONS, STRING } from "../../../Constants";
 import { styles } from "./style";
 import { CustomLoading } from "../../../Components";
 
-const size = {
+const logoSize = {
   width: 40,
   height: 40,
 };
@@ -54,7 +56,7 @@ const DetailsCompleted = () => {
   return (
     <View style={styles.parent}>
       <View style={styles.childCtr}>
-        <View style={styles.logoCtr}>{ICONS.Logo(size)}</View>
+        <View style={styles.logoCtr}>{ICONS.Logo(logoSize)}</View>
         <Text style={styles.titleText}>{STRING.DETAILS_COMPLETED.TITLE}</Text>
         <Text style={styles.titleDescriptionText}>
           {STRING.DETAILS_COMPLETED.TITLE_DESCRIPTION}

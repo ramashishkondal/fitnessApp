@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SIZES } from "../../../../../Constants";
+import { SIZES } from "../../Constants";
 
 export const styles = StyleSheet.create({
   parent: {

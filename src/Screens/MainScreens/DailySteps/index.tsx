@@ -5,14 +5,14 @@ import { LineChart, PieChart } from "react-native-gifted-charts";
 import AppleHealthKit, { HealthValue } from "react-native-health";
 
 // custom
+import { useAppSelector } from "../../../Redux/Store";
 import { DataInfoCompare, PerformanceCard } from "../../../Components";
 import { COLORS, ICONS, SIZES, SPACING, STRING } from "../../../Constants";
-import InsidePieChart from "./atoms/InsidePieChart";
-import { styles } from "./styles";
-import { useAppSelector } from "../../../Redux/Store";
+import InsidePieChart from "../../../Components/InsidePieChart";
 import { getPercentage, getStartOfDay } from "../../../Utils/commonUtils";
+import { styles } from "./styles";
 
-const DailySteps = () => {
+const DailySteps: React.FC = () => {
   const [lineData, setLineData] = useState<HealthValue[]>([]);
   const {
     todaysSteps,

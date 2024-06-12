@@ -19,9 +19,10 @@ export const styles = StyleSheet.create({
   titleDescriptionText: {
     fontSize: SIZES.font12,
     fontWeight: SIZES.fontBold2,
-    color: "#AFB1C7",
-    textAlign: "center",
     ...SPACING.mt1,
+  },
+  notNowParent: {
+    backgroundColor: "",
   },
   notNowText: {
     color: COLORS.PRIMARY.PURPLE,

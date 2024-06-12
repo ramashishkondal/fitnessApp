@@ -1,6 +1,6 @@
 // libs
 import React, { useCallback, useRef, useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // custom
 import {
@@ -15,8 +15,9 @@ import { isValidEmail } from "../../../Utils/checkValidity";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { HeadingText } from "../../../Components/Atoms";
 
-const AddEmail = ({ navigation }: AddEmailLogInProps) => {
+const AddEmail: React.FC<AddEmailLogInProps> = ({ navigation }) => {
   // state use
   const [email, setEmail] = useState<string>("");
 
@@ -49,7 +50,7 @@ const AddEmail = ({ navigation }: AddEmailLogInProps) => {
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
-      <Text style={styles.titleText}>{STRING.ADD_EMAIL.TITLE}</Text>
+      <HeadingText text={STRING.ADD_EMAIL.TITLE} />
       <CustomTextInput
         placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
         parentStyle={[SPACING.mh2, SPACING.mt5]}

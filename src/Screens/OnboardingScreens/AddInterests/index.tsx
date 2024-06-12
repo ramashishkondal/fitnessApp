@@ -4,12 +4,13 @@ import { View, FlatList, Text, ListRenderItem } from "react-native";
 
 //custom
 import { CustomButton, InterestItem } from "../../../Components";
-import { STRING } from "../../../Constants";
+import { SPACING, STRING } from "../../../Constants";
 import { styles } from "./styles";
 import { INTERESTS } from "../../../Constants/icons";
 import { AddInterestsProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { HeadingText } from "../../../Components/Atoms";
 
 const iconSize = {
   width: 35,
@@ -37,9 +38,11 @@ const renderItem: ListRenderItem<{
   icon: React.ReactNode;
   selected: boolean;
 }> = ({ item }) => <InterestItem item={item} />;
-const AddInterests = ({ navigation }: AddInterestsProps) => {
+const AddInterests: React.FC<AddInterestsProps> = ({ navigation }) => {
+  // redux use
   const dispatch = useAppDispatch();
 
+  // functions
   const goToAddGender = () => {
     const selectedItems: string[] = INTERESETS.map((item) => {
       if (item.selected) {
@@ -51,7 +54,7 @@ const AddInterests = ({ navigation }: AddInterestsProps) => {
   };
   return (
     <View style={styles.parent}>
-      <Text style={styles.titleText}>{STRING.ADD_INTERESTS.TITLE}</Text>
+      <HeadingText text={STRING.ADD_INTERESTS.TITLE} textStyle={SPACING.mh2} />
       <FlatList
         data={INTERESETS}
         renderItem={renderItem}
