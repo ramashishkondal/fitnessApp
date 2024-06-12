@@ -1,13 +1,17 @@
 // libs
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 // custom
-import { CustomButton, WithOnboarding } from "../../../Components";
-import { COLORS, ICONS, SPACING, STRING } from "../../../Constants";
+import {
+  CustomButton,
+  WithOnboarding,
+  DescriptionText,
+  HeadingText,
+} from "../../../Components";
+import { ICONS, SPACING, STRING } from "../../../Constants";
 import { styles } from "./styles";
 import { AddProfilePictureProps } from "../../../Defs";
-import { DescriptionText, HeadingText } from "../../../Components/Atoms";
 
 const fingerprintSize = 75;
 const AddFingerprint: React.FC<AddProfilePictureProps> = ({ navigation }) => {

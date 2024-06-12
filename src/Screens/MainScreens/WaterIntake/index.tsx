@@ -7,8 +7,8 @@ import {
   CustomGlass,
   DataInfoCompare,
   PerformanceCard,
+  WarningLabel,
 } from "../../../Components";
-import WarningLabel from "../../../Components/WarningLabel";
 import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 import { updateHealthData } from "../../../Redux/Reducers/health";
 import { ICONS } from "../../../Constants";

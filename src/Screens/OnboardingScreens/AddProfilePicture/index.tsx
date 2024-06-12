@@ -7,13 +7,14 @@ import {
   CustomButton,
   SelectAvatars,
   SelectCustomPhoto,
+  DescriptionText,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { AddProfilePictureProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
 import { styles } from "./styles";
-import { DescriptionText, HeadingText } from "../../../Components/Atoms";
 
 const AddProfilePicture: React.FC<AddProfilePictureProps> = ({
   navigation,

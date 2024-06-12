@@ -4,11 +4,12 @@ import { View, Text, TouchableOpacity } from "react-native";
 
 // custom
 import {
+  CustomButton,
+  WithOnboarding,
   CustomImage,
   DescriptionText,
   HeadingText,
-} from "../../../Components/Atoms";
-import { CustomButton, WithOnboarding } from "../../../Components";
+} from "../../../Components";
 import { SPACING, STRING, IMAGES } from "../../../Constants/";
 import { LandingPageProps } from "../../../Defs";
 import { styles } from "./styles";

@@ -1,12 +1,13 @@
 // libs
 import React, { useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // custom
 import {
   CustomButton,
   CustomTextInput,
   WithOnboarding,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { AddEmailLogInProps } from "../../../Defs";
@@ -14,7 +15,6 @@ import { isValidName } from "../../../Utils/checkValidity";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
-import { HeadingText } from "../../../Components/Atoms";
 
 const AddLastName: React.FC<AddEmailLogInProps> = ({ navigation }) => {
   const [lastName, setLastName] = useState<string>("");

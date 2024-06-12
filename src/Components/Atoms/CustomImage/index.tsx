@@ -1,6 +1,9 @@
+// libs
 import React from "react";
-import { CustomImageProps } from "./types";
 import { Image } from "react-native";
+
+// custom
+import { CustomImageProps } from "./types";
 import { styles } from "./styles";
 
 const CustomImage: React.FC<CustomImageProps> = ({ source, imageStyle }) => {

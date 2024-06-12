@@ -9,8 +9,8 @@ import {
   CustomTextInput,
   PasswordChecks,
   WithOnboarding,
+  HeadingText,
 } from "../../../Components";
-import { HeadingText } from "../../../Components/Atoms";
 import { SPACING, STRING } from "../../../Constants";
 import { isValidPassword } from "../../../Utils/checkValidity";
 import { AddPasswordProps } from "../../../Defs";

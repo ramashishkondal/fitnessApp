@@ -1,16 +1,15 @@
 // libs
 import React from "react";
-import { View, FlatList, Text, ListRenderItem } from "react-native";
+import { View, FlatList, ListRenderItem } from "react-native";
 
 //custom
-import { CustomButton, InterestItem } from "../../../Components";
+import { CustomButton, InterestItem, HeadingText } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { styles } from "./styles";
 import { INTERESTS } from "../../../Constants/icons";
 import { AddInterestsProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
-import { HeadingText } from "../../../Components/Atoms";
 
 const iconSize = {
   width: 35,

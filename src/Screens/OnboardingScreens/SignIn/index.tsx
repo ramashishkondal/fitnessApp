@@ -1,6 +1,8 @@
 // libs
 import React, { useState } from "react";
 import { Alert, Text, View, TouchableOpacity } from "react-native";
+
+// 3rd party
 import auth from "@react-native-firebase/auth";
 import { FirestoreError } from "@react-native-firebase/firestore";
 
@@ -12,20 +14,24 @@ import {
   SocialLogins,
   CustomErrorText,
 } from "../../../Components";
-import { STRING, ICONS, SPACING, COLORS } from "../../../Constants";
-import { isValidEmail } from "../../../Utils/checkValidity";
-import { SignInProps, User } from "../../../Defs";
-import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
+import { isValidEmail } from "../../../Utils/checkValidity";
 import { getUserData } from "../../../Utils/userUtils";
+import { SignInProps } from "../../../Defs";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { STRING, ICONS, SPACING, COLORS } from "../../../Constants";
+import { styles } from "./styles";
 
 const SignIn = ({ navigation }: SignInProps) => {
+  // state use
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // redux use
   const dispatch = useAppDispatch();
 
+  // functions
   const handleSignIn = async () => {
     try {
       setIsLoading(true);

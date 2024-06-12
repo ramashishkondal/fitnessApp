@@ -1,5 +1,8 @@
+// libs
 import React from "react";
 import { Text } from "react-native";
+
+// custom
 import { HeadingTextProps } from "./types";
 import { styles } from "./styles";
 

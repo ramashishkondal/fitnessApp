@@ -1,5 +1,8 @@
+// libs
 import React from "react";
 import { Text } from "react-native";
+
+// custom
 import { DescriptionTextProps } from "./types";
 import { styles } from "./styles";
 

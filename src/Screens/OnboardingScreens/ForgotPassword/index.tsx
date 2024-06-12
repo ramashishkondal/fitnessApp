@@ -1,6 +1,6 @@
 // libs
 import React, { useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // 3rd party
 import auth from "@react-native-firebase/auth";
@@ -10,6 +10,7 @@ import {
   CustomTextInput,
   CustomErrorText,
   CustomButton,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { isValidEmail } from "../../../Utils/checkValidity";
@@ -39,7 +40,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
   return (
     <View style={styles.parent}>
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>
-        <Text style={styles.titleText}>{STRING.ADD_EMAIL.TITLE}</Text>
+        <HeadingText text={STRING.ADD_EMAIL.TITLE} />
         <CustomTextInput
           placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
           parentStyle={[SPACING.mh2, SPACING.mt5]}

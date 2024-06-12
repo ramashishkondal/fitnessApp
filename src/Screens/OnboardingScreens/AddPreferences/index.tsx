@@ -7,13 +7,14 @@ import {
   CustomButton,
   PreferenceItem,
   WithOnboarding,
+  DescriptionText,
+  HeadingText,
 } from "../../../Components";
 import { styles } from "./styles";
 import { SPACING, STRING } from "../../../Constants";
 import { AddPreferencesProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
-import { DescriptionText, HeadingText } from "../../../Components/Atoms";
 
 const AddPreferences: React.FC<AddPreferencesProps> = ({ navigation }) => {
   // ref use

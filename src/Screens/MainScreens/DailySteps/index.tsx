@@ -8,7 +8,7 @@ import AppleHealthKit, { HealthValue } from "react-native-health";
 import { useAppSelector } from "../../../Redux/Store";
 import { DataInfoCompare, PerformanceCard } from "../../../Components";
 import { COLORS, ICONS, SIZES, SPACING, STRING } from "../../../Constants";
-import InsidePieChart from "../../../Components/InsidePieChart";
+import InsidePieChart from "../../../Components/Molecules/InsidePieChart";
 import { getPercentage, getStartOfDay } from "../../../Utils/commonUtils";
 import { styles } from "./styles";
 

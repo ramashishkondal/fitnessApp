@@ -3,13 +3,17 @@ import React, { useState } from "react";
 import { Alert, View } from "react-native";
 
 // custom
+import {
+  Card,
+  CustomButton,
+  DescriptionText,
+  HeadingText,
+} from "../../../Components";
 import { ICONS, SPACING, STRING } from "../../../Constants";
-import { Card, CustomButton } from "../../../Components";
 import { AddGenderProps, User } from "../../../Defs";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
-import { DescriptionText, HeadingText } from "../../../Components/Atoms";
 
 const AddGender: React.FC<AddGenderProps> = ({ navigation }) => {
   const [selectedGender, setSelectedGender] = useState<User["gender"] | null>(

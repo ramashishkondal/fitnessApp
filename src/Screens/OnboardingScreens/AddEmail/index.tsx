@@ -8,6 +8,7 @@ import {
   CustomErrorText,
   CustomTextInput,
   WithOnboarding,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { AddEmailLogInProps } from "../../../Defs";
@@ -15,7 +16,6 @@ import { isValidEmail } from "../../../Utils/checkValidity";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
-import { HeadingText } from "../../../Components/Atoms";
 
 const AddEmail: React.FC<AddEmailLogInProps> = ({ navigation }) => {
   // state use

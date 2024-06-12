@@ -7,10 +7,10 @@ import storage from "@react-native-firebase/storage";
 
 // custom
 import { useAppSelector } from "../../../Redux/Store";
+import { CustomLoading } from "../../../Components";
 import { storeUserData, createUser } from "../../../Utils/userUtils";
 import { COLORS, ICONS, STRING } from "../../../Constants";
 import { styles } from "./style";
-import { CustomLoading } from "../../../Components";
 
 const logoSize = {
   width: 40,
