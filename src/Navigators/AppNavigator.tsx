@@ -14,20 +14,21 @@ import {
   PostScreen,
   WaterIntake,
 } from "../Screens/MainScreens";
-import { homeStackParamList } from "../Defs/navigators";
+import { homeStackParamList } from "../Defs";
 import { COLORS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
 import { storeUserHealthData } from "../Utils/userUtils";
+import { Platform } from "react-native";
+import { date } from "../Utils/commonUtils";
 
 const Stack = createNativeStackNavigator<homeStackParamList>();
 
-const getStartOfDay = () => {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  return now;
-};
-
 const AppNavigator = () => {
+  // constants
+  const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
+  const endDate = date.today().toISOString();
+
+  // redux use
   const { id } = useAppSelector((state) => state.User.data);
   const { value: healthData } = useAppSelector((state) => state.health);
   const dispatch = useAppDispatch();
@@ -36,27 +37,27 @@ const AppNavigator = () => {
     dispatch(resetHealthData());
   }
 
-  const startDate = getStartOfDay().toISOString(); // Start of the current day
-  const endDate = new Date().toISOString();
-
   useEffect(() => {
-    AppleHealthKit.getActiveEnergyBurned(
-      {
-        startDate, // required
-        endDate,
-        includeManuallyAdded: true, // optional
-      },
-      (err, results) => {
-        if (err || results.length === 0) {
-          return;
+    if (Platform.OS === "ios") {
+      AppleHealthKit.getActiveEnergyBurned(
+        {
+          startDate, // required
+          endDate,
+          includeManuallyAdded: true, // optional
+        },
+        (err, results) => {
+          if (err || results.length === 0) {
+            return;
+          }
+          dispatch(
+            updateHealthData({
+              nutrition: results.reduce((acc, val) => acc + val.value, 0),
+            })
+          );
         }
-        dispatch(
-          updateHealthData({
-            nutrition: results.reduce((acc, val) => acc + val.value, 0),
-          })
-        );
-      }
-    );
+      );
+    } else {
+    }
   }, []);
   return (
     <Stack.Navigator

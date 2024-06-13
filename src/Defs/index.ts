@@ -1,4 +1,4 @@
-export {
+export type {
   AddEmailLogInProps,
   AddFingerprintProps,
   AddGenderProps,
@@ -26,4 +26,4 @@ export {
   homeStackParamList,
 } from "./navigators";
 
-export { User, HealthData, Comment, Post } from "./user";
+export type { User, HealthData, Comment, Post } from "./user";

@@ -1,7 +1,9 @@
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CompositeScreenProps } from "@react-navigation/native";
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 
 // app drawer navigator
 export type appDrawerParamList = {
@@ -64,7 +66,7 @@ export type SignInProps = NativeStackScreenProps<
 >;
 export type AddEmailLogInProps = NativeStackScreenProps<
   onboardingStackParamList,
-  "EmailLogIn"
+  "AddEmail"
 >;
 export type AddPasswordProps = NativeStackScreenProps<
   onboardingStackParamList,
@@ -72,7 +74,7 @@ export type AddPasswordProps = NativeStackScreenProps<
 >;
 export type AddFingerprintProps = NativeStackScreenProps<
   onboardingStackParamList,
-  "AddFingerprintProps"
+  "AddFingerprint"
 >;
 export type AddProfilePictureProps = NativeStackScreenProps<
   onboardingStackParamList,

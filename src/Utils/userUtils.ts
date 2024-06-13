@@ -149,14 +149,14 @@ export const addLikes = async (
 
 // story
 
-type Story = {
+export type StoryData = {
   id?: string;
   storyUrl: string;
   userName: string;
   userPhoto: string;
 };
 
-export const storeStory = async (story: Story) => {
+export const storeStory = async (story: StoryData) => {
   try {
     const newStoryId = story.id ?? uuidv4();
     const reference = storage().ref(
@@ -184,7 +184,7 @@ export const getAllStoriesData = async () => {
       .collection(firebaseDB.collections.stories)
       .get();
     const data = snapshot.docs;
-    return data.map((val) => val.data()) as Story[];
+    return data.map((val) => val.data()) as StoryData[][];
   } catch (e) {
     console.log("error with getting stories ", e);
   }

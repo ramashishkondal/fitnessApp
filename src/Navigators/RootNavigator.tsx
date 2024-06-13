@@ -1,5 +1,7 @@
 // libs
 import React, { useEffect, useState } from "react";
+
+// 3rd party
 import { NavigationContainer } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
 import AppleHealthKit, { HealthKitPermissions } from "react-native-health";
@@ -14,6 +16,7 @@ import { Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { updateHealthData } from "../Redux/Reducers/health";
 import { CustomLoading } from "../Components";
+import { date } from "../Utils/commonUtils";
 
 // iOS health kit permissions
 const permissions = {
@@ -27,47 +30,22 @@ const permissions = {
   },
 } as HealthKitPermissions;
 
+// android permissions
+const options = {
+  scopes: [Scopes.FITNESS_ACTIVITY_READ, Scopes.FITNESS_ACTIVITY_WRITE],
+};
+
 const RootNavigator = () => {
+  // state use
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<User>();
+
+  // redux use
   const dispatch = useDispatch();
 
-  const androidHealthSetup = async () => {
-    // android permissions
-    const options = {
-      scopes: [Scopes.FITNESS_ACTIVITY_READ, Scopes.FITNESS_ACTIVITY_WRITE],
-    };
-    try {
-      const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
-      if (authority === "denied") {
-        await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
-      }
-      if (!GoogleFit.isAuthorized) {
-        await GoogleFit.authorize(options);
-        dispatch(updateHealthData({ hasPermission: true })); // check for if user denies the permissions later in settings
-      }
-      const stepRes = await GoogleFit.getDailySteps(new Date());
-      dispatch(
-        updateHealthData({
-          todaysSteps: stepRes.filter(
-            (val) => val.source === "com.google.android.gms:estimated_steps"
-          )[0].steps[0].value,
-        })
-      );
-    } catch (e) {
-      console.log("Error encountered - ", e);
-    }
-  };
-
-  function onAuthStateChanged(userN: any) {
-    setUser(userN);
-    if (initializing) setInitializing(false);
-  }
+  // effect use
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-  useEffect(() => {
     if (Platform.OS !== "ios") {
       androidHealthSetup();
       console.log("android -----");
@@ -87,11 +65,51 @@ const RootNavigator = () => {
         });
       });
     }
+    return subscriber;
   }, []);
+
+  // functions
+  const androidHealthSetup = async () => {
+    try {
+      const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
+      if (authority === "denied") {
+        await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
+      }
+      if (!GoogleFit.isAuthorized) {
+        await GoogleFit.authorize(options);
+        dispatch(updateHealthData({ hasPermission: true })); // check for if user denies the permissions later in settings
+      }
+      const today = date.today();
+      const stepRes = await GoogleFit.getDailySteps(today);
+      const startDate = date.getStartOfDay(today);
+      const opt = {
+        startDate: startDate.toISOString(), // required ISO8601Timestamp
+        endDate: today.toISOString(), // required ISO8601Timestamp
+      };
+      const calories = await GoogleFit.getDailyCalorieSamples(opt);
+      dispatch(updateHealthData({ nutrition: ~~calories[0].calorie }));
+      dispatch(
+        updateHealthData({
+          todaysSteps: stepRes.filter(
+            (val) => val.source === "com.google.android.gms:estimated_steps"
+          )[0].steps[0].value,
+        })
+      );
+    } catch (e) {
+      console.log("Error encountered - ", e);
+    }
+  };
+
+  function onAuthStateChanged(userN: any) {
+    setUser(userN);
+    if (initializing) setInitializing(false);
+  }
+
   if (initializing) return <CustomLoading />;
+
   return (
     <NavigationContainer>
-      {!user ? <OnboardingNav /> : <AppNavigator />}
+      {user ? <AppNavigator /> : <OnboardingNav />}
     </NavigationContainer>
   );
 };

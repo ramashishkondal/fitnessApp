@@ -10,9 +10,14 @@ import AddComment from "../AddComment";
 import { AllPostsProps } from "./type";
 
 const AllPosts = ({ goToPostScreen, postIdRef }: AllPostsProps) => {
+  // state use
   const [postsData, setPostsData] = useState<Post[]>();
   const [commentModalVisible, setCommentModalVisible] = useState(false);
+
+  // redux use
   const { id: userId } = useAppSelector((state) => state.User.data);
+
+  // effect use
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)

@@ -1,3 +1,5 @@
+import { Timestamp } from "@react-native-firebase/firestore";
+
 export type User = {
   id: string | null;
   firstName: string;
