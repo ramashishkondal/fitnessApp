@@ -1,3 +1,4 @@
+import { MutableRefObject } from "react";
 import { StyleProp, ViewStyle } from "react-native";
 import { MediaType } from "react-native-image-picker";
 
@@ -10,4 +11,5 @@ export type SelectCustomPhotoProps = {
     Omit<ViewStyle, "position" | "left" | "right" | "top" | "bottom">
   >;
   mediaType?: MediaType;
+  type?: MutableRefObject<string | undefined>;
 };

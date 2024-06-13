@@ -14,8 +14,12 @@ export const styles = StyleSheet.create({
   },
   iconCtr: { padding: 10 },
   titleText: {
-    fontSize: SIZES.fontH3,
-    fontWeight: SIZES.fontBold1,
+    fontSize: SIZES.fontH4,
   },
   storiesCtr: {},
+  photo: {
+    width: 70,
+    height: 70,
+    borderRadius: 200,
+  },
 });

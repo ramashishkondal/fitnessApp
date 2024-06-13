@@ -4,11 +4,12 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 // custom
 import { useAppSelector } from "../../../Redux/Store";
-import { CustomHomeDetailsCard } from "../../../Components";
+import { CustomHomeDetailsCard, HeadingText } from "../../../Components";
 import { ICONS, STRING } from "../../../Constants";
 import { HomeScreenProps } from "../../../Defs";
 import { styles } from "./styles";
 import Animated, { SlideInLeft, Easing } from "react-native-reanimated";
+import { getPercentage } from "../../../Utils/commonUtils";
 
 const currentTime = new Date().getHours();
 
@@ -32,10 +33,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       style={styles.parent}
       entering={SlideInLeft.easing(Easing.ease)}
     >
-      <Text style={styles.titleText}>
-        {STRING.HOME_SCREEN.TITLE} {currentTime > 13 ? "Evening" : "Morning"}{" "}
-        {firstName}
-      </Text>
+      <HeadingText
+        text={`${STRING.HOME_SCREEN.TITLE} ${
+          currentTime > 13 ? "Evening" : "Morning"
+        }, ${firstName}`}
+        headingTextStyle={2}
+        textStyle={{ marginHorizontal: 36 }}
+      />
+
       <Text style={styles.descriptionText}>
         {STRING.HOME_SCREEN.DESCRIPTION}
       </Text>
@@ -54,7 +59,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             totalCalorie,
             STRING.HOME_SCREEN.CALORIES
           )}
-          markerPercentage={(nutrition / totalCalorie) * 100}
+          markerPercentage={getPercentage(nutrition, totalCalorie)}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.WATER}
@@ -65,7 +70,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             noOfGlasses,
             STRING.HOME_SCREEN.GLASSES
           )}
-          markerPercentage={(waterIntake / noOfGlasses) * 100}
+          markerPercentage={getPercentage(waterIntake, noOfGlasses)}
         />
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.DAILY_STEPS}
@@ -76,7 +81,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             totalSteps,
             STRING.HOME_SCREEN.STEPS
           )}
-          markerPercentage={(todaysSteps / totalSteps) * 100}
+          markerPercentage={getPercentage(todaysSteps, totalSteps)}
         />
       </View>
     </Animated.View>

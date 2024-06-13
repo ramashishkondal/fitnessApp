@@ -12,7 +12,7 @@ import {
   Notifications,
   Settings,
 } from "../Screens/MainScreens";
-import { appDrawerParamList } from "../Defs";
+import { homeDrawerParamList } from "../Defs";
 import { COLORS, ICONS, SIZES } from "../Constants";
 import { View } from "react-native";
 
@@ -31,7 +31,7 @@ const drawerIcon = (
     return <View style={{ left: 20 }}>{icon(iconSize)}</View>;
   };
 };
-const Drawer = createDrawerNavigator<appDrawerParamList>();
+const Drawer = createDrawerNavigator<homeDrawerParamList>();
 const HomeNavigator: React.FC = () => {
   const headerLeft = () => {
     return <CustomDrawerButton />;
@@ -58,6 +58,7 @@ const HomeNavigator: React.FC = () => {
         },
         drawerLabelStyle: { color: "black", fontSize: SIZES.font13 },
         drawerActiveTintColor: COLORS.PRIMARY.PURPLE,
+        drawerType: "front",
       }}
     >
       <Drawer.Screen

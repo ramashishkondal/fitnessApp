@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00AD86CF95B94607B3A87D76 /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBC89E41498049D9B49F33D4 /* NotoSans-Bold.ttf */; };
 		00E356F31AD99517003FC87E /* fitnessAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* fitnessAppTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -14,8 +15,10 @@
 		533F9E525D68E4AFCBE8EAC1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 87DF03EB8119A1B54E07ACB4 /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		93FEC4802C048EEF00DED5BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93FEC47F2C048EEF00DED5BD /* GoogleService-Info.plist */; };
+		959C986C961149BB9B5F31CA /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 312215CE1C9E4DD183C0B6EE /* NotoSans-Regular.ttf */; };
 		9B6E86B24BBDD23FE41723A0 /* Pods_fitnessApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E458168A7FBE175147C4D7B5 /* Pods_fitnessApp.framework */; };
 		B847EF2A67AB987E77F9E1C8 /* Pods_fitnessApp_fitnessAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F94A3C44044BF3876776C9B2 /* Pods_fitnessApp_fitnessAppTests.framework */; };
+		DA631E2989984FF68DBD063A /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53746CD8247D430BBCB27694 /* NotoSans-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +42,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = fitnessApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = fitnessApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = fitnessApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		312215CE1C9E4DD183C0B6EE /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSans-Regular.ttf"; path = "../src/Assets/fonts/NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-fitnessApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fitnessApp.debug.xcconfig"; path = "Target Support Files/Pods-fitnessApp/Pods-fitnessApp.debug.xcconfig"; sourceTree = "<group>"; };
+		53746CD8247D430BBCB27694 /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSans-Medium.ttf"; path = "../src/Assets/fonts/NotoSans-Medium.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-fitnessApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fitnessApp.release.xcconfig"; path = "Target Support Files/Pods-fitnessApp/Pods-fitnessApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-fitnessApp-fitnessAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fitnessApp-fitnessAppTests.debug.xcconfig"; path = "Target Support Files/Pods-fitnessApp-fitnessAppTests/Pods-fitnessApp-fitnessAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = fitnessApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +52,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-fitnessApp-fitnessAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fitnessApp-fitnessAppTests.release.xcconfig"; path = "Target Support Files/Pods-fitnessApp-fitnessAppTests/Pods-fitnessApp-fitnessAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		9307406E2C1062D2007D0AE7 /* fitnessApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fitnessApp.entitlements; path = fitnessApp/fitnessApp.entitlements; sourceTree = "<group>"; };
 		93FEC47F2C048EEF00DED5BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BBC89E41498049D9B49F33D4 /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSans-Bold.ttf"; path = "../src/Assets/fonts/NotoSans-Bold.ttf"; sourceTree = "<group>"; };
 		E458168A7FBE175147C4D7B5 /* Pods_fitnessApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_fitnessApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F94A3C44044BF3876776C9B2 /* Pods_fitnessApp_fitnessAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_fitnessApp_fitnessAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +138,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				ACB568A0750C41C3B777588D /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -145,6 +152,17 @@
 				00E356EE1AD99517003FC87E /* fitnessAppTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ACB568A0750C41C3B777588D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BBC89E41498049D9B49F33D4 /* NotoSans-Bold.ttf */,
+				53746CD8247D430BBCB27694 /* NotoSans-Medium.ttf */,
+				312215CE1C9E4DD183C0B6EE /* NotoSans-Regular.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -256,6 +274,9 @@
 				93FEC4802C048EEF00DED5BD /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				533F9E525D68E4AFCBE8EAC1 /* PrivacyInfo.xcprivacy in Resources */,
+				00AD86CF95B94607B3A87D76 /* NotoSans-Bold.ttf in Resources */,
+				DA631E2989984FF68DBD063A /* NotoSans-Medium.ttf in Resources */,
+				959C986C961149BB9B5F31CA /* NotoSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

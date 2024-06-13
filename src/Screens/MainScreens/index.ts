@@ -8,3 +8,4 @@ export { default as DailySteps } from "./DailySteps";
 export { default as Nutrition } from "./Nutrition";
 export { default as WaterIntake } from "./WaterIntake";
 export { default as PostScreen } from "./PostScreen";
+export { default as StoriesScreen } from "./StoriesScreen";

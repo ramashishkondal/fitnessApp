@@ -13,9 +13,9 @@ const CustomImage: React.FC<CustomImageProps> = ({
   imageStyle,
   activityIndicatorSize,
   parentStyle,
+  handleLoadEnd = () => {},
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   return (
     <View style={[styles.parent, parentStyle]}>
       {isLoading ? (
@@ -29,7 +29,10 @@ const CustomImage: React.FC<CustomImageProps> = ({
         source={source}
         style={[styles.image, imageStyle]}
         onLoadStart={() => setIsLoading(true)}
-        onLoadEnd={() => setIsLoading(false)}
+        onLoadEnd={() => {
+          setIsLoading(false);
+          handleLoadEnd();
+        }}
       />
     </View>
   );

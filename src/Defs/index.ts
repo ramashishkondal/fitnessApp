@@ -11,7 +11,8 @@ export type {
   HomeScreenProps,
   SignInProps,
   onboardingStackParamList,
-  appDrawerParamList,
+  StoriesScreenProps,
+  homeDrawerParamList,
   CommunityProps,
   DailyStepsProps,
   ForgotPasswordProps,
@@ -23,7 +24,7 @@ export type {
   PostScreenProps,
   SettingsProps,
   WaterIntakeProps,
-  homeStackParamList,
+  appStackParamList,
 } from "./navigators";
 
 export type { User, HealthData, Comment, Post } from "./user";

@@ -40,11 +40,15 @@ const UserPost = ({
           <Text style={styles.userNameText}>{userName}</Text>
           <DescriptionText
             text={getTimePassed(timeSincePostedInMillis)}
-            textStyle={{ fontSize: SIZES.font11, textAlign: "left" }}
+            textStyle={{ fontSize: SIZES.font10, textAlign: "left" }}
           />
         </View>
       </View>
-      <Text style={styles.captionText}>{caption}</Text>
+      {caption ? (
+        <Text style={styles.captionText}>{caption}</Text>
+      ) : (
+        <View style={{ marginVertical: 8 }} />
+      )}
       <CustomImage
         source={{ uri: photo }}
         parentStyle={styles.photo}

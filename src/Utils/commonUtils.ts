@@ -34,3 +34,37 @@ export const date = {
   getPreviousDayDate: (today: Date) =>
     new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1),
 };
+
+export type TimerId = string | number | NodeJS.Timeout | undefined;
+export class Timer {
+  callback: () => void;
+  remainingTime: number;
+  startTime: Date;
+  timerId: TimerId;
+
+  constructor(callback: () => void) {
+    this.callback = callback;
+    this.remainingTime = 1000;
+    this.startTime = new Date();
+    this.timerId = undefined;
+  }
+
+  pause = () => {
+    clearTimeout(this.timerId);
+    this.remainingTime -= new Date().getTime() - this.startTime.getTime();
+  };
+
+  resume: () => void = () => {
+    this.startTime = new Date();
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(this.callback, this.remainingTime);
+  };
+
+  start = (delay: number) => {
+    this.remainingTime = delay;
+    this.timerId = setTimeout(this.callback, this.remainingTime);
+  };
+  clear = () => {
+    clearTimeout(this.timerId);
+  };
+}

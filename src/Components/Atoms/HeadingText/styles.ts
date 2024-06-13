@@ -1,10 +1,15 @@
 import { StyleSheet } from "react-native";
 import { SIZES } from "../../../Constants";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
-  text: {
+  text1: {
     fontSize: SIZES.fontH5,
-    fontWeight: SIZES.fontBold1,
     textAlign: "center",
+    fontFamily: FONT_FAMILY.BOLD,
+  },
+  text2: {
+    fontSize: SIZES.fontH4,
+    fontFamily: FONT_FAMILY.BOLD,
   },
 });

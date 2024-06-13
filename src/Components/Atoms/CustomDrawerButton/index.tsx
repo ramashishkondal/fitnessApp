@@ -6,14 +6,14 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 // custom
-import { appDrawerParamList } from "../../../Defs/navigators";
+import { homeDrawerParamList } from "../../../Defs/navigators";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { ICONS } from "../../../Constants";
 import { styles } from "./styles";
 
 const CustomDrawerButton: React.FC = () => {
   // navigation hook
-  const navigation = useNavigation<DrawerNavigationProp<appDrawerParamList>>();
+  const navigation = useNavigation<DrawerNavigationProp<homeDrawerParamList>>();
 
   // functions
   const openDrawer = () => {
