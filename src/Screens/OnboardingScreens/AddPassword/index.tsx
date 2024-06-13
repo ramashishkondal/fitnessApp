@@ -1,7 +1,7 @@
 // libs
 import React, { useState } from "react";
 import { styles } from "./styles";
-import { Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // custom
 import {
@@ -9,6 +9,7 @@ import {
   CustomTextInput,
   PasswordChecks,
   WithOnboarding,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { isValidPassword } from "../../../Utils/checkValidity";
@@ -16,24 +17,33 @@ import { AddPasswordProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
-const AddPassword = ({ navigation }: AddPasswordProps) => {
+const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
+  // state use
   const [password, setPassword] = useState<string>("");
+
+  // redux use
   const dispatch = useAppDispatch();
 
+  // functions
   const handleSubmit = () => {
-    if (isValidPassword.checkAllValidations(password)) {
+    if (password === "") {
+      Alert.alert("Password cant be empty");
+    } else if (isValidPassword.checkAllValidations(password)) {
       dispatch(updateUserData({ password }));
       navigation.reset({
         routes: [{ name: "AddFirstName" }],
       });
+    } else {
+      Alert.alert(
+        "Invalid Password",
+        " Make sure your password is 8+ characters long and contains atleast 1 uppercase character and 1 number."
+      );
     }
   };
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh2]}>
-      <View style={styles.titleCtr}>
-        <Text style={styles.titleText}>{STRING.ADD_PASSWORD.TITLE}</Text>
-      </View>
+      <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
       <CustomTextInput
         placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}
         parentStyle={[[SPACING.mtMedium, SPACING.mh1]]}

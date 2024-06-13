@@ -1,55 +1,67 @@
 // libs
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, Platform } from "react-native";
 import { LineChart, PieChart } from "react-native-gifted-charts";
 import AppleHealthKit, { HealthValue } from "react-native-health";
 
 // custom
+import { useAppSelector } from "../../../Redux/Store";
 import { DataInfoCompare, PerformanceCard } from "../../../Components";
 import { COLORS, ICONS, SIZES, SPACING, STRING } from "../../../Constants";
-import InsidePieChart from "./atoms/InsidePieChart";
+import InsidePieChart from "../../../Components/Molecules/InsidePieChart";
+import { date, getPercentage } from "../../../Utils/commonUtils";
 import { styles } from "./styles";
-import { useAppSelector } from "../../../Redux/Store";
-import { getPercentage, getStartOfDay } from "../../../Utils/commonUtils";
 
-const DailySteps = () => {
+const DailySteps: React.FC = () => {
+  // constants
+  const today = date.today();
+  const todayMidnight = date.getStartOfDay(today);
+
+  // state use
   const [lineData, setLineData] = useState<HealthValue[]>([]);
+
+  // redux use
   const {
     todaysSteps,
     nutrition,
     goal: { totalSteps, totalCalorie },
   } = useAppSelector((state) => state.health.value);
-  useEffect(() => {
-    AppleHealthKit.getActiveEnergyBurned(
-      {
-        startDate,
-        endDate,
-        includeManuallyAdded: true,
-      },
-      (err, results) => {
-        console.log(results);
-        if (err || results.length === 0) {
-          return;
-        }
-        setLineData(
-          results
-            .slice(0)
-            .reverse()
-            .map((val) => ({
-              ...val,
-              value: Math.ceil(getPercentage(val.value, totalCalorie)),
-            }))
-        );
-      }
-    );
-  }, []);
-  const startDate = getStartOfDay().toISOString();
-  const endDate = new Date().toISOString();
+
+  // state dependent constants
   const stepsCompletionPercentage = ~~getPercentage(todaysSteps, totalSteps);
   const pieData = [
     { value: stepsCompletionPercentage, color: COLORS.PRIMARY.PURPLE },
     { value: 100 - stepsCompletionPercentage, color: COLORS.SECONDARY.WHITE },
   ];
+
+  // effect use
+  useEffect(() => {
+    if (Platform.OS === "ios") {
+      AppleHealthKit.getActiveEnergyBurned(
+        {
+          startDate: todayMidnight.toISOString(),
+          endDate: today.toISOString(),
+          includeManuallyAdded: true,
+        },
+        (err, results) => {
+          if (err || results.length === 0) {
+            return;
+          }
+          setLineData(
+            results
+              .slice(0)
+              .reverse()
+              .map((val) => ({
+                ...val,
+                value: Math.ceil(getPercentage(val.value, totalCalorie)),
+              }))
+          );
+        }
+      );
+    }
+  }, []);
+
+  // callback use
   const centerLabelComponent = useCallback(() => {
     return <InsidePieChart percentage={stepsCompletionPercentage} />;
   }, [stepsCompletionPercentage]);

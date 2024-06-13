@@ -9,11 +9,7 @@ export const styles = StyleSheet.create({
     paddingTop: 38,
   },
   titleText: {
-    textAlign: "center",
-    fontSize: SIZES.fontH5,
-    fontWeight: SIZES.fontBold1,
     ...SPACING.mt2,
-    ...SPACING.mh2,
   },
   flatListStyle: {
     ...SPACING.mtMedium,

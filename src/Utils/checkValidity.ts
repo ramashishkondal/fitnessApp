@@ -1,5 +1,5 @@
 const emailRegex = /^(?=.{1,256})(?=.{1,64}@.{1,255}$)[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-export const isValidEmail = (email: string) => RegExp(emailRegex).exec(email);
+export const isValidEmail = (email: string) => RegExp(emailRegex).test(email);
 
 export const isValidPassword = {
   lengthCheck: (password: string) => password.length >= 8,
@@ -12,5 +12,4 @@ export const isValidPassword = {
 };
 
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]*(?:[-' ][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
-export const isValidName = (name: string) => RegExp(nameRegex).exec(name);
-
+export const isValidName = (name: string) => RegExp(nameRegex).test(name);

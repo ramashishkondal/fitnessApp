@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants/commonStyles";
+import { COLORS, SIZES, SPACING } from "../../../Constants/commonStyles";
 import { RFValue } from "react-native-responsive-fontsize";
 
 export const styles = StyleSheet.create({
@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
   image: {
     width: RFValue(310),
     height: RFValue(210),
+    ...SPACING.mt3,
   },
   signInText1: {
     color: COLORS.SECONDARY.GREY,

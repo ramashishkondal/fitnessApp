@@ -8,12 +8,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY.GREY,
     paddingHorizontal: 38,
   },
-  titleText: {
-    textAlign: "center",
-    fontSize: SIZES.fontH5,
-    fontWeight: SIZES.fontBold1,
-    marginBottom: 40,
-  },
   genderCtr: {
     flexDirection: "row",
   },

@@ -32,7 +32,7 @@ const drawerIcon = (
   };
 };
 const Drawer = createDrawerNavigator<appDrawerParamList>();
-const HomeNavigator = () => {
+const HomeNavigator: React.FC = () => {
   const headerLeft = () => {
     return <CustomDrawerButton />;
   };

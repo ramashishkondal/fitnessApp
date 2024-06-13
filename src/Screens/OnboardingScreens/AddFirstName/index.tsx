@@ -1,22 +1,22 @@
 // libs
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 // custom
 import {
   CustomButton,
-  CustomErrorText,
   CustomTextInput,
   WithOnboarding,
+  HeadingText,
 } from "../../../Components";
 import { SPACING, STRING } from "../../../Constants";
 import { AddEmailLogInProps } from "../../../Defs";
-import { isValidEmail, isValidName } from "../../../Utils/checkValidity";
+import { isValidName } from "../../../Utils/checkValidity";
 import { styles } from "./styles";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
-const AddFirstName = ({ navigation }: AddEmailLogInProps) => {
+const AddFirstName: React.FC<AddEmailLogInProps> = ({ navigation }) => {
   const [firstName, setFirstName] = useState<string>("");
   const dispatch = useAppDispatch();
 
@@ -24,6 +24,8 @@ const AddFirstName = ({ navigation }: AddEmailLogInProps) => {
     if (firstName) {
       dispatch(updateUserData({ firstName }));
       navigation.push("AddLastName");
+    } else {
+      Alert.alert("Error", "First name cant be empty!");
     }
   };
   const handleChangeText = (text: string) => {
@@ -34,7 +36,7 @@ const AddFirstName = ({ navigation }: AddEmailLogInProps) => {
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
-      <Text style={styles.titleText}>{STRING.ADD_FIRST_NAME.TITLE}</Text>
+      <HeadingText text={STRING.ADD_FIRST_NAME.TITLE} />
       <CustomTextInput
         value={firstName}
         placeHolder={STRING.ADD_FIRST_NAME.TEXT_INPUT_PLACE_HOLDER}

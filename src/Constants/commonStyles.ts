@@ -69,6 +69,17 @@ export const SPACING = StyleSheet.create({
   m3: {
     margin: 24,
   },
+  m4: {
+    margin: 32,
+  },
+  m5: {
+    margin: 40,
+  },
+  mb1: { marginBottom: 8 },
+  mb2: { marginBottom: 16 },
+  mb3: { marginBottom: 24 },
+  mb4: { marginBottom: 32 },
+  mb5: { marginBottom: 40 },
   p1: {
     padding: 8,
   },

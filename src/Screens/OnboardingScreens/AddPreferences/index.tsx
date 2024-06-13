@@ -1,12 +1,14 @@
 // libs
 import React, { useRef } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 // custom
 import {
   CustomButton,
   PreferenceItem,
   WithOnboarding,
+  DescriptionText,
+  HeadingText,
 } from "../../../Components";
 import { styles } from "./styles";
 import { SPACING, STRING } from "../../../Constants";
@@ -14,14 +16,19 @@ import { AddPreferencesProps } from "../../../Defs";
 import { useAppDispatch } from "../../../Redux/Store";
 import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
-const AddPreferences = ({ navigation }: AddPreferencesProps) => {
-  const dispatch = useAppDispatch();
+const AddPreferences: React.FC<AddPreferencesProps> = ({ navigation }) => {
+  // ref use
   const PREFERENCES = useRef([
     { title: "Weight Loss", selected: false },
     { title: "Better sleeping habit", selected: false },
     { title: "Track my nutrition", selected: false },
     { title: "Improve overall fitness", selected: false },
   ]);
+
+  // redux use
+  const dispatch = useAppDispatch();
+
+  // functions
   const Preferences = PREFERENCES.current.map((val, index) => (
     <PreferenceItem item={val} key={index} />
   ));
@@ -34,12 +41,17 @@ const AddPreferences = ({ navigation }: AddPreferencesProps) => {
     );
     navigation.push("AddInterests");
   };
+
   return (
     <View style={styles.parent}>
-      <Text style={styles.titleText}>{STRING.ADD_PREFERENCES.TITLE}</Text>
-      <Text style={styles.titleDescriptionText}>
-        {STRING.ADD_PREFERENCES.TITLE_DESCRIPTION}
-      </Text>
+      <HeadingText
+        text={STRING.ADD_PREFERENCES.TITLE}
+        textStyle={SPACING.mh2}
+      />
+      <DescriptionText
+        text={STRING.ADD_PREFERENCES.TITLE_DESCRIPTION}
+        textStyle={SPACING.mt1}
+      />
       {Preferences}
       <CustomButton
         title={STRING.ADD_PREFERENCES.BUTTON_TEXT}

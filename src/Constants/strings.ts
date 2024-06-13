@@ -91,6 +91,7 @@ export const STRING = {
   WATER_INTAKE: {
     TITLE: (glasses: number | string) =>
       `You drank ${glasses} glasses of today`,
+    WARNING_MESSAGE: "You didn't drink enough water for today",
   },
   DAILY_STEPS: {
     TITLE: {

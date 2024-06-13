@@ -32,6 +32,7 @@ import SmileyBad from "../Assets/Svgs/smileyBad.svg";
 import PostSign from "../Assets/Svgs/postSign.svg";
 import HeartLike from "../Assets/Svgs/heartLike.svg";
 import Comment from "../Assets/Svgs/comment.svg";
+import ArrowUp from "../Assets/Svgs/arrowUp.svg";
 
 import {
   Avatar1,
@@ -100,6 +101,7 @@ export const ICONS = {
   ...HOME_SCREEN,
   ...NUTRITION,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
+  ArrowUp: (params: iconProps) => ArrowUp({ ...iconStyle({ ...params }) }),
   HeartLike: (params: iconProps) => HeartLike({ ...iconStyle({ ...params }) }),
   Comment: (params: iconProps) => Comment({ ...iconStyle({ ...params }) }),
   PostSign: (params: iconProps) => PostSign({ ...iconStyle({ ...params }) }),

@@ -1,10 +1,10 @@
 // libs
 import React from "react";
-import { View, FlatList, Text, ListRenderItem } from "react-native";
+import { View, FlatList, ListRenderItem } from "react-native";
 
 //custom
-import { CustomButton, InterestItem } from "../../../Components";
-import { STRING } from "../../../Constants";
+import { CustomButton, InterestItem, HeadingText } from "../../../Components";
+import { SPACING, STRING } from "../../../Constants";
 import { styles } from "./styles";
 import { INTERESTS } from "../../../Constants/icons";
 import { AddInterestsProps } from "../../../Defs";
@@ -37,9 +37,11 @@ const renderItem: ListRenderItem<{
   icon: React.ReactNode;
   selected: boolean;
 }> = ({ item }) => <InterestItem item={item} />;
-const AddInterests = ({ navigation }: AddInterestsProps) => {
+const AddInterests: React.FC<AddInterestsProps> = ({ navigation }) => {
+  // redux use
   const dispatch = useAppDispatch();
 
+  // functions
   const goToAddGender = () => {
     const selectedItems: string[] = INTERESETS.map((item) => {
       if (item.selected) {
@@ -51,7 +53,7 @@ const AddInterests = ({ navigation }: AddInterestsProps) => {
   };
   return (
     <View style={styles.parent}>
-      <Text style={styles.titleText}>{STRING.ADD_INTERESTS.TITLE}</Text>
+      <HeadingText text={STRING.ADD_INTERESTS.TITLE} textStyle={SPACING.mh2} />
       <FlatList
         data={INTERESETS}
         renderItem={renderItem}

@@ -1,14 +1,15 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { HealthData, User } from "../Defs";
+import { HealthData, User, Post, Comment } from "../Defs";
 
 export const firebaseDB = {
   collections: {
     users: "users",
     posts: "posts",
+    stories: "stories",
   },
   documents: {
     users: {
@@ -18,6 +19,7 @@ export const firebaseDB = {
     posts: {
       allIds: "allIds",
     },
+    stories: {},
   },
 };
 
@@ -36,21 +38,20 @@ export const createUser = async (email: string, password: string) => {
 
 export const storeUserData = async (
   user: User,
-  userCredential: FirebaseAuthTypes.UserCredential
+  userId: FirebaseAuthTypes.UserCredential["user"]["uid"]
 ) => {
   try {
-    console.log(user);
     await firestore()
       .collection("users")
       .doc("byId")
       .update({
-        [userCredential.user.uid]: user,
+        [userId]: user,
       });
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(firebaseDB.documents.users.allIds)
       .update({
-        ids: firestore.FieldValue.arrayUnion(userCredential.user.uid),
+        ids: firestore.FieldValue.arrayUnion(userId),
       });
     console.log("User added!");
   } catch (e) {
@@ -87,19 +88,6 @@ export const getUserData = async (
 };
 
 // posts
-
-export type Post = {
-  photo: string;
-  caption: string;
-  createdOn: Timestamp;
-  userId: string;
-  userName: string;
-  userPhoto: string;
-  likedByUsersId: Array<string>;
-  noOfComments: number;
-  postId?: string;
-};
-
 export const storePost = async (post: Post) => {
   try {
     const newPostId = post.postId ?? uuidv4();
@@ -117,6 +105,24 @@ export const storePost = async (post: Post) => {
   }
 };
 
+export const storePostComment = async (postId: string, comment: Comment) => {
+  await firestore()
+    .collection(firebaseDB.collections.posts)
+    .doc(postId)
+    .update({
+      comments: firestore.FieldValue.arrayUnion(comment),
+    });
+};
+
+export const getPost = async (postId: string) => {
+  const snapshot = await firestore()
+    .collection(firebaseDB.collections.posts)
+    .doc(postId)
+    .get();
+  console.log("post data", snapshot.data());
+  return snapshot.data();
+};
+
 export const getAllPost = async () => {
   try {
     const snapshot = await firestore()
@@ -124,7 +130,9 @@ export const getAllPost = async () => {
       .get();
     const data = snapshot.docs;
     return data.map((val) => val.data()) as Post[];
-  } catch {}
+  } catch (e) {
+    console.log("error with getting posts ", e);
+  }
 };
 
 export const addLikes = async (
@@ -137,4 +145,47 @@ export const addLikes = async (
     .update({
       likedByUsersId: likedByUsersId,
     });
+};
+
+// story
+
+export type StoryData = {
+  id?: string;
+  storyUrl: string;
+  userName: string;
+  userPhoto: string;
+};
+
+export const storeStory = async (story: StoryData) => {
+  try {
+    const newStoryId = story.id ?? uuidv4();
+    const reference = storage().ref(
+      "media/" + "stories/" + newStoryId + "/" + "photo"
+    );
+    await reference.putFile(story.storyUrl);
+    const url = await reference.getDownloadURL();
+
+    await firestore()
+      .collection(firebaseDB.collections.stories)
+      .doc(newStoryId)
+      .set({
+        ...story,
+        id: newStoryId,
+        storyUrl: url,
+      });
+  } catch (e) {
+    console.log("error posting story", e);
+  }
+};
+
+export const getAllStoriesData = async () => {
+  try {
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.stories)
+      .get();
+    const data = snapshot.docs;
+    return data.map((val) => val.data()) as StoryData[][];
+  } catch (e) {
+    console.log("error with getting stories ", e);
+  }
 };

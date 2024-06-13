@@ -32,5 +32,7 @@ export const styles = StyleSheet.create({
   },
   arrowCtr: {
     ...SPACING.mt4,
+    minHeight: 40,
+    justifyContent: "center",
   },
 });
