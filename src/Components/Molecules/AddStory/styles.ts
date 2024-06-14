@@ -4,6 +4,7 @@ export const styles = StyleSheet.create({
   parent: {
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 16,
   },
   photo: {
     width: 70,

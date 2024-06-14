@@ -1,13 +1,6 @@
 // libs
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ScrollView,
-  TouchableOpacity,
-  View,
-  FlatList,
-  Image,
-  Text,
-} from "react-native";
+import { ScrollView, TouchableOpacity, View, FlatList } from "react-native";
 
 // 3rd party
 import { useAppSelector } from "../../../Redux/Store";

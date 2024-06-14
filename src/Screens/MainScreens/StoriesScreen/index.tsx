@@ -114,7 +114,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
                 minHeight: SIZES.height,
               }}
               onLoad={({ duration }) =>
-                storyTimer.start(duration < 15 ? duration * 1000 - 300 : 15000)
+                storyTimer.start(duration < 15 ? duration * 1000 - 300 : 10000)
               }
               resizeMode="cover"
             />
@@ -123,8 +123,8 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
           <CustomImage
             source={{ uri: stories[index].storyUrl }}
             parentStyle={{
-              width: SIZES.width,
-              height: SIZES.height,
+              minWidth: SIZES.width,
+              minHeight: SIZES.height,
             }}
             activityIndicatorSize={"large"}
             handleLoadEnd={() => {

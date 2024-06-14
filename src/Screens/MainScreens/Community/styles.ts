@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 24,
+    marginHorizontal: 16,
   },
   iconCtr: { padding: 10 },
   titleText: {
