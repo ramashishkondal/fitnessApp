@@ -9,12 +9,11 @@ import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 import { WithModalProps } from "./types";
 import { styles } from "./styles";
 
-const WithModal = ({
+const WithModal: React.FC<WithModalProps> = ({
   modalVisible,
-  setModalVisible,
   children,
-}: WithModalProps) => {
-  const setModalFalse = () => setModalVisible(false);
+  setModalFalse,
+}) => {
   return (
     <Modal
       visible={modalVisible}

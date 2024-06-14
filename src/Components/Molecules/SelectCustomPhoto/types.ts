@@ -11,5 +11,5 @@ export type SelectCustomPhotoProps = {
     Omit<ViewStyle, "position" | "left" | "right" | "top" | "bottom">
   >;
   mediaType?: MediaType;
-  type?: MutableRefObject<string | undefined>;
+  onSuccess?: (uri: string, type?: string) => void;
 };

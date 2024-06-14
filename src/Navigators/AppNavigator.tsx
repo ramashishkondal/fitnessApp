@@ -88,7 +88,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name="StoriesScreen"
         component={StoriesScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: "slide_from_bottom" }}
       />
     </Stack.Navigator>
   );

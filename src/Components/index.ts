@@ -38,4 +38,5 @@ export {
   WithModal,
   WithOnboarding,
   AllPosts,
+  AddStory,
 } from "./Molecules";

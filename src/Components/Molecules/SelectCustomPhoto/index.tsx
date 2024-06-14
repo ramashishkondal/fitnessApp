@@ -30,7 +30,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   parentStyle,
   BottomSheetModalStyle,
   mediaType = "photo",
-  type,
+  onSuccess,
 }) => {
   // constants
   const options: CameraOptions = {
@@ -52,10 +52,10 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   const openCamera = async () => {
     try {
       const result: ImagePickerResponse = await launchCamera(options);
-      if (result.assets !== undefined) {
-        setPhoto(result?.assets[0]?.uri);
-        if (type) {
-          type.current = result.assets[0].type;
+      if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+        setPhoto(result.assets[0].uri);
+        if (onSuccess) {
+          onSuccess(result.assets[0].uri, result.assets[0].type);
         }
       }
     } catch (e) {
@@ -65,10 +65,10 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   const openGallery = async () => {
     try {
       const result: ImagePickerResponse = await launchImageLibrary(options);
-      if (result.assets !== undefined) {
+      if (result.assets !== undefined && result.assets[0].uri !== undefined) {
         setPhoto(result?.assets[0]?.uri);
-        if (type) {
-          type.current = result.assets[0].type;
+        if (onSuccess) {
+          onSuccess(result.assets[0].uri, result.assets[0].type);
         }
       }
       setModalVisible(false);

@@ -110,7 +110,7 @@ export type appStackParamList = {
   WaterIntake: undefined;
   DailySteps: undefined;
   PostScreen: { postId: string };
-  StoriesScreen: { stories: StoryData["stories"] };
+  StoriesScreen: { allStoryData: Array<StoryData>; index: number };
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 

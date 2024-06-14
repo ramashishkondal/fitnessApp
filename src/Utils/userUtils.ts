@@ -165,23 +165,46 @@ export const storeStory = async (
   userId: string
 ) => {
   try {
+    const storyId = uuidv4();
     const reference = storage().ref(
-      "media/" + "stories/" + userId + "/" + "story"
+      "media/" + "stories/" + userId + "/" + storyId
     );
     await reference.putFile(story.storyUrl);
     const url = await reference.getDownloadURL();
 
-    await firestore()
+    const val = await firestore()
       .collection(firebaseDB.collections.stories)
       .doc(userId)
-      .update({
-        stories: firestore.FieldValue.arrayUnion({
-          storyType: story.storyType,
-          storyUrl: url,
-        }),
-        userName: story.userName,
-        userPhoto: story.userPhoto,
-      });
+      .get();
+    const userStoryData = val.data() as StoryData;
+
+    if (userStoryData) {
+      await firestore()
+        .collection(firebaseDB.collections.stories)
+        .doc(userId)
+        .set({
+          stories: userStoryData.stories.concat({
+            storyType: story.storyType,
+            storyUrl: url,
+          }),
+          userName: story.userName,
+          userPhoto: story.userPhoto,
+        });
+    } else {
+      await firestore()
+        .collection(firebaseDB.collections.stories)
+        .doc(userId)
+        .set({
+          stories: [
+            {
+              storyType: story.storyType,
+              storyUrl: url,
+            },
+          ],
+          userName: story.userName,
+          userPhoto: story.userPhoto,
+        });
+    }
   } catch (e) {
     console.log("error posting story", e);
   }
