@@ -20,6 +20,7 @@ import {
   getPercentage,
   weekday,
 } from "../../../Utils/commonUtils";
+import { Timestamp } from "@react-native-firebase/firestore";
 
 const simleySize = {
   width: 21,
@@ -47,53 +48,66 @@ const WaterIntake: React.FC = () => {
 
   // effect use
   useEffect(() => {
-    getHealthData(id!).then((healthData) => {
-      if (healthData) {
-        const filteredData = healthData.filter((val) =>
-          checkWeek(val.currentDate.toDate(), today)
-        );
-        const bestWaterIntakeDay = filteredData.reduce(
-          (acc, val) => {
-            if (
-              Math.ceil(
-                getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
-              ) >= acc.value
-            ) {
-              return {
-                value: Math.ceil(
+    getHealthData(id!)
+      .then((healthData) => {
+        if (healthData) {
+          const filteredData = healthData.filter((val) =>
+            checkWeek(
+              Timestamp.fromMillis(val.currentDate.seconds * 1000).toDate(),
+              today
+            )
+          );
+          const bestWaterIntakeDay = filteredData.reduce(
+            (acc, val) => {
+              const currentDate = Timestamp.fromMillis(
+                val.currentDate.seconds * 1000
+              ).toDate();
+              if (
+                Math.ceil(
                   getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
-                ),
-                week: weekday[val.currentDate.toDate().getDay()],
-              };
-            }
-            return acc;
-          },
-          { value: -Infinity, week: "" }
-        );
-        const worstWaterIntakeDay = filteredData.reduce(
-          (acc, val) => {
-            if (
-              Math.ceil(
-                getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
-              ) <= acc.value
-            ) {
-              return {
-                value: Math.ceil(
+                ) >= acc.value
+              ) {
+                return {
+                  value: Math.ceil(
+                    getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
+                  ),
+                  week: weekday[currentDate.getDay()],
+                };
+              }
+              return acc;
+            },
+            { value: -Infinity, week: "" }
+          );
+          const worstWaterIntakeDay = filteredData.reduce(
+            (acc, val) => {
+              const currentDate = Timestamp.fromMillis(
+                val.currentDate.seconds * 1000
+              ).toDate();
+              if (
+                Math.ceil(
                   getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
-                ),
-                week: weekday[val.currentDate.toDate().getDay()],
-              };
+                ) <= acc.value
+              ) {
+                return {
+                  value: Math.ceil(
+                    getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
+                  ),
+                  week: weekday[currentDate.getDay()],
+                };
+              }
+              return acc;
+            },
+            {
+              value: +Infinity,
+              week: "",
             }
-            return acc;
-          },
-          {
-            value: +Infinity,
-            week: "",
-          }
-        );
-        setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
-      }
-    });
+          );
+          setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
+        }
+      })
+      .catch((e) =>
+        console.log("error encounterd in getting user health info", e)
+      );
   }, []);
 
   // memo use

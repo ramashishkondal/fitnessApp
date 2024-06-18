@@ -17,11 +17,11 @@ import {
 } from "../../../Utils/commonUtils";
 import { styles } from "./styles";
 import { getHealthData } from "../../../Utils/userUtils";
+import { Timestamp } from "@react-native-firebase/firestore";
 
 const DailySteps: React.FC = () => {
   // constants
   const today = date.today();
-  const todayMidnight = date.getStartOfDay(today);
 
   // state use
   const [lineData, setLineData] = useState<Array<{ value: number }>>([]);
@@ -29,7 +29,7 @@ const DailySteps: React.FC = () => {
     best: { value: number; week: string };
     worst: { value: number; week: string };
   }>();
-  console.log(lineData);
+
   // redux use
   const {
     todaysSteps,
@@ -47,82 +47,79 @@ const DailySteps: React.FC = () => {
 
   // effect use
   useEffect(() => {
-    // if (Platform.OS === "ios") {
-    //   AppleHealthKit.getActiveEnergyBurned(
-    //     {
-    //       startDate: todayMidnight.toISOString(),
-    //       endDate: today.toISOString(),
-    //       includeManuallyAdded: true,
-    //     },
-    //     (err, results) => {
-    //       if (err || results.length === 0) {
-    //         return;
-    //       }
-    //       setLineData(
-    //         results
-    //           .slice(0)
-    //           .reverse()
-    //           .map((val) => ({
-    //             ...val,
-    //             value: Math.ceil(getPercentage(val.value, totalCalorie)),
-    //           }))
-    //       );
-    //     }
-    //   );
-    // }
-    getHealthData(id!).then((healthData) => {
-      if (healthData) {
-        const filteredData = healthData.filter((val) =>
-          checkWeek(val.currentDate.toDate(), today)
-        );
+    getHealthData(id!)
+      .then((healthData) => {
+        if (healthData) {
+          const filteredData = healthData.filter((val) =>
+            checkWeek(
+              Timestamp.fromMillis(val.currentDate.seconds * 1000).toDate(),
+              today
+            )
+          );
 
-        setLineData(
-          filteredData.map((val) => ({
-            value: ~~getPercentage(val.todaysSteps, val.goal.totalSteps),
-          }))
-        );
-        const bestWaterIntakeDay = filteredData.reduce(
-          (acc, val) => {
-            if (
-              Math.ceil(
-                getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
-              ) >= acc.value
-            ) {
-              return {
-                value: Math.ceil(
+          setLineData(
+            filteredData.map((val) => ({
+              value: ~~getPercentage(val.todaysSteps, val.goal.totalSteps),
+            }))
+          );
+          const bestWaterIntakeDay = filteredData.reduce(
+            (acc, val) => {
+              if (
+                Math.ceil(
                   getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
-                ),
-                week: weekday[val.currentDate.toDate().getDay()],
-              };
-            }
-            return acc;
-          },
-          { value: -Infinity, week: "" }
-        );
-        const worstWaterIntakeDay = filteredData.reduce(
-          (acc, val) => {
-            if (
-              Math.ceil(
-                getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
-              ) <= acc.value
-            ) {
-              return {
-                value: Math.ceil(
+                ) >= acc.value
+              ) {
+                return {
+                  value: Math.ceil(
+                    getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
+                  ),
+                  week:
+                    weekday[
+                      Timestamp.fromMillis(val.currentDate.seconds * 1000)
+                        .toDate()
+                        .getDay()
+                    ],
+                };
+              }
+              return acc;
+            },
+            { value: -Infinity, week: "" }
+          );
+          const worstWaterIntakeDay = filteredData.reduce(
+            (acc, val) => {
+              if (
+                Math.ceil(
                   getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
-                ),
-                week: weekday[val.currentDate.toDate().getDay()],
-              };
+                ) <= acc.value
+              ) {
+                return {
+                  value: Math.ceil(
+                    getPercentage(val.todaysSteps, val.goal.totalSteps) / 10
+                  ),
+                  week:
+                    weekday[
+                      Timestamp.fromMillis(val.currentDate.seconds * 1000)
+                        .toDate()
+                        .getDay()
+                    ],
+                };
+              }
+              return acc;
+            },
+            {
+              value: +Infinity,
+              week: "",
             }
-            return acc;
-          },
-          {
-            value: +Infinity,
-            week: "",
-          }
-        );
-        setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
-      }
-    });
+          );
+          setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
+        }
+      })
+      .catch((e) =>
+        console.log(
+          "error encounterd fetching health data in daily steps - ",
+          e
+        )
+      );
   }, []);
 
   // callback use
