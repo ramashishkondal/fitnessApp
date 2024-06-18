@@ -1,5 +1,5 @@
 import auth, { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
@@ -70,6 +70,18 @@ export const storeUserHealthData = async (
       .update({
         [uid + ".healthData"]: firestore.FieldValue.arrayUnion(healthData),
       });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getHealthData = async (uid: string) => {
+  try {
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(firebaseDB.documents.users.byId)
+      .get();
+    return snapshot.get(`${uid}.healthData`) as Array<HealthData>;
   } catch (e) {
     console.log(e);
   }

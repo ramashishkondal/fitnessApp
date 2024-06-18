@@ -8,6 +8,15 @@ export const getPercentage = (
   }
   return (value / total) * 100;
 };
+export const weekday = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export const getTimePassed = (timeInMillis: number): string => {
   const currentTime = new Date().getTime();
@@ -68,3 +77,15 @@ export class Timer {
     clearTimeout(this.timerId);
   };
 }
+
+export const checkWeek = (toCheckDate: Date, checkDateWith: Date) => {
+  if (
+    checkDateWith.getMonth() !== toCheckDate.getMonth() ||
+    checkDateWith.getFullYear() !== toCheckDate.getFullYear()
+  ) {
+    return false;
+  }
+  if (checkDateWith.getDate() - toCheckDate.getDate() <= 7) {
+    return true;
+  }
+};

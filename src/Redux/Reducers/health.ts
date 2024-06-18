@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { HealthData } from "../../Defs";
+import { Timestamp } from "@react-native-firebase/firestore";
 
 export type InitialState = {
   value: HealthData;
@@ -16,7 +17,7 @@ const initialState: InitialState = {
       noOfGlasses: 6,
       totalSteps: 10000,
     },
-    currentDate: new Date().toDateString(),
+    currentDate: Timestamp.now(),
   },
 };
 
@@ -37,7 +38,7 @@ export const healthSlice = createSlice({
           nutrition: 0,
           todaysSteps: 0,
           waterIntake: 0,
-          currentDate: new Date().toDateString(),
+          currentDate: Timestamp.now(),
         },
       };
     },
