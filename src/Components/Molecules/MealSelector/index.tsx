@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { COLORS } from "../../../Constants";
 import { MealSelectorProps } from "./types";
+import { FONT_FAMILY, SIZES } from "../../../Constants/commonStyles";
 
 const MealSelector: React.FC<MealSelectorProps> = ({ title, mealTime }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -36,7 +37,15 @@ const MealSelector: React.FC<MealSelectorProps> = ({ title, mealTime }) => {
         isChecked={isChecked}
         disableText
       />
-      <Text>{title}</Text>
+      <Text
+        style={{
+          fontFamily: FONT_FAMILY.REGULAR,
+          fontSize: SIZES.font12,
+          marginVertical: 4,
+        }}
+      >
+        {title}
+      </Text>
     </View>
   );
 };

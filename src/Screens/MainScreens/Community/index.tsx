@@ -91,20 +91,20 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
           postIdRef={postIdRef}
           handleCommentPress={showCommentModal}
         />
+        <WithModal
+          modalVisible={activeModal !== "none"}
+          setModalFalse={setActiveModalFalse}
+        >
+          {activeModal === "story" ? (
+            <AddPost setModalFalse={setActiveModalFalse} />
+          ) : (
+            <AddComment
+              setModalFalse={setActiveModalFalse}
+              postId={postIdRef.current!}
+            />
+          )}
+        </WithModal>
       </ScrollView>
-      <WithModal
-        modalVisible={activeModal !== "none"}
-        setModalFalse={setActiveModalFalse}
-      >
-        {activeModal === "story" ? (
-          <AddPost setModalFalse={setActiveModalFalse} />
-        ) : (
-          <AddComment
-            setModalFalse={setActiveModalFalse}
-            postId={postIdRef.current!}
-          />
-        )}
-      </WithModal>
       <SelectCustomPhoto
         modalVisible={storyModalVisible}
         setModalVisible={setStoryModalVisible}

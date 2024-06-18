@@ -3,23 +3,20 @@ import { COLORS, SIZES } from "../../../Constants";
 
 export const styles = StyleSheet.create({
   parent: {
-    paddingVertical: "15%",
-    paddingHorizontal: "5%",
-  },
-  modalContent: {
-    flex: 1,
+    backgroundColor: COLORS.SECONDARY.WHITE,
+    marginHorizontal: 16,
+    marginVertical: SIZES.width / 7,
+    top: SIZES.height / 40,
+    borderRadius: SIZES.rounding2,
   },
   modalCtr: {
-    minWidth: "100%",
-    minHeight: "100%",
+    flex: 10,
     backgroundColor: COLORS.SECONDARY.WHITE,
-    // paddingVertical: 16,
-  },
-  iconsCtr: {
-    // flexDirection: "row",
-    // justifyContent: "space-around",
+    borderRadius: SIZES.rounding2,
   },
   horizontalLineCtr: {
+    flex: 1,
+    marginTop: 24,
     alignItems: "center",
   },
   horizontalLine: {

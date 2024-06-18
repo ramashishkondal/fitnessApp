@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { TouchableOpacity, View, ScrollView } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { CustomButton, DescriptionText, HeadingText } from "../../Atoms";
 import { ChooseFoodProps } from "./types";
 import { ICONS } from "../../../Constants";
@@ -11,6 +11,7 @@ import {
   updateAllMealData,
 } from "../../../Redux/Reducers/dailyMeal";
 import { useAppDispatch } from "../../../Redux/Store";
+import { ScrollView } from "react-native-gesture-handler";
 
 const size = {
   width: 50,
@@ -97,6 +98,190 @@ const foodData: Array<Meal> = [
     calories: 160,
     serving_size_g: 150,
   },
+  {
+    name: "Sweet Potato",
+    carbs: 27,
+    fat: 0.1,
+    protein: 2,
+    calories: 112,
+    serving_size_g: 130,
+  },
+  {
+    name: "Brown Rice",
+    carbs: 45,
+    fat: 1.5,
+    protein: 5,
+    calories: 216,
+    serving_size_g: 195,
+  },
+  {
+    name: "Quinoa",
+    carbs: 39,
+    fat: 3.5,
+    protein: 8,
+    calories: 222,
+    serving_size_g: 185,
+  },
+  {
+    name: "Whole Wheat Bread",
+    carbs: 12,
+    fat: 1,
+    protein: 3,
+    calories: 69,
+    serving_size_g: 28,
+  },
+  {
+    name: "Black Beans",
+    carbs: 40,
+    fat: 0.9,
+    protein: 14,
+    calories: 227,
+    serving_size_g: 172,
+  },
+  {
+    name: "Lentils",
+    carbs: 40,
+    fat: 0.8,
+    protein: 18,
+    calories: 230,
+    serving_size_g: 198,
+  },
+  {
+    name: "Pasta",
+    carbs: 31,
+    fat: 1.3,
+    protein: 6,
+    calories: 157,
+    serving_size_g: 100,
+  },
+  {
+    name: "Corn",
+    carbs: 19,
+    fat: 1.5,
+    protein: 3.2,
+    calories: 86,
+    serving_size_g: 100,
+  },
+  {
+    name: "Potato",
+    carbs: 17,
+    fat: 0.1,
+    protein: 2,
+    calories: 77,
+    serving_size_g: 100,
+  },
+  {
+    name: "White Rice",
+    carbs: 28,
+    fat: 0.3,
+    protein: 2.7,
+    calories: 130,
+    serving_size_g: 100,
+  },
+  {
+    name: "Barley",
+    carbs: 44,
+    fat: 0.4,
+    protein: 4.4,
+    calories: 193,
+    serving_size_g: 157,
+  },
+  {
+    name: "Chickpeas",
+    carbs: 27,
+    fat: 2.6,
+    protein: 14.5,
+    calories: 164,
+    serving_size_g: 100,
+  },
+  {
+    name: "Peas",
+    carbs: 14,
+    fat: 0.4,
+    protein: 5.4,
+    calories: 81,
+    serving_size_g: 100,
+  },
+  {
+    name: "Butternut Squash",
+    carbs: 12,
+    fat: 0.1,
+    protein: 1,
+    calories: 45,
+    serving_size_g: 100,
+  },
+  {
+    name: "Pumpkin",
+    carbs: 7,
+    fat: 0.1,
+    protein: 1,
+    calories: 26,
+    serving_size_g: 100,
+  },
+  {
+    name: "Dates",
+    carbs: 75,
+    fat: 0.2,
+    protein: 2,
+    calories: 282,
+    serving_size_g: 100,
+  },
+  {
+    name: "Honey",
+    carbs: 82,
+    fat: 0,
+    protein: 0.3,
+    calories: 304,
+    serving_size_g: 100,
+  },
+  {
+    name: "Raisins",
+    carbs: 79,
+    fat: 0.5,
+    protein: 3.1,
+    calories: 299,
+    serving_size_g: 100,
+  },
+  {
+    name: "Mango",
+    carbs: 15,
+    fat: 0.4,
+    protein: 0.8,
+    calories: 60,
+    serving_size_g: 100,
+  },
+  {
+    name: "Carrots",
+    carbs: 10,
+    fat: 0.2,
+    protein: 0.9,
+    calories: 41,
+    serving_size_g: 100,
+  },
+  {
+    name: "Beets",
+    carbs: 10,
+    fat: 0.2,
+    protein: 1.6,
+    calories: 43,
+    serving_size_g: 100,
+  },
+  {
+    name: "Couscous",
+    carbs: 23,
+    fat: 0.2,
+    protein: 3.8,
+    calories: 112,
+    serving_size_g: 100,
+  },
+  {
+    name: "Kidney Beans",
+    carbs: 22,
+    fat: 0.5,
+    protein: 8.7,
+    calories: 127,
+    serving_size_g: 100,
+  },
 ];
 
 export type MealsSelected = {
@@ -143,50 +328,53 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({ setModalFalse }) => {
     setModalFalse();
   };
   return (
-    <View>
-      <View style={{ alignSelf: "center" }}>{ICONS.FoodBowl(size)}</View>
-      <View style={{ marginHorizontal: 24, marginVertical: 16 }}>
-        <HeadingText text="Choose Food" textStyle={{ fontWeight: "500" }} />
-        <DescriptionText text="Select your meal and your foods that you consume today" />
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-        <MealSelector title="Snack" mealTime={mealsSelected.current.mealTime} />
-        <MealSelector title="Lunch" mealTime={mealsSelected.current.mealTime} />
-        <MealSelector
-          title="Dinner"
-          mealTime={mealsSelected.current.mealTime}
-        />
-        <MealSelector
-          title="Breakfast"
-          mealTime={mealsSelected.current.mealTime}
-        />
-      </View>
-      <View style={{ maxHeight: 200 }}>
-        <ScrollView style={{ maxHeight: 200 }}>
-          <TouchableOpacity activeOpacity={0.99} onPress={() => {}}>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+        <TouchableOpacity activeOpacity={1}>
+          <View style={{ alignSelf: "center" }}>{ICONS.FoodBowl(size)}</View>
+          <View style={{ marginHorizontal: 24, marginVertical: 16 }}>
+            <HeadingText text="Choose Food" textStyle={{ fontWeight: "500" }} />
+            <DescriptionText text="Select your meal and your foods that you consume today" />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 40,
+            }}
+          >
+            <MealSelector
+              title="Snack"
+              mealTime={mealsSelected.current.mealTime}
+            />
+            <MealSelector
+              title="Lunch"
+              mealTime={mealsSelected.current.mealTime}
+            />
+            <MealSelector
+              title="Dinner"
+              mealTime={mealsSelected.current.mealTime}
+            />
+            <MealSelector
+              title="Breakfast"
+              mealTime={mealsSelected.current.mealTime}
+            />
+          </View>
+          <View style={{ margin: 16, marginVertical: 32 }}>
             {foodData.map((item) => (
               <FoodSelector
                 foodItem={item}
                 foodData={mealsSelected.current.foodData}
               />
             ))}
-          </TouchableOpacity>
-        </ScrollView>
-        {/* <FlatList
-          data={foodData}
-          renderItem={({ item }) => (
-            <FoodSelector
-              foodItem={item}
-              foodData={mealsSelected.current.foodData}
-            />
-          )}
-        /> */}
-      </View>
-      <CustomButton
-        title="Add"
-        onPress={handleSubmit}
-        parentStyle={{ alignSelf: "center" }}
-      />
+          </View>
+        </TouchableOpacity>
+        <CustomButton
+          title="Add"
+          onPress={handleSubmit}
+          parentStyle={{ alignSelf: "center", marginVertical: 16 }}
+        />
+      </ScrollView>
     </View>
   );
 };

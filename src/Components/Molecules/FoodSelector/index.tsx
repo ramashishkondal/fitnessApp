@@ -22,12 +22,13 @@ const FoodSelector: React.FC<FoodSelectorProps> = ({ foodItem, foodData }) => {
     <View
       style={{
         flexDirection: "row",
-        paddingVertical: 8,
+        paddingBottom: 8,
+        paddingTop: 20,
         borderBottomWidth: 1,
         borderColor: COLORS.SECONDARY.LIGHT_GREY,
       }}
     >
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, marginLeft: 8 }}>
         <Text
           style={{ fontFamily: FONT_FAMILY.REGULAR, fontSize: SIZES.font12 }}
         >

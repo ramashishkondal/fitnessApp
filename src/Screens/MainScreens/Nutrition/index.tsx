@@ -18,19 +18,7 @@ import { COLORS, STRING } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
 import { styles } from "./styles";
 import { useAppSelector } from "../../../Redux/Store";
-
-const pieData3 = [
-  { value: 63, color: COLORS.SECONDARY.ORANGE, text: "" },
-  { value: 37, color: COLORS.PRIMARY.LIGHT_PURPLE },
-];
-const pieData2 = [
-  { value: 30, color: COLORS.PRIMARY.PURPLE, text: "" },
-  { value: 70, color: COLORS.PRIMARY.LIGHT_PURPLE },
-];
-const pieData1 = [
-  { value: 27, color: COLORS.SECONDARY.CYAN, text: "" },
-  { value: 73, color: COLORS.PRIMARY.LIGHT_PURPLE },
-];
+import { getPercentage } from "../../../Utils/commonUtils";
 
 const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
   // state use
@@ -41,8 +29,55 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
     (state) => state.health.value
   );
   const { data: dailyMeals } = useAppSelector((state) => state.dailyMeals);
-  console.log("daily meals", dailyMeals);
-
+  const statsData = Object.values(dailyMeals)
+    .flat()
+    .reduce(
+      (acc, val) => ({
+        calories: ~~(val.calories + acc.calories),
+        carbs: ~~(val.carbs + acc.carbs),
+        fat: ~~(val.fat + acc.fat),
+        protein: ~~(val.protein + acc.protein),
+      }),
+      {
+        calories: 0,
+        carbs: 0,
+        fat: 0,
+        protein: 0,
+      }
+    );
+  const portienData = [
+    {
+      value: ~~getPercentage(statsData.protein, statsData.calories),
+      color: COLORS.SECONDARY.ORANGE,
+      text: "",
+    },
+    {
+      value: 100 - ~~getPercentage(statsData.protein, statsData.calories),
+      color: COLORS.PRIMARY.LIGHT_PURPLE,
+    },
+  ];
+  const carbsData = [
+    {
+      value: ~~getPercentage(statsData.carbs, statsData.calories),
+      color: COLORS.PRIMARY.PURPLE,
+      text: "",
+    },
+    {
+      value: 100 - ~~getPercentage(statsData.carbs, statsData.calories),
+      color: COLORS.PRIMARY.LIGHT_PURPLE,
+    },
+  ];
+  const fatData = [
+    {
+      value: ~~getPercentage(statsData.fat, statsData.calories),
+      color: COLORS.SECONDARY.CYAN,
+      text: "",
+    },
+    {
+      value: 100 - ~~getPercentage(statsData.fat, statsData.calories),
+      color: COLORS.PRIMARY.LIGHT_PURPLE,
+    },
+  ];
   // effect use
   useEffect(() => {
     navigation.setOptions({
@@ -71,7 +106,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               showText
               radius={80}
               innerRadius={65}
-              data={pieData1}
+              data={fatData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
@@ -81,7 +116,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               showText
               radius={60}
               innerRadius={45}
-              data={pieData2}
+              data={carbsData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
@@ -91,7 +126,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               showText
               radius={40}
               innerRadius={25}
-              data={pieData3}
+              data={portienData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
               edgesRadius={120}
             />
@@ -100,17 +135,17 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
         <View>
           <PieChartInfoItem
             item={STRING.NUTRITION.NUTRITION_STATS.PROTEIN}
-            percentage="63"
+            percentage={portienData[0].value}
             color={COLORS.SECONDARY.CYAN}
           />
           <PieChartInfoItem
             item={STRING.NUTRITION.NUTRITION_STATS.CARB}
-            percentage="30"
+            percentage={carbsData[0].value}
             color={COLORS.PRIMARY.PURPLE}
           />
           <PieChartInfoItem
             item={STRING.NUTRITION.NUTRITION_STATS.FAT}
-            percentage="27"
+            percentage={fatData[0].value}
             color={COLORS.SECONDARY.ORANGE}
           />
         </View>
@@ -118,8 +153,8 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       <NutritionStats
         item={{
           title: STRING.NUTRITION.NUTRITION_STATS.PROTEIN,
-          percentage: 63,
-          quantity: 100,
+          percentage: portienData[0].value,
+          quantity: statsData.protein,
           color: COLORS.SECONDARY.CYAN,
         }}
       />
@@ -127,8 +162,8 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       <NutritionStats
         item={{
           title: STRING.NUTRITION.NUTRITION_STATS.CARB,
-          percentage: 30,
-          quantity: 60,
+          percentage: carbsData[0].value,
+          quantity: statsData.carbs,
           color: COLORS.PRIMARY.PURPLE,
         }}
       />
@@ -136,8 +171,8 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       <NutritionStats
         item={{
           title: STRING.NUTRITION.NUTRITION_STATS.FAT,
-          percentage: 27,
-          quantity: 20,
+          percentage: fatData[0].value,
+          quantity: statsData.fat,
           color: COLORS.SECONDARY.ORANGE,
         }}
       />
