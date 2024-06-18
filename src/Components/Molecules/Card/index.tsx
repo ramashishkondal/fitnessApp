@@ -9,7 +9,7 @@ import Animated, {
   withSequence,
   withSpring,
 } from "react-native-reanimated";
-import BouncyCheckbox from "react-native-bouncy-checkbox/build/dist/BouncyCheckbox";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 // custom
 import { ANIMATIONS, COLORS } from "../../../Constants";

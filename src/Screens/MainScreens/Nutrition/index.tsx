@@ -12,6 +12,7 @@ import {
   PieChartInfoItem,
   NutritionStats,
   DietDataFlatList,
+  ChooseFood,
 } from "../../../Components";
 import { COLORS, STRING } from "../../../Constants";
 import { NutritionProps } from "../../../Defs/navigators";
@@ -39,6 +40,8 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
   const { nutrition: caloriesBurned } = useAppSelector(
     (state) => state.health.value
   );
+  const { data: dailyMeals } = useAppSelector((state) => state.dailyMeals);
+  console.log("daily meals", dailyMeals);
 
   // effect use
   useEffect(() => {
@@ -138,8 +141,11 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
           color: COLORS.SECONDARY.ORANGE,
         }}
       />
-      <WithModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-        <Text>1231s</Text>
+      <WithModal
+        modalVisible={modalVisible}
+        setModalFalse={() => setModalVisible(false)}
+      >
+        <ChooseFood setModalFalse={() => setModalVisible(false)} />
       </WithModal>
       <DietDataFlatList />
     </ScrollView>

@@ -24,3 +24,5 @@ export { default as AddComment } from "./AddComment";
 export { default as Comment } from "./Comment";
 export { default as AllPosts } from "./AllPosts";
 export { default as AddStory } from "./AddStory";
+export { default as Notification } from "./Notification";
+export { default as ChooseFood } from "./ChooseFood";
