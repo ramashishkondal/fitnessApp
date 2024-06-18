@@ -41,7 +41,7 @@ const Notification: React.FC<NotificationProps> = ({
             {notificationText}
           </Text>
           <DescriptionText
-            text={timeAgo + " mins ago"}
+            text={timeAgo}
             textStyle={{
               textAlign: "left",
               marginVertical: 8,

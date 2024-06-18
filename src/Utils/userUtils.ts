@@ -4,6 +4,7 @@ import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { HealthData, User, Post, Comment } from "../Defs";
+import { NotificationData, NotificationsData } from "../Defs/user";
 
 export const firebaseDB = {
   collections: {
@@ -229,6 +230,24 @@ export const getAllStoriesData = async () => {
       .get();
     const data = snapshot.docs;
     return data.map((val) => val.data()) as StoryData[][];
+  } catch (e) {
+    console.log("error with getting stories ", e);
+  }
+};
+
+export const sendNotification = async (
+  notification: NotificationData,
+  sendToUserId: string
+) => {
+  try {
+    await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(firebaseDB.documents.users.byId)
+      .update({
+        [sendToUserId + ".notifications"]: firestore.FieldValue.arrayUnion(
+          notification
+        ),
+      });
   } catch (e) {
     console.log("error with getting stories ", e);
   }

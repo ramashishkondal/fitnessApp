@@ -24,11 +24,15 @@ export const getTimePassed = (timeInMillis: number): string => {
   const timePassedInMns = Math.ceil(timePassedInSecs / 60);
   const timePassedInHrs = ~~(timePassedInMns / 60);
   if (timePassedInSecs <= 60) {
-    return `${~~timePassedInSecs} secs ago`;
+    return `${~~timePassedInSecs} ${
+      ~~timePassedInSecs > 1 ? "seconds" : "second"
+    } ago`;
   } else if (timePassedInMns <= 60) {
-    return `${timePassedInMns} minutes ago`;
+    return `${timePassedInMns} ${
+      ~~timePassedInMns > 1 ? "minutes" : "minute"
+    } ago`;
   } else if (timePassedInHrs <= 23) {
-    return `${timePassedInHrs} hours ago`;
+    return `${timePassedInHrs} ${~~timePassedInHrs > 1 ? "hours" : "hour"} ago`;
   } else {
     return `${~~(timePassedInHrs / 24)} ${
       ~~(timePassedInHrs / 24) > 1 ? "days" : "day"

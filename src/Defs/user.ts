@@ -11,11 +11,14 @@ export type User = {
   preferences: Array<{ title: string; selected: boolean }>;
   interests: Array<string>;
   healthData: Array<HealthData>;
-  notifications: Array<{
-    userPhoto: string;
-    userName: string;
-    message: string;
-  }>;
+  notifications: NotificationsData;
+};
+export type NotificationsData = Array<NotificationData>;
+export type NotificationData = {
+  userPhoto: string;
+  userName: string;
+  message: string;
+  createdOn: Timestamp;
 };
 export type HealthData = {
   nutrition: number;
