@@ -30,10 +30,13 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   parentStyle,
   BottomSheetModalStyle,
   mediaType = "photo",
+  onSuccess,
 }) => {
   // constants
   const options: CameraOptions = {
     mediaType,
+    quality: 0.5,
+    videoQuality: "low",
   };
 
   // effect use
@@ -49,8 +52,11 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   const openCamera = async () => {
     try {
       const result: ImagePickerResponse = await launchCamera(options);
-      if (result.assets !== undefined) {
-        setPhoto(result?.assets[0]?.uri);
+      if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+        setPhoto(result.assets[0].uri);
+        if (onSuccess) {
+          onSuccess(result.assets[0].uri, result.assets[0].type);
+        }
       }
     } catch (e) {
       console.log("error uploading photo from camera - ", e);
@@ -59,8 +65,11 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   const openGallery = async () => {
     try {
       const result: ImagePickerResponse = await launchImageLibrary(options);
-      if (result.assets !== undefined) {
+      if (result.assets !== undefined && result.assets[0].uri !== undefined) {
         setPhoto(result?.assets[0]?.uri);
+        if (onSuccess) {
+          onSuccess(result.assets[0].uri, result.assets[0].type);
+        }
       }
       setModalVisible(false);
     } catch (e) {

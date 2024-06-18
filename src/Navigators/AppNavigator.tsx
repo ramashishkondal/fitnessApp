@@ -1,27 +1,30 @@
 // libs
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
+import { Platform } from "react-native";
+
+// 3rd party
+import { useAppDispatch, useAppSelector } from "../Redux/Store";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppleHealthKit from "react-native-health";
 
 // navigators
 import HomeNavigator from "./HomeDrawerNavigator";
 
 // custom
-import { useAppDispatch, useAppSelector } from "../Redux/Store";
 import {
   DailySteps,
   Nutrition,
   PostScreen,
+  StoriesScreen,
   WaterIntake,
 } from "../Screens/MainScreens";
-import { homeStackParamList } from "../Defs";
+import { appStackParamList } from "../Defs";
 import { COLORS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
 import { storeUserHealthData } from "../Utils/userUtils";
-import { Platform } from "react-native";
 import { date } from "../Utils/commonUtils";
 
-const Stack = createNativeStackNavigator<homeStackParamList>();
+const Stack = createNativeStackNavigator<appStackParamList>();
 
 const AppNavigator = () => {
   // constants
@@ -37,6 +40,7 @@ const AppNavigator = () => {
     dispatch(resetHealthData());
   }
 
+  // effect use
   useEffect(() => {
     if (Platform.OS === "ios") {
       AppleHealthKit.getActiveEnergyBurned(
@@ -59,6 +63,7 @@ const AppNavigator = () => {
     } else {
     }
   }, []);
+
   return (
     <Stack.Navigator
       initialRouteName="HomeNavigator"
@@ -80,6 +85,11 @@ const AppNavigator = () => {
       <Stack.Screen name="DailySteps" component={DailySteps} />
       <Stack.Screen name="WaterIntake" component={WaterIntake} />
       <Stack.Screen name="PostScreen" component={PostScreen} />
+      <Stack.Screen
+        name="StoriesScreen"
+        component={StoriesScreen}
+        options={{ headerShown: false, animation: "slide_from_bottom" }}
+      />
     </Stack.Navigator>
   );
 };

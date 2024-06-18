@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES, SPACING } from "../../../Constants";
 import { RFValue } from "react-native-responsive-fontsize";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -17,6 +18,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
     marginRight: RFValue(40),
     marginHorizontal: 36,
+    fontFamily: FONT_FAMILY.REGULAR,
     ...SPACING.mt2,
   },
   detailsText: {
@@ -24,6 +26,7 @@ export const styles = StyleSheet.create({
     fontWeight: SIZES.fontBold0,
     fontSize: SIZES.font12,
     marginHorizontal: 36,
+    fontFamily: FONT_FAMILY.REGULAR,
     ...SPACING.mt3,
   },
   catageroiesCtr: {

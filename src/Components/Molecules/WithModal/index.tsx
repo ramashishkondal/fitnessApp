@@ -1,36 +1,34 @@
 // libs
 import React from "react";
-import { View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 
 // 3rd party
-import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 
 // custom
 import { WithModalProps } from "./types";
 import { styles } from "./styles";
+import Modal from "react-native-modal/dist/modal";
 
-const WithModal = ({
+const WithModal: React.FC<WithModalProps> = ({
   modalVisible,
-  setModalVisible,
   children,
-}: WithModalProps) => {
-  const setModalFalse = () => setModalVisible(false);
+  setModalFalse,
+}) => {
   return (
-    <Modal
-      visible={modalVisible}
-      swipeDirection={["down"]} // can be string or an array
-      swipeThreshold={200} // default 100
-      onSwipeOut={setModalFalse}
-      onTouchOutside={setModalFalse}
-      style={styles.parent}
-      modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
-      rounded
-    >
-      <ModalContent style={styles.modalContent}>
-        <View style={styles.horizontalLine} />
+    <SafeAreaView style={{ flex: 1 }}>
+      <Modal
+        isVisible={modalVisible}
+        onBackdropPress={setModalFalse}
+        swipeDirection={"down"}
+        style={styles.parent}
+        propagateSwipe={true}
+      >
+        <View style={styles.horizontalLineCtr}>
+          <View style={styles.horizontalLine} />
+        </View>
         <View style={styles.modalCtr}>{children}</View>
-      </ModalContent>
-    </Modal>
+      </Modal>
+    </SafeAreaView>
   );
 };
 

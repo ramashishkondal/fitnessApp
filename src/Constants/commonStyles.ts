@@ -20,6 +20,14 @@ export const COLORS = {
   },
 };
 
+export const FONT_FAMILY = {
+  REGULAR: "NotoSans-Regular",
+  MEDIUM: "NotoSans-Medium",
+  SEMI_BOLD: "NotoSans-SemiBold",
+  BOLD: "NotoSans-Bold",
+  EXTRA_BOLD: "NotoSans-ExtraBold",
+};
+
 export const ANIMATIONS = {
   sizeNormal: 1,
   sizeIncrease1: 1.05,
@@ -38,9 +46,10 @@ export const SIZES = {
   width: Dimensions.get("screen").width,
   height: Dimensions.get("screen").height,
 
+  font10: DeviceInfo.isTablet() ? RFValue(9) : RFValue(10),
   font11: DeviceInfo.isTablet() ? RFValue(10) : RFValue(11),
-  font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12.5),
-  font13: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13.5),
+  font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12.75),
+  font13: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13.1),
   font14: DeviceInfo.isTablet() ? RFValue(13) : RFValue(14),
   font15: DeviceInfo.isTablet() ? RFValue(13) : RFValue(15),
   font17: DeviceInfo.isTablet() ? RFValue(16) : RFValue(17),
@@ -50,8 +59,8 @@ export const SIZES = {
   fontH1: RFValue(HEADER_CONST * 2),
   fontH2: RFValue(HEADER_CONST * 1.8),
   fontH3: RFValue(HEADER_CONST * 1.65),
-  fontH4: RFValue(HEADER_CONST * 1.4),
-  fontH5: RFValue(HEADER_CONST * 1.3),
+  fontH4: RFValue(HEADER_CONST * 1.5),
+  fontH5: RFValue(HEADER_CONST * 1.2),
   fontH6: RFValue(HEADER_CONST * 1.0),
   fontH7: RFValue(HEADER_CONST * 0.9),
   fontBold0: "bold" as const,

@@ -5,14 +5,15 @@ import UserPost from "../UserPost";
 import { Post } from "../../../Defs";
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import { useAppSelector } from "../../../Redux/Store";
-import WithModal from "../WithModal";
-import AddComment from "../AddComment";
 import { AllPostsProps } from "./type";
 
-const AllPosts = ({ goToPostScreen, postIdRef }: AllPostsProps) => {
+const AllPosts: React.FC<AllPostsProps> = ({
+  goToPostScreen,
+  postIdRef,
+  handleCommentPress,
+}) => {
   // state use
   const [postsData, setPostsData] = useState<Post[]>();
-  const [commentModalVisible, setCommentModalVisible] = useState(false);
 
   // redux use
   const { id: userId } = useAppSelector((state) => state.User.data);
@@ -57,7 +58,7 @@ const AllPosts = ({ goToPostScreen, postIdRef }: AllPostsProps) => {
                   }}
                   handleCommentsPress={() => {
                     postIdRef.current = val.postId;
-                    setCommentModalVisible(true);
+                    handleCommentPress(true);
                   }}
                   handleLikesPress={() => {
                     if (isLiked) {
@@ -74,16 +75,6 @@ const AllPosts = ({ goToPostScreen, postIdRef }: AllPostsProps) => {
             );
           })
         : null}
-
-      <WithModal
-        modalVisible={commentModalVisible}
-        setModalVisible={setCommentModalVisible}
-      >
-        <AddComment
-          setModalVisible={setCommentModalVisible}
-          postId={postIdRef.current!}
-        />
-      </WithModal>
     </View>
   );
 };

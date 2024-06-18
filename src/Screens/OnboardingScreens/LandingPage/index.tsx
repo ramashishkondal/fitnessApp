@@ -28,7 +28,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigation }) => {
       <HeadingText text={STRING.LANDING_PAGE.TITLE} />
       <DescriptionText
         text={STRING.LANDING_PAGE.TITLE_DESCRIPTION}
-        textStyle={SPACING.mh2}
+        textStyle={[SPACING.mh2, SPACING.mt1]}
       />
       <Image source={IMAGES.LANDING_PAGE} style={styles.image} />
       <CustomButton

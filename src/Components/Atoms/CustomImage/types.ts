@@ -11,4 +11,5 @@ export type CustomImageProps = {
   imageStyle?: StyleProp<ImageStyle>;
   parentStyle?: StyleProp<ViewStyle>;
   activityIndicatorSize?: ActivityIndicatorProps["size"];
+  handleLoadEnd?: () => void;
 };

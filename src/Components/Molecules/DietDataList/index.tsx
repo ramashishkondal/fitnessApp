@@ -5,6 +5,7 @@ import { View } from "react-native";
 // custom
 import DietDataItem from "../DietDataItem";
 import { DummyData } from "./types";
+import { useAppSelector } from "../../../Redux/Store";
 
 const dummyData: Array<DummyData> = [
   {
@@ -37,11 +38,13 @@ const dummyData: Array<DummyData> = [
 ];
 
 const DietDataList: React.FC = () => {
+  const { data: dailyMeals } = useAppSelector((state) => state.dailyMeals);
   return (
     <View>
-      {dummyData.map((val, index) => {
-        return <DietDataItem item={val} key={index} />;
-      })}
+      <DietDataItem item={dailyMeals.breakfast} timeOfMeal="Breakfast" />
+      <DietDataItem item={dailyMeals.snack} timeOfMeal="Snack" />
+      <DietDataItem item={dailyMeals.lunch} timeOfMeal="Lunch" />
+      <DietDataItem item={dailyMeals.dinner} timeOfMeal="Dinner" />
     </View>
   );
 };

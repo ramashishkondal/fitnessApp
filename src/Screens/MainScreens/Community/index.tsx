@@ -1,29 +1,26 @@
 // libs
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from "react-native";
+import { ScrollView, TouchableOpacity, View, FlatList } from "react-native";
 
 // 3rd party
+import { useAppSelector } from "../../../Redux/Store";
 import firestore from "@react-native-firebase/firestore";
 
 // custom
 import {
+  AddComment,
   AddPost,
+  AddStory,
   AllPosts,
+  HeadingText,
   SelectCustomPhoto,
   Story,
   WithModal,
 } from "../../../Components";
 import { COLORS, ICONS, STRING } from "../../../Constants";
 import { CommunityProps } from "../../../Defs/navigators";
-import { styles } from "./styles";
 import { StoryData, firebaseDB, storeStory } from "../../../Utils/userUtils";
-import { useAppSelector } from "../../../Redux/Store";
+import { styles } from "./styles";
 
 const postSignSize = {
   width: 20,
@@ -32,13 +29,13 @@ const postSignSize = {
 
 const Community: React.FC<CommunityProps> = ({ navigation }) => {
   // state use
-  const [postModalVisible, setPostModalVisible] = useState(false);
   const [storyModalVisible, setStoryModalVisible] = useState(false);
+  const [activeModal, setActiveModal] = useState("none");
   const [story, setStory] = useState<string>();
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
-  const { firstName, lastName, photo } = useAppSelector(
+  const { firstName, lastName, photo, id } = useAppSelector(
     (state) => state.User.data
   );
 
@@ -46,16 +43,6 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
   const postIdRef = useRef<string>();
 
   // effect use
-  useEffect(() => {
-    if (story) {
-      storeStory({
-        storyUrl: story,
-        userName: firstName + " " + lastName,
-        userPhoto: photo,
-      });
-    }
-  }, [story]);
-
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.stories)
@@ -71,54 +58,52 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
   const goToPostScreen = (postId: string) => {
     return () => navigation.navigate("PostScreen", { postId: postId });
   };
-  const handleAddStory = () => setPostModalVisible(true);
+  const setActiveModalPost = () => setActiveModal("story");
+  const setActiveModalFalse = () => setActiveModal("none");
+  const showCommentModal = () => setActiveModal("comment");
 
   return (
     <>
       <ScrollView style={styles.parent} showsVerticalScrollIndicator={false}>
         <View style={styles.titleCtr}>
-          <Text style={styles.titleText}>{STRING.COMMUNITY.TITLE}</Text>
-          <TouchableOpacity onPress={handleAddStory} style={styles.iconCtr}>
+          <HeadingText
+            text={STRING.COMMUNITY.TITLE}
+            textStyle={styles.titleText}
+          />
+          <TouchableOpacity onPress={setActiveModalPost} style={styles.iconCtr}>
             {ICONS.PostSign(postSignSize)}
           </TouchableOpacity>
         </View>
-        <WithModal
-          modalVisible={postModalVisible}
-          setModalVisible={setPostModalVisible}
-        >
-          <AddPost setModalVisible={setPostModalVisible} />
-        </WithModal>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Story
-              photo={
-                "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA3gMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EABsQAQEBAAIDAAAAAAAAAAAAAAABESExQWGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APYlXEwAWcAAAFRTACqgESqAFAEwxQEwilBKGGAGGKCBhgCFgAB9Bo7OAAFAAAAAAAAAAACkARQEAAAATo00CgAgANCgAAAAAAAAAAAAAACCggqABpegEoAIAAIDcUAAAAABQEAAAAAAABAAC0qaBTQAEAAQCgA3FAAAAAAAAAAEBRDQANBPK1ABABUAAABFQBIAOioAoAAAAACAABaBqABaIAAACKACAAAAgAJb6B0WGkoCocgYqHILUKAFQtABAVAADQA4EAFQAAAQAAAQAdCAC6agC6miA1qIAAAAgAAAAAAAAAGggAAIAADYaAAAAAAgKgAQwAAAAAAQFQwBUAAADSiAAA2gARQAKAIAAAAigCACpQBQAAAEADyAAgAJQB//2Q=="
-              }
-              onPress={() => setStoryModalVisible(true)}
-            />
-            <TouchableOpacity
-              style={{ position: "absolute" }}
-              onPress={() => {
-                setStoryModalVisible(true);
-                console.log(storyModalVisible);
-              }}
-            >
-              {ICONS.Plus({
-                width: 20,
-                height: 20,
-                color: COLORS.SECONDARY.ORANGE,
-              })}
-            </TouchableOpacity>
-          </View>
+          <AddStory setModalVisible={() => setStoryModalVisible(true)} />
           <FlatList
             data={storiesData}
-            renderItem={({ item }) => <Story photo={item.userPhoto} />}
+            renderItem={({ index }) => (
+              <Story index={index} allStoryData={storiesData} />
+            )}
             horizontal
             style={{ marginVertical: 24 }}
             showsHorizontalScrollIndicator={false}
           />
         </View>
-        <AllPosts goToPostScreen={goToPostScreen} postIdRef={postIdRef} />
+        <AllPosts
+          goToPostScreen={goToPostScreen}
+          postIdRef={postIdRef}
+          handleCommentPress={showCommentModal}
+        />
+        <WithModal
+          modalVisible={activeModal !== "none"}
+          setModalFalse={setActiveModalFalse}
+        >
+          {activeModal === "story" ? (
+            <AddPost setModalFalse={setActiveModalFalse} />
+          ) : (
+            <AddComment
+              setModalFalse={setActiveModalFalse}
+              postId={postIdRef.current!}
+            />
+          )}
+        </WithModal>
       </ScrollView>
       <SelectCustomPhoto
         modalVisible={storyModalVisible}
@@ -127,6 +112,17 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
         parentStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
         BottomSheetModalStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
         mediaType="mixed"
+        onSuccess={(uri, type) => {
+          storeStory(
+            {
+              storyUrl: uri,
+              userName: firstName + " " + lastName,
+              userPhoto: photo,
+              storyType: type!,
+            },
+            id!
+          );
+        }}
       />
     </>
   );

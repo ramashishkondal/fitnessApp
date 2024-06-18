@@ -19,7 +19,7 @@ import { useAppSelector } from "../../../Redux/Store";
 import { AddPostProps } from "./types";
 import { styles } from "./styles";
 
-const AddPost: React.FC<AddPostProps> = ({ setModalVisible }) => {
+const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
   // constants
   const options: CameraOptions = {
     mediaType: "photo",
@@ -74,7 +74,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalVisible }) => {
           userName: firstName && lastName ? firstName + " " + lastName : "",
           userPhoto,
         });
-        setModalVisible(false);
+        setModalFalse();
       }
     } catch (e) {
       console.log("error", e);

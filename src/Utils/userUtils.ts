@@ -1,4 +1,4 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
@@ -150,29 +150,61 @@ export const addLikes = async (
 // story
 
 export type StoryData = {
-  id?: string;
-  storyUrl: string;
+  stories: [{ storyUrl: string; storyType: string }];
   userName: string;
   userPhoto: string;
 };
 
-export const storeStory = async (story: StoryData) => {
+export const storeStory = async (
+  story: {
+    storyUrl: string;
+    storyType: string;
+    userName: string;
+    userPhoto: string;
+  },
+  userId: string
+) => {
   try {
-    const newStoryId = story.id ?? uuidv4();
+    const storyId = uuidv4();
     const reference = storage().ref(
-      "media/" + "stories/" + newStoryId + "/" + "photo"
+      "media/" + "stories/" + userId + "/" + storyId
     );
     await reference.putFile(story.storyUrl);
     const url = await reference.getDownloadURL();
 
-    await firestore()
+    const val = await firestore()
       .collection(firebaseDB.collections.stories)
-      .doc(newStoryId)
-      .set({
-        ...story,
-        id: newStoryId,
-        storyUrl: url,
-      });
+      .doc(userId)
+      .get();
+    const userStoryData = val.data() as StoryData;
+
+    if (userStoryData) {
+      await firestore()
+        .collection(firebaseDB.collections.stories)
+        .doc(userId)
+        .set({
+          stories: userStoryData.stories.concat({
+            storyType: story.storyType,
+            storyUrl: url,
+          }),
+          userName: story.userName,
+          userPhoto: story.userPhoto,
+        });
+    } else {
+      await firestore()
+        .collection(firebaseDB.collections.stories)
+        .doc(userId)
+        .set({
+          stories: [
+            {
+              storyType: story.storyType,
+              storyUrl: url,
+            },
+          ],
+          userName: story.userName,
+          userPhoto: story.userPhoto,
+        });
+    }
   } catch (e) {
     console.log("error posting story", e);
   }

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   image: {
     width: RFValue(310),
     height: RFValue(210),
-    ...SPACING.mt3,
+    ...SPACING.mt2,
   },
   signInText1: {
     color: COLORS.SECONDARY.GREY,

@@ -4,9 +4,11 @@ import {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
+import { StoryData } from "../Utils/userUtils";
 
 // app drawer navigator
-export type appDrawerParamList = {
+export type homeDrawerParamList = {
   HomeScreen: undefined;
   Notifications: undefined;
   Community: undefined;
@@ -16,28 +18,28 @@ export type appDrawerParamList = {
 };
 
 export type HomeScreenProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "HomeScreen">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "HomeScreen">,
+  NativeStackScreenProps<appStackParamList>
 >;
 export type NotificationsProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "Notifications">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "Notifications">,
+  NativeStackScreenProps<appStackParamList>
 >;
 export type CommunityProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "Community">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "Community">,
+  NativeStackScreenProps<appStackParamList>
 >;
 export type GetPremiumProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "GetPremium">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "GetPremium">,
+  NativeStackScreenProps<appStackParamList>
 >;
 export type SettingsProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "Settings">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "Settings">,
+  NativeStackScreenProps<appStackParamList>
 >;
 export type LogOutProps = CompositeScreenProps<
-  DrawerScreenProps<appDrawerParamList, "LogOut">,
-  NativeStackScreenProps<homeStackParamList>
+  DrawerScreenProps<homeDrawerParamList, "LogOut">,
+  NativeStackScreenProps<appStackParamList>
 >;
 
 // onboarding stack navigator
@@ -102,30 +104,37 @@ export type ForgotPasswordProps = NativeStackScreenProps<
 >;
 
 // home stack navigator
-export type homeStackParamList = {
-  HomeNavigator: NavigatorScreenParams<appDrawerParamList>;
+export type appStackParamList = {
+  HomeNavigator: NavigatorScreenParams<homeDrawerParamList>;
   Nutrition: undefined;
   WaterIntake: undefined;
   DailySteps: undefined;
   PostScreen: { postId: string };
+  StoriesScreen: { allStoryData: Array<StoryData>; index: number };
 };
+export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
+
 export type NutritionProps = NativeStackScreenProps<
-  homeStackParamList,
+  appStackParamList,
   "Nutrition"
 >;
 export type HomeNavigatorProps = NativeStackScreenProps<
-  homeStackParamList,
+  appStackParamList,
   "HomeNavigator"
 >;
 export type WaterIntakeProps = NativeStackScreenProps<
-  homeStackParamList,
+  appStackParamList,
   "WaterIntake"
 >;
 export type DailyStepsProps = NativeStackScreenProps<
-  homeStackParamList,
+  appStackParamList,
   "DailySteps"
 >;
 export type PostScreenProps = NativeStackScreenProps<
-  homeStackParamList,
+  appStackParamList,
   "PostScreen"
+>;
+export type StoriesScreenProps = NativeStackScreenProps<
+  appStackParamList,
+  "StoriesScreen"
 >;

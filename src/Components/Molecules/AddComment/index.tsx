@@ -13,7 +13,7 @@ import { storePostComment } from "../../../Utils/userUtils";
 import { AddCommentProps } from "./type";
 import { styles } from "./styles";
 
-const AddComment: React.FC<AddCommentProps> = ({ setModalVisible, postId }) => {
+const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
   // state use
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,7 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalVisible, postId }) => {
           comment,
           createdOn: Timestamp.fromDate(new Date()),
         });
-        setModalVisible(false);
+        setModalFalse();
       }
     } catch (e) {
       console.log("error", e);

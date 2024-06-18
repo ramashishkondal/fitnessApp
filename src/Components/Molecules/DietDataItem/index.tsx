@@ -6,15 +6,34 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { ICONS } from "../../../Constants";
 import { DietDataItemProps } from "./types";
 import { styles } from "./styles";
+import { useAppDispatch } from "../../../Redux/Store";
+import { resetMealDataItems } from "../../../Redux/Reducers/dailyMeal";
 
-const DietDataItem = ({ item }: DietDataItemProps) => {
+const DietDataItem = ({ item, timeOfMeal }: DietDataItemProps) => {
+  const dispatch = useAppDispatch();
   const handleClose = () => {
-    console.log("close pressed", item.title);
+    switch (timeOfMeal) {
+      case "Breakfast":
+        dispatch(resetMealDataItems({ breakfast: [] }));
+        break;
+      case "Snack":
+        dispatch(resetMealDataItems({ snack: [] }));
+        break;
+      case "Lunch":
+        dispatch(resetMealDataItems({ lunch: [] }));
+        break;
+      case "Dinner":
+        dispatch(resetMealDataItems({ dinner: [] }));
+        break;
+    }
   };
+  if (item.length === 0) {
+    return null;
+  }
   return (
     <View style={styles.parent}>
-      <Text style={styles.titleText}>{item.title}</Text>
-      {item.data.map((val, index, arr) => {
+      <Text style={styles.titleText}>{timeOfMeal}</Text>
+      {item.map((val, index, arr) => {
         return (
           <View
             style={[
@@ -26,11 +45,13 @@ const DietDataItem = ({ item }: DietDataItemProps) => {
             key={index}
           >
             <View style={styles.titleCtr}>
-              <Text style={styles.productTitleText}>{val.productTitle}</Text>
-              <Text style={styles.quantityText}>{val.initialQuantity}</Text>
+              <Text style={styles.productTitleText}>{val.name}</Text>
+              <Text style={styles.quantityText}>
+                {val.serving_size_g} grams
+              </Text>
             </View>
             <View>
-              <Text style={styles.caloriesText}>{val.caloriesConsumed}</Text>
+              <Text style={styles.caloriesText}>{val.calories}</Text>
             </View>
           </View>
         );

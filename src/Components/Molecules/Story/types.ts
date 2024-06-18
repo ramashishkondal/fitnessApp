@@ -1,4 +1,6 @@
+import { StoryData } from "../../../Utils/userUtils";
+
 export type StoryProps = {
-  photo: string;
-  onPress?: () => void;
+  allStoryData: Array<StoryData>;
+  index: number;
 };

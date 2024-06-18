@@ -2,6 +2,6 @@ import React from "react";
 
 export type WithModalProps = {
   modalVisible: boolean;
-  setModalVisible: (value: boolean) => void;
+  setModalFalse: () => void;
   children: React.ReactElement;
 };
