@@ -1,5 +1,5 @@
 // libs
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 // custom

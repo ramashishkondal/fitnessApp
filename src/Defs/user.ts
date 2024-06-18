@@ -10,6 +10,12 @@ export type User = {
   gender: "male" | "female" | null;
   preferences: Array<{ title: string; selected: boolean }>;
   interests: Array<string>;
+  healthData: Array<HealthData>;
+  notifications: Array<{
+    userPhoto: string;
+    userName: string;
+    message: string;
+  }>;
 };
 export type HealthData = {
   nutrition: number;
@@ -21,7 +27,7 @@ export type HealthData = {
     noOfGlasses: number;
     totalSteps: number;
   };
-  currentDate: string;
+  currentDate: Timestamp;
 };
 
 export type Post = {

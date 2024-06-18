@@ -13,6 +13,8 @@ const initialState: { data: User & { password: string | null } } = {
     photo: "",
     preferences: [],
     password: null,
+    healthData: [],
+    notifications: [],
   },
 };
 

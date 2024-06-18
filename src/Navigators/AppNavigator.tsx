@@ -23,6 +23,7 @@ import { COLORS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
 import { storeUserHealthData } from "../Utils/userUtils";
 import { date } from "../Utils/commonUtils";
+import { Timestamp } from "@react-native-firebase/firestore";
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -35,7 +36,13 @@ const AppNavigator = () => {
   const { id } = useAppSelector((state) => state.User.data);
   const { value: healthData } = useAppSelector((state) => state.health);
   const dispatch = useAppDispatch();
-  if (new Date().toDateString() !== healthData.currentDate) {
+
+  if (
+    new Date().toDateString() !==
+    Timestamp.fromMillis(healthData.currentDate.seconds * 1000)
+      .toDate()
+      .toDateString()
+  ) {
     storeUserHealthData(healthData, id!);
     dispatch(resetHealthData());
   }

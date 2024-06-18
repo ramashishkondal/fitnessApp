@@ -33,10 +33,10 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
     .flat()
     .reduce(
       (acc, val) => ({
-        calories: ~~(val.calories + acc.calories),
-        carbs: ~~(val.carbs + acc.carbs),
-        fat: ~~(val.fat + acc.fat),
-        protein: ~~(val.protein + acc.protein),
+        calories: Math.ceil(val.calories + acc.calories),
+        carbs: Math.ceil(val.carbs + acc.carbs),
+        fat: Math.ceil(val.fat + acc.fat),
+        protein: Math.ceil(val.protein + acc.protein),
       }),
       {
         calories: 0,
@@ -45,39 +45,41 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
         protein: 0,
       }
     );
-  const portienData = [
+
+  const proteinData = [
     {
-      value: ~~getPercentage(statsData.protein, statsData.calories),
-      color: COLORS.SECONDARY.ORANGE,
-      text: "",
+      value: Math.ceil(getPercentage(statsData.protein, statsData.calories)),
+      color: COLORS.SECONDARY.CYAN,
     },
     {
-      value: 100 - ~~getPercentage(statsData.protein, statsData.calories),
+      value:
+        100 - Math.ceil(getPercentage(statsData.protein, statsData.calories)),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
+  console.log(proteinData);
   const carbsData = [
     {
-      value: ~~getPercentage(statsData.carbs, statsData.calories),
+      value: Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
       color: COLORS.PRIMARY.PURPLE,
-      text: "",
     },
     {
-      value: 100 - ~~getPercentage(statsData.carbs, statsData.calories),
+      value:
+        100 - Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
   const fatData = [
     {
-      value: ~~getPercentage(statsData.fat, statsData.calories),
-      color: COLORS.SECONDARY.CYAN,
-      text: "",
+      value: Math.ceil(getPercentage(statsData.fat, statsData.calories)),
+      color: COLORS.SECONDARY.ORANGE,
     },
     {
-      value: 100 - ~~getPercentage(statsData.fat, statsData.calories),
+      value: 100 - Math.ceil(getPercentage(statsData.fat, statsData.calories)),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
+
   // effect use
   useEffect(() => {
     navigation.setOptions({
@@ -106,7 +108,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               showText
               radius={80}
               innerRadius={65}
-              data={fatData}
+              data={proteinData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
@@ -126,7 +128,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               showText
               radius={40}
               innerRadius={25}
-              data={portienData}
+              data={fatData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
               edgesRadius={120}
             />
@@ -135,7 +137,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
         <View>
           <PieChartInfoItem
             item={STRING.NUTRITION.NUTRITION_STATS.PROTEIN}
-            percentage={portienData[0].value}
+            percentage={proteinData[0].value}
             color={COLORS.SECONDARY.CYAN}
           />
           <PieChartInfoItem
@@ -153,7 +155,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       <NutritionStats
         item={{
           title: STRING.NUTRITION.NUTRITION_STATS.PROTEIN,
-          percentage: portienData[0].value,
+          percentage: proteinData[0].value,
           quantity: statsData.protein,
           color: COLORS.SECONDARY.CYAN,
         }}
