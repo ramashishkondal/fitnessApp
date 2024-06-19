@@ -29,7 +29,6 @@ const Notifications: React.FC = () => {
   const { id: userId } = useAppSelector((state) => state.User.data);
 
   // effect use
-  console.log(userId);
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.users)
@@ -41,7 +40,6 @@ const Notifications: React.FC = () => {
       });
     return () => unsubscribe();
   }, [userId]);
-  console.log(notificationsData);
 
   return (
     <View style={styles.parent}>
