@@ -57,7 +57,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
-  console.log(proteinData);
+  console.log("dd", getPercentage(statsData.protein, statsData.calories));
   const carbsData = [
     {
       value: Math.ceil(getPercentage(statsData.carbs, statsData.calories)),

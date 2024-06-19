@@ -52,7 +52,7 @@ const SignIn = ({ navigation }: SignInProps) => {
         error.message.includes("auth/wrong-password") ||
         error.message.includes("auth/invalid-credential")
       ) {
-        message = "Entered email or password is invalid";
+        message = "Invalid email or password is entered.";
       } else if (error.message.includes("auth/user-not-found")) {
         message = "Account not registered";
       }
