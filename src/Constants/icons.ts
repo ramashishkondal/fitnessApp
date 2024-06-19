@@ -34,6 +34,7 @@ import HeartLike from "../Assets/Svgs/heartLike.svg";
 import Comment from "../Assets/Svgs/comment.svg";
 import ArrowUp from "../Assets/Svgs/arrowUp.svg";
 import FoodBowl from "../Assets/Svgs/foodBowl.svg";
+import LeftChevron from "../Assets/Svgs/leftChevron.svg";
 
 import {
   Avatar1,
@@ -102,6 +103,8 @@ export const ICONS = {
   ...HOME_SCREEN,
   ...NUTRITION,
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
+  LeftChevron: (params: iconProps) =>
+    LeftChevron({ ...iconStyle({ ...params }) }),
   FoodBowl: (params: iconProps) => FoodBowl({ ...iconStyle({ ...params }) }),
   ArrowUp: (params: iconProps) => ArrowUp({ ...iconStyle({ ...params }) }),
   HeartLike: (params: iconProps) => HeartLike({ ...iconStyle({ ...params }) }),

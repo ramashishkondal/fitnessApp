@@ -9,7 +9,7 @@ import { Timestamp } from "@react-native-firebase/firestore";
 import { useAppSelector } from "../../../Redux/Store";
 import CustomButton from "../../Atoms/CustomButton";
 import { COLORS, ICONS, SIZES, STRING } from "../../../Constants";
-import { storePostComment } from "../../../Utils/userUtils";
+import { sendNotification, storePostComment } from "../../../Utils/userUtils";
 import { AddCommentProps } from "./type";
 import { styles } from "./styles";
 
@@ -28,12 +28,24 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
     try {
       if (userId !== null) {
         setIsLoading(true);
-        await storePostComment(postId, {
-          userName: firstName + " " + lastName,
-          userPhoto,
-          comment,
-          createdOn: Timestamp.fromDate(new Date()),
-        });
+        if (postId.postId) {
+          await storePostComment(postId.postId, {
+            userName: firstName + " " + lastName,
+            userPhoto,
+            comment,
+            createdOn: Timestamp.fromDate(new Date()),
+          });
+          await sendNotification(
+            {
+              createdOn: Timestamp.fromDate(new Date()),
+              message: "commented on your post",
+              userName: firstName + " " + lastName,
+              userPhoto,
+              isUnread: true,
+            },
+            postId.userId
+          );
+        }
         setModalFalse();
       }
     } catch (e) {

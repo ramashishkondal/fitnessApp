@@ -58,9 +58,7 @@ const Notification: React.FC<NotificationProps> = ({
           />
         </View>
       </View>
-      <View>
-        <Text>{isUnread}</Text>
-      </View>
+      <View>{isUnread ? <Text>unread</Text> : null}</View>
     </>
   );
 };

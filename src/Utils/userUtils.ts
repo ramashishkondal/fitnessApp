@@ -252,3 +252,20 @@ export const sendNotification = async (
     console.log("error with getting stories ", e);
   }
 };
+
+export const updateNotificationReadStatus = async (
+  userId: string,
+  newNotificationArray: Array<NotificationData>
+) => {
+  try {
+    console.log(newNotificationArray);
+    await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(firebaseDB.documents.users.byId)
+      .update({
+        [userId + ".notifications"]: newNotificationArray,
+      });
+  } catch (e) {
+    console.log("error with getting stories ", e);
+  }
+};

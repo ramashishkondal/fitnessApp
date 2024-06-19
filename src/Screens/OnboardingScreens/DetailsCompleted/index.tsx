@@ -62,6 +62,7 @@ const DetailsCompleted = () => {
               message: "You have successfully registered on FitnessApp !",
               userName: "",
               userPhoto: "https://www.svgrepo.com/show/311650/pencil-ruler.svg",
+              isUnread: true,
             },
             userCredentials.user.uid
           );

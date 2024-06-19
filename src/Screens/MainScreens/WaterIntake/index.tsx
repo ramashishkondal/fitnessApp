@@ -102,7 +102,6 @@ const WaterIntake: React.FC = () => {
               week: "",
             }
           );
-          console.log(worstWaterIntakeDay, bestWaterIntakeDay);
           setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
         }
       })
@@ -157,18 +156,22 @@ const WaterIntake: React.FC = () => {
         />
         {waterIntake < noOfGlasses ? <WarningLabel /> : null}
       </View>
-      <PerformanceCard
-        icon={ICONS.SmileyGood(simleySize)}
-        performanceText="Best Performance"
-        onDay={rating?.best.week ?? "No Data"}
-        value={rating?.best.value ?? 0}
-      />
-      <PerformanceCard
-        icon={ICONS.SmileyBad(simleySize)}
-        performanceText="Worst Performance"
-        onDay={rating?.worst.week ?? "No data"}
-        value={rating?.worst.value ?? 0}
-      />
+      {rating === undefined || rating?.best.value === -Infinity ? null : (
+        <PerformanceCard
+          icon={ICONS.SmileyGood(simleySize)}
+          performanceText="Best Performance"
+          onDay={rating?.best.week ?? "No Data"}
+          value={rating?.best.value ?? 0}
+        />
+      )}
+      {rating === undefined || rating?.worst.value === Infinity ? null : (
+        <PerformanceCard
+          icon={ICONS.SmileyBad(simleySize)}
+          performanceText="Worst Performance"
+          onDay={rating?.worst.week ?? "No data"}
+          value={rating?.worst.value ?? 0}
+        />
+      )}
     </View>
   );
 };

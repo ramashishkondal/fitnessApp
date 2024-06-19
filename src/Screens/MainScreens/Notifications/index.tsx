@@ -41,6 +41,21 @@ const Notifications: React.FC = () => {
     return () => unsubscribe();
   }, [userId]);
 
+  // useFocusEffect(() => {
+  //   return () => {
+  //     if (userId && notificationsData) {
+  //       updateNotificationReadStatus(
+  //         userId,
+  //         notificationsData?.map(
+  //           (val): NotificationData => ({ ...val, isUnread: false })
+  //         )
+  //       );
+  //       setNotificationsData(
+  //         notificationsData.map((val) => ({ ...val, isUnread: false }))
+  //       );
+  //     }
+  //   };
+  // });
   return (
     <View style={styles.parent}>
       <HeadingText
@@ -52,15 +67,17 @@ const Notifications: React.FC = () => {
         }}
       />
       <DescriptionText
-        text="2 unread Notifications"
+        text={`${
+          notificationsData?.filter((val) => val.isUnread === true).length
+        } unread Notifications`}
         textStyle={{ textAlign: "left", marginHorizontal: 16 }}
       />
       <View style={{ backgroundColor: "white", marginVertical: 32 }}>
         <FlatList
-          data={notificationsData}
+          data={notificationsData?.slice().reverse()}
           renderItem={({ item }) => (
             <Notification
-              isUnread={true}
+              isUnread={item.isUnread}
               notificationText={item.message}
               timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
               userName={item.userName}
