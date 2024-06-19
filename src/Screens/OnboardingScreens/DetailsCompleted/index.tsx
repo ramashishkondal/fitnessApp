@@ -6,11 +6,19 @@ import { Text, View, TouchableOpacity } from "react-native";
 import storage from "@react-native-firebase/storage";
 
 // custom
-import { useAppSelector } from "../../../Redux/Store";
+import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
 import { CustomLoading } from "../../../Components";
-import { storeUserData, createUser } from "../../../Utils/userUtils";
+import {
+  storeUserData,
+  createUser,
+  sendNotification,
+} from "../../../Utils/userUtils";
 import { COLORS, ICONS, STRING } from "../../../Constants";
 import { styles } from "./style";
+import { Timestamp } from "@react-native-firebase/firestore";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import { resetHealthData } from "../../../Redux/Reducers/health";
+import { resetMealData } from "../../../Redux/Reducers/dailyMeal";
 
 const logoSize = {
   width: 40,
@@ -28,6 +36,7 @@ const DetailsCompleted = () => {
   const {
     data: { password, ...user },
   } = useAppSelector((state) => state.User);
+  const dispatch = useAppDispatch();
 
   // functions
   const handleSubmit = async () => {
@@ -44,6 +53,18 @@ const DetailsCompleted = () => {
           user.photo = url;
           user.id = userCredentials.user.uid;
           await storeUserData(user, user.id);
+          dispatch(updateUserData({ id: userCredentials.user.uid }));
+          dispatch(resetHealthData());
+          dispatch(resetMealData());
+          await sendNotification(
+            {
+              createdOn: Timestamp.fromDate(new Date()),
+              message: "You have successfully registered on FitnessApp !",
+              userName: "",
+              userPhoto: "https://www.svgrepo.com/show/311650/pencil-ruler.svg",
+            },
+            userCredentials.user.uid
+          );
         }
       }
     } catch (e) {

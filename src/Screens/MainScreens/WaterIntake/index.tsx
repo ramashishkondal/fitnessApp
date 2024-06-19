@@ -45,7 +45,6 @@ const WaterIntake: React.FC = () => {
   } = useAppSelector((state) => state.health.value);
   const { id } = useAppSelector((state) => state.User.data);
   const dispatch = useAppDispatch();
-
   // effect use
   useEffect(() => {
     getHealthData(id!)
@@ -83,6 +82,7 @@ const WaterIntake: React.FC = () => {
               const currentDate = Timestamp.fromMillis(
                 val.currentDate.seconds * 1000
               ).toDate();
+              console.log(weekday[currentDate.getDay()], currentDate);
               if (
                 Math.ceil(
                   getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10
@@ -102,6 +102,7 @@ const WaterIntake: React.FC = () => {
               week: "",
             }
           );
+          console.log(worstWaterIntakeDay, bestWaterIntakeDay);
           setRating({ best: bestWaterIntakeDay, worst: worstWaterIntakeDay });
         }
       })

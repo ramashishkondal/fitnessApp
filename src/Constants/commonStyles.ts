@@ -17,6 +17,7 @@ export const COLORS = {
     ORANGE: "#F7A56D",
     CYAN: "#44C7BC",
     LIGHT_GREY: "#DCDDE0",
+    LIGHT_GREY_2: "#F1EFFA",
   },
 };
 
@@ -45,7 +46,7 @@ export const SIZES = {
   rounding3: 25,
   width: Dimensions.get("screen").width,
   height: Dimensions.get("screen").height,
-
+  font9: DeviceInfo.isTablet() ? RFValue(8) : RFValue(9.75),
   font10: DeviceInfo.isTablet() ? RFValue(9) : RFValue(10),
   font11: DeviceInfo.isTablet() ? RFValue(10) : RFValue(11),
   font12: DeviceInfo.isTablet() ? RFValue(11) : RFValue(12.75),

@@ -4,6 +4,7 @@ import { COLORS, SIZES } from "../../../Constants";
 import { NotificationProps } from "./types";
 import { CustomImage, DescriptionText } from "../../Atoms";
 import { FONT_FAMILY } from "../../../Constants/commonStyles";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const Notification: React.FC<NotificationProps> = ({
   userName,
@@ -19,7 +20,8 @@ const Notification: React.FC<NotificationProps> = ({
           backgroundColor: COLORS.SECONDARY.WHITE,
           flexDirection: "row",
           marginHorizontal: 24,
-          borderBottomWidth: 1,
+          borderBottomWidth: 1.25,
+          borderColor: COLORS.SECONDARY.LIGHT_GREY_2,
           paddingVertical: 24,
         }}
       >
@@ -36,7 +38,13 @@ const Notification: React.FC<NotificationProps> = ({
           />
         </View>
         <View style={{ flex: 6 }}>
-          <Text style={{ fontFamily: FONT_FAMILY.MEDIUM }}>
+          <Text
+            style={{
+              fontFamily: FONT_FAMILY.MEDIUM,
+              fontSize: RFValue(12),
+              marginRight: 16,
+            }}
+          >
             <Text style={{ fontWeight: "bold" }}>{userName} </Text>
             {notificationText}
           </Text>

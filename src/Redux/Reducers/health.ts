@@ -17,7 +17,7 @@ const initialState: InitialState = {
       noOfGlasses: 6,
       totalSteps: 10000,
     },
-    currentDate: Timestamp.now(),
+    currentDate: Timestamp.fromDate(new Date()),
   },
 };
 
@@ -38,7 +38,7 @@ export const healthSlice = createSlice({
           nutrition: 0,
           todaysSteps: 0,
           waterIntake: 0,
-          currentDate: Timestamp.now(),
+          currentDate: Timestamp.fromDate(new Date()),
         },
       };
     },
