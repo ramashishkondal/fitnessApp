@@ -73,6 +73,8 @@ const SocialLogins: React.FC = () => {
             gender: null,
             interests: [],
             preferences: [],
+            healthData: [],
+            notifications: [],
           },
           id
         );

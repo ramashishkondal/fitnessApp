@@ -99,6 +99,8 @@ const HomeNavigator: React.FC = () => {
         component={GetPremium}
         options={{
           drawerIcon: drawerIcon(ICONS.Premium),
+          headerTransparent: true,
+          headerShown: true,
         }}
       />
       <Drawer.Screen
@@ -106,6 +108,7 @@ const HomeNavigator: React.FC = () => {
         component={LogOut}
         options={{
           drawerIcon: drawerIcon(ICONS.LogOut),
+          headerShown: false,
         }}
       />
     </Drawer.Navigator>

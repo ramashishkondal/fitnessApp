@@ -67,7 +67,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
         await storePost({
           caption,
           userId,
-          createdOn: Timestamp.now(),
+          createdOn: Timestamp.fromDate(new Date()),
           photo,
           comments: [],
           likedByUsersId: [],
