@@ -37,16 +37,6 @@ import FoodBowl from "../Assets/Svgs/foodBowl.svg";
 import LeftChevron from "../Assets/Svgs/leftChevron.svg";
 
 import {
-  Avatar1,
-  Avatar2,
-  Avatar3,
-  Avatar4,
-  Avatar5,
-  Avatar6,
-  Avatar7,
-  Avatar8,
-} from "../Assets/Svgs/Avatars";
-import {
   Fashion,
   Plant,
   Health,
@@ -137,21 +127,6 @@ export const ICONS = {
     FacebookLogo({ ...iconStyle({ ...params }) }),
   TwitterLogo: (params: iconProps) =>
     TwitterLogo({ ...iconStyle({ ...params }) }),
-};
-
-const AVATAR_SIZE = {
-  width: 75,
-  height: 75,
-};
-export const AVATARS = {
-  Avatar1: () => Avatar1({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar2: () => Avatar2({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar3: () => Avatar3({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar4: () => Avatar4({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar5: () => Avatar5({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar6: () => Avatar6({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar7: () => Avatar7({ ...iconStyle(AVATAR_SIZE) }),
-  Avatar8: () => Avatar8({ ...iconStyle(AVATAR_SIZE) }),
 };
 
 export const INTERESTS = {

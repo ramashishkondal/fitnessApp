@@ -14,52 +14,68 @@ const Notification: React.FC<NotificationProps> = ({
   userPhoto,
 }) => {
   return (
-    <>
+    <View
+      style={{
+        backgroundColor: COLORS.SECONDARY.WHITE,
+        flexDirection: "row",
+        marginHorizontal: 24,
+        borderBottomWidth: 1.25,
+        borderColor: COLORS.SECONDARY.LIGHT_GREY_2,
+        paddingVertical: 24,
+      }}
+    >
       <View
         style={{
-          backgroundColor: COLORS.SECONDARY.WHITE,
-          flexDirection: "row",
-          marginHorizontal: 24,
-          borderBottomWidth: 1.25,
-          borderColor: COLORS.SECONDARY.LIGHT_GREY_2,
-          paddingVertical: 24,
+          flex: 1,
+          paddingHorizontal: 16,
         }}
       >
-        <View
-          style={{
+        <CustomImage
+          source={{ uri: userPhoto }}
+          parentStyle={{
             flex: 1,
-            paddingHorizontal: 16,
+            maxHeight: 55,
+            minWidth: 55,
+            padding: 5,
+            borderRadius: 200,
+            // borderWidth: 1,
+          }}
+          imageStyle={{}}
+        />
+      </View>
+      <View style={{ flex: 6 }}>
+        <Text
+          style={{
+            fontFamily: FONT_FAMILY.MEDIUM,
+            fontSize: RFValue(12),
+            marginRight: 16,
           }}
         >
-          <CustomImage
-            source={{ uri: userPhoto }}
-            parentStyle={{ flex: 1, maxHeight: 45 }}
-            imageStyle={{ borderRadius: 200 }}
-          />
-        </View>
-        <View style={{ flex: 6 }}>
-          <Text
-            style={{
-              fontFamily: FONT_FAMILY.MEDIUM,
-              fontSize: RFValue(12),
-              marginRight: 16,
-            }}
-          >
-            <Text style={{ fontWeight: "bold" }}>{userName} </Text>
-            {notificationText}
-          </Text>
-          <DescriptionText
-            text={timeAgo}
-            textStyle={{
-              textAlign: "left",
-              marginVertical: 8,
-              fontSize: SIZES.font11,
-            }}
-          />
-        </View>
+          <Text style={{ fontWeight: "bold" }}>{userName} </Text>
+          {notificationText}
+        </Text>
+        <DescriptionText
+          text={timeAgo}
+          textStyle={{
+            textAlign: "left",
+            marginVertical: 8,
+            fontSize: SIZES.font11,
+          }}
+        />
       </View>
-      <View>{isUnread ? <Text>unread</Text> : null}</View>
-    </>
+      <View style={{ alignSelf: "center" }}>
+        {isUnread ? (
+          <View
+            style={{
+              width: 10,
+              height: 10,
+              backgroundColor: "#E1DDF5",
+              borderRadius: 200,
+            }}
+          />
+        ) : null}
+      </View>
+    </View>
   );
 };
 

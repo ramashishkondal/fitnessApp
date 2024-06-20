@@ -1,10 +1,11 @@
-import auth, { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import "react-native-get-random-values";
 import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { HealthData, User, Post, Comment } from "../Defs";
-import { NotificationData, NotificationsData } from "../Defs/user";
+import { NotificationData } from "../Defs/user";
+import { Notification } from "../Components";
 
 export const firebaseDB = {
   collections: {
@@ -13,10 +14,7 @@ export const firebaseDB = {
     stories: "stories",
   },
   documents: {
-    users: {
-      byId: "byId",
-      allIds: "allIds",
-    },
+    users: {},
     posts: {
       allIds: "allIds",
     },
@@ -42,18 +40,7 @@ export const storeUserData = async (
   userId: FirebaseAuthTypes.UserCredential["user"]["uid"]
 ) => {
   try {
-    await firestore()
-      .collection("users")
-      .doc("byId")
-      .update({
-        [userId]: user,
-      });
-    await firestore()
-      .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.allIds)
-      .update({
-        ids: firestore.FieldValue.arrayUnion(userId),
-      });
+    await firestore().collection("users").doc(userId).set(user);
     console.log("User added!");
   } catch (e) {
     console.log("error storing User data - ", e);
@@ -67,9 +54,9 @@ export const storeUserHealthData = async (
   try {
     await firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(uid)
       .update({
-        [uid + ".healthData"]: firestore.FieldValue.arrayUnion(healthData),
+        healthData: firestore.FieldValue.arrayUnion(healthData),
       });
   } catch (e) {
     console.log(e);
@@ -80,9 +67,9 @@ export const getHealthData = async (uid: string) => {
   try {
     const snapshot = await firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(uid)
       .get();
-    return snapshot.get(`${uid}.healthData`) as Array<HealthData>;
+    return snapshot.data() as Array<HealthData>;
   } catch (e) {
     console.log(e);
   }
@@ -93,11 +80,10 @@ export const getUserData = async (
 ) => {
   const snapshot = await firestore()
     .collection(firebaseDB.collections.users)
-    .doc(firebaseDB.documents.users.byId)
+    .doc(uid)
     .get();
-  const userData = snapshot.get(uid);
-  console.log(userData);
-  return userData as User;
+
+  return snapshot.data() as User;
 };
 
 // posts
@@ -242,14 +228,12 @@ export const sendNotification = async (
   try {
     await firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(sendToUserId)
       .update({
-        [sendToUserId + ".notifications"]: firestore.FieldValue.arrayUnion(
-          notification
-        ),
+        notifications: firestore.FieldValue.arrayUnion(notification),
       });
   } catch (e) {
-    console.log("error with getting stories ", e);
+    console.log("error with sending notifications ", e);
   }
 };
 
@@ -258,13 +242,13 @@ export const updateNotificationReadStatus = async (
   newNotificationArray: Array<NotificationData>
 ) => {
   try {
-    console.log(newNotificationArray);
     await firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(userId)
       .update({
-        [userId + ".notifications"]: newNotificationArray,
+        notifications: newNotificationArray,
       });
+    console.log("notifications read status updated to ", newNotificationArray);
   } catch (e) {
     console.log("error with getting stories ", e);
   }

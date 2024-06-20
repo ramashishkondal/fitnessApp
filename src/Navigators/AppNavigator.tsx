@@ -39,7 +39,8 @@ const AppNavigator = () => {
   const navigation = useNavigation();
 
   // redux use
-  const { id } = useAppSelector((state) => state.User.data);
+  const { id, photo } = useAppSelector((state) => state.User.data);
+  console.log("photo is ", photo);
   const { value: healthData } = useAppSelector((state) => state.health);
   const dispatch = useAppDispatch();
 
