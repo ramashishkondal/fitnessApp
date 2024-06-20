@@ -22,7 +22,7 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({
   // state use
   const [modalVisible, setModalVisible] = useState(false);
   const [avatar, setAvatar] = useState<string>("");
-  const [customPhoto, setCustomPhoto] = useState<string>();
+  const [customPhoto, setCustomPhoto] = useState<string>("");
 
   // redux use
   const dispatch = useAppDispatch();
@@ -41,10 +41,14 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({
 
   return (
     <View style={styles.parent}>
-      {customPhoto ? (
+      {customPhoto && avatar === "" ? (
         <Image source={{ uri: customPhoto }} style={styles.photo} />
       ) : (
-        <SelectAvatars photo={avatar} setPhoto={setAvatar} />
+        <SelectAvatars
+          avatar={avatar}
+          setSelectedAvatar={setAvatar}
+          setPhoto={setCustomPhoto}
+        />
       )}
       <HeadingText text={STRING.ADD_PROFILE_PICTURE.TITLE} />
       <DescriptionText

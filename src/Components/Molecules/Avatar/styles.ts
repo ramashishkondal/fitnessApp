@@ -3,11 +3,11 @@ import { COLORS, SPACING } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   avatarCtr: {
-    ...SPACING.mhMedium,
+    marginHorizontal: 16,
   },
   avatarSelected: {
     borderColor: COLORS.PRIMARY.PURPLE,
-    borderWidth: 2,
+    borderWidth: 5,
     borderRadius: 200,
   },
 });

@@ -44,24 +44,39 @@ const DetailsCompleted = () => {
       setIsLoading(true);
       if (password !== null) {
         const userCredentials = await createUser(user.email, password);
-        const reference = storage().ref(
-          "media/profilePictures" + userCredentials?.user.uid + "/" + "photo"
-        );
-        await reference.putFile(user.photo);
-        const url = await reference.getDownloadURL();
+        let url = "";
+        if (RegExp("avatar+").test(user.photo)) {
+          url = await storage()
+            .ref("media/Avatars/" + user.photo + ".jpg")
+            .getDownloadURL();
+        } else {
+          const reference = storage().ref(
+            "media/profilePictures/" + userCredentials?.user.uid + "/" + "photo"
+          );
+          await reference.putFile(user.photo);
+          url = await reference.getDownloadURL();
+        }
         if (userCredentials !== undefined) {
-          user.photo = url;
           user.id = userCredentials.user.uid;
-          await storeUserData(user, user.id);
-          dispatch(updateUserData({ id: userCredentials.user.uid }));
+          dispatch(
+            updateUserData({
+              id: userCredentials.user.uid,
+              healthData: [],
+              notifications: [],
+              photo: url,
+            })
+          );
           dispatch(resetHealthData());
           dispatch(resetMealData());
+          await storeUserData(user, user.id);
           await sendNotification(
             {
               createdOn: Timestamp.fromDate(new Date()),
               message: "You have successfully registered on FitnessApp !",
               userName: "",
-              userPhoto: "https://www.svgrepo.com/show/311650/pencil-ruler.svg",
+              userPhoto:
+                "https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FUtils%2Fpencil-ruler-svgrepo-com.jpg?alt=media&token=5ea84d1a-e9ff-4b55-aa3d-8c0522228133",
+              isUnread: true,
             },
             userCredentials.user.uid
           );

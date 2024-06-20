@@ -13,11 +13,15 @@ import {
   Notification,
 } from "../../../Components";
 import { SIZES } from "../../../Constants";
-import { firebaseDB } from "../../../Utils/userUtils";
+import {
+  firebaseDB,
+  updateNotificationReadStatus,
+} from "../../../Utils/userUtils";
 import { useAppSelector } from "../../../Redux/Store";
 import { NotificationsData } from "../../../Defs/user";
 import { FlatList } from "react-native-gesture-handler";
 import { getTimePassed } from "../../../Utils/commonUtils";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Notifications: React.FC = () => {
   // state ues
@@ -32,14 +36,24 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.users)
-      .doc(firebaseDB.documents.users.byId)
+      .doc(userId!)
       .onSnapshot((snapshot) => {
         setNotificationsData(
-          snapshot.get(`${userId}.notifications`) as NotificationsData
+          snapshot.get("notifications") as NotificationsData
         );
       });
     return () => unsubscribe();
   }, [userId]);
+
+  useFocusEffect(() => {
+    if (notificationsData)
+      return () => {
+        updateNotificationReadStatus(
+          userId!,
+          notificationsData?.map((val) => ({ ...val, isUnread: false }))
+        );
+      };
+  });
 
   return (
     <View style={styles.parent}>
@@ -52,15 +66,17 @@ const Notifications: React.FC = () => {
         }}
       />
       <DescriptionText
-        text="2 unread Notifications"
+        text={`${
+          notificationsData?.filter((val) => val.isUnread === true).length
+        } unread Notifications`}
         textStyle={{ textAlign: "left", marginHorizontal: 16 }}
       />
       <View style={{ backgroundColor: "white", marginVertical: 32 }}>
         <FlatList
-          data={notificationsData}
+          data={notificationsData?.slice().reverse()}
           renderItem={({ item }) => (
             <Notification
-              isUnread={true}
+              isUnread={item.isUnread}
               notificationText={item.message}
               timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
               userName={item.userName}

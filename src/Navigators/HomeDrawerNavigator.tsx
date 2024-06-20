@@ -14,7 +14,8 @@ import {
 } from "../Screens/MainScreens";
 import { homeDrawerParamList } from "../Defs";
 import { COLORS, ICONS, SIZES } from "../Constants";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const iconSize = {
   width: 25,
@@ -47,7 +48,8 @@ const HomeNavigator: React.FC = () => {
         headerShadowVisible: false,
         headerStyle: {
           backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
-          height: 140,
+          height:
+            Platform.OS === "ios" ? SIZES.height / 6.5 : SIZES.height / 10,
         },
         headerLeft,
         drawerStyle: {
@@ -69,7 +71,8 @@ const HomeNavigator: React.FC = () => {
           headerRight,
           headerStyle: {
             backgroundColor: COLORS.PRIMARY.DARK_GREY,
-            height: 140,
+            height:
+              Platform.OS === "ios" ? SIZES.height / 6.5 : SIZES.height / 10,
           },
         }}
       />

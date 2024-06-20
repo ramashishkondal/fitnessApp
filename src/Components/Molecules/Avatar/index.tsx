@@ -1,6 +1,6 @@
 // libs
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable, Image } from "react-native";
 
 // 3rd party
 import Animated, {
@@ -19,6 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({
   item,
   selectedItem,
   setSelectedItem,
+  setPhoto,
 }) => {
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -30,9 +31,11 @@ const Avatar: React.FC<AvatarProps> = ({
       withSpring(ANIMATIONS.sizeNormal)
     );
     setSelectedItem(item.name);
+    setPhoto(item.name);
+    console.log("photo item is ", item);
   };
   return (
-    <Animated.View style={[animatedStyle]}>
+    <Animated.View style={[{ minWidth: 100 }, animatedStyle]}>
       <Pressable
         style={[
           styles.avatarCtr,
@@ -40,7 +43,10 @@ const Avatar: React.FC<AvatarProps> = ({
         ]}
         onPress={handleOnPress}
       >
-        {item.icon}
+        <Image
+          source={item.image}
+          style={{ width: 80, height: 80, borderRadius: 200 }}
+        />
       </Pressable>
     </Animated.View>
   );

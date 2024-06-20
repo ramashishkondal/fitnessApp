@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect } from "react";
-import { Platform } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 
 // 3rd party
 import { useAppDispatch, useAppSelector } from "../Redux/Store";
@@ -19,11 +19,14 @@ import {
   WaterIntake,
 } from "../Screens/MainScreens";
 import { appStackParamList } from "../Defs";
-import { COLORS, STRING } from "../Constants";
+import { COLORS, ICONS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
 import { storeUserHealthData } from "../Utils/userUtils";
 import { date } from "../Utils/commonUtils";
 import { Timestamp } from "@react-native-firebase/firestore";
+import { FONT_FAMILY, SIZES } from "../Constants/commonStyles";
+import { useNavigation } from "@react-navigation/native";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -32,8 +35,12 @@ const AppNavigator = () => {
   const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
   const endDate = date.today().toISOString();
 
+  // navigator use
+  const navigation = useNavigation();
+
   // redux use
-  const { id } = useAppSelector((state) => state.User.data);
+  const { id, photo } = useAppSelector((state) => state.User.data);
+  console.log("photo is ", photo);
   const { value: healthData } = useAppSelector((state) => state.health);
   const dispatch = useAppDispatch();
 
@@ -79,6 +86,37 @@ const AppNavigator = () => {
         headerShadowVisible: false,
         headerTitle: "",
         headerStyle: { backgroundColor: COLORS.PRIMARY.LIGHT_GREY },
+        headerLeft: ({ canGoBack }) => {
+          if (canGoBack) {
+            return (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  left: -15,
+                }}
+                onPress={() => navigation.goBack()}
+              >
+                {ICONS.LeftChevron({
+                  width: RFValue(22),
+                  height: RFValue(30),
+                  color: "#317FFF",
+                })}
+                <Text
+                  style={{
+                    color: "#348AFE",
+                    fontFamily: FONT_FAMILY.SEMI_BOLD,
+                    fontSize: SIZES.font15,
+                    fontWeight: 500,
+                    left: -RFValue(3),
+                  }}
+                >
+                  Back
+                </Text>
+              </TouchableOpacity>
+            );
+          } else return null;
+        },
       }}
     >
       <Stack.Screen

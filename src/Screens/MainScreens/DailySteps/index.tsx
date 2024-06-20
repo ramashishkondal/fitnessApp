@@ -185,22 +185,26 @@ const DailySteps: React.FC = () => {
         />
       </View>
       <View style={SPACING.mV3}>
-        <PerformanceCard
-          icon={ICONS.SmileyGood({
-            width: 20,
-            height: 20,
-            color: COLORS.SECONDARY.ORANGE,
-          })}
-          onDay={rating?.best.week ?? "No data"}
-          value={rating?.best.value ?? 0}
-          performanceText="Best Performance"
-        />
-        <PerformanceCard
-          icon={ICONS.SmileyBad({ width: 20, height: 20 })}
-          onDay={rating?.worst.week ?? "No data"}
-          value={rating?.worst.value ?? "No data"}
-          performanceText="Best Performance"
-        />
+        {rating === undefined || rating?.best.value === -Infinity ? null : (
+          <PerformanceCard
+            icon={ICONS.SmileyGood({
+              width: 20,
+              height: 20,
+              color: COLORS.SECONDARY.ORANGE,
+            })}
+            onDay={rating?.best.week ?? "No data"}
+            value={rating?.best.value ?? 0}
+            performanceText="Best Performance"
+          />
+        )}
+        {rating === undefined || rating?.worst.value === Infinity ? null : (
+          <PerformanceCard
+            icon={ICONS.SmileyBad({ width: 20, height: 20 })}
+            onDay={rating?.worst.week ?? "No data"}
+            value={rating?.worst.value ?? "No data"}
+            performanceText="Best Performance"
+          />
+        )}
       </View>
     </ScrollView>
   );

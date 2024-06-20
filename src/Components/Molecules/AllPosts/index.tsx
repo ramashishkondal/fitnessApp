@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, Pressable } from "react-native";
-import { addLikes, firebaseDB } from "../../../Utils/userUtils";
+import {
+  addLikes,
+  firebaseDB,
+  sendNotification,
+} from "../../../Utils/userUtils";
 import UserPost from "../UserPost";
 import { Post } from "../../../Defs";
 import firestore, { Timestamp } from "@react-native-firebase/firestore";
@@ -16,7 +20,9 @@ const AllPosts: React.FC<AllPostsProps> = ({
   const [postsData, setPostsData] = useState<Post[]>();
 
   // redux use
-  const { id: userId } = useAppSelector((state) => state.User.data);
+  const { id: userId, firstName, lastName, photo } = useAppSelector(
+    (state) => state.User.data
+  );
 
   // effect use
   useEffect(() => {
@@ -57,7 +63,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
                     id: val.postId!,
                   }}
                   handleCommentsPress={() => {
-                    postIdRef.current = val.postId;
+                    postIdRef.current = val;
                     handleCommentPress(true);
                   }}
                   handleLikesPress={() => {
@@ -66,6 +72,18 @@ const AllPosts: React.FC<AllPostsProps> = ({
                         val.postId!,
                         val.likedByUsersId.filter((value) => value !== userId)
                       );
+                      if (val.userId !== userId) {
+                        sendNotification(
+                          {
+                            createdOn: Timestamp.fromDate(new Date()),
+                            message: "liked your post.",
+                            userName: firstName + " " + lastName ?? "",
+                            userPhoto: photo,
+                            isUnread: true,
+                          },
+                          val.userId
+                        );
+                      }
                     } else {
                       addLikes(val.postId!, val.likedByUsersId.concat(userId!));
                     }

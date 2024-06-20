@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { COLORS } from "../../../Constants";
 import { FoodSelectorProps } from "./types";
@@ -19,7 +19,8 @@ const FoodSelector: React.FC<FoodSelectorProps> = ({ foodItem, foodData }) => {
     setIsChecked(!isChecked);
   };
   return (
-    <View
+    <TouchableOpacity
+      onPress={handleOnPress}
       style={{
         flexDirection: "row",
         paddingBottom: 8,
@@ -36,6 +37,7 @@ const FoodSelector: React.FC<FoodSelectorProps> = ({ foodItem, foodData }) => {
         </Text>
       </View>
       <BouncyCheckbox
+        style={{ height: 25 }}
         size={25}
         fillColor={COLORS.PRIMARY.PURPLE}
         unFillColor={COLORS.PRIMARY.GREY}
@@ -43,7 +45,7 @@ const FoodSelector: React.FC<FoodSelectorProps> = ({ foodItem, foodData }) => {
         onPress={handleOnPress}
         isChecked={isChecked}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

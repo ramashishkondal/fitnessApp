@@ -21,6 +21,7 @@ import { COLORS, ICONS, STRING } from "../../../Constants";
 import { CommunityProps } from "../../../Defs/navigators";
 import { StoryData, firebaseDB, storeStory } from "../../../Utils/userUtils";
 import { styles } from "./styles";
+import { Post } from "../../../Defs";
 
 const postSignSize = {
   width: 20,
@@ -40,7 +41,7 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
   );
 
   // ref use
-  const postIdRef = useRef<string>();
+  const postIdRef = useRef<Post>();
 
   // effect use
   useEffect(() => {

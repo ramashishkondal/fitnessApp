@@ -1,24 +1,32 @@
 // libs
 import React from "react";
-import { FlatList, ListRenderItem } from "react-native";
+import { FlatList, Image, ImageProps, ListRenderItem } from "react-native";
 
 // custom
-import { AVATARS } from "../../../Constants/icons";
 import Avatar from "../Avatar";
 import { styles } from "./styles";
-import { SelectAvatarsProps } from "./types";
+import { AvatarData, SelectAvatarsProps } from "./types";
+import { IMAGES } from "../../../Constants";
 
-const AvatarArray = Object.values(AVATARS).map((val) => ({
-  icon: val(),
-  name: val.name,
-}));
+const AvatarArray: Array<AvatarData> = Object.entries(IMAGES.AVATARS).map(
+  ([key, value]) => ({
+    name: key,
+    image: value,
+  })
+);
 
-const SelectAvatars: React.FC<SelectAvatarsProps> = ({ photo, setPhoto }) => {
-  const renderItem: ListRenderItem<{
-    icon: React.ReactNode;
-    name: string;
-  }> = ({ item }) => (
-    <Avatar item={item} selectedItem={photo} setSelectedItem={setPhoto} />
+const SelectAvatars: React.FC<SelectAvatarsProps> = ({
+  avatar,
+  setPhoto,
+  setSelectedAvatar,
+}) => {
+  const renderItem: ListRenderItem<AvatarData> = ({ item }) => (
+    <Avatar
+      item={item}
+      selectedItem={avatar}
+      setSelectedItem={setSelectedAvatar}
+      setPhoto={setPhoto}
+    />
   );
   return (
     <FlatList
@@ -27,6 +35,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({ photo, setPhoto }) => {
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.flatListSyle}
+      contentContainerStyle={{ alignItems: "center" }}
     />
   );
 };
