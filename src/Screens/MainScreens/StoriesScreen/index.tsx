@@ -57,9 +57,6 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
       <GestureRecognizer
-        onSwipeDown={() => {
-          navigation.goBack();
-        }}
         style={{ flex: 1 }}
         onSwipeLeft={() => {
           if (userIndex < allUserData.length - 1) {
@@ -99,6 +96,16 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
             onPress={() => {
               if (index < stories.length - 1) {
                 setIndex(index + 1);
+              } else if (index === stories.length - 1) {
+                updateStoriesWatchedArray(
+                  userId!,
+                  allUserData[userIndex].storyByUserId
+                );
+                if (userIndex < allUserData.length - 1) {
+                  setUserIndex(userIndex + 1);
+                  setIndex(0);
+                }
+                if (userIndex === allUserData.length - 1) navigation.goBack();
               }
             }}
           />

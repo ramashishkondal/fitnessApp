@@ -75,6 +75,7 @@ const SocialLogins: React.FC = () => {
             preferences: [],
             healthData: [],
             notifications: [],
+            storiesWatched: [],
           },
           id
         );

@@ -21,6 +21,7 @@ export type NotificationData = {
   message: string;
   createdOn: Timestamp;
   isUnread: boolean;
+  isShownViaPushNotification: boolean;
 };
 export type HealthData = {
   nutrition: number;

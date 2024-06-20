@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 
 // 3rd party
 import { NavigationContainer } from "@react-navigation/native";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import AppleHealthKit, { HealthKitPermissions } from "react-native-health";
 import GoogleFit, { Scopes } from "react-native-google-fit";
 import { PERMISSIONS, check, request } from "react-native-permissions";
 
 // custom
 import OnboardingNav from "./OnboardingNavigator";
-import { User } from "../Defs";
 import AppNavigator from "./AppNavigator";
 import { Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { updateHealthData } from "../Redux/Reducers/health";
 import { CustomLoading } from "../Components";
 import { date } from "../Utils/commonUtils";
+import { updateUserData } from "../Redux/Reducers/currentUser";
 
 // iOS health kit permissions
 const permissions = {
@@ -38,7 +38,7 @@ const options = {
 const RootNavigator = () => {
   // state use
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 
   // redux use
   const dispatch = useDispatch();
@@ -100,8 +100,9 @@ const RootNavigator = () => {
     }
   };
 
-  function onAuthStateChanged(userN: any) {
+  function onAuthStateChanged(userN: FirebaseAuthTypes.User | null) {
     setUser(userN);
+    dispatch(updateUserData({ id: userN === null ? undefined : userN.uid }));
     if (initializing) setInitializing(false);
   }
 

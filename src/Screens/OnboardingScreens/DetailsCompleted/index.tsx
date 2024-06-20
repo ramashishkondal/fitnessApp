@@ -33,10 +33,9 @@ const DetailsCompleted = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const {
-    data: { password, ...user },
-  } = useAppSelector((state) => state.User);
+  const { data } = useAppSelector((state) => state.User);
   const dispatch = useAppDispatch();
+  const { password, ...user } = data;
 
   // functions
   const handleSubmit = async () => {
@@ -57,17 +56,21 @@ const DetailsCompleted = () => {
           url = await reference.getDownloadURL();
         }
         if (userCredentials !== undefined) {
+          user.photo = url;
           user.id = userCredentials.user.uid;
-          dispatch(
-            updateUserData({
-              id: userCredentials.user.uid,
-              healthData: [],
-              notifications: [],
-              photo: url,
-            })
-          );
-          dispatch(resetHealthData());
-          dispatch(resetMealData());
+          user.healthData = [];
+          user.notifications = [];
+          user.storiesWatched = [];
+          // dispatch(
+          //   updateUserData({
+          //     id: userCredentials.user.uid,
+          //     healthData: [],
+          //     notifications: [],
+          //     photo: url,
+          //   })
+          // );
+          // dispatch(resetHealthData());
+          // dispatch(resetMealData());
           await storeUserData(user, user.id);
           await sendNotification(
             {
@@ -77,6 +80,7 @@ const DetailsCompleted = () => {
               userPhoto:
                 "https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FUtils%2Fpencil-ruler-svgrepo-com.jpg?alt=media&token=5ea84d1a-e9ff-4b55-aa3d-8c0522228133",
               isUnread: true,
+              isShownViaPushNotification: false,
             },
             userCredentials.user.uid
           );

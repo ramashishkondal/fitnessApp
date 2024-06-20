@@ -12,7 +12,9 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 16,
   },
-  iconCtr: { padding: 10 },
+  iconCtr: {
+    padding: 10,
+  },
   titleText: {
     fontSize: SIZES.fontH4,
   },

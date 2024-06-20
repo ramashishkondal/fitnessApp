@@ -42,6 +42,7 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
               userName: firstName + " " + lastName,
               userPhoto,
               isUnread: true,
+              isShownViaPushNotification: false,
             },
             postId.userId
           );

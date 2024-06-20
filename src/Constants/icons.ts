@@ -35,6 +35,7 @@ import Comment from "../Assets/Svgs/comment.svg";
 import ArrowUp from "../Assets/Svgs/arrowUp.svg";
 import FoodBowl from "../Assets/Svgs/foodBowl.svg";
 import LeftChevron from "../Assets/Svgs/leftChevron.svg";
+import Pencil from "../Assets/Svgs/pencil.svg";
 
 import {
   Fashion,
@@ -92,6 +93,7 @@ export const ICONS = {
   ...DRAWER,
   ...HOME_SCREEN,
   ...NUTRITION,
+  Pencil: (params: iconProps) => Pencil({ ...iconStyle({ ...params }) }),
   LeftArrow: (params: iconProps) => LeftArrow({ ...iconStyle({ ...params }) }),
   LeftChevron: (params: iconProps) =>
     LeftChevron({ ...iconStyle({ ...params }) }),

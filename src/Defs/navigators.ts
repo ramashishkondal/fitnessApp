@@ -111,6 +111,7 @@ export type appStackParamList = {
   DailySteps: undefined;
   PostScreen: { postId: string };
   StoriesScreen: { allStoryData: Array<StoryData>; index: number };
+  EditProfile: undefined;
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 

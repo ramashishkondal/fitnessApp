@@ -11,6 +11,7 @@ import { StoryProps } from "./types";
 import { AppNavigationProps } from "../../../Defs/navigators";
 import { useAppSelector } from "../../../Redux/Store";
 import { CustomImage } from "../../Atoms";
+import { COLORS } from "../../../Constants";
 
 const Story: React.FC<StoryProps> = ({ allStoryData, index }) => {
   const navigation = useNavigation<AppNavigationProps>();
@@ -27,7 +28,7 @@ const Story: React.FC<StoryProps> = ({ allStoryData, index }) => {
       style={[
         styles.parent,
         storiesWatched.includes(allStoryData[index].storyByUserId)
-          ? { borderWidth: 0 }
+          ? { borderColor: COLORS.SECONDARY.GREY }
           : null,
       ]}
       onPress={goToStoriesScreen}

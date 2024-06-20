@@ -9,15 +9,16 @@ import auth from "@react-native-firebase/auth";
 import { styles } from "./styles";
 import { STRING } from "../../../Constants";
 import SettingsCard from "../../../Components/Molecules/SettingsCard";
+import { SettingsProps } from "../../../Defs";
 
-const Settings = () => {
+const Settings: React.FC<SettingsProps> = ({ navigation }) => {
   return (
     <View style={styles.parent}>
       <Text style={styles.titleText}>{STRING.SETTINGS.TITLE}</Text>
       <View style={{ marginTop: 40 }}>
         <SettingsCard
           title="Edit Profile"
-          onPress={() => console.log("eida")}
+          onPress={() => navigation.push("EditProfile")}
         />
         <SettingsCard title="Push Notification" hasSwitch />
         <SettingsCard title="Give Feedback" />

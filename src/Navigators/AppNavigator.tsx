@@ -21,7 +21,11 @@ import {
 import { appStackParamList } from "../Defs";
 import { COLORS, ICONS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
-import { firebaseDB, storeUserHealthData } from "../Utils/userUtils";
+import {
+  firebaseDB,
+  storeUserHealthData,
+  updateNotificationReadStatus,
+} from "../Utils/userUtils";
 import { date } from "../Utils/commonUtils";
 import { Timestamp } from "@react-native-firebase/firestore";
 import { FONT_FAMILY, SIZES } from "../Constants/commonStyles";
@@ -31,6 +35,7 @@ import notifee from "@notifee/react-native";
 import firestore from "@react-native-firebase/firestore";
 import { User } from "../Defs/user";
 import { updateUserData } from "../Redux/Reducers/currentUser";
+import EditProfile from "../Screens/MainScreens/EditProfile";
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -114,11 +119,17 @@ const AppNavigator = () => {
         .doc(id!)
         .onSnapshot((snapshot) => {
           const userData = snapshot.data() as User;
-          userData.notifications
-            .filter((val) => val.isUnread === true)
-            .forEach((val) => {
-              onDisplayNotification(val.userName + " " + val.message);
-            });
+
+          updateNotificationReadStatus(
+            id!,
+            userData.notifications.map((val) => {
+              if (val.isShownViaPushNotification === false) {
+                onDisplayNotification(val.userName + " " + val.message);
+                return { ...val, isShownViaPushNotification: true };
+              }
+              return val;
+            })
+          );
           dispatch(updateUserData(userData));
         });
       return () => unsubscribe();
@@ -186,6 +197,7 @@ const AppNavigator = () => {
           presentation: "modal",
         }}
       />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 };
