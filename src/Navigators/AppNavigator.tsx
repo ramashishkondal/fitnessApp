@@ -21,15 +21,43 @@ import {
 import { appStackParamList } from "../Defs";
 import { COLORS, ICONS, STRING } from "../Constants";
 import { resetHealthData, updateHealthData } from "../Redux/Reducers/health";
-import { storeUserHealthData } from "../Utils/userUtils";
+import { firebaseDB, storeUserHealthData } from "../Utils/userUtils";
 import { date } from "../Utils/commonUtils";
 import { Timestamp } from "@react-native-firebase/firestore";
 import { FONT_FAMILY, SIZES } from "../Constants/commonStyles";
 import { useNavigation } from "@react-navigation/native";
 import { RFValue } from "react-native-responsive-fontsize";
+import notifee from "@notifee/react-native";
+import firestore from "@react-native-firebase/firestore";
+import { User } from "../Defs/user";
+import { updateUserData } from "../Redux/Reducers/currentUser";
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
+async function onDisplayNotification(message: string) {
+  // Request permissions (required for iOS)
+  await notifee.requestPermission();
+
+  // Create a channel (required for Android)
+  const channelId = await notifee.createChannel({
+    id: "default",
+    name: "Default Channel",
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    title: "Notification",
+    body: message,
+    android: {
+      channelId,
+      smallIcon: "name-of-a-small-icon", // optional, defaults to 'ic_launcher'.
+      // pressAction is needed if you want the notification to open the app when pressed
+      pressAction: {
+        id: "default",
+      },
+    },
+  });
+}
 const AppNavigator = () => {
   // constants
   const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
@@ -77,6 +105,25 @@ const AppNavigator = () => {
     } else {
     }
   }, []);
+
+  // effect use
+  useEffect(() => {
+    if (id) {
+      const unsubscribe = firestore()
+        .collection(firebaseDB.collections.users)
+        .doc(id!)
+        .onSnapshot((snapshot) => {
+          const userData = snapshot.data() as User;
+          userData.notifications
+            .filter((val) => val.isUnread === true)
+            .forEach((val) => {
+              onDisplayNotification(val.userName + " " + val.message);
+            });
+          dispatch(updateUserData(userData));
+        });
+      return () => unsubscribe();
+    }
+  }, [id]);
 
   return (
     <Stack.Navigator
@@ -133,7 +180,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="StoriesScreen"
         component={StoriesScreen}
-        options={{ headerShown: false, animation: "slide_from_bottom" }}
+        options={{
+          headerShown: false,
+          animation: "slide_from_bottom",
+          presentation: "modal",
+        }}
       />
     </Stack.Navigator>
   );

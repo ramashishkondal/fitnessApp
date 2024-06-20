@@ -5,7 +5,6 @@ import storage from "@react-native-firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { HealthData, User, Post, Comment } from "../Defs";
 import { NotificationData } from "../Defs/user";
-import { Notification } from "../Components";
 
 export const firebaseDB = {
   collections: {
@@ -152,6 +151,7 @@ export type StoryData = {
   stories: [{ storyUrl: string; storyType: string }];
   userName: string;
   userPhoto: string;
+  storyByUserId: string;
 };
 
 export const storeStory = async (
@@ -188,6 +188,7 @@ export const storeStory = async (
           }),
           userName: story.userName,
           userPhoto: story.userPhoto,
+          storyByUserId: userId,
         });
     } else {
       await firestore()
@@ -204,6 +205,17 @@ export const storeStory = async (
           userPhoto: story.userPhoto,
         });
     }
+    const snap = await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .get();
+    const storiesWatchedData = snap.get("storiesWatched") as Array<string>;
+    firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .update({
+        storiesWatched: storiesWatchedData.filter((val) => val !== userId),
+      });
   } catch (e) {
     console.log("error posting story", e);
   }
@@ -251,5 +263,21 @@ export const updateNotificationReadStatus = async (
     console.log("notifications read status updated to ", newNotificationArray);
   } catch (e) {
     console.log("error with getting stories ", e);
+  }
+};
+
+export const updateStoriesWatchedArray = async (
+  userId: string,
+  storyByUserId: string
+) => {
+  try {
+    await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .update({
+        storiesWatched: firestore.FieldValue.arrayUnion(storyByUserId),
+      });
+  } catch (e) {
+    console.log("error encountered while updating watched stories array -", e);
   }
 };

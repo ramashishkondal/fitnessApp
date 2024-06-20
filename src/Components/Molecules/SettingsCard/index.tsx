@@ -10,6 +10,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   onPress,
 }) => {
   const [switchActive, setSwitchActive] = useState(false);
+
   return (
     <Pressable
       style={{
@@ -43,7 +44,9 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         >
           <Switch
             value={switchActive}
-            onValueChange={(val) => setSwitchActive(val)}
+            onValueChange={(val) => {
+              setSwitchActive(val);
+            }}
             disabled={false}
             activeText={"On"}
             inActiveText={"Off"}

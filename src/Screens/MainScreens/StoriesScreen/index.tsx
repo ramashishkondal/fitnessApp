@@ -13,10 +13,15 @@ import { COLORS, SIZES } from "../../../Constants";
 import { Timer } from "../../../Utils/commonUtils";
 import { StoriesScreenProps } from "../../../Defs";
 import { styles } from "./styles";
+import { updateStoriesWatchedArray } from "../../../Utils/userUtils";
+import { useAppSelector } from "../../../Redux/Store";
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
   // constants
   const allUserData = route.params.allStoryData;
+
+  // redux use
+  const { id: userId } = useAppSelector((state) => state.User.data);
 
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
@@ -34,6 +39,12 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
     if (index < stories.length - 1) {
       setIndex(index + 1);
     } else {
+      if (index === stories.length - 1) {
+        updateStoriesWatchedArray(
+          userId!,
+          allUserData[userIndex].storyByUserId
+        );
+      }
       if (userIndex < allUserData.length - 1) {
         setUserIndex(userIndex + 1);
       } else {
