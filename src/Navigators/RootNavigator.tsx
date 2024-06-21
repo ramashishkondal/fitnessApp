@@ -17,6 +17,7 @@ import { updateHealthData } from "../Redux/Reducers/health";
 import { CustomLoading } from "../Components";
 import { date, getLastWeekDayDate } from "../Utils/commonUtils";
 import { updateUserData } from "../Redux/Reducers/currentUser";
+import GoalModal from "../Components/Molecules/GoalModal";
 
 // iOS health kit permissions
 const permissions = {
@@ -110,7 +111,13 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {user ? <AppNavigator /> : <OnboardingNav />}
+      {user ? (
+        <GoalModal>
+          <AppNavigator />
+        </GoalModal>
+      ) : (
+        <OnboardingNav />
+      )}
     </NavigationContainer>
   );
 };

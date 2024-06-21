@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
   },
   footerCtr: {
+    backgroundColor: COLORS.SECONDARY.WHITE,
     position: "absolute",
     bottom: 1,
     flexWrap: "wrap",

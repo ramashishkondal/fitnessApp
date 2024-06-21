@@ -25,6 +25,7 @@ import { useAppSelector } from "../../../Redux/Store";
 import { AddPostProps } from "./types";
 import { styles } from "./styles";
 import { CustomImage, HeadingText } from "../../Atoms";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
   // constants
@@ -92,7 +93,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
 
   return (
     <>
-      <ScrollView style={styles.parent}>
+      <KeyboardAwareScrollView style={styles.parent} extraHeight={10}>
         <View>
           <HeadingText
             text={STRING.ADD_POST.TITLE}
@@ -101,7 +102,6 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
           {photo ? (
             <Image source={{ uri: photo }} style={styles.image} />
           ) : null}
-          {/* <Text style={styles.captionText}>{STRING.ADD_POST.CAPTION}</Text> */}
           <View
             style={{
               flexDirection: "row",
@@ -123,7 +123,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
             />
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>
           <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>

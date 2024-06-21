@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 32,
     fontWeight: SIZES.fontBold0,
   },
-  dailyGoalText: { fontSize: 16, fontWeight: SIZES.fontBold2 },
+  dailyGoalText: { fontSize: 16, fontWeight: SIZES.fontBold2, marginTop: 4 },
 });

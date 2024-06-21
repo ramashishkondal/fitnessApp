@@ -4,6 +4,9 @@ import { Timestamp } from "@react-native-firebase/firestore";
 
 export type InitialState = {
   value: HealthData;
+  goalAchieved: {
+    modalShown: boolean;
+  };
 };
 
 const initialState: InitialState = {
@@ -18,6 +21,9 @@ const initialState: InitialState = {
       totalSteps: 10000,
     },
     currentDate: Timestamp.fromDate(new Date()),
+  },
+  goalAchieved: {
+    modalShown: false,
   },
 };
 
@@ -41,11 +47,15 @@ export const healthSlice = createSlice({
           currentDate: Timestamp.fromDate(new Date()),
         },
       };
+      state.goalAchieved.modalShown = false;
+    },
+    setModalShown: (state, action: PayloadAction<boolean>) => {
+      state.goalAchieved.modalShown = action.payload;
     },
   },
 });
 
 const { reducer, actions } = healthSlice;
-export const { updateHealthData, resetHealthData } = actions;
+export const { updateHealthData, resetHealthData, setModalShown } = actions;
 
 export default reducer;

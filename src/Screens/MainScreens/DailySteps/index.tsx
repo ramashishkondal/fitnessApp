@@ -149,7 +149,13 @@ const DailySteps: React.FC = () => {
 
   // callback use
   const centerLabelComponent = useCallback(() => {
-    return <InsidePieChart percentage={stepsCompletionPercentage} />;
+    return (
+      <InsidePieChart
+        value={stepsCompletionPercentage}
+        suffix="%"
+        text="of daily goal"
+      />
+    );
   }, [stepsCompletionPercentage]);
 
   return (

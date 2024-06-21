@@ -13,22 +13,24 @@ const WithModal: React.FC<WithModalProps> = ({
   modalVisible,
   children,
   setModalFalse,
+  parentStyle,
+  barShown = true,
 }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Modal
-        isVisible={modalVisible}
-        onBackdropPress={setModalFalse}
-        swipeDirection={"down"}
-        style={styles.parent}
-        propagateSwipe={true}
-      >
+    <Modal
+      isVisible={modalVisible}
+      onBackdropPress={setModalFalse}
+      swipeDirection={"down"}
+      style={[styles.parent, parentStyle]}
+      propagateSwipe={true}
+    >
+      {barShown ? (
         <View style={styles.horizontalLineCtr}>
           <View style={styles.horizontalLine} />
         </View>
-        <View style={styles.modalCtr}>{children}</View>
-      </Modal>
-    </SafeAreaView>
+      ) : null}
+      <View style={styles.modalCtr}>{children}</View>
+    </Modal>
   );
 };
 
