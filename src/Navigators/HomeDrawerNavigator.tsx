@@ -15,7 +15,6 @@ import {
 import { homeDrawerParamList } from "../Defs";
 import { COLORS, ICONS, SIZES } from "../Constants";
 import { Platform, View } from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
 
 const iconSize = {
   width: 25,

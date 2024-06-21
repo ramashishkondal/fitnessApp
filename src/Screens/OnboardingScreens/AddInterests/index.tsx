@@ -37,6 +37,8 @@ const renderItem: ListRenderItem<{
   icon: React.ReactNode;
   selected: boolean;
 }> = ({ item }) => <InterestItem item={item} />;
+
+
 const AddInterests: React.FC<AddInterestsProps> = ({ navigation }) => {
   // redux use
   const dispatch = useAppDispatch();

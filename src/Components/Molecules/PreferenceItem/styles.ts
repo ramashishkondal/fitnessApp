@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
   childCtr: {
     paddingVertical: RFValue(17),
     paddingHorizontal: RFValue(10),
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: COLORS.SECONDARY.WHITE,

@@ -31,7 +31,7 @@ import {
   storeUserHealthData,
   updateNotificationReadStatus,
 } from "../Utils/userUtils";
-import { date, getLastWeekDayDate } from "../Utils/commonUtils";
+import { date } from "../Utils/commonUtils";
 import { FONT_FAMILY, SIZES } from "../Constants/commonStyles";
 import { User } from "../Defs/user";
 import { updateUserData } from "../Redux/Reducers/currentUser";
