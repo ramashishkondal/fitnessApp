@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants";
+import { COLORS } from "../../../Constants";
+import { RFValue } from "react-native-responsive-fontsize";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -15,15 +17,18 @@ export const styles = StyleSheet.create({
   },
   square: {
     backgroundColor: "#D6D9E0",
-    width: 15,
-    height: 15,
-    borderRadius: SIZES.rounding0,
+    width: 17,
+    height: 17,
+    borderRadius: 4,
     marginHorizontal: 8,
   },
   squareChecked: {
     backgroundColor: COLORS.PRIMARY.PURPLE,
   },
   text: {
-    fontSize: SIZES.font12,
+    fontSize: RFValue(12),
+    marginLeft: 4,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: 500,
   },
 });

@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import { styles } from "./styles";
 import { Alert, View } from "react-native";
 
+// 3rd party
+import { useAppDispatch } from "../../../Redux/Store";
+import { updateUserData } from "../../../Redux/Reducers/currentUser";
+
 // custom
 import {
   CustomButton,
@@ -14,8 +18,6 @@ import {
 import { SPACING, STRING } from "../../../Constants";
 import { isValidPassword } from "../../../Utils/checkValidity";
 import { AddPasswordProps } from "../../../Defs";
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
 
 const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
   // state use
@@ -27,7 +29,10 @@ const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
   // functions
   const handleSubmit = () => {
     if (password === "") {
-      Alert.alert("Password cant be empty");
+      Alert.alert(
+        STRING.ADD_PASSWORD.ERROR.HEADING,
+        STRING.ADD_PASSWORD.ERROR.EMPTY
+      );
     } else if (isValidPassword.checkAllValidations(password)) {
       dispatch(updateUserData({ password }));
       navigation.reset({
@@ -35,8 +40,8 @@ const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
       });
     } else {
       Alert.alert(
-        "Invalid Password",
-        " Make sure your password is 8+ characters long and contains atleast 1 uppercase character and 1 number."
+        STRING.ADD_PASSWORD.ERROR.HEADING,
+        STRING.ADD_PASSWORD.ERROR.BODY
       );
     }
   };
@@ -46,7 +51,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
       <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
       <CustomTextInput
         placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}
-        parentStyle={[[SPACING.mtMedium, SPACING.mh1]]}
+        parentStyle={[[SPACING.mt64, { marginHorizontal: 12 }]]}
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
         autoFocus
@@ -58,7 +63,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
       />
       <CustomButton
         title={STRING.ADD_PASSWORD.BUTTON_TEXT}
-        parentStyle={SPACING.mtLarge}
+        parentStyle={SPACING.mt96}
         onPress={handleSubmit}
       />
     </View>

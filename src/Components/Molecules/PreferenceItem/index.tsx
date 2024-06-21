@@ -53,6 +53,8 @@ const PreferenceItem: React.FC<PreferenceItemProps> = ({ item }) => {
             innerIconStyle={{ borderColor: COLORS.PRIMARY.GREY }}
             onPress={toogleIsChecked}
             isChecked={isChecked}
+            style={{ marginRight: 8 }}
+            disableText
           />
         </View>
       </Pressable>

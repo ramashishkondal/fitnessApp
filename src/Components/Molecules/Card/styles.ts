@@ -1,33 +1,34 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../../Constants";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
-    // flex: 1,
-    // borderWidth: 1,
     flexDirection: "row",
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderRadius: SIZES.rounding2,
     padding: 11,
-    minWidth: 130,
+    minWidth: SIZES.width / 2.8,
+    justifyContent: "center",
   },
   child: {
-    // borderWidth: 1,
+    alignItems: "center",
   },
   iconCtr: {
-    // borderWidth: 1,
-    // padding: 10,
+    alignItems: "center",
+    marginVertical: 8,
   },
   text: {
     textAlign: "center",
     fontSize: SIZES.font14,
     fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   checkboxCtr: {
     width: 8,
-    // position: "absolute",
-    // borderWidth: 1,
+    position: "absolute",
+    right: 14,
+    top: 14,
     alignItems: "center",
-    // right: 20,
   },
 });

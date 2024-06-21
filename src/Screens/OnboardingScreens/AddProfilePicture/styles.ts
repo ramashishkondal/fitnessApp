@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.GREY,
     alignItems: "center",
-    paddingTop: 24,
   },
   photo: {
     height: RFValue(65),
@@ -26,6 +25,9 @@ export const styles = StyleSheet.create({
     ...SPACING.mt1,
     paddingHorizontal: 25,
     ...SPACING.mh2,
+  },
+  buttonParentStyle: {
+    marginTop: 72,
   },
   addPhotoText: {
     color: COLORS.PRIMARY.PURPLE,

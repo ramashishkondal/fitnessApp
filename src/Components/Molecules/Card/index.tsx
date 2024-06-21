@@ -17,8 +17,8 @@ import { CardProps } from "./types";
 import { styles } from "./styles";
 
 const size = {
-  width: 80,
-  height: 90,
+  width: 72,
+  height: 72,
 };
 
 const Card: React.FC<CardProps> = ({ text, icon, onToggle, isChecked }) => {
@@ -46,7 +46,7 @@ const Card: React.FC<CardProps> = ({ text, icon, onToggle, isChecked }) => {
         </View>
         <View style={styles.checkboxCtr}>
           <BouncyCheckbox
-            size={25}
+            size={22}
             fillColor={COLORS.PRIMARY.PURPLE}
             unFillColor={COLORS.PRIMARY.GREY}
             innerIconStyle={{ borderColor: COLORS.PRIMARY.GREY }}

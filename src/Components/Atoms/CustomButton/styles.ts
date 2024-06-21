@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants/commonStyles";
+import { COLORS, FONT_FAMILY, SIZES } from "../../../Constants/commonStyles";
 import { RFValue } from "react-native-responsive-fontsize";
 
 export const styles = StyleSheet.create({
@@ -14,7 +14,8 @@ export const styles = StyleSheet.create({
   buttonCtr: {},
   text: {
     color: COLORS.SECONDARY.WHITE,
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
     fontSize: SIZES.fontH7,
-    fontWeight: SIZES.fontBold1,
+    fontWeight: SIZES.fontBold0,
   },
 });

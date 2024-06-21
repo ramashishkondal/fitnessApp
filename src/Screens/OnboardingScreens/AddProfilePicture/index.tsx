@@ -70,21 +70,23 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({
           />
         )}
       </View>
-      <HeadingText text={STRING.ADD_PROFILE_PICTURE.TITLE} />
-      <DescriptionText
-        text={STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION}
-        textStyle={styles.titleDescriptionText}
-      />
-      <TouchableOpacity onPress={openModal}>
-        <Text style={styles.addPhotoText}>
-          {STRING.ADD_PROFILE_PICTURE.ADD_PHOTO_BUTTON}
-        </Text>
-      </TouchableOpacity>
-      <CustomButton
-        title={STRING.ADD_PROFILE_PICTURE.BUTTON_TEXT}
-        parentStyle={SPACING.mtMedium}
-        onPress={handleSubmit}
-      />
+      <View style={{ marginTop: 32, alignItems: "center" }}>
+        <HeadingText text={STRING.ADD_PROFILE_PICTURE.TITLE} />
+        <DescriptionText
+          text={STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION}
+          textStyle={styles.titleDescriptionText}
+        />
+        <TouchableOpacity onPress={openModal}>
+          <Text style={styles.addPhotoText}>
+            {STRING.ADD_PROFILE_PICTURE.ADD_PHOTO_BUTTON}
+          </Text>
+        </TouchableOpacity>
+        <CustomButton
+          title={STRING.ADD_PROFILE_PICTURE.BUTTON_TEXT}
+          parentStyle={styles.buttonParentStyle}
+          onPress={handleSubmit}
+        />
+      </View>
       <SelectCustomPhoto
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

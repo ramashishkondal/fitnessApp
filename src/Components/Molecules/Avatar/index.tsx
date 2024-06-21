@@ -36,7 +36,7 @@ const Avatar: React.FC<AvatarProps> = ({
   };
   return (
     <Animated.View
-      style={[{ minWidth: 100, marginHorizontal: 16 }, animatedStyle]}
+      style={[{ minWidth: 100, marginHorizontal: 12 }, animatedStyle]}
     >
       <Pressable
         style={[
