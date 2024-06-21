@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { SettingsCardProps } from "./types";
 import { COLORS, FONT_FAMILY, SIZES } from "../../../Constants/commonStyles";
 import { Switch } from "react-native-switch";
+import notifee from "@notifee/react-native";
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   title,
@@ -10,6 +11,16 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   onPress,
 }) => {
   const [switchActive, setSwitchActive] = useState(false);
+
+  useEffect(() => {
+    notifee.requestPermission().then((settings) => {
+      if (settings.authorizationStatus) {
+        setSwitchActive(true);
+      } else {
+        setSwitchActive(false);
+      }
+    });
+  }, []);
   return (
     <Pressable
       style={{
@@ -43,7 +54,9 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         >
           <Switch
             value={switchActive}
-            onValueChange={(val) => setSwitchActive(val)}
+            onValueChange={(val) => {
+              setSwitchActive(val);
+            }}
             disabled={false}
             activeText={"On"}
             inActiveText={"Off"}

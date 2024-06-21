@@ -34,7 +34,7 @@ const DailySteps: React.FC = () => {
   const {
     todaysSteps,
     nutrition,
-    goal: { totalSteps, totalCalorie },
+    goal: { totalSteps },
   } = useAppSelector((state) => state.health.value);
   const { id } = useAppSelector((state) => state.User.data);
 
@@ -57,11 +57,11 @@ const DailySteps: React.FC = () => {
             )
           );
 
-          setLineData(
-            filteredData.map((val) => ({
-              value: ~~getPercentage(val.todaysSteps, val.goal.totalSteps),
-            }))
-          );
+          // setLineData(
+          //   filteredData.map((val) => ({
+          //     value: ~~getPercentage(val.todaysSteps, val.goal.totalSteps),
+          //   }))
+          // );
           const bestWaterIntakeDay = filteredData.reduce(
             (acc, val) => {
               if (
@@ -122,6 +122,31 @@ const DailySteps: React.FC = () => {
       );
   }, []);
 
+  useEffect(() => {
+    if (Platform.OS === "ios")
+      AppleHealthKit.getDailyStepCountSamples(
+        {
+          startDate: new Date(
+            date.today().getFullYear(),
+            date.today().getMonth(),
+            date.today().getDate() - 6
+          ).toISOString(),
+        },
+        (error, result) => {
+          if (!error) {
+            console.log("res is", result);
+            setLineData(
+              result.map((val) => ({
+                value: getPercentage(val.value, totalSteps),
+              }))
+            );
+            return;
+          }
+          console.log("error - ", error);
+        }
+      );
+  }, [AppleHealthKit]);
+
   // callback use
   const centerLabelComponent = useCallback(() => {
     return <InsidePieChart percentage={stepsCompletionPercentage} />;
@@ -162,27 +187,29 @@ const DailySteps: React.FC = () => {
         >
           Statistics
         </Text>
-        <LineChart
-          isAnimated
-          adjustToWidth
-          curved
-          yAxisOffset={-27.5}
-          initialSpacing={0}
-          data={lineData}
-          hideOrigin
-          areaChart
-          startFillColor="#F8B631"
-          endFillColor1="#FBDA95"
-          hideDataPoints
-          hideRules
-          thickness={4}
-          yAxisTextStyle={{ color: COLORS.SECONDARY.GREY }}
-          yAxisColor="#ffff"
-          xAxisColor="#ffff"
-          color="#F7A608"
-          disableScroll
-          onlyPositive
-        />
+        {lineData ? (
+          <LineChart
+            isAnimated
+            adjustToWidth
+            curved
+            yAxisOffset={-27.5}
+            initialSpacing={0}
+            data={lineData}
+            hideOrigin
+            areaChart
+            startFillColor="#F8B631"
+            endFillColor1="#FBDA95"
+            hideDataPoints
+            hideRules
+            thickness={4}
+            yAxisTextStyle={{ color: COLORS.SECONDARY.GREY }}
+            yAxisColor="#ffff"
+            xAxisColor="#ffff"
+            color="#F7A608"
+            disableScroll
+            onlyPositive
+          />
+        ) : null}
       </View>
       <View style={SPACING.mV3}>
         {rating === undefined || rating?.best.value === -Infinity ? null : (
@@ -192,16 +219,16 @@ const DailySteps: React.FC = () => {
               height: 20,
               color: COLORS.SECONDARY.ORANGE,
             })}
-            onDay={rating?.best.week ?? "No data"}
-            value={rating?.best.value ?? 0}
+            onDay={rating.best.week}
+            value={rating.best.value}
             performanceText="Best Performance"
           />
         )}
         {rating === undefined || rating?.worst.value === Infinity ? null : (
           <PerformanceCard
             icon={ICONS.SmileyBad({ width: 20, height: 20 })}
-            onDay={rating?.worst.week ?? "No data"}
-            value={rating?.worst.value ?? "No data"}
+            onDay={rating?.worst.week}
+            value={rating?.worst.value}
             performanceText="Best Performance"
           />
         )}

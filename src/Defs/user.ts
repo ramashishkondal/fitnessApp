@@ -11,6 +11,7 @@ export type User = {
   preferences: Array<{ title: string; selected: boolean }>;
   interests: Array<string>;
   healthData: Array<HealthData>;
+  storiesWatched: Array<string>;
   notifications: NotificationsData;
 };
 export type NotificationsData = Array<NotificationData>;
@@ -20,6 +21,7 @@ export type NotificationData = {
   message: string;
   createdOn: Timestamp;
   isUnread: boolean;
+  isShownViaPushNotification: boolean;
 };
 export type HealthData = {
   nutrition: number;

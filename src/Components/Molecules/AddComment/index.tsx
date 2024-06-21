@@ -12,6 +12,7 @@ import { COLORS, ICONS, SIZES, STRING } from "../../../Constants";
 import { sendNotification, storePostComment } from "../../../Utils/userUtils";
 import { AddCommentProps } from "./type";
 import { styles } from "./styles";
+import { CustomImage, HeadingText } from "../../Atoms";
 
 const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
   // state use
@@ -42,6 +43,7 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
               userName: firstName + " " + lastName,
               userPhoto,
               isUnread: true,
+              isShownViaPushNotification: false,
             },
             postId.userId
           );
@@ -58,13 +60,30 @@ const AddComment: React.FC<AddCommentProps> = ({ setModalFalse, postId }) => {
   return (
     <View style={styles.parent}>
       <View>
-        <Text style={styles.titleText}>{STRING.ADD_Comment.TITLE}</Text>
-        <TextInput
-          autoFocus
-          maxLength={100}
-          onChangeText={setComment}
-          style={styles.textInput}
+        <HeadingText
+          text={STRING.ADD_Comment.TITLE}
+          textStyle={styles.titleText}
         />
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 24,
+            marginVertical: 32,
+          }}
+        >
+          <CustomImage
+            source={{ uri: userPhoto }}
+            parentStyle={{ width: 50, height: 50 }}
+            imageStyle={{ borderRadius: 200 }}
+          />
+          <TextInput
+            autoFocus
+            maxLength={100}
+            onChangeText={setComment}
+            placeholder="Add a Comment"
+            style={styles.textInput}
+          />
+        </View>
       </View>
       <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>

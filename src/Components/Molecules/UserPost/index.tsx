@@ -15,7 +15,7 @@ const icon = {
   color: COLORS.SECONDARY.GREY,
 };
 
-const UserPost = ({
+const UserPost: React.FC<UserPostProps> = ({
   postData: {
     caption,
     userName,
@@ -28,7 +28,7 @@ const UserPost = ({
   },
   handleCommentsPress,
   handleLikesPress,
-}: UserPostProps) => {
+}) => {
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>

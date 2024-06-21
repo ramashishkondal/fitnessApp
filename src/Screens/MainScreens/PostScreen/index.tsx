@@ -13,7 +13,7 @@ import {
 } from "../../../Utils/userUtils";
 import { Comment, UserPost } from "../../../Components";
 import { useAppSelector } from "../../../Redux/Store";
-import { COLORS, ICONS, SIZES, SPACING } from "../../../Constants";
+import { COLORS, ICONS, SIZES } from "../../../Constants";
 
 const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
   // sate use

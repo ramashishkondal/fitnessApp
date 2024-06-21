@@ -4,11 +4,13 @@ export const styles = StyleSheet.create({
   parent: {
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 16,
+    marginHorizontal: 8,
+    padding: 2,
+    borderRadius: 200,
   },
   photo: {
-    width: 70,
-    height: 70,
+    width: 65,
+    height: 65,
     borderRadius: 200,
   },
   iconCtr: { position: "absolute" },

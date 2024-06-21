@@ -9,6 +9,16 @@
 {
   [FIRApp configure];
   self.moduleName = @"fitness_App";
+
+  
+  // for loggin out the user after uninstalling the app and then installing it while logged in
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:@"notFirstRun"]) {
+      [defaults setBool:YES forKey:@"notFirstRun"];
+      [defaults synchronize];
+      [[FIRAuth auth] signOut:NULL];
+    }
+  
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};

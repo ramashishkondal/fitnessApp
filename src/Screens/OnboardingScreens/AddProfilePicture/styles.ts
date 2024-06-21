@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
     paddingTop: 24,
   },
   photo: {
-    height: RFValue(80),
-    width: RFValue(80),
+    height: RFValue(65),
+    width: RFValue(65),
     borderRadius: 200,
     marginTop: 9,
     marginBottom: 38,

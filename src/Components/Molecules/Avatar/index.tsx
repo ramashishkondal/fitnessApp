@@ -35,7 +35,9 @@ const Avatar: React.FC<AvatarProps> = ({
     console.log("photo item is ", item);
   };
   return (
-    <Animated.View style={[{ minWidth: 100 }, animatedStyle]}>
+    <Animated.View
+      style={[{ minWidth: 100, marginHorizontal: 16 }, animatedStyle]}
+    >
       <Pressable
         style={[
           styles.avatarCtr,

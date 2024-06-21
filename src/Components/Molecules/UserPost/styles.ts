@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   userInfoCtr: {
     flexDirection: "row",
     marginTop: 10,
+    alignItems: "center",
   },
   likesAndCommentsCtr: {
     flex: 1,

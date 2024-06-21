@@ -1,6 +1,12 @@
 // libs
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  ScrollView,
+} from "react-native";
 
 // 3rd party libs
 import { Timestamp } from "@react-native-firebase/firestore";
@@ -18,6 +24,7 @@ import { storePost } from "../../../Utils/userUtils";
 import { useAppSelector } from "../../../Redux/Store";
 import { AddPostProps } from "./types";
 import { styles } from "./styles";
+import { CustomImage, HeadingText } from "../../Atoms";
 
 const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
   // constants
@@ -84,18 +91,39 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
   };
 
   return (
-    <View style={styles.parent}>
-      <View>
-        <Text style={styles.titleText}>{STRING.ADD_POST.TITLE}</Text>
-        {photo ? <Image source={{ uri: photo }} style={styles.image} /> : null}
-        <Text style={styles.captionText}>{STRING.ADD_POST.CAPTION}</Text>
-        <TextInput
-          autoFocus
-          maxLength={100}
-          onChangeText={setCaption}
-          style={styles.textInput}
-        />
-      </View>
+    <>
+      <ScrollView style={styles.parent}>
+        <View>
+          <HeadingText
+            text={STRING.ADD_POST.TITLE}
+            textStyle={styles.titleText}
+          />
+          {photo ? (
+            <Image source={{ uri: photo }} style={styles.image} />
+          ) : null}
+          {/* <Text style={styles.captionText}>{STRING.ADD_POST.CAPTION}</Text> */}
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 24,
+              marginVertical: 16,
+            }}
+          >
+            <CustomImage
+              source={{ uri: userPhoto }}
+              parentStyle={{ width: 50, height: 50 }}
+              imageStyle={{ borderRadius: 200 }}
+            />
+            <TextInput
+              autoFocus
+              maxLength={100}
+              onChangeText={setCaption}
+              placeholder="Add a Caption"
+              style={styles.textInput}
+            />
+          </View>
+        </View>
+      </ScrollView>
       <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>
           <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
@@ -128,7 +156,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
           isLoading={isLoading}
         />
       </View>
-    </View>
+    </>
   );
 };
 

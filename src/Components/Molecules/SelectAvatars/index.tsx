@@ -1,6 +1,6 @@
 // libs
 import React from "react";
-import { FlatList, Image, ImageProps, ListRenderItem } from "react-native";
+import { FlatList, ListRenderItem } from "react-native";
 
 // custom
 import Avatar from "../Avatar";
@@ -35,7 +35,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.flatListSyle}
-      contentContainerStyle={{ alignItems: "center" }}
+      contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
     />
   );
 };

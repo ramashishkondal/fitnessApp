@@ -95,3 +95,15 @@ export const checkWeek = (toCheckDate: Date, checkDateWith: Date) => {
     return true;
   }
 };
+
+export const getLastWeekDayDate = (dayTocomparewith?: Date) => {
+  const now = date.today();
+  if (dayTocomparewith) {
+    return new Date(
+      dayTocomparewith.getFullYear(),
+      dayTocomparewith.getMonth(),
+      dayTocomparewith.getDate() - 6
+    );
+  }
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+};

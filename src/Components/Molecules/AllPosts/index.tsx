@@ -80,6 +80,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
                             userName: firstName + " " + lastName ?? "",
                             userPhoto: photo,
                             isUnread: true,
+                            isShownViaPushNotification: false,
                           },
                           val.userId
                         );
