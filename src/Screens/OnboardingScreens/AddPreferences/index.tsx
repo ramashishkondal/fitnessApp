@@ -55,7 +55,7 @@ const AddPreferences: React.FC<AddPreferencesProps> = ({ navigation }) => {
       {Preferences}
       <CustomButton
         title={STRING.ADD_PREFERENCES.BUTTON_TEXT}
-        parentStyle={SPACING.mtMedium}
+        parentStyle={styles.customButtonParentStyle}
         onPress={goToAddInterests}
       />
     </View>

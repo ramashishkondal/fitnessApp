@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.GREY,
     alignContent: "center",
-    paddingTop: 38,
+    paddingTop: 48,
   },
   titleText: {
     ...SPACING.mt2,

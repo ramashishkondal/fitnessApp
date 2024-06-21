@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants/commonStyles";
+import { COLORS, FONT_FAMILY, SIZES } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 15,
     fontSize: SIZES.font13,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   parentError: {
     borderWidth: 0.5,

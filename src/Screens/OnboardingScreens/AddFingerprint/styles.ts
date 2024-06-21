@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES, SPACING } from "../../../Constants";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -18,16 +19,18 @@ export const styles = StyleSheet.create({
   },
   titleDescriptionText: {
     fontSize: SIZES.font12,
-    fontWeight: SIZES.fontBold2,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: SIZES.fontBold1,
     ...SPACING.mt1,
+  },
+  customButtonParentStyle: {
+    marginTop: 88,
   },
   notNowParent: {
     backgroundColor: "",
   },
   notNowText: {
     color: COLORS.PRIMARY.PURPLE,
-    fontSize: SIZES.fontH7,
-    fontWeight: SIZES.fontBold0,
     ...SPACING.mt4,
   },
 });

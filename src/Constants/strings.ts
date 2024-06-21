@@ -29,6 +29,12 @@ export const STRING = {
       CASE: "At least 1 uppercase",
       NUMBER: "At least 1 number",
     },
+    ERROR: {
+      HEADING: "Invalid Password",
+      BODY:
+        "Make sure your password is 8+ characters long and contains 1 uppercase character and 1 number.",
+      EMPTY: "Password can't be empty",
+    },
   },
   ADD_FINGERPRINT: {
     TITLE: "Enable Fingerprint",

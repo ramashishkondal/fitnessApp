@@ -33,7 +33,7 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({ navigation }) => {
       />
       <CustomButton
         title={STRING.ADD_FINGERPRINT.SUBMIT_BUTTON_TEXT}
-        parentStyle={SPACING.mtLarge}
+        parentStyle={styles.customButtonParentStyle}
       />
       <CustomButton
         title={STRING.ADD_FINGERPRINT.REJECT_BUTTON_TEXT}

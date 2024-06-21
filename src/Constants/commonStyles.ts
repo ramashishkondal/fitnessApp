@@ -127,6 +127,12 @@ export const SPACING = StyleSheet.create({
   mtMedium: {
     marginTop: 54,
   },
+  mt64: {
+    marginTop: 64,
+  },
+  mt96: {
+    marginTop: 96,
+  },
   mtLarge: {
     marginTop: 104,
   },

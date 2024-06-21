@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES, SPACING } from "../../../Constants";
 import { RFValue } from "react-native-responsive-fontsize";
+import { FONT_FAMILY } from "../../../Constants/commonStyles";
 
 export const styles = StyleSheet.create({
   parent: {
@@ -23,5 +24,6 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: SIZES.font12,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
 });
