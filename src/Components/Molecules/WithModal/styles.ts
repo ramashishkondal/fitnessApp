@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     borderRadius: SIZES.rounding2,
   },
   modalCtr: {
-    flex: 10,
+    flex: 16,
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderRadius: SIZES.rounding2,
   },

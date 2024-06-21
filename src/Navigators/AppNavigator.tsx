@@ -1,11 +1,16 @@
 // libs
 import React, { useEffect } from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TouchableOpacity } from "react-native";
 
 // 3rd party
 import { useAppDispatch, useAppSelector } from "../Redux/Store";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppleHealthKit from "react-native-health";
+import { Timestamp } from "@react-native-firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import { RFValue } from "react-native-responsive-fontsize";
+import notifee from "@notifee/react-native";
+import firestore from "@react-native-firebase/firestore";
 
 // navigators
 import HomeNavigator from "./HomeDrawerNavigator";
@@ -26,13 +31,8 @@ import {
   storeUserHealthData,
   updateNotificationReadStatus,
 } from "../Utils/userUtils";
-import { date } from "../Utils/commonUtils";
-import { Timestamp } from "@react-native-firebase/firestore";
+import { date, getLastWeekDayDate } from "../Utils/commonUtils";
 import { FONT_FAMILY, SIZES } from "../Constants/commonStyles";
-import { useNavigation } from "@react-navigation/native";
-import { RFValue } from "react-native-responsive-fontsize";
-import notifee from "@notifee/react-native";
-import firestore from "@react-native-firebase/firestore";
 import { User } from "../Defs/user";
 import { updateUserData } from "../Redux/Reducers/currentUser";
 import EditProfile from "../Screens/MainScreens/EditProfile";
@@ -109,22 +109,26 @@ const AppNavigator = () => {
       );
     } else {
     }
-  }, []);
+  }, [AppleHealthKit]);
 
   // effect use
   useEffect(() => {
     if (id) {
       const unsubscribe = firestore()
         .collection(firebaseDB.collections.users)
-        .doc(id!)
+        .doc(id)
         .onSnapshot((snapshot) => {
           const userData = snapshot.data() as User;
 
           updateNotificationReadStatus(
-            id!,
+            id,
             userData.notifications.map((val) => {
               if (val.isShownViaPushNotification === false) {
-                onDisplayNotification(val.userName + " " + val.message);
+                setTimeout(
+                  onDisplayNotification,
+                  500,
+                  val.userName + " " + val.message
+                );
                 return { ...val, isShownViaPushNotification: true };
               }
               return val;

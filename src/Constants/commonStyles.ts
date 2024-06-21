@@ -55,6 +55,7 @@ export const SIZES = {
   font15: DeviceInfo.isTablet() ? RFValue(13) : RFValue(15),
   font17: DeviceInfo.isTablet() ? RFValue(16) : RFValue(17),
   font18: DeviceInfo.isTablet() ? RFValue(17) : RFValue(18),
+  font19: DeviceInfo.isTablet() ? RFValue(19) : RFValue(20),
   font24: DeviceInfo.isTablet() ? RFValue(23) : RFValue(24),
 
   fontH1: RFValue(HEADER_CONST * 2),

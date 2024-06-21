@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 // 3rd party
 import { NavigationContainer } from "@react-navigation/native";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
 import AppleHealthKit, { HealthKitPermissions } from "react-native-health";
 import GoogleFit, { Scopes } from "react-native-google-fit";
 import { PERMISSIONS, check, request } from "react-native-permissions";
@@ -15,7 +15,7 @@ import { Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { updateHealthData } from "../Redux/Reducers/health";
 import { CustomLoading } from "../Components";
-import { date } from "../Utils/commonUtils";
+import { date, getLastWeekDayDate } from "../Utils/commonUtils";
 import { updateUserData } from "../Redux/Reducers/currentUser";
 
 // iOS health kit permissions

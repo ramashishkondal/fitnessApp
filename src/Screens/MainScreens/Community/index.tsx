@@ -32,7 +32,7 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
   // state use
   const [storyModalVisible, setStoryModalVisible] = useState(false);
   const [activeModal, setActiveModal] = useState("none");
-  const [story, setStory] = useState<string>();
+  const [story, setStory] = useState<string>("");
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
