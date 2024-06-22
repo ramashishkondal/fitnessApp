@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -7,16 +7,16 @@ export const styles = StyleSheet.create({
   },
   Container: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   backCtr: {
-    position: "absolute",
+    position: 'absolute',
     zIndex: 1,
     padding: 15,
-    justifyContent: "center",
-    alignContent: "center",
-    left: "4%",
+    justifyContent: 'center',
+    alignContent: 'center',
+    left: '4%',
   },
-  logoCtr: { flex: 1, alignItems: "center" },
+  logoCtr: {flex: 1, alignItems: 'center'},
 });

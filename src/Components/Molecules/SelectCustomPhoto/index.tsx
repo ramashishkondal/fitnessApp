@@ -1,6 +1,6 @@
 // libs
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Pressable, TouchableOpacity, View } from "react-native";
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {Pressable, TouchableOpacity, View} from 'react-native';
 
 // 3rd party
 import {
@@ -8,18 +8,18 @@ import {
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
-} from "react-native-image-picker";
+} from 'react-native-image-picker';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
   useBottomSheetModal,
-} from "@gorhom/bottom-sheet";
+} from '@gorhom/bottom-sheet';
 
 // custom
-import { COLORS, ICONS, SIZES } from "../../../Constants";
-import { SelectCustomPhotoProps } from "./types";
-import { styles } from "./styles";
+import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {SelectCustomPhotoProps} from './types';
+import {styles} from './styles';
 
 const iconSize = 60;
 
@@ -29,14 +29,14 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   setPhoto,
   parentStyle,
   BottomSheetModalStyle,
-  mediaType = "photo",
+  mediaType = 'photo',
   onSuccess,
 }) => {
   // constants
   const options: CameraOptions = {
     mediaType,
     quality: 0.5,
-    videoQuality: "low",
+    videoQuality: 'low',
   };
 
   // effect use
@@ -59,7 +59,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         }
       }
     } catch (e) {
-      console.log("error uploading photo from camera - ", e);
+      console.log('error uploading photo from camera - ', e);
     }
   };
   const openGallery = async () => {
@@ -73,15 +73,15 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
       }
       setModalVisible(false);
     } catch (e) {
-      console.log("error uploading photo from library - ", e);
+      console.log('error uploading photo from library - ', e);
     }
   };
 
   // bottom sheet
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["30%"], []);
+  const snapPoints = useMemo(() => ['30%'], []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("sheet changes", index);
+    console.log('sheet changes', index);
   }, []);
   const onDismiss = () => {
     setModalVisible(false);
@@ -100,10 +100,10 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
             <Pressable
               style={{
                 flex: 1,
-                height: "100%",
-                width: "100%",
-                backgroundColor: "",
-                position: "absolute",
+                height: '100%',
+                width: '100%',
+                backgroundColor: '',
+                position: 'absolute',
               }}
               onPress={() => {
                 sheet.dismissAll();
@@ -114,12 +114,11 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         backgroundStyle={[
           {
             borderRadius: SIZES.rounding3,
-            shadowColor: "red",
+            shadowColor: 'red',
             shadowRadius: 100,
           },
           BottomSheetModalStyle,
-        ]}
-      >
+        ]}>
         <BottomSheetView style={[styles.modalCtr, parentStyle]}>
           <View style={styles.iconsCtr}>
             <TouchableOpacity style={styles.icons} onPress={openCamera}>

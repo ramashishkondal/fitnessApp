@@ -1,13 +1,5 @@
 {
-    "cSpell.words": [
-        "firestore",
-        "Millis",
-        "Noto",
-        "Pressable",
-        "Svgs"
-    ],
-    "svg.preview.background": "dark-transparent",
-    "conventionalCommits.scopes": [
-        "home"
-    ]
+  "cSpell.words": ["firestore", "Millis", "Noto", "Pressable", "Svgs"],
+  "svg.preview.background": "dark-transparent",
+  "conventionalCommits.scopes": ["home"]
 }

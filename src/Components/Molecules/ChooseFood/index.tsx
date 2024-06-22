@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
-import { TouchableOpacity, View } from "react-native";
-import { CustomButton, DescriptionText, HeadingText } from "../../Atoms";
-import { ChooseFoodProps } from "./types";
-import { ICONS } from "../../../Constants";
-import MealSelector from "../MealSelector";
-import FoodSelector from "../FoodSelector";
+import React, {useRef} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {CustomButton, DescriptionText, HeadingText} from '../../Atoms';
+import {ChooseFoodProps} from './types';
+import {ICONS} from '../../../Constants';
+import MealSelector from '../MealSelector';
+import FoodSelector from '../FoodSelector';
 import {
   DailyMeals,
   Meal,
   updateAllMealData,
-} from "../../../Redux/Reducers/dailyMeal";
-import { useAppDispatch } from "../../../Redux/Store";
-import { ScrollView } from "react-native-gesture-handler";
+} from '../../../Redux/Reducers/dailyMeal';
+import {useAppDispatch} from '../../../Redux/Store';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const size = {
   width: 50,
@@ -19,7 +19,7 @@ const size = {
 };
 const foodData: Array<Meal> = [
   {
-    name: "Apple",
+    name: 'Apple',
     carbs: 25,
     fat: 0.3,
     protein: 0.5,
@@ -27,7 +27,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 182,
   },
   {
-    name: "Banana",
+    name: 'Banana',
     carbs: 27,
     fat: 0.3,
     protein: 1.3,
@@ -35,7 +35,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 118,
   },
   {
-    name: "Chicken Breast",
+    name: 'Chicken Breast',
     carbs: 0,
     fat: 3.6,
     protein: 31,
@@ -43,7 +43,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Broccoli",
+    name: 'Broccoli',
     carbs: 6,
     fat: 0.3,
     protein: 2.6,
@@ -51,7 +51,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 91,
   },
   {
-    name: "Almonds",
+    name: 'Almonds',
     carbs: 6,
     fat: 14,
     protein: 6,
@@ -59,7 +59,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 28,
   },
   {
-    name: "Salmon",
+    name: 'Salmon',
     carbs: 0,
     fat: 13,
     protein: 20,
@@ -67,7 +67,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Oatmeal",
+    name: 'Oatmeal',
     carbs: 27,
     fat: 3,
     protein: 5,
@@ -75,7 +75,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 40,
   },
   {
-    name: "Egg",
+    name: 'Egg',
     carbs: 1.1,
     fat: 5,
     protein: 6,
@@ -83,7 +83,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 50,
   },
   {
-    name: "Greek Yogurt",
+    name: 'Greek Yogurt',
     carbs: 4,
     fat: 0.4,
     protein: 10,
@@ -91,7 +91,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 170,
   },
   {
-    name: "Avocado",
+    name: 'Avocado',
     carbs: 12,
     fat: 15,
     protein: 2,
@@ -99,7 +99,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 150,
   },
   {
-    name: "Sweet Potato",
+    name: 'Sweet Potato',
     carbs: 27,
     fat: 0.1,
     protein: 2,
@@ -107,7 +107,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 130,
   },
   {
-    name: "Brown Rice",
+    name: 'Brown Rice',
     carbs: 45,
     fat: 1.5,
     protein: 5,
@@ -115,7 +115,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 195,
   },
   {
-    name: "Quinoa",
+    name: 'Quinoa',
     carbs: 39,
     fat: 3.5,
     protein: 8,
@@ -123,7 +123,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 185,
   },
   {
-    name: "Whole Wheat Bread",
+    name: 'Whole Wheat Bread',
     carbs: 12,
     fat: 1,
     protein: 3,
@@ -131,7 +131,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 28,
   },
   {
-    name: "Black Beans",
+    name: 'Black Beans',
     carbs: 40,
     fat: 0.9,
     protein: 14,
@@ -139,7 +139,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 172,
   },
   {
-    name: "Lentils",
+    name: 'Lentils',
     carbs: 40,
     fat: 0.8,
     protein: 18,
@@ -147,7 +147,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 198,
   },
   {
-    name: "Pasta",
+    name: 'Pasta',
     carbs: 31,
     fat: 1.3,
     protein: 6,
@@ -155,7 +155,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Corn",
+    name: 'Corn',
     carbs: 19,
     fat: 1.5,
     protein: 3.2,
@@ -163,7 +163,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Potato",
+    name: 'Potato',
     carbs: 17,
     fat: 0.1,
     protein: 2,
@@ -171,7 +171,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "White Rice",
+    name: 'White Rice',
     carbs: 28,
     fat: 0.3,
     protein: 2.7,
@@ -179,7 +179,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Barley",
+    name: 'Barley',
     carbs: 44,
     fat: 0.4,
     protein: 4.4,
@@ -187,7 +187,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 157,
   },
   {
-    name: "Chickpeas",
+    name: 'Chickpeas',
     carbs: 27,
     fat: 2.6,
     protein: 14.5,
@@ -195,7 +195,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Peas",
+    name: 'Peas',
     carbs: 14,
     fat: 0.4,
     protein: 5.4,
@@ -203,7 +203,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Butternut Squash",
+    name: 'Butternut Squash',
     carbs: 12,
     fat: 0.1,
     protein: 1,
@@ -211,7 +211,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Pumpkin",
+    name: 'Pumpkin',
     carbs: 7,
     fat: 0.1,
     protein: 1,
@@ -219,7 +219,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Dates",
+    name: 'Dates',
     carbs: 75,
     fat: 0.2,
     protein: 2,
@@ -227,7 +227,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Honey",
+    name: 'Honey',
     carbs: 82,
     fat: 0,
     protein: 0.3,
@@ -235,7 +235,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Raisins",
+    name: 'Raisins',
     carbs: 79,
     fat: 0.5,
     protein: 3.1,
@@ -243,7 +243,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Mango",
+    name: 'Mango',
     carbs: 15,
     fat: 0.4,
     protein: 0.8,
@@ -251,7 +251,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Carrots",
+    name: 'Carrots',
     carbs: 10,
     fat: 0.2,
     protein: 0.9,
@@ -259,7 +259,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Beets",
+    name: 'Beets',
     carbs: 10,
     fat: 0.2,
     protein: 1.6,
@@ -267,7 +267,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Couscous",
+    name: 'Couscous',
     carbs: 23,
     fat: 0.2,
     protein: 3.8,
@@ -275,7 +275,7 @@ const foodData: Array<Meal> = [
     serving_size_g: 100,
   },
   {
-    name: "Kidney Beans",
+    name: 'Kidney Beans',
     carbs: 22,
     fat: 0.5,
     protein: 8.7,
@@ -293,7 +293,7 @@ export type MealsSelected = {
   };
   foodData: Array<Meal>;
 };
-const ChooseFood: React.FC<ChooseFoodProps> = ({ setModalFalse }) => {
+const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   const dispatch = useAppDispatch();
   const mealsSelected = useRef<MealsSelected>({
     mealTime: {
@@ -328,21 +328,20 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({ setModalFalse }) => {
     setModalFalse();
   };
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
+      <ScrollView style={{flex: 1}}>
         <TouchableOpacity activeOpacity={1}>
-          <View style={{ alignSelf: "center" }}>{ICONS.FoodBowl(size)}</View>
-          <View style={{ marginHorizontal: 24, marginVertical: 16 }}>
-            <HeadingText text="Choose Food" textStyle={{ fontWeight: "500" }} />
+          <View style={{alignSelf: 'center'}}>{ICONS.FoodBowl(size)}</View>
+          <View style={{marginHorizontal: 24, marginVertical: 16}}>
+            <HeadingText text="Choose Food" textStyle={{fontWeight: '500'}} />
             <DescriptionText text="Select your meal and your foods that you consume today" />
           </View>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
+              flexDirection: 'row',
+              justifyContent: 'space-around',
               marginTop: 40,
-            }}
-          >
+            }}>
             <MealSelector
               title="Snack"
               mealTime={mealsSelected.current.mealTime}
@@ -360,8 +359,8 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({ setModalFalse }) => {
               mealTime={mealsSelected.current.mealTime}
             />
           </View>
-          <View style={{ margin: 16, marginVertical: 32 }}>
-            {foodData.map((item) => (
+          <View style={{margin: 16, marginVertical: 32}}>
+            {foodData.map(item => (
               <FoodSelector
                 foodItem={item}
                 foodData={mealsSelected.current.foodData}
@@ -372,7 +371,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({ setModalFalse }) => {
         <CustomButton
           title="Add"
           onPress={handleSubmit}
-          parentStyle={{ alignSelf: "center", marginVertical: 16 }}
+          parentStyle={{alignSelf: 'center', marginVertical: 16}}
         />
       </ScrollView>
     </View>

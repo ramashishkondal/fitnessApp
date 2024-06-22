@@ -1,10 +1,10 @@
 // libs
-import React from "react";
-import { Text, View } from "react-native";
+import React from 'react';
+import {Text, View} from 'react-native';
 
 // custom
-import { DataInfoCompareProps } from "./types";
-import { styles } from "./styles";
+import {DataInfoCompareProps} from './types';
+import {styles} from './styles';
 
 const DataInfoCompare = ({
   total,

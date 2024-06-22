@@ -1,6 +1,6 @@
 // libs
-import React, { useCallback, useRef, useState } from "react";
-import { Alert, View } from "react-native";
+import React, {useCallback, useRef, useState} from 'react';
+import {Alert, View} from 'react-native';
 
 // custom
 import {
@@ -9,17 +9,17 @@ import {
   CustomTextInput,
   WithOnboarding,
   HeadingText,
-} from "../../../Components";
-import { SPACING, STRING } from "../../../Constants";
-import { AddEmailLogInProps } from "../../../Defs";
-import { isValidEmail } from "../../../Utils/checkValidity";
-import { styles } from "./styles";
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
+} from '../../../Components';
+import {SPACING, STRING} from '../../../Constants';
+import {AddEmailLogInProps} from '../../../Defs';
+import {isValidEmail} from '../../../Utils/checkValidity';
+import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
-const AddEmail: React.FC<AddEmailLogInProps> = ({ navigation }) => {
+const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
 
   // ref use
   const emailRef = useRef(email);
@@ -30,15 +30,15 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({ navigation }) => {
   // functions
   const handleSubmit = useCallback(() => {
     const currentEmail = emailRef.current;
-    if (currentEmail === "") {
-      Alert.alert("Email address cant be empty");
+    if (currentEmail === '') {
+      Alert.alert('Email address cant be empty');
     } else if (currentEmail && isValidEmail(currentEmail)) {
-      dispatch(updateUserData({ email: currentEmail }));
-      navigation.push("AddPassword");
+      dispatch(updateUserData({email: currentEmail}));
+      navigation.push('AddPassword');
     } else {
       Alert.alert(
-        "Invalid email address",
-        "Make sure entered email address is valid"
+        'Invalid email address',
+        'Make sure entered email address is valid',
       );
     }
   }, [navigation, dispatch]);

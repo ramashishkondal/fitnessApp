@@ -1,17 +1,17 @@
-import React, { useCallback, useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { EditProfileProps } from "./types";
-import { styles } from "./styles";
-import { useAppSelector } from "../../../Redux/Store";
-import { CustomImage, WithModal } from "../../../Components";
-import { COLORS, ICONS } from "../../../Constants";
-import ChangeUserInfo from "../../../Components/Molecules/ChangeUserInfo";
-import ChangeUserPreferences from "../../../Components/Molecules/ChangeUserPreferences";
+import React, {useCallback, useState} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
+import {EditProfileProps} from './types';
+import {styles} from './styles';
+import {useAppSelector} from '../../../Redux/Store';
+import {CustomImage, WithModal} from '../../../Components';
+import {COLORS, ICONS} from '../../../Constants';
+import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
+import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
   const [activeModal, setActiveModal] = useState<
-    "userInfo" | "preferences" | null
+    'userInfo' | 'preferences' | null
   >(null);
 
   // redux use
@@ -24,13 +24,13 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     interests,
     preferences,
     gender,
-  } = useAppSelector((state) => state.User.data);
+  } = useAppSelector(state => state.User.data);
 
   // functions
   const getActiveModalComp = useCallback(() => {
-    if (activeModal === "userInfo") {
+    if (activeModal === 'userInfo') {
       return <ChangeUserInfo />;
-    } else if (activeModal === "preferences") {
+    } else if (activeModal === 'preferences') {
       return <ChangeUserPreferences />;
     } else return null;
   }, [activeModal]);
@@ -41,48 +41,47 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       <View style={styles.userInfoCtr}>
         <View style={styles.userPhotoCtr}>
           <CustomImage
-            source={{ uri: photo }}
+            source={{uri: photo}}
             parentStyle={styles.userPhotoParent}
             imageStyle={styles.userPhoto}
           />
           <TouchableOpacity style={styles.pencilPhotoCtr}>
             <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({ width: 10, height: 10, color: "white" })}
+              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 2, flexDirection: "row" }}>
-          <View style={{ flex: 1 }}>
+        <View style={{flex: 2, flexDirection: 'row'}}>
+          <View style={{flex: 1}}>
             <Text style={styles.infoTextHeading}>Name :</Text>
             <Text style={styles.infoTextHeading}>Email :</Text>
             {gender ? (
               <Text style={styles.infoTextHeading}>Gender :</Text>
             ) : null}
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={{flex: 2}}>
             <Text style={styles.infoText}>
-              {`${firstName} ${lastName ?? ""}`}
+              {`${firstName} ${lastName ?? ''}`}
             </Text>
             <Text style={styles.infoText}>{`${email.slice(0, 14)}${
-              email.length > 14 ? "..." : ""
+              email.length > 14 ? '...' : ''
             }`}</Text>
             {gender ? <Text style={styles.infoText}>{gender}</Text> : null}
           </View>
         </View>
         <TouchableOpacity
           style={styles.pencilCtr}
-          onPress={() => setActiveModal("userInfo")}
-        >
+          onPress={() => setActiveModal('userInfo')}>
           <View style={styles.pencilBackCtr}>
-            {ICONS.Pencil({ width: 10, height: 10, color: "white" })}
+            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 5 }}>
+      <View style={{flex: 5}}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
           {preferences
-            .filter((val) => val.selected === true)
+            .filter(val => val.selected === true)
             .map((val, index) => (
               <Text key={index} style={styles.infoText}>
                 {val.title}
@@ -90,10 +89,9 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             ))}
           <TouchableOpacity
             style={styles.pencilCtr}
-            onPress={() => setActiveModal("preferences")}
-          >
+            onPress={() => setActiveModal('preferences')}>
             <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({ width: 10, height: 10, color: "white" })}
+              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
         </View>
@@ -106,7 +104,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           ))}
           <TouchableOpacity style={styles.pencilCtr}>
             <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({ width: 10, height: 10, color: "white" })}
+              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
         </View>
@@ -114,8 +112,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       <WithModal
         modalVisible={activeModal !== null}
         setModalFalse={() => setActiveModal(null)}
-        parentStyle={{ backgroundColor: COLORS.PRIMARY.LIGHT_GREY }}
-      >
+        parentStyle={{backgroundColor: COLORS.PRIMARY.LIGHT_GREY}}>
         {ActiveModalComponent}
       </WithModal>
     </View>

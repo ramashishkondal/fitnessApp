@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
-    textAlign: "center",
+    textAlign: 'center',
     ...SPACING.mh3,
     marginBottom: 24,
   },

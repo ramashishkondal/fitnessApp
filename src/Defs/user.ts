@@ -1,4 +1,4 @@
-import { Timestamp } from "@react-native-firebase/firestore";
+import {Timestamp} from '@react-native-firebase/firestore';
 
 export type User = {
   id: string | null;
@@ -7,8 +7,8 @@ export type User = {
   email: string;
   finger: boolean;
   photo: string;
-  gender: "male" | "female" | null;
-  preferences: Array<{ title: string; selected: boolean }>;
+  gender: 'male' | 'female' | null;
+  preferences: Array<{title: string; selected: boolean}>;
   interests: Array<string>;
   healthData: Array<HealthData>;
   storiesWatched: Array<string>;

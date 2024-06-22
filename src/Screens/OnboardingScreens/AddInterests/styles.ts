@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.GREY,
-    alignContent: "center",
+    alignContent: 'center',
     paddingTop: 48,
   },
   titleText: {
@@ -15,5 +15,5 @@ export const styles = StyleSheet.create({
     ...SPACING.mtMedium,
     ...SPACING.mh1,
   },
-  buttonStyle: { flex: 3, alignSelf: "center" },
+  buttonStyle: {flex: 3, alignSelf: 'center'},
 });

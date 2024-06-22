@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SPACING } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, SPACING} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   avatarCtr: {

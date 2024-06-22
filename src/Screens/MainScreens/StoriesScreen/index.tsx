@@ -1,27 +1,27 @@
 // libs
-import React, { useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import React, {useRef, useState} from 'react';
+import {Pressable, View} from 'react-native';
 
 // 3rd party
-import Video, { VideoRef } from "react-native-video";
-import GestureRecognizer from "react-native-swipe-gestures";
-import { useFocusEffect } from "@react-navigation/native";
+import Video, {VideoRef} from 'react-native-video';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import {useFocusEffect} from '@react-navigation/native';
 
 // custom
-import { CustomImage, CustomLoading } from "../../../Components";
-import { COLORS, SIZES } from "../../../Constants";
-import { Timer } from "../../../Utils/commonUtils";
-import { StoriesScreenProps } from "../../../Defs";
-import { styles } from "./styles";
-import { updateStoriesWatchedArray } from "../../../Utils/userUtils";
-import { useAppSelector } from "../../../Redux/Store";
+import {CustomImage, CustomLoading} from '../../../Components';
+import {COLORS, SIZES} from '../../../Constants';
+import {Timer} from '../../../Utils/commonUtils';
+import {StoriesScreenProps} from '../../../Defs';
+import {styles} from './styles';
+import {updateStoriesWatchedArray} from '../../../Utils/userUtils';
+import {useAppSelector} from '../../../Redux/Store';
 
-const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
+const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
   const allUserData = route.params.allStoryData;
 
   // redux use
-  const { id: userId } = useAppSelector((state) => state.User.data);
+  const {id: userId} = useAppSelector(state => state.User.data);
 
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
@@ -42,7 +42,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
       if (index === stories.length - 1) {
         updateStoriesWatchedArray(
           userId!,
-          allUserData[userIndex].storyByUserId
+          allUserData[userIndex].storyByUserId,
         );
       }
       if (userIndex < allUserData.length - 1) {
@@ -57,7 +57,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
       <GestureRecognizer
-        style={{ flex: 1 }}
+        style={{flex: 1}}
         onSwipeLeft={() => {
           if (userIndex < allUserData.length - 1) {
             setUserIndex(userIndex + 1);
@@ -69,17 +69,15 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
             setUserIndex(userIndex - 1);
             setIndex(0);
           }
-        }}
-      >
+        }}>
         <View
           style={{
             height: SIZES.height,
             width: SIZES.width,
-            position: "absolute",
-            flexDirection: "row",
+            position: 'absolute',
+            flexDirection: 'row',
             zIndex: 1,
-          }}
-        >
+          }}>
           <Pressable
             style={{
               height: SIZES.height,
@@ -92,14 +90,14 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
             }}
           />
           <Pressable
-            style={{ height: SIZES.height, width: SIZES.width / 2 }}
+            style={{height: SIZES.height, width: SIZES.width / 2}}
             onPress={() => {
               if (index < stories.length - 1) {
                 setIndex(index + 1);
               } else if (index === stories.length - 1) {
                 updateStoriesWatchedArray(
                   userId!,
-                  allUserData[userIndex].storyByUserId
+                  allUserData[userIndex].storyByUserId,
                 );
                 if (userIndex < allUserData.length - 1) {
                   setUserIndex(userIndex + 1);
@@ -110,16 +108,15 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
             }}
           />
         </View>
-        {stories[index].storyType.includes("video") ? (
+        {stories[index].storyType.includes('video') ? (
           <View
             style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <CustomLoading
-              size={"large"}
-              style={{ position: "absolute" }}
+              size={'large'}
+              style={{position: 'absolute'}}
               color={COLORS.PRIMARY.PURPLE}
             />
             <Video
@@ -131,7 +128,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
                 minWidth: SIZES.width,
                 minHeight: SIZES.height,
               }}
-              onLoad={({ duration }) =>
+              onLoad={({duration}) =>
                 storyTimer.start(duration < 15 ? duration * 1000 - 300 : 10000)
               }
               resizeMode="cover"
@@ -139,12 +136,12 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({ navigation, route }) => {
           </View>
         ) : (
           <CustomImage
-            source={{ uri: stories[index].storyUrl }}
+            source={{uri: stories[index].storyUrl}}
             parentStyle={{
               minWidth: SIZES.width,
               minHeight: SIZES.height,
             }}
-            activityIndicatorSize={"large"}
+            activityIndicatorSize={'large'}
             handleLoadEnd={() => {
               storyTimer.start(10000);
             }}

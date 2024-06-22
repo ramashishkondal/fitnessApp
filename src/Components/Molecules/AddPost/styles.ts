@@ -1,16 +1,16 @@
-import { COLORS, FONT_FAMILY } from "../../../Constants/commonStyles";
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
+import {COLORS, FONT_FAMILY} from '../../../Constants/commonStyles';
+import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
-    maxWidth: "100%",
+    maxWidth: '100%',
     flex: 1,
   },
   titleText: {
     fontSize: SIZES.font19,
     marginHorizontal: 16,
-    textAlign: "left",
+    textAlign: 'left',
   },
   image: {
     height: SIZES.height / 3,
@@ -18,28 +18,28 @@ export const styles = StyleSheet.create({
     marginVertical: 32,
     borderRadius: SIZES.rounding2,
   },
-  captionText: { marginTop: 8, fontSize: SIZES.font13, marginHorizontal: 16 },
+  captionText: {marginTop: 8, fontSize: SIZES.font13, marginHorizontal: 16},
   textInput: {
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
   },
   footerCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,
-    position: "absolute",
+    position: 'absolute',
     bottom: 1,
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     borderTopWidth: 1,
     marginHorizontal: 16,
     borderColor: COLORS.SECONDARY.GREY,
     padding: 10,
     paddingVertical: 20,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingBottom: 40,
   },
-  childFooterCtr: { flexDirection: "row" },
-  iconsCtr: { marginHorizontal: 8 },
+  childFooterCtr: {flexDirection: 'row'},
+  iconsCtr: {marginHorizontal: 8},
   buttonParentStyle: {
     maxWidth: SIZES.width / 4,
     maxHeight: SIZES.height / 22,

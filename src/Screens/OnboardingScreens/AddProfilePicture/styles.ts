@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { RFValue } from "react-native-responsive-fontsize";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.GREY,
-    alignItems: "center",
+    alignItems: 'center',
   },
   photo: {
     height: RFValue(65),
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold1,
-    textAlign: "center",
+    textAlign: 'center',
     ...SPACING.mh2,
   },
   titleDescriptionText: {

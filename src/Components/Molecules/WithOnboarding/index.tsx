@@ -1,6 +1,6 @@
-import React from "react";
-import { ScrollView, SafeAreaView } from "react-native";
-import { styles } from "./styles";
+import React from 'react';
+import {ScrollView, SafeAreaView} from 'react-native';
+import {styles} from './styles';
 
 const WithOnboarding = (WrappedComponent: React.FC<any>) => {
   return (props: any) => (

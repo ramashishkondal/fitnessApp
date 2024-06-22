@@ -1,11 +1,11 @@
 // libs
-import React, { useState } from "react";
-import { styles } from "./styles";
-import { Alert, View } from "react-native";
+import React, {useState} from 'react';
+import {styles} from './styles';
+import {Alert, View} from 'react-native';
 
 // 3rd party
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
 // custom
 import {
@@ -14,34 +14,34 @@ import {
   PasswordChecks,
   WithOnboarding,
   HeadingText,
-} from "../../../Components";
-import { SPACING, STRING } from "../../../Constants";
-import { isValidPassword } from "../../../Utils/checkValidity";
-import { AddPasswordProps } from "../../../Defs";
+} from '../../../Components';
+import {SPACING, STRING} from '../../../Constants';
+import {isValidPassword} from '../../../Utils/checkValidity';
+import {AddPasswordProps} from '../../../Defs';
 
-const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
+const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
   // state use
-  const [password, setPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>('');
 
   // redux use
   const dispatch = useAppDispatch();
 
   // functions
   const handleSubmit = () => {
-    if (password === "") {
+    if (password === '') {
       Alert.alert(
         STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.EMPTY
+        STRING.ADD_PASSWORD.ERROR.EMPTY,
       );
     } else if (isValidPassword.checkAllValidations(password)) {
-      dispatch(updateUserData({ password }));
+      dispatch(updateUserData({password}));
       navigation.reset({
-        routes: [{ name: "AddFirstName" }],
+        routes: [{name: 'AddFirstName'}],
       });
     } else {
       Alert.alert(
         STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.BODY
+        STRING.ADD_PASSWORD.ERROR.BODY,
       );
     }
   };
@@ -51,7 +51,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({ navigation }) => {
       <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
       <CustomTextInput
         placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}
-        parentStyle={[[SPACING.mt64, { marginHorizontal: 12 }]]}
+        parentStyle={[[SPACING.mt64, {marginHorizontal: 12}]]}
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
         autoFocus

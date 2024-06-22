@@ -1,6 +1,6 @@
 // libs
-import React from "react";
-import { View } from "react-native";
+import React from 'react';
+import {View} from 'react-native';
 
 // custom
 import {
@@ -8,20 +8,20 @@ import {
   WithOnboarding,
   DescriptionText,
   HeadingText,
-} from "../../../Components";
-import { ICONS, SPACING, STRING } from "../../../Constants";
-import { styles } from "./styles";
-import { AddProfilePictureProps } from "../../../Defs";
+} from '../../../Components';
+import {ICONS, SPACING, STRING} from '../../../Constants';
+import {styles} from './styles';
+import {AddProfilePictureProps} from '../../../Defs';
 
 const fingerprintSize = 75;
-const AddFingerprint: React.FC<AddProfilePictureProps> = ({ navigation }) => {
+const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   const goToAddProfilePicture = () => {
-    navigation.push("AddProfilePicture");
+    navigation.push('AddProfilePicture');
   };
   return (
     <View style={styles.parent}>
       <View style={styles.iconCtr}>
-        {ICONS.Fingerprint({ width: fingerprintSize, height: fingerprintSize })}
+        {ICONS.Fingerprint({width: fingerprintSize, height: fingerprintSize})}
       </View>
       <HeadingText
         text={STRING.ADD_FINGERPRINT.TITLE}

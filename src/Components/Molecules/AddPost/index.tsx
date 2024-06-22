@@ -1,73 +1,76 @@
 // libs
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   TouchableOpacity,
   Image,
   TextInput,
   ScrollView,
-} from "react-native";
+} from 'react-native';
 
 // 3rd party libs
-import { Timestamp } from "@react-native-firebase/firestore";
+import {Timestamp} from '@react-native-firebase/firestore';
 import {
   CameraOptions,
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
-} from "react-native-image-picker";
+} from 'react-native-image-picker';
 
 // custom
-import CustomButton from "../../Atoms/CustomButton";
-import { COLORS, ICONS, SIZES, STRING } from "../../../Constants";
-import { storePost } from "../../../Utils/userUtils";
-import { useAppSelector } from "../../../Redux/Store";
-import { AddPostProps } from "./types";
-import { styles } from "./styles";
-import { CustomImage, HeadingText } from "../../Atoms";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import CustomButton from '../../Atoms/CustomButton';
+import {COLORS, ICONS, SIZES, STRING} from '../../../Constants';
+import {storePost} from '../../../Utils/userUtils';
+import {useAppSelector} from '../../../Redux/Store';
+import {AddPostProps} from './types';
+import {styles} from './styles';
+import {CustomImage, HeadingText} from '../../Atoms';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
+const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   // constants
   const options: CameraOptions = {
-    mediaType: "photo",
+    mediaType: 'photo',
   };
   // state use
-  const [photo, setPhoto] = useState("");
-  const [caption, setCaption] = useState("");
+  const [photo, setPhoto] = useState('');
+  const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const { id: userId, photo: userPhoto, firstName, lastName } = useAppSelector(
-    (state) => state.User.data
-  );
+  const {
+    id: userId,
+    photo: userPhoto,
+    firstName,
+    lastName,
+  } = useAppSelector(state => state.User.data);
 
   // functions
   const openCamera = async () => {
     try {
       const result: ImagePickerResponse = await launchCamera(options);
       if (result.assets !== undefined) {
-        setPhoto(result?.assets[0]?.uri ?? "");
+        setPhoto(result?.assets[0]?.uri ?? '');
       }
     } catch (e) {
-      console.log("error uploading photo from camera - ", e);
+      console.log('error uploading photo from camera - ', e);
     }
   };
   const openGallery = async () => {
     try {
       const result: ImagePickerResponse = await launchImageLibrary(options);
       if (result.assets !== undefined) {
-        setPhoto(result?.assets[0]?.uri ?? "");
+        setPhoto(result?.assets[0]?.uri ?? '');
       }
     } catch (e) {
-      console.log("error uploading photo from library - ", e);
+      console.log('error uploading photo from library - ', e);
     }
   };
 
   const handlePost = async () => {
     try {
-      if (photo === "") {
-        throw Error("you have to select a photo");
+      if (photo === '') {
+        throw Error('you have to select a photo');
       }
       if (userId !== null && userPhoto !== null) {
         setIsLoading(true);
@@ -79,13 +82,13 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
           photo,
           comments: [],
           likedByUsersId: [],
-          userName: firstName && lastName ? firstName + " " + lastName : "",
+          userName: firstName && lastName ? firstName + ' ' + lastName : '',
           userPhoto,
         });
         setModalFalse();
       }
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e);
     } finally {
       setIsLoading(false);
     }
@@ -99,20 +102,17 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
             text={STRING.ADD_POST.TITLE}
             textStyle={styles.titleText}
           />
-          {photo ? (
-            <Image source={{ uri: photo }} style={styles.image} />
-          ) : null}
+          {photo ? <Image source={{uri: photo}} style={styles.image} /> : null}
           <View
             style={{
-              flexDirection: "row",
+              flexDirection: 'row',
               marginHorizontal: 24,
               marginVertical: 16,
-            }}
-          >
+            }}>
             <CustomImage
-              source={{ uri: userPhoto }}
-              parentStyle={{ width: 50, height: 50 }}
-              imageStyle={{ borderRadius: 200 }}
+              source={{uri: userPhoto}}
+              parentStyle={{width: 50, height: 50}}
+              imageStyle={{borderRadius: 200}}
             />
             <TextInput
               autoFocus
@@ -151,7 +151,7 @@ const AddPost: React.FC<AddPostProps> = ({ setModalFalse }) => {
         <CustomButton
           title="Post"
           parentStyle={styles.buttonParentStyle}
-          textStyle={{ fontSize: SIZES.font13 }}
+          textStyle={{fontSize: SIZES.font13}}
           onPress={handlePost}
           isLoading={isLoading}
         />

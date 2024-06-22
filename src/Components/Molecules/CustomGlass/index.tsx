@@ -1,11 +1,11 @@
 // libs
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import React from 'react';
+import {TouchableOpacity, View} from 'react-native';
 
 // custom
-import { ICONS } from "../../../Constants";
-import { CustomGlassProps } from "./types";
-import { styles } from "./styles";
+import {ICONS} from '../../../Constants';
+import {CustomGlassProps} from './types';
+import {styles} from './styles';
 
 const size = {
   width: 40,

@@ -1,9 +1,9 @@
 // libs
-import React, { useState } from "react";
-import { Alert, View } from "react-native";
+import React, {useState} from 'react';
+import {Alert, View} from 'react-native';
 
 // 3rd party
-import auth from "@react-native-firebase/auth";
+import auth from '@react-native-firebase/auth';
 
 // custom
 import {
@@ -11,15 +11,15 @@ import {
   CustomErrorText,
   CustomButton,
   HeadingText,
-} from "../../../Components";
-import { SPACING, STRING } from "../../../Constants";
-import { isValidEmail } from "../../../Utils/checkValidity";
-import { ForgotPasswordProps } from "../../../Defs/navigators";
-import { styles } from "./styles";
+} from '../../../Components';
+import {SPACING, STRING} from '../../../Constants';
+import {isValidEmail} from '../../../Utils/checkValidity';
+import {ForgotPasswordProps} from '../../../Defs/navigators';
+import {styles} from './styles';
 
-const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   // state use
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   // functions
@@ -27,11 +27,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
     setIsLoading(true);
     try {
       await auth().sendPasswordResetEmail(email);
-      Alert.alert("Reset Email sent to mail", email, [
-        { text: "Ok", onPress: () => navigation.navigate("SignIn") },
+      Alert.alert('Reset Email sent to mail', email, [
+        {text: 'Ok', onPress: () => navigation.navigate('SignIn')},
       ]);
     } catch (e) {
-      console.log("error - ", e);
+      console.log('error - ', e);
     } finally {
       setIsLoading(false);
     }

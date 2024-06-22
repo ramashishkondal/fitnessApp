@@ -1,6 +1,6 @@
 // libs
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import Animated, {
@@ -8,21 +8,21 @@ import Animated, {
   useSharedValue,
   withSequence,
   withSpring,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 
 // custom
-import { styles } from "./styles";
-import { ANIMATIONS } from "../../../Constants";
-import { InterestItemProps } from "./types";
+import {styles} from './styles';
+import {ANIMATIONS} from '../../../Constants';
+import {InterestItemProps} from './types';
 
-const InterestItem: React.FC<InterestItemProps> = ({ item }) => {
+const InterestItem: React.FC<InterestItemProps> = ({item}) => {
   // state ues
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   // reanimated use
   const scale = useSharedValue(ANIMATIONS.sizeNormal);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{scale: scale.value}],
   }));
 
   // functions
@@ -31,7 +31,7 @@ const InterestItem: React.FC<InterestItemProps> = ({ item }) => {
     item.selected = !item.selected;
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease3),
-      withSpring(ANIMATIONS.sizeNormal)
+      withSpring(ANIMATIONS.sizeNormal),
     );
   };
 
@@ -43,8 +43,7 @@ const InterestItem: React.FC<InterestItemProps> = ({ item }) => {
             styles.iconCtr,
             isSelected ? styles.iconCtrSelected : null,
             animatedStyle,
-          ]}
-        >
+          ]}>
           {item.icon}
         </Animated.View>
         <View style={styles.textCtr}>

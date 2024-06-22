@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { FONT_FAMILY } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     ...SPACING.mh2,
     ...SPACING.mt3,
   },
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     marginTop: 88,
   },
   notNowParent: {
-    backgroundColor: "",
+    backgroundColor: '',
   },
   notNowText: {
     color: COLORS.PRIMARY.PURPLE,

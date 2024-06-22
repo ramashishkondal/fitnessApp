@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { RFValue } from "react-native-responsive-fontsize";
-import { FONT_FAMILY } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {

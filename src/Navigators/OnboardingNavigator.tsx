@@ -1,6 +1,6 @@
 // libs
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // custom
 import {
@@ -17,18 +17,17 @@ import {
   ForgotPassword,
   AddFirstName,
   AddLastName,
-} from "../Screens/OnboardingScreens";
-import { CustomHeader } from "../Components";
-import { onboardingStackParamList } from "../Defs";
+} from '../Screens/OnboardingScreens';
+import {CustomHeader} from '../Components';
+import {onboardingStackParamList} from '../Defs';
 
 const Stack = createNativeStackNavigator<onboardingStackParamList>();
 
 const OnboardingNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName={"LandingPage"}
-      screenOptions={{ header: CustomHeader, animationDuration: 500 }}
-    >
+      initialRouteName={'LandingPage'}
+      screenOptions={{header: CustomHeader, animationDuration: 500}}>
       <Stack.Screen name="LandingPage" component={LandingPage} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="AddEmail" component={AddEmail} />
@@ -43,7 +42,7 @@ const OnboardingNav = () => {
       <Stack.Screen
         name="DetailsCompleted"
         component={DetailsCompleted}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>

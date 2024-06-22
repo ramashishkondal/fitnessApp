@@ -1,23 +1,23 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 
 // 3rd party
-import { NavigationContainer } from "@react-navigation/native";
-import auth, { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
-import AppleHealthKit, { HealthKitPermissions } from "react-native-health";
-import GoogleFit, { Scopes } from "react-native-google-fit";
-import { PERMISSIONS, check, request } from "react-native-permissions";
+import {NavigationContainer} from '@react-navigation/native';
+import auth, {FirebaseAuthTypes, firebase} from '@react-native-firebase/auth';
+import AppleHealthKit, {HealthKitPermissions} from 'react-native-health';
+import GoogleFit, {Scopes} from 'react-native-google-fit';
+import {PERMISSIONS, check, request} from 'react-native-permissions';
 
 // custom
-import OnboardingNav from "./OnboardingNavigator";
-import AppNavigator from "./AppNavigator";
-import { Platform } from "react-native";
-import { useDispatch } from "react-redux";
-import { updateHealthData } from "../Redux/Reducers/health";
-import { CustomLoading } from "../Components";
-import { date, getLastWeekDayDate } from "../Utils/commonUtils";
-import { updateUserData } from "../Redux/Reducers/currentUser";
-import GoalModal from "../Components/Molecules/GoalModal";
+import OnboardingNav from './OnboardingNavigator';
+import AppNavigator from './AppNavigator';
+import {Platform} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {updateHealthData} from '../Redux/Reducers/health';
+import {CustomLoading} from '../Components';
+import {date, getLastWeekDayDate} from '../Utils/commonUtils';
+import {updateUserData} from '../Redux/Reducers/currentUser';
+import GoalModal from '../Components/Molecules/GoalModal';
 
 // iOS health kit permissions
 const permissions = {
@@ -47,22 +47,22 @@ const RootNavigator = () => {
   // effect use
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    if (Platform.OS !== "ios") {
+    if (Platform.OS !== 'ios') {
       androidHealthSetup();
-      console.log("android -----");
+      console.log('android -----');
     } else {
-      AppleHealthKit.initHealthKit(permissions, (err) => {
+      AppleHealthKit.initHealthKit(permissions, err => {
         if (err) {
-          console.log("error getting permission.");
+          console.log('error getting permission.');
           return;
         }
-        dispatch(updateHealthData({ hasPermission: true }));
+        dispatch(updateHealthData({hasPermission: true}));
         AppleHealthKit.getStepCount({}, (error, result) => {
           if (!error) {
-            dispatch(updateHealthData({ todaysSteps: result.value }));
+            dispatch(updateHealthData({todaysSteps: result.value}));
             return;
           }
-          console.log("error encountered while getting steps data - ", error);
+          console.log('error encountered while getting steps data - ', error);
         });
       });
     }
@@ -73,12 +73,12 @@ const RootNavigator = () => {
   const androidHealthSetup = async () => {
     try {
       const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
-      if (authority === "denied") {
+      if (authority === 'denied') {
         await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
       }
       if (!GoogleFit.isAuthorized) {
         await GoogleFit.authorize(options);
-        dispatch(updateHealthData({ hasPermission: true })); // check for if user denies the permissions later in settings
+        dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
       }
       const today = date.today();
       const stepRes = await GoogleFit.getDailySteps(today);
@@ -88,22 +88,22 @@ const RootNavigator = () => {
         endDate: today.toISOString(), // required ISO8601Timestamp
       };
       const calories = await GoogleFit.getDailyCalorieSamples(opt);
-      dispatch(updateHealthData({ nutrition: ~~calories[0].calorie }));
+      dispatch(updateHealthData({nutrition: ~~calories[0].calorie}));
       dispatch(
         updateHealthData({
           todaysSteps: stepRes.filter(
-            (val) => val.source === "com.google.android.gms:estimated_steps"
+            val => val.source === 'com.google.android.gms:estimated_steps',
           )[0].steps[0].value,
-        })
+        }),
       );
     } catch (e) {
-      console.log("Error encountered - ", e);
+      console.log('Error encountered - ', e);
     }
   };
 
   function onAuthStateChanged(userN: FirebaseAuthTypes.User | null) {
     setUser(userN);
-    dispatch(updateUserData({ id: userN === null ? undefined : userN.uid }));
+    dispatch(updateUserData({id: userN === null ? undefined : userN.uid}));
     if (initializing) setInitializing(false);
   }
 

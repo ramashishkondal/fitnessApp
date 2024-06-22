@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import { Post } from "../../../Defs";
+import {Dispatch, SetStateAction} from 'react';
+import {Post} from '../../../Defs';
 
 export type AddCommentProps = {
   postId: Post;

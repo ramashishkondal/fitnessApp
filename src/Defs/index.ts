@@ -25,6 +25,6 @@ export type {
   SettingsProps,
   WaterIntakeProps,
   appStackParamList,
-} from "./navigators";
+} from './navigators';
 
-export type { User, HealthData, Comment, Post } from "./user";
+export type {User, HealthData, Comment, Post} from './user';
