@@ -33,6 +33,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   // focus effect use
   useFocusEffect(() => () => storyTimer.clear());
+  console.log('ss', stories);
 
   // functions
   const goNext = () => {

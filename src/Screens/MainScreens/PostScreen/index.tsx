@@ -41,7 +41,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       });
 
     return () => unsubscribe();
-  }, []);
+  }, [route.params.postId]);
 
   // functions
   const postComment = async () => {

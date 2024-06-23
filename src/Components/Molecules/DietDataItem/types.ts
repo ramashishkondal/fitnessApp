@@ -1,5 +1,4 @@
-import {DailyMeals, Meal} from '../../../Redux/Reducers/dailyMeal';
-import {DummyData} from '../DietDataList/types';
+import {Meal} from '../../../Redux/Reducers/dailyMeal';
 
 export type DietDataItemProps = {
   item: Array<Meal>;

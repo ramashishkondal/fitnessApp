@@ -20,7 +20,6 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
     goalAchieved: {modalShown},
   } = useAppSelector(state => state.health);
   const dispatch = useAppDispatch();
-  console.log(modalShown);
   if (todaysSteps / totalSteps >= 1 && modalShown === false) {
     setModalVisible(true);
     dispatch(setModalShown(true));
@@ -29,15 +28,17 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
   return (
     <View style={{flex: 1}}>
       {children}
-      <WithModal
-        modalVisible={modalVisible}
-        setModalFalse={() => setModalVisible(false)}
-        parentStyle={{
-          backgroundColor: COLORS.PRIMARY.PURPLE,
-        }}
-        barShown={false}>
-        <GoalAchieved setModalFalse={() => setModalVisible(false)} />
-      </WithModal>
+      {modalShown ? (
+        <WithModal
+          modalVisible={modalVisible}
+          setModalFalse={() => setModalVisible(false)}
+          parentStyle={{
+            backgroundColor: COLORS.PRIMARY.PURPLE,
+          }}
+          barShown={false}>
+          <GoalAchieved setModalFalse={() => setModalVisible(false)} />
+        </WithModal>
+      ) : null}
     </View>
   );
 };

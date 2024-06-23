@@ -21,7 +21,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
       {isLoading ? (
         <CustomLoading
           color={COLORS.PRIMARY.PURPLE}
-          style={{position: 'absolute'}}
+          style={styles.loadingStyle}
           size={activityIndicatorSize}
         />
       ) : null}

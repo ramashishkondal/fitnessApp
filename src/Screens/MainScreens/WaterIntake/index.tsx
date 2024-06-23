@@ -108,7 +108,7 @@ const WaterIntake: React.FC = () => {
       .catch(e =>
         console.log('error encounterd in getting user health info', e),
       );
-  }, []);
+  }, [id, today]);
 
   // memo use
   const glasses = useMemo(
@@ -116,7 +116,7 @@ const WaterIntake: React.FC = () => {
       Array(noOfGlasses)
         .fill(true, 0, waterIntake + 1)
         .fill(false, waterIntake),
-    [waterIntake],
+    [noOfGlasses, waterIntake],
   );
 
   // functions

@@ -6,7 +6,7 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import storage from '@react-native-firebase/storage';
 
 // custom
-import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {useAppSelector} from '../../../Redux/Store';
 import {CustomLoading} from '../../../Components';
 import {
   storeUserData,
@@ -16,9 +16,6 @@ import {
 import {COLORS, ICONS, STRING} from '../../../Constants';
 import {styles} from './style';
 import {Timestamp} from '@react-native-firebase/firestore';
-import {updateUserData} from '../../../Redux/Reducers/currentUser';
-import {resetHealthData} from '../../../Redux/Reducers/health';
-import {resetMealData} from '../../../Redux/Reducers/dailyMeal';
 
 const logoSize = {
   width: 40,
@@ -34,7 +31,6 @@ const DetailsCompleted = () => {
 
   // redux use
   const {data} = useAppSelector(state => state.User);
-  const dispatch = useAppDispatch();
   const {password, ...user} = data;
 
   // functions

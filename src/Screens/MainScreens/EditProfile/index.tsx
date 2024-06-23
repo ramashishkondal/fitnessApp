@@ -15,16 +15,8 @@ const EditProfile: React.FC<EditProfileProps> = () => {
   >(null);
 
   // redux use
-  const {
-    photo,
-    firstName,
-    lastName,
-    email,
-    id,
-    interests,
-    preferences,
-    gender,
-  } = useAppSelector(state => state.User.data);
+  const {photo, firstName, lastName, email, interests, preferences, gender} =
+    useAppSelector(state => state.User.data);
 
   // functions
   const getActiveModalComp = useCallback(() => {
@@ -32,7 +24,9 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       return <ChangeUserInfo />;
     } else if (activeModal === 'preferences') {
       return <ChangeUserPreferences />;
-    } else return null;
+    } else {
+      return null;
+    }
   }, [activeModal]);
   const ActiveModalComponent = getActiveModalComp();
   return (

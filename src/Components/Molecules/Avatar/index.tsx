@@ -35,18 +35,14 @@ const Avatar: React.FC<AvatarProps> = ({
     console.log('photo item is ', item);
   };
   return (
-    <Animated.View
-      style={[{minWidth: 100, marginHorizontal: 12}, animatedStyle]}>
+    <Animated.View style={[styles.parent, animatedStyle]}>
       <Pressable
         style={[
           styles.avatarCtr,
           selectedItem === item.name ? styles.avatarSelected : null,
         ]}
         onPress={handleOnPress}>
-        <Image
-          source={item.image}
-          style={{width: 80, height: 80, borderRadius: 200}}
-        />
+        <Image source={item.image} style={styles.image} />
       </Pressable>
     </Animated.View>
   );

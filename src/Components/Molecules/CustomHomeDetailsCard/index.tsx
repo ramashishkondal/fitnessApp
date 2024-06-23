@@ -53,7 +53,7 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
   // effect use
   useEffect(() => {
     left.value = withSpring(markerPercentage);
-  }, [markerPercentage]);
+  }, [left, markerPercentage]);
 
   return (
     <View style={styles.parent}>

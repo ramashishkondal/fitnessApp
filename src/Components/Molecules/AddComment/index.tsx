@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, TouchableOpacity, TextInput} from 'react-native';
 
 // 3rd party libs
 import {Timestamp} from '@react-native-firebase/firestore';
@@ -67,16 +67,11 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
           text={STRING.ADD_Comment.TITLE}
           textStyle={styles.titleText}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 24,
-            marginVertical: 32,
-          }}>
+        <View style={styles.addCommentCtr}>
           <CustomImage
             source={{uri: userPhoto}}
-            parentStyle={{width: 50, height: 50}}
-            imageStyle={{borderRadius: 200}}
+            parentStyle={styles.customImageParent}
+            imageStyle={styles.customImage}
           />
           <TextInput
             autoFocus

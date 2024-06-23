@@ -13,7 +13,7 @@ const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
   // callback use
   const goBack = useCallback(() => {
     props.navigation.goBack();
-  }, []);
+  }, [props.navigation]);
 
   return (
     <SafeAreaView

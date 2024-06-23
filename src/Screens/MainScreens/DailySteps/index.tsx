@@ -1,8 +1,8 @@
 // libs
 import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View, ScrollView, Platform} from 'react-native';
-import {LineChart, PieChart, lineDataItem} from 'react-native-gifted-charts';
-import AppleHealthKit, {HealthValue} from 'react-native-health';
+import {LineChart, PieChart} from 'react-native-gifted-charts';
+import AppleHealthKit from 'react-native-health';
 
 // custom
 import {useAppSelector} from '../../../Redux/Store';
@@ -118,7 +118,7 @@ const DailySteps: React.FC = () => {
           e,
         ),
       );
-  }, []);
+  }, [id, today]);
 
   useEffect(() => {
     if (Platform.OS === 'ios')
@@ -143,7 +143,7 @@ const DailySteps: React.FC = () => {
           console.log('error - ', error);
         },
       );
-  }, [AppleHealthKit]);
+  }, [totalSteps]);
 
   // callback use
   const centerLabelComponent = useCallback(() => {

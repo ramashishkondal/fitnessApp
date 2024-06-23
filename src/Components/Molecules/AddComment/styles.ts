@@ -7,6 +7,18 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     flex: 1,
   },
+  addCommentCtr: {
+    flexDirection: 'row',
+    marginHorizontal: 24,
+    marginVertical: 32,
+  },
+  customImageParent: {
+    width: 50,
+    height: 50,
+  },
+  customImage: {
+    borderRadius: 200,
+  },
   titleText: {
     fontSize: SIZES.font19,
     marginHorizontal: 16,

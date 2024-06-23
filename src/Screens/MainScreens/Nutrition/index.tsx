@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 
 // 3rd party
@@ -57,7 +57,6 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
-  console.log('dd', getPercentage(statsData.protein, statsData.calories));
   const carbsData = [
     {
       value: Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
@@ -80,18 +79,19 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
     },
   ];
 
+  // functions
+  const handleOnPress = () => setModalVisible(true);
+  const headerRight = useCallback(
+    () => <NutritionHeaderRight handleOnPress={handleOnPress} />,
+    [],
+  );
+
   // effect use
   useEffect(() => {
     navigation.setOptions({
       headerRight,
     });
-  }, []);
-
-  // functions
-  const handleOnPress = () => setModalVisible(true);
-  const headerRight = () => (
-    <NutritionHeaderRight handleOnPress={handleOnPress} />
-  );
+  }, [headerRight, navigation]);
 
   return (
     <ScrollView style={styles.parent}>

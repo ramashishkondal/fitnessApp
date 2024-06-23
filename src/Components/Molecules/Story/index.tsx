@@ -22,7 +22,6 @@ const Story: React.FC<StoryProps> = ({allStoryData, index}) => {
   // functions
   const goToStoriesScreen = () =>
     navigation.push('StoriesScreen', {allStoryData, index});
-  console.log('storeii wat', storiesWatched);
   return (
     <TouchableOpacity
       style={[

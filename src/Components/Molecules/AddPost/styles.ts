@@ -44,4 +44,16 @@ export const styles = StyleSheet.create({
     maxWidth: SIZES.width / 4,
     maxHeight: SIZES.height / 22,
   },
+  addPostCtr: {
+    flexDirection: 'row',
+    marginHorizontal: 24,
+    marginVertical: 16,
+  },
+  customImageParent: {
+    width: 50,
+    height: 50,
+  },
+  customImage: {
+    borderRadius: 200,
+  },
 });

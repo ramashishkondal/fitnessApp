@@ -1,12 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  ScrollView,
-} from 'react-native';
+import {View, TouchableOpacity, Image, TextInput} from 'react-native';
 
 // 3rd party libs
 import {Timestamp} from '@react-native-firebase/firestore';
@@ -96,23 +90,24 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
 
   return (
     <>
-      <KeyboardAwareScrollView style={styles.parent} extraHeight={10}>
+      <KeyboardAwareScrollView
+        style={styles.parent}
+        extraHeight={10}
+        extraScrollHeight={80}
+        enableOnAndroid={true}
+        // enableAutomaticScroll={Platform.OS === 'ios'}
+      >
         <View>
           <HeadingText
             text={STRING.ADD_POST.TITLE}
             textStyle={styles.titleText}
           />
           {photo ? <Image source={{uri: photo}} style={styles.image} /> : null}
-          <View
-            style={{
-              flexDirection: 'row',
-              marginHorizontal: 24,
-              marginVertical: 16,
-            }}>
+          <View style={styles.addPostCtr}>
             <CustomImage
               source={{uri: userPhoto}}
-              parentStyle={{width: 50, height: 50}}
-              imageStyle={{borderRadius: 200}}
+              parentStyle={styles.customImageParent}
+              imageStyle={styles.customImage}
             />
             <TextInput
               autoFocus

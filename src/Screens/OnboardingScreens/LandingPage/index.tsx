@@ -6,7 +6,6 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {
   CustomButton,
   WithOnboarding,
-  CustomImage,
   DescriptionText,
   HeadingText,
 } from '../../../Components';

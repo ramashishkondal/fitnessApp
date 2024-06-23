@@ -10,7 +10,7 @@ import {
   DescriptionText,
   HeadingText,
 } from '../../../Components';
-import {ICONS, SIZES, SPACING, STRING} from '../../../Constants';
+import {ICONS, SIZES, STRING} from '../../../Constants';
 import {AddProfilePictureProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';

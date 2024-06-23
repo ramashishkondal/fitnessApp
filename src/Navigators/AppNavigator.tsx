@@ -109,7 +109,7 @@ const AppNavigator = () => {
       );
     } else {
     }
-  }, [AppleHealthKit]);
+  }, [dispatch, endDate, startDate]);
 
   // effect use
   useEffect(() => {
@@ -138,7 +138,7 @@ const AppNavigator = () => {
         });
       return () => unsubscribe();
     }
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <Stack.Navigator

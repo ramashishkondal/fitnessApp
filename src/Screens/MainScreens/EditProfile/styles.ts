@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
     marginBottom: 3,
     color: 'black',
     fontFamily: FONT_FAMILY.REGULAR,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   infoText: {
     marginBottom: 3,
     color: COLORS.PRIMARY.PURPLE,
     fontFamily: FONT_FAMILY.REGULAR,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   cardsHeadingText: {
     marginTop: 16,
