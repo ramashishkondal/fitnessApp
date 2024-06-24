@@ -1,6 +1,6 @@
 // libs
-import React from "react";
-import { Pressable, Text, View } from "react-native";
+import React from 'react';
+import {Pressable, Text, View} from 'react-native';
 
 // 3rd party
 import Animated, {
@@ -8,24 +8,24 @@ import Animated, {
   useSharedValue,
   withSequence,
   withSpring,
-} from "react-native-reanimated";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+} from 'react-native-reanimated';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 // custom
-import { ANIMATIONS, COLORS } from "../../../Constants";
-import { CardProps } from "./types";
-import { styles } from "./styles";
+import {ANIMATIONS, COLORS} from '../../../Constants';
+import {CardProps} from './types';
+import {styles} from './styles';
 
 const size = {
   width: 72,
   height: 72,
 };
 
-const Card: React.FC<CardProps> = ({ text, icon, onToggle, isChecked }) => {
+const Card: React.FC<CardProps> = ({text, icon, onToggle, isChecked}) => {
   // reanimated use
   const scale = useSharedValue(ANIMATIONS.sizeNormal);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{scale: scale.value}],
   }));
 
   // functions
@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({ text, icon, onToggle, isChecked }) => {
     onToggle();
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease1),
-      withSpring(ANIMATIONS.sizeNormal)
+      withSpring(ANIMATIONS.sizeNormal),
     );
   };
 
@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> = ({ text, icon, onToggle, isChecked }) => {
             size={22}
             fillColor={COLORS.PRIMARY.PURPLE}
             unFillColor={COLORS.PRIMARY.GREY}
-            innerIconStyle={{ borderColor: COLORS.PRIMARY.GREY }}
+            innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}
             onPress={onToggle}
             isChecked={isChecked}
           />

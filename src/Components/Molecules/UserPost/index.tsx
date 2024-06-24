@@ -1,13 +1,13 @@
 // libs
-import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 
 // custom
-import { styles } from "./styles";
-import { UserPostProps } from "./types";
-import { COLORS, ICONS, SIZES } from "../../../Constants";
-import { CustomImage, DescriptionText } from "../../Atoms";
-import { getTimePassed } from "../../../Utils/commonUtils";
+import {styles} from './styles';
+import {UserPostProps} from './types';
+import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {CustomImage, DescriptionText} from '../../Atoms';
+import {getTimePassed} from '../../../Utils/commonUtils';
 
 const icon = {
   width: 16,
@@ -32,28 +32,25 @@ const UserPost: React.FC<UserPostProps> = ({
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
-        <CustomImage
-          source={{ uri: userPhoto }}
-          imageStyle={styles.userPhoto}
-        />
+        <CustomImage source={{uri: userPhoto}} imageStyle={styles.userPhoto} />
         <View style={styles.userTextCtr}>
           <Text style={styles.userNameText}>{userName}</Text>
           <DescriptionText
             text={getTimePassed(timeSincePostedInMillis)}
-            textStyle={{ fontSize: SIZES.font10, textAlign: "left" }}
+            textStyle={{fontSize: SIZES.font10, textAlign: 'left'}}
           />
         </View>
       </View>
       {caption ? (
         <Text style={styles.captionText}>{caption}</Text>
       ) : (
-        <View style={{ marginVertical: 8 }} />
+        <View style={{marginVertical: 8}} />
       )}
       <CustomImage
-        source={{ uri: photo }}
+        source={{uri: photo}}
         parentStyle={styles.photo}
-        imageStyle={{ borderRadius: SIZES.rounding2 }}
-        activityIndicatorSize={"large"}
+        imageStyle={{borderRadius: SIZES.rounding2}}
+        activityIndicatorSize={'large'}
       />
       <View style={styles.likesAndCommentsCtr}>
         <TouchableOpacity onPress={handleLikesPress} style={styles.likeCtr}>
@@ -65,8 +62,7 @@ const UserPost: React.FC<UserPostProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleCommentsPress}
-          style={styles.commentCtr}
-        >
+          style={styles.commentCtr}>
           {ICONS.Comment(icon)}
           <Text style={styles.likesText}>{noOfComments}</Text>
         </TouchableOpacity>

@@ -1,26 +1,25 @@
 //libs
-import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import React from 'react';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 
 // custom
 import {
   CustomButton,
   WithOnboarding,
-  CustomImage,
   DescriptionText,
   HeadingText,
-} from "../../../Components";
-import { SPACING, STRING, IMAGES } from "../../../Constants/";
-import { LandingPageProps } from "../../../Defs";
-import { styles } from "./styles";
+} from '../../../Components';
+import {SPACING, STRING, IMAGES} from '../../../Constants/';
+import {LandingPageProps} from '../../../Defs';
+import {styles} from './styles';
 
-const LandingPage: React.FC<LandingPageProps> = ({ navigation }) => {
+const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
   // functions
   const goToSignIn = () => {
-    navigation.push("SignIn");
+    navigation.push('SignIn');
   };
   const goToStarting = () => {
-    navigation.navigate("AddEmail");
+    navigation.navigate('AddEmail');
   };
 
   return (
@@ -37,11 +36,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigation }) => {
         onPress={goToStarting}
       />
       <TouchableOpacity
-        style={{ justifyContent: "center", alignItems: "center" }}
-        onPress={goToSignIn}
-      >
+        style={{justifyContent: 'center', alignItems: 'center'}}
+        onPress={goToSignIn}>
         <Text style={[styles.signInText1, SPACING.m2]}>
-          {STRING.LANDING_PAGE.SIGNIN_1}{" "}
+          {STRING.LANDING_PAGE.SIGNIN_1}{' '}
           <Text style={styles.signInText2}>{STRING.LANDING_PAGE.SIGNIN_2}</Text>
         </Text>
       </TouchableOpacity>

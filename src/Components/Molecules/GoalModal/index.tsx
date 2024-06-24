@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { GoalModalProps } from "./types";
-import WithModal from "../WithModal";
-import { useAppDispatch, useAppSelector } from "../../../Redux/Store";
-import { setModalShown } from "../../../Redux/Reducers/health";
-import GoalAchieved from "../GoalAchieved";
-import { COLORS } from "../../../Constants";
+import React, {useState} from 'react';
+import {View} from 'react-native';
+import {GoalModalProps} from './types';
+import WithModal from '../WithModal';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {setModalShown} from '../../../Redux/Reducers/health';
+import GoalAchieved from '../GoalAchieved';
+import {COLORS} from '../../../Constants';
 
-const GoalModal: React.FC<GoalModalProps> = ({ children }) => {
+const GoalModal: React.FC<GoalModalProps> = ({children}) => {
   // state use
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -15,30 +15,30 @@ const GoalModal: React.FC<GoalModalProps> = ({ children }) => {
   const {
     value: {
       todaysSteps,
-      goal: { totalSteps },
+      goal: {totalSteps},
     },
-    goalAchieved: { modalShown },
-  } = useAppSelector((state) => state.health);
+    goalAchieved: {modalShown},
+  } = useAppSelector(state => state.health);
   const dispatch = useAppDispatch();
-  console.log(modalShown);
   if (todaysSteps / totalSteps >= 1 && modalShown === false) {
     setModalVisible(true);
     dispatch(setModalShown(true));
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {children}
-      <WithModal
-        modalVisible={modalVisible}
-        setModalFalse={() => setModalVisible(false)}
-        parentStyle={{
-          backgroundColor: COLORS.PRIMARY.PURPLE,
-        }}
-        barShown={false}
-      >
-        <GoalAchieved setModalFalse={() => setModalVisible(false)} />
-      </WithModal>
+      {modalShown ? (
+        <WithModal
+          modalVisible={modalVisible}
+          setModalFalse={() => setModalVisible(false)}
+          parentStyle={{
+            backgroundColor: COLORS.PRIMARY.PURPLE,
+          }}
+          barShown={false}>
+          <GoalAchieved setModalFalse={() => setModalVisible(false)} />
+        </WithModal>
+      ) : null}
     </View>
   );
 };

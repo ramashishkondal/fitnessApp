@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
   userInfoCtr: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
   },
   userPhoto: {

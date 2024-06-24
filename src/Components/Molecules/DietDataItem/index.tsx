@@ -1,29 +1,29 @@
 // libs
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 // custom
-import { ICONS } from "../../../Constants";
-import { DietDataItemProps } from "./types";
-import { styles } from "./styles";
-import { useAppDispatch } from "../../../Redux/Store";
-import { resetMealDataItems } from "../../../Redux/Reducers/dailyMeal";
+import {ICONS} from '../../../Constants';
+import {DietDataItemProps} from './types';
+import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {resetMealDataItems} from '../../../Redux/Reducers/dailyMeal';
 
-const DietDataItem = ({ item, timeOfMeal }: DietDataItemProps) => {
+const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
   const dispatch = useAppDispatch();
   const handleClose = () => {
     switch (timeOfMeal) {
-      case "Breakfast":
-        dispatch(resetMealDataItems({ breakfast: [] }));
+      case 'Breakfast':
+        dispatch(resetMealDataItems({breakfast: []}));
         break;
-      case "Snack":
-        dispatch(resetMealDataItems({ snack: [] }));
+      case 'Snack':
+        dispatch(resetMealDataItems({snack: []}));
         break;
-      case "Lunch":
-        dispatch(resetMealDataItems({ lunch: [] }));
+      case 'Lunch':
+        dispatch(resetMealDataItems({lunch: []}));
         break;
-      case "Dinner":
-        dispatch(resetMealDataItems({ dinner: [] }));
+      case 'Dinner':
+        dispatch(resetMealDataItems({dinner: []}));
         break;
     }
   };
@@ -39,11 +39,10 @@ const DietDataItem = ({ item, timeOfMeal }: DietDataItemProps) => {
             style={[
               styles.childCtr,
               index !== 0 && index !== arr.length
-                ? { borderTopWidth: 1.5 }
+                ? {borderTopWidth: 1.5}
                 : null,
             ]}
-            key={index}
-          >
+            key={index}>
             <View style={styles.titleCtr}>
               <Text style={styles.productTitleText}>{val.name}</Text>
               <Text style={styles.quantityText}>
@@ -57,10 +56,9 @@ const DietDataItem = ({ item, timeOfMeal }: DietDataItemProps) => {
         );
       })}
       <TouchableOpacity
-        style={{ position: "absolute", top: 10, right: 10 }}
-        onPress={handleClose}
-      >
-        <View>{ICONS.Close({ width: 35, height: 35 })}</View>
+        style={{position: 'absolute', top: 10, right: 10}}
+        onPress={handleClose}>
+        <View>{ICONS.Close({width: 35, height: 35})}</View>
       </TouchableOpacity>
     </View>
   );

@@ -1,4 +1,4 @@
-import { AvatarData } from "../SelectAvatars/types";
+import {AvatarData} from '../SelectAvatars/types';
 
 export type AvatarProps = {
   item: AvatarData;

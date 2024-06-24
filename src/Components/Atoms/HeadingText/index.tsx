@@ -1,10 +1,10 @@
 // libs
-import React from "react";
-import { Text } from "react-native";
+import React from 'react';
+import {Text} from 'react-native';
 
 // custom
-import { HeadingTextProps } from "./types";
-import { styles } from "./styles";
+import {HeadingTextProps} from './types';
+import {styles} from './styles';
 
 const HeadingText = ({
   text,

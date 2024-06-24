@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
   },
   titleCtr: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginHorizontal: 16,
   },
   iconCtr: {

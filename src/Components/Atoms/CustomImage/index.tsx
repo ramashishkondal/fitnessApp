@@ -1,12 +1,12 @@
 // libs
-import React, { useState } from "react";
-import { Image, View } from "react-native";
+import React, {useState} from 'react';
+import {Image, View} from 'react-native';
 
 // custom
-import { CustomImageProps } from "./types";
-import { styles } from "./styles";
-import CustomLoading from "../CustomLoading";
-import { COLORS } from "../../../Constants";
+import {CustomImageProps} from './types';
+import {styles} from './styles';
+import CustomLoading from '../CustomLoading';
+import {COLORS} from '../../../Constants';
 
 const CustomImage: React.FC<CustomImageProps> = ({
   source,
@@ -21,7 +21,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
       {isLoading ? (
         <CustomLoading
           color={COLORS.PRIMARY.PURPLE}
-          style={{ position: "absolute" }}
+          style={styles.loadingStyle}
           size={activityIndicatorSize}
         />
       ) : null}

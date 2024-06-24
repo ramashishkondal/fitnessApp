@@ -1,7 +1,7 @@
 export const getPercentage = (
   value: number,
   total: number,
-  isCapped: boolean = true
+  isCapped: boolean = true,
 ) => {
   if (value > total && isCapped) {
     return 100;
@@ -11,13 +11,13 @@ export const getPercentage = (
   return (value / total) * 100;
 };
 export const weekday = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
 export const getTimePassed = (timeInMillis: number): string => {
@@ -27,17 +27,17 @@ export const getTimePassed = (timeInMillis: number): string => {
   const timePassedInHrs = ~~(timePassedInMns / 60);
   if (timePassedInSecs <= 60) {
     return `${~~timePassedInSecs} ${
-      ~~timePassedInSecs > 1 ? "seconds" : "second"
+      ~~timePassedInSecs > 1 ? 'seconds' : 'second'
     } ago`;
   } else if (timePassedInMns <= 60) {
     return `${timePassedInMns} ${
-      ~~timePassedInMns > 1 ? "minutes" : "minute"
+      ~~timePassedInMns > 1 ? 'minutes' : 'minute'
     } ago`;
   } else if (timePassedInHrs <= 23) {
-    return `${timePassedInHrs} ${~~timePassedInHrs > 1 ? "hours" : "hour"} ago`;
+    return `${timePassedInHrs} ${~~timePassedInHrs > 1 ? 'hours' : 'hour'} ago`;
   } else {
     return `${~~(timePassedInHrs / 24)} ${
-      ~~(timePassedInHrs / 24) > 1 ? "days" : "day"
+      ~~(timePassedInHrs / 24) > 1 ? 'days' : 'day'
     } ago`;
   }
 };
@@ -102,7 +102,7 @@ export const getLastWeekDayDate = (dayTocomparewith?: Date) => {
     return new Date(
       dayTocomparewith.getFullYear(),
       dayTocomparewith.getMonth(),
-      dayTocomparewith.getDate() - 6
+      dayTocomparewith.getDate() - 6,
     );
   }
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);

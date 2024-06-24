@@ -1,9 +1,9 @@
 // libs
-import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import React from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // custom
-import { CustomDrawerButton, CustomDrawerRight } from "../Components";
+import {CustomDrawerButton, CustomDrawerRight} from '../Components';
 import {
   Community,
   GetPremium,
@@ -11,10 +11,10 @@ import {
   LogOut,
   Notifications,
   Settings,
-} from "../Screens/MainScreens";
-import { homeDrawerParamList } from "../Defs";
-import { COLORS, ICONS, SIZES } from "../Constants";
-import { Platform, View } from "react-native";
+} from '../Screens/MainScreens';
+import {homeDrawerParamList} from '../Defs';
+import {COLORS, ICONS, SIZES} from '../Constants';
+import {Platform, View} from 'react-native';
 
 const iconSize = {
   width: 25,
@@ -25,10 +25,10 @@ const drawerIcon = (
     width: number;
     height: number;
     color?: string;
-  }) => React.ReactNode
+  }) => React.ReactNode,
 ) => {
   return () => {
-    return <View style={{ left: 20 }}>{icon(iconSize)}</View>;
+    return <View style={{left: 20}}>{icon(iconSize)}</View>;
   };
 };
 const Drawer = createDrawerNavigator<homeDrawerParamList>();
@@ -43,25 +43,24 @@ const HomeNavigator: React.FC = () => {
     <Drawer.Navigator
       initialRouteName="HomeScreen"
       screenOptions={{
-        headerTitle: "",
+        headerTitle: '',
         headerShadowVisible: false,
         headerStyle: {
           backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
           height:
-            Platform.OS === "ios" ? SIZES.height / 6.5 : SIZES.height / 10,
+            Platform.OS === 'ios' ? SIZES.height / 6.5 : SIZES.height / 10,
         },
         headerLeft,
         drawerStyle: {
-          justifyContent: "center",
+          justifyContent: 'center',
         },
         drawerContentContainerStyle: {
-          top: "25%",
+          top: '25%',
         },
-        drawerLabelStyle: { color: "black", fontSize: SIZES.font13 },
+        drawerLabelStyle: {color: 'black', fontSize: SIZES.font13},
         drawerActiveTintColor: COLORS.PRIMARY.PURPLE,
-        drawerType: "front",
-      }}
-    >
+        drawerType: 'front',
+      }}>
       <Drawer.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -71,7 +70,7 @@ const HomeNavigator: React.FC = () => {
           headerStyle: {
             backgroundColor: COLORS.PRIMARY.DARK_GREY,
             height:
-              Platform.OS === "ios" ? SIZES.height / 6.5 : SIZES.height / 10,
+              Platform.OS === 'ios' ? SIZES.height / 6.5 : SIZES.height / 10,
           },
         }}
       />

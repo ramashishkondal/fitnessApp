@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   titleCtr: {
     maxWidth: 320,
@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold1,
-    textAlign: "center",
+    textAlign: 'center',
   },
   textInput: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

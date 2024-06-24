@@ -1,18 +1,18 @@
 // libs
-import React from "react";
-import { FlatList, ListRenderItem } from "react-native";
+import React from 'react';
+import {FlatList, ListRenderItem} from 'react-native';
 
 // custom
-import Avatar from "../Avatar";
-import { styles } from "./styles";
-import { AvatarData, SelectAvatarsProps } from "./types";
-import { IMAGES } from "../../../Constants";
+import Avatar from '../Avatar';
+import {styles} from './styles';
+import {AvatarData, SelectAvatarsProps} from './types';
+import {IMAGES} from '../../../Constants';
 
 const AvatarArray: Array<AvatarData> = Object.entries(IMAGES.AVATARS).map(
   ([key, value]) => ({
     name: key,
     image: value,
-  })
+  }),
 );
 
 const SelectAvatars: React.FC<SelectAvatarsProps> = ({
@@ -20,7 +20,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
   setPhoto,
   setSelectedAvatar,
 }) => {
-  const renderItem: ListRenderItem<AvatarData> = ({ item }) => (
+  const renderItem: ListRenderItem<AvatarData> = ({item}) => (
     <Avatar
       item={item}
       selectedItem={avatar}
@@ -35,7 +35,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.flatListSyle}
-      contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
+      contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
     />
   );
 };

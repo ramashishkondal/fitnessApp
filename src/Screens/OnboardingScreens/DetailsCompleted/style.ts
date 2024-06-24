@@ -1,16 +1,16 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { FONT_FAMILY } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: "#7150C5",
-    justifyContent: "center",
+    backgroundColor: '#7150C5',
+    justifyContent: 'center',
     paddingHorizontal: 48,
   },
   childCtr: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   logoCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
     fontFamily: FONT_FAMILY.REGULAR,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 48,
   },
   titleDescriptionText: {
@@ -30,12 +30,12 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: SIZES.fontBold2,
-    textAlign: "center",
+    textAlign: 'center',
     ...SPACING.mt1,
   },
   arrowCtr: {
     ...SPACING.mt4,
     minHeight: 40,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
 });

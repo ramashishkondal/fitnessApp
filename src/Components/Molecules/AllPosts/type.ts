@@ -1,5 +1,5 @@
-import { MutableRefObject } from "react";
-import { Post } from "../../../Defs";
+import {MutableRefObject} from 'react';
+import {Post} from '../../../Defs';
 
 export type AllPostsProps = {
   goToPostScreen: (postId: string) => () => void;

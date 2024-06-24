@@ -1,15 +1,15 @@
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     paddingVertical: 20,
   },
   titleCtr: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   colorCtr: {
     width: 18,
@@ -21,11 +21,11 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font13,
     minWidth: 120,
   },
-  quantityText: { fontSize: SIZES.font13, minWidth: 50, textAlign: "right" },
+  quantityText: {fontSize: SIZES.font13, minWidth: 50, textAlign: 'right'},
   percentageText: {
     fontSize: SIZES.font13,
     minWidth: 50,
-    textAlign: "right",
+    textAlign: 'right',
     fontWeight: SIZES.fontBold0,
   },
 });

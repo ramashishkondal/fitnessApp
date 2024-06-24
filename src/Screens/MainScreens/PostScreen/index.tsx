@@ -1,39 +1,38 @@
 // libs
-import React, { useEffect, useRef, useState } from "react";
-import { Text, View, ScrollView, TextInput, Pressable } from "react-native";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import React, {useEffect, useRef, useState} from 'react';
+import {Text, View, ScrollView, TextInput, Pressable} from 'react-native';
+import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
-import { styles } from "./styles";
-import { Post, PostScreenProps } from "../../../Defs";
-import {
-  addLikes,
-  firebaseDB,
-  storePostComment,
-} from "../../../Utils/userUtils";
-import { Comment, UserPost } from "../../../Components";
-import { useAppSelector } from "../../../Redux/Store";
-import { COLORS, ICONS, SIZES } from "../../../Constants";
+import {styles} from './styles';
+import {Post, PostScreenProps} from '../../../Defs';
+import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
+import {Comment, UserPost} from '../../../Components';
+import {useAppSelector} from '../../../Redux/Store';
+import {COLORS, ICONS, SIZES} from '../../../Constants';
 
-const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
+const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
   const [postData, setPostData] = useState<Post>();
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
 
   // ref ues
   const textInputRef = useRef<TextInput | null>(null);
 
   // redux use
-  const { id, photo: userPhoto, firstName, lastName } = useAppSelector(
-    (state) => state.User.data
-  );
+  const {
+    id,
+    photo: userPhoto,
+    firstName,
+    lastName,
+  } = useAppSelector(state => state.User.data);
 
   // effect use
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
       .doc(route.params.postId)
-      .onSnapshot((snapshot) => {
+      .onSnapshot(snapshot => {
         const data = snapshot.data();
         console.log(data);
         if (data) {
@@ -42,22 +41,22 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
       });
 
     return () => unsubscribe();
-  }, []);
+  }, [route.params.postId]);
 
   // functions
   const postComment = async () => {
     try {
-      if (id !== null && comment !== "") {
+      if (id !== null && comment !== '') {
         await storePostComment(route.params.postId, {
-          userName: firstName + " " + lastName,
+          userName: firstName + ' ' + lastName,
           userPhoto,
           comment,
           createdOn: Timestamp.fromDate(new Date()),
         });
-        setComment("");
+        setComment('');
       }
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e);
     } finally {
     }
   };
@@ -67,7 +66,7 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
     return (
       <>
         <ScrollView style={styles.parent}>
-          <View style={{ flex: 3 }}>
+          <View style={{flex: 3}}>
             <UserPost
               postData={{
                 caption: postData.caption,
@@ -79,7 +78,7 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
                 userPhoto: postData.userPhoto,
                 id: id!,
                 timeSincePostedInMillis: Timestamp.fromMillis(
-                  postData.createdOn.seconds * 1000
+                  postData.createdOn.seconds * 1000,
                 )
                   .toDate()
                   .getTime(),
@@ -89,12 +88,12 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
                 if (isLiked) {
                   addLikes(
                     route.params.postId,
-                    postData.likedByUsersId.filter((value) => value !== id)
+                    postData.likedByUsersId.filter(value => value !== id),
                   );
                 } else {
                   addLikes(
                     postData.postId!,
-                    postData.likedByUsersId.concat(id!)
+                    postData.likedByUsersId.concat(id!),
                   );
                 }
               }}
@@ -108,20 +107,17 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
               flex: 2,
               paddingBottom: SIZES.height / 10,
               paddingHorizontal: 24,
-            }}
-          >
-            <Text
-              style={{ fontSize: SIZES.font17, fontWeight: SIZES.fontBold0 }}
-            >
+            }}>
+            <Text style={{fontSize: SIZES.font17, fontWeight: SIZES.fontBold0}}>
               Comments
             </Text>
-            {postData.comments.map((val) => {
+            {postData.comments.map(val => {
               return (
                 <Comment
                   comment={{
                     comment: val.comment,
                     commentCreatedOnInMillis: Timestamp.fromMillis(
-                      val.createdOn.seconds * 1000
+                      val.createdOn.seconds * 1000,
                     )
                       .toDate()
                       .getTime(),
@@ -135,27 +131,26 @@ const PostScreen: React.FC<PostScreenProps> = ({ route }) => {
         </ScrollView>
         <View
           style={{
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             borderWidth: 1,
             flex: 1,
             height: SIZES.height / 14,
             width: SIZES.width,
             backgroundColor: COLORS.SECONDARY.WHITE,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           <TextInput
             value={comment}
-            style={{ flex: 6, paddingHorizontal: 24, fontSize: SIZES.font12 }}
+            style={{flex: 6, paddingHorizontal: 24, fontSize: SIZES.font12}}
             placeholder="Write a comment..."
             ref={textInputRef}
             onChangeText={setComment}
             onSubmitEditing={postComment}
           />
-          <Pressable style={{ flex: 1 }} onPress={postComment}>
-            <View>{ICONS.ArrowUp({ width: 30, height: 30 })}</View>
+          <Pressable style={{flex: 1}} onPress={postComment}>
+            <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
           </Pressable>
         </View>
       </>

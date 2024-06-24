@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
-import { COLORS } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../Constants';
 
 export const styles = StyleSheet.create({
-  parent: { flex: 1 },
+  parent: {flex: 1},
   headingCtr: {
     marginVertical: 32,
   },
@@ -17,12 +17,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   cardCtr: {
-    position: "absolute",
-    alignSelf: "center",
+    position: 'absolute',
+    alignSelf: 'center',
     // justifyContent: "center",
     // backgroundColor: COLORS.SECONDARY.RED,
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
   },
   card: {
     backgroundColor: COLORS.SECONDARY.WHITE,
@@ -30,9 +30,9 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   userInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 0.3,
     borderColor: COLORS.SECONDARY.LIGHT_GREY,
     margin: 16,
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   dataCtr: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 40,
   },
 });

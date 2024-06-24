@@ -1,18 +1,18 @@
 // libs
-import React, { useEffect } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React, {useEffect} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 
 // custom
-import { COLORS, STRING } from "../../../Constants";
-import { CustomHomeDetailsCardProps } from "./types";
-import { styles } from "./styles";
+import {COLORS, STRING} from '../../../Constants';
+import {CustomHomeDetailsCardProps} from './types';
+import {styles} from './styles';
 
 const size = {
   width: 40,
@@ -29,15 +29,15 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
   // constants
   const button = {
     style: {
-      backgroundColor: "#F4DCDC",
+      backgroundColor: '#F4DCDC',
     },
     text: STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_WARNING,
     textStyle: {
-      color: "#F5797A",
+      color: '#F5797A',
     },
   };
   if (markerPercentage > 33 && markerPercentage < 66) {
-    button.style.backgroundColor = "#fad3b9";
+    button.style.backgroundColor = '#fad3b9';
   } else if (markerPercentage > 66) {
     button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
     button.text = STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_SAFE;
@@ -53,7 +53,7 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
   // effect use
   useEffect(() => {
     left.value = withSpring(markerPercentage);
-  }, [markerPercentage]);
+  }, [left, markerPercentage]);
 
   return (
     <View style={styles.parent}>

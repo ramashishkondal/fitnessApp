@@ -1,9 +1,12 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  parent: { alignItems: "center", justifyContent: "center" },
+  parent: {alignItems: 'center', justifyContent: 'center'},
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
+  },
+  loadingStyle: {
+    position: 'absolute',
   },
 });

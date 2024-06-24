@@ -1,3 +1,3 @@
 export type PreferenceItemProps = {
-  item: { title: string; selected: boolean };
+  item: {title: string; selected: boolean};
 };

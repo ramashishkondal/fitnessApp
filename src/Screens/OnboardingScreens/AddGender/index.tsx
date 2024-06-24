@@ -1,6 +1,6 @@
 // libs
-import React, { useState } from "react";
-import { Alert, View } from "react-native";
+import React, {useState} from 'react';
+import {Alert, View} from 'react-native';
 
 // custom
 import {
@@ -8,29 +8,29 @@ import {
   CustomButton,
   DescriptionText,
   HeadingText,
-} from "../../../Components";
-import { ICONS, SPACING, STRING } from "../../../Constants";
-import { AddGenderProps, User } from "../../../Defs";
-import { styles } from "./styles";
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
+} from '../../../Components';
+import {ICONS, SPACING, STRING} from '../../../Constants';
+import {AddGenderProps, User} from '../../../Defs';
+import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
-const AddGender: React.FC<AddGenderProps> = ({ navigation }) => {
-  const [selectedGender, setSelectedGender] = useState<User["gender"] | null>(
-    null
+const AddGender: React.FC<AddGenderProps> = ({navigation}) => {
+  const [selectedGender, setSelectedGender] = useState<User['gender'] | null>(
+    null,
   );
   const dispatch = useAppDispatch();
-  const toggleCheckBox = (gender: User["gender"]) => {
+  const toggleCheckBox = (gender: User['gender']) => {
     setSelectedGender(gender);
   };
   const handleSubmit = () => {
     if (selectedGender !== null) {
-      dispatch(updateUserData({ gender: selectedGender }));
+      dispatch(updateUserData({gender: selectedGender}));
       navigation.reset({
-        routes: [{ name: "DetailsCompleted" }],
+        routes: [{name: 'DetailsCompleted'}],
       });
     } else {
-      Alert.alert("You have to select your gender");
+      Alert.alert('You have to select your gender');
     }
   };
   return (
@@ -41,24 +41,24 @@ const AddGender: React.FC<AddGenderProps> = ({ navigation }) => {
           <Card
             text={STRING.ADD_GENDER.MALE}
             icon={ICONS.Male}
-            onToggle={() => toggleCheckBox("male")}
-            isChecked={selectedGender === "male"}
+            onToggle={() => toggleCheckBox('male')}
+            isChecked={selectedGender === 'male'}
           />
           <Card
             text={STRING.ADD_GENDER.FEMALE}
             icon={ICONS.Female}
-            onToggle={() => toggleCheckBox("female")}
-            isChecked={selectedGender === "female"}
+            onToggle={() => toggleCheckBox('female')}
+            isChecked={selectedGender === 'female'}
           />
         </View>
       </View>
       <DescriptionText
         text={STRING.ADD_GENDER.DESCRIPTION}
-        textStyle={{ marginHorizontal: 32, marginVertical: 48 }}
+        textStyle={{marginHorizontal: 32, marginVertical: 48}}
       />
       <CustomButton
         title={STRING.ADD_GENDER.BUTTON_TEXT}
-        parentStyle={{ marginVertical: 32 }}
+        parentStyle={{marginVertical: 32}}
         onPress={handleSubmit}
       />
     </View>

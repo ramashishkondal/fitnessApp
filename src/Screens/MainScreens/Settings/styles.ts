@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {

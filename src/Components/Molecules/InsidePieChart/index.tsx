@@ -1,13 +1,13 @@
 // libs
-import React from "react";
-import { View, Text } from "react-native";
+import React from 'react';
+import {View, Text} from 'react-native';
 
 // custom
-import { ICONS } from "../../../Constants";
-import { InsidePieChartProps } from "./types";
-import { styles } from "./styles";
+import {ICONS} from '../../../Constants';
+import {InsidePieChartProps} from './types';
+import {styles} from './styles';
 
-const manWalkingSize = { width: 25, height: 25 };
+const manWalkingSize = {width: 25, height: 25};
 const InsidePieChart: React.FC<InsidePieChartProps> = ({
   value,
   suffix,

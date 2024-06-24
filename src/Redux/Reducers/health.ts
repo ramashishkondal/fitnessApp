@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { HealthData } from "../../Defs";
-import { Timestamp } from "@react-native-firebase/firestore";
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import {HealthData} from '../../Defs';
+import {Timestamp} from '@react-native-firebase/firestore';
 
 export type InitialState = {
   value: HealthData;
@@ -28,16 +28,16 @@ const initialState: InitialState = {
 };
 
 export const healthSlice = createSlice({
-  name: "healthSlice",
+  name: 'healthSlice',
   initialState,
   reducers: {
     updateHealthData: (
       state,
-      action: PayloadAction<Partial<InitialState["value"]>>
+      action: PayloadAction<Partial<InitialState['value']>>,
     ) => {
-      state.value = { ...state.value, ...action.payload };
+      state.value = {...state.value, ...action.payload};
     },
-    resetHealthData: (state) => {
+    resetHealthData: state => {
       state.value = {
         ...state.value,
         ...{
@@ -55,7 +55,7 @@ export const healthSlice = createSlice({
   },
 });
 
-const { reducer, actions } = healthSlice;
-export const { updateHealthData, resetHealthData, setModalShown } = actions;
+const {reducer, actions} = healthSlice;
+export const {updateHealthData, resetHealthData, setModalShown} = actions;
 
 export default reducer;

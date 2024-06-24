@@ -1,4 +1,4 @@
-import { StyleProp, TextStyle, ViewStyle } from "react-native";
+import {StyleProp, TextStyle, ViewStyle} from 'react-native';
 
 export type CustomTextInputProps = {
   placeHolder?: string;
@@ -6,7 +6,7 @@ export type CustomTextInputProps = {
   iconCtrStyle?: StyleProp<ViewStyle>;
   textInputStyle?: StyleProp<TextStyle>;
   onChangeText?: (
-    text: string
+    text: string,
   ) => void | React.Dispatch<React.SetStateAction<string>>;
   icon?: React.ReactNode;
   autoFocus?: boolean;

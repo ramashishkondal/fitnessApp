@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle, TextStyle } from "react-native";
+import {StyleProp, ViewStyle, TextStyle} from 'react-native';
 
 export type CustomButtonProps = {
   title?: string;

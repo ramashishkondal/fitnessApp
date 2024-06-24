@@ -1,9 +1,9 @@
-import { combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./currentUser";
-import themeReducer from "./theme";
-import currentlyOnScreenReducer from "./currentlyOnScreen";
-import healthReducer from "./health";
-import dailyMealsReducer from "./dailyMeal";
+import {combineReducers} from '@reduxjs/toolkit';
+import userReducer from './currentUser';
+import themeReducer from './theme';
+import currentlyOnScreenReducer from './currentlyOnScreen';
+import healthReducer from './health';
+import dailyMealsReducer from './dailyMeal';
 
 const rootReducer = combineReducers({
   User: userReducer,

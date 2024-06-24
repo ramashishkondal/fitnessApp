@@ -1,11 +1,11 @@
 // libs
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 // custom
-import CustomLoading from "../CustomLoading";
-import { CustomButtonProps } from "./types";
-import { styles } from "./styles";
+import CustomLoading from '../CustomLoading';
+import {CustomButtonProps} from './types';
+import {styles} from './styles';
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   title,

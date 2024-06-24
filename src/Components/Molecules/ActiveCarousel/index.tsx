@@ -1,7 +1,10 @@
-import React from "react";
-import { View } from "react-native";
-import { ActiveCarouselProps } from "./types";
-import { COLORS } from "../../../Constants";
+// libs
+import React from 'react';
+import {View} from 'react-native';
+
+// custom
+import {ActiveCarouselProps} from './types';
+import {styles} from './styles';
 
 const ActiveCarousel: React.FC<ActiveCarouselProps> = ({
   activeIndex,
@@ -13,34 +16,12 @@ const ActiveCarousel: React.FC<ActiveCarouselProps> = ({
       <View
         key={index}
         style={[
-          {
-            backgroundColor: "rgba(244,246,250,0.5)",
-            width: 6,
-            height: 6,
-            borderRadius: 200,
-          },
-          activeIndex === index
-            ? {
-                backgroundColor: COLORS.SECONDARY.WHITE,
-                width: 8,
-                height: 8,
-              }
-            : null,
+          styles.carousel,
+          activeIndex === index ? styles.carouselActive : null,
         ]}
       />
     ));
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "space-around",
-      }}
-    >
-      {arr}
-    </View>
-  );
+  return <View style={styles.parent}>{arr}</View>;
 };
 
 export default ActiveCarousel;

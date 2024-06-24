@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 export type Meal = {
   name: string;
@@ -21,7 +21,7 @@ export type Meals = {
   dinner: Meal;
 };
 
-const initialState: { data: DailyMeals } = {
+const initialState: {data: DailyMeals} = {
   data: {
     snack: [],
     breakfast: [],
@@ -31,7 +31,7 @@ const initialState: { data: DailyMeals } = {
 };
 
 export const currentUserSlice = createSlice({
-  name: "dailyMeals",
+  name: 'dailyMeals',
   initialState,
   reducers: {
     updateAllMealData: (state, action: PayloadAction<DailyMeals>) => {
@@ -40,16 +40,16 @@ export const currentUserSlice = createSlice({
       state.data.lunch.push(...action.payload.lunch);
       state.data.dinner.push(...action.payload.dinner);
     },
-    resetMealData: (state) => {
+    resetMealData: state => {
       state.data = initialState.data;
     },
     resetMealDataItems: (state, action: PayloadAction<Partial<DailyMeals>>) => {
-      state.data = { ...state.data, ...action.payload };
+      state.data = {...state.data, ...action.payload};
     },
   },
 });
 
-const { actions, reducer } = currentUserSlice;
-export const { resetMealData, updateAllMealData, resetMealDataItems } = actions;
+const {actions, reducer} = currentUserSlice;
+export const {resetMealData, updateAllMealData, resetMealDataItems} = actions;
 
 export default reducer;
