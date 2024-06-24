@@ -32,7 +32,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   // state use
   const [storyModalVisible, setStoryModalVisible] = useState(false);
   const [activeModal, setActiveModal] = useState('none');
-  const [story, setStory] = useState<string>('');
+  // const [story, setStory] = useState<string>('');
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
@@ -42,6 +42,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
 
   // ref use
   const postIdRef = useRef<Post>();
+  const story = useRef<string>('');
 
   // effect use
   useEffect(() => {
@@ -59,6 +60,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const goToPostScreen = (postId: string) => {
     return () => navigation.navigate('PostScreen', {postId: postId});
   };
+  const setStory = (st: string) => (story.current = st);
   const setActiveModalPost = () => setActiveModal('story');
   const setActiveModalFalse = () => setActiveModal('none');
   const showCommentModal = () => setActiveModal('comment');

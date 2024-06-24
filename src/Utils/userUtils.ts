@@ -1,5 +1,5 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {Timestamp} from '@react-native-firebase/firestore';
 import 'react-native-get-random-values';
 import storage from '@react-native-firebase/storage';
 import {v4 as uuidv4} from 'uuid';
@@ -101,13 +101,27 @@ export const storePost = async (post: Post) => {
   }
 };
 
-export const storePostComment = async (postId: string, comment: Comment) => {
+export const storePostComment = async (
+  postId: string,
+  comment: Comment,
+  notification: {sendNotificationToUserId: string},
+) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
     .doc(postId)
     .update({
       comments: firestore.FieldValue.arrayUnion(comment),
     });
+  sendNotification(
+    {
+      createdOn: comment.createdOn,
+      isShownViaPushNotification: false,
+      isUnread: true,
+      message: 'commented on your post',
+      userId: comment.userId,
+    },
+    notification.sendNotificationToUserId,
+  );
 };
 
 export const getPost = async (postId: string) => {
@@ -132,8 +146,14 @@ export const getAllPost = async () => {
 };
 
 export const addLikes = async (
+  userId: string,
   postId: string,
   likedByUsersId: Array<string>,
+  notification?: {
+    sendNotificationToUserId: string;
+    userName: string;
+    userPhoto: string;
+  },
 ) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
@@ -141,6 +161,19 @@ export const addLikes = async (
     .update({
       likedByUsersId: likedByUsersId,
     });
+  console.log(notification);
+  if (notification && userId !== notification.sendNotificationToUserId) {
+    await sendNotification(
+      {
+        createdOn: Timestamp.fromDate(new Date()),
+        message: 'liked your post.',
+        userId,
+        isUnread: true,
+        isShownViaPushNotification: false,
+      },
+      notification.sendNotificationToUserId,
+    );
+  }
 };
 
 // story
@@ -236,6 +269,7 @@ export const sendNotification = async (
   sendToUserId: string,
 ) => {
   try {
+    console.log('notification sent to ', sendToUserId);
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(sendToUserId)

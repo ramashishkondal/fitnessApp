@@ -9,7 +9,7 @@ import {ModalPortal} from 'react-native-modals';
 
 const App = () => {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <RootNavigator />

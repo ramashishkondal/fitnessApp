@@ -168,7 +168,7 @@ const DailySteps: React.FC = () => {
           donut
           isAnimated
           radius={100}
-          innerRadius={85}
+          innerRadius={92}
           innerCircleColor={COLORS.PRIMARY.LIGHT_GREY}
           data={pieData}
           centerLabelComponent={centerLabelComponent}

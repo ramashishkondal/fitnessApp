@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Image, TextInput} from 'react-native';
+import {View, TouchableOpacity, Image, TextInput, Platform} from 'react-native';
 
 // 3rd party libs
 import {Timestamp} from '@react-native-firebase/firestore';
@@ -93,7 +93,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
       <KeyboardAwareScrollView
         style={styles.parent}
         extraHeight={10}
-        extraScrollHeight={80}
+        extraScrollHeight={Platform.OS === 'ios' ? 0 : 80}
         enableOnAndroid={true}
         // enableAutomaticScroll={Platform.OS === 'ios'}
       >

@@ -28,6 +28,7 @@ import {COLORS, ICONS, STRING} from '../Constants';
 import {resetHealthData, updateHealthData} from '../Redux/Reducers/health';
 import {
   firebaseDB,
+  getUserData,
   storeUserHealthData,
   updateNotificationReadStatus,
 } from '../Utils/userUtils';
@@ -108,6 +109,7 @@ const AppNavigator = () => {
         },
       );
     } else {
+      // TODO document why this block is empty
     }
   }, [dispatch, endDate, startDate]);
 
@@ -119,21 +121,24 @@ const AppNavigator = () => {
         .doc(id)
         .onSnapshot(snapshot => {
           const userData = snapshot.data() as User;
-
-          updateNotificationReadStatus(
-            id,
-            userData.notifications.map(val => {
-              if (val.isShownViaPushNotification === false) {
-                setTimeout(
-                  onDisplayNotification,
-                  500,
-                  val.userName + ' ' + val.message,
-                );
-                return {...val, isShownViaPushNotification: true};
-              }
-              return val;
-            }),
-          );
+          if (userData) {
+            updateNotificationReadStatus(
+              id,
+              userData.notifications.map(val => {
+                if (val.isShownViaPushNotification === false) {
+                  getUserData(id).then(uD => {
+                    setTimeout(
+                      onDisplayNotification,
+                      500,
+                      uD.firstName + ' ' + uD.lastName + ' ' + val.message,
+                    );
+                  });
+                  return {...val, isShownViaPushNotification: true};
+                }
+                return val;
+              }),
+            );
+          }
           dispatch(updateUserData(userData));
         });
       return () => unsubscribe();

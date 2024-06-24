@@ -16,6 +16,8 @@ import {isValidEmail} from '../../../Utils/checkValidity';
 import {styles} from './styles';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import firestore from '@react-native-firebase/firestore';
+import {firebaseDB} from '../../../Utils/userUtils';
 
 const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
@@ -28,7 +30,15 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   // functions
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.users)
+      .where('email', '==', email)
+      .get();
+    if (snapshot.docs.length !== 0) {
+      Alert.alert('Error', 'Email address already exists');
+      return;
+    }
     const currentEmail = emailRef.current;
     if (currentEmail === '') {
       Alert.alert('Email address cant be empty');
@@ -41,7 +51,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
         'Make sure entered email address is valid',
       );
     }
-  }, [navigation, dispatch]);
+  }, [navigation, dispatch, email]);
 
   const handleEmailChange = (text: string) => {
     setEmail(text);

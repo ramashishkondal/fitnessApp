@@ -1,7 +1,6 @@
 export type CommentProps = {
   comment: {
-    userPhoto: string;
-    userName: string;
+    userId: string;
     commentCreatedOnInMillis: number;
     comment: string;
   };

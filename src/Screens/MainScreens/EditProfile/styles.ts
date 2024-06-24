@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants';
 import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
-import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -13,12 +12,14 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
+    fontSize: SIZES.font12,
   },
   infoText: {
     marginBottom: 3,
     color: COLORS.PRIMARY.PURPLE,
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
+    fontSize: SIZES.font12,
   },
   cardsHeadingText: {
     marginTop: 16,
@@ -26,16 +27,19 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     color: COLORS.SECONDARY.GREY,
     fontFamily: FONT_FAMILY.MEDIUM,
-    fontSize: RFValue(12),
+    fontSize: SIZES.fontH7,
+    // fontSize: RFValue(12),
   },
   userInfoCtr: {
     flex: 1,
     flexDirection: 'row',
     marginHorizontal: 16,
+    marginBottom: 8,
     backgroundColor: 'white',
     alignItems: 'center',
     borderRadius: SIZES.rounding2,
     paddingHorizontal: 8,
+    paddingVertical: 24,
     justifyContent: 'space-evenly',
   },
   userPhotoCtr: {
@@ -62,16 +66,18 @@ export const styles = StyleSheet.create({
   pencilCtr: {
     position: 'absolute',
     right: 8,
-    bottom: 8,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    top: 8,
+    // bottom: 8,
+    // alignItems: 'flex-end',
+    // justifyContent: 'flex-end',
     borderRadius: 200,
   },
   cardCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,
     padding: 16,
     marginHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 8,
     borderRadius: SIZES.rounding2,
+    paddingVertical: 24,
   },
 });

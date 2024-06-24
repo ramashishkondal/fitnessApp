@@ -1,76 +1,63 @@
-import React from 'react';
+// libs
+import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
-import {COLORS, SIZES} from '../../../Constants';
+
+// 3rd party
+import firestore from '@react-native-firebase/firestore';
+
+// custom
 import {NotificationProps} from './types';
 import {CustomImage, DescriptionText} from '../../Atoms';
-import {FONT_FAMILY} from '../../../Constants/commonStyles';
-import {RFValue} from 'react-native-responsive-fontsize';
+import {styles} from './styles';
+import {firebaseDB} from '../../../Utils/userUtils';
+import {User} from '../../../Defs';
 
 const Notification: React.FC<NotificationProps> = ({
-  userName,
+  userId,
   notificationText,
   timeAgo,
   isUnread,
-  userPhoto,
 }) => {
+  // state use
+  const [userData, setUserData] = useState<User>();
+
+  // effect use
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .onSnapshot(snapshot => {
+        const data = snapshot.data() as User;
+        if (data) {
+          setUserData(data);
+        }
+      });
+    return () => unsubscribe();
+  }, [userId]);
   return (
-    <View
-      style={{
-        backgroundColor: COLORS.SECONDARY.WHITE,
-        flexDirection: 'row',
-        marginHorizontal: 24,
-        borderBottomWidth: 1.25,
-        borderColor: COLORS.SECONDARY.LIGHT_GREY_2,
-        paddingVertical: 24,
-      }}>
-      <View
-        style={{
-          flex: 1,
-          paddingHorizontal: 16,
-        }}>
-        <CustomImage
-          source={{uri: userPhoto}}
-          parentStyle={{
-            flex: 1,
-            maxHeight: 55,
-            minWidth: 55,
-            padding: 5,
-            borderRadius: 200,
-            // borderWidth: 1,
-          }}
-          imageStyle={{}}
-        />
-      </View>
-      <View style={{flex: 6}}>
-        <Text
-          style={{
-            fontFamily: FONT_FAMILY.MEDIUM,
-            fontSize: RFValue(12),
-            marginRight: 16,
-          }}>
-          <Text style={{fontWeight: 'bold'}}>{userName} </Text>
-          {notificationText}
-        </Text>
-        <DescriptionText
-          text={timeAgo}
-          textStyle={{
-            textAlign: 'left',
-            marginVertical: 8,
-            fontSize: SIZES.font11,
-          }}
-        />
-      </View>
-      <View style={{alignSelf: 'center'}}>
-        {isUnread ? (
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              backgroundColor: '#E1DDF5',
-              borderRadius: 200,
-            }}
+    <View style={styles.parent}>
+      <View style={styles.CustomImageCtr}>
+        {userData ? (
+          <CustomImage
+            source={{uri: userData.photo}}
+            parentStyle={styles.customImageParentStyle}
+            imageStyle={styles.customImageStyle}
           />
         ) : null}
+      </View>
+      <View style={styles.textCtr}>
+        <Text style={styles.notificationText}>
+          {userData ? (
+            <Text style={styles.userNameText}>
+              {userData.firstName + ' ' + userData.lastName + ' '}
+            </Text>
+          ) : null}
+          {notificationText}
+        </Text>
+        <DescriptionText text={timeAgo} textStyle={styles.descriptionText} />
+      </View>
+      <View style={styles.isUnreadCtr}>
+        {isUnread ? <View style={styles.isUnreadDot} /> : null}
       </View>
     </View>
   );

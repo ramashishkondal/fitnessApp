@@ -31,7 +31,7 @@ const AddPreferences: React.FC<AddPreferencesProps> = ({navigation}) => {
   const goToAddInterests = () => {
     dispatch(
       updateUserData({
-        preferences: PREFERENCES.current.filter(item => item.selected),
+        preferences: PREFERENCES.current,
       }),
     );
     navigation.push('AddInterests');

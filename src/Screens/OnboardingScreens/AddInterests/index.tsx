@@ -1,36 +1,15 @@
 // libs
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, FlatList, ListRenderItem} from 'react-native';
 
 //custom
 import {CustomButton, InterestItem, HeadingText} from '../../../Components';
 import {SPACING, STRING} from '../../../Constants';
 import {styles} from './styles';
-import {INTERESTS} from '../../../Constants/icons';
 import {AddInterestsProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
-
-const iconSize = {
-  width: 35,
-  height: 35,
-};
-
-const INTERESETS = [
-  {title: 'Fashion', icon: INTERESTS.Fashion(iconSize), selected: false},
-  {title: 'Organic', icon: INTERESTS.Organic(iconSize), selected: false},
-  {
-    title: 'Meditation',
-    icon: INTERESTS.Meditation(iconSize),
-    selected: false,
-  },
-  {title: 'Fitness', icon: INTERESTS.Fitness(iconSize), selected: false},
-  {title: 'Smoke Free', icon: INTERESTS.SmokeFree(iconSize), selected: false},
-  {title: 'Sleep', icon: INTERESTS.Sleep(iconSize), selected: false},
-  {title: 'Health', icon: INTERESTS.Health(iconSize), selected: false},
-  {title: 'Running', icon: INTERESTS.Running(iconSize), selected: false},
-  {title: 'Vegan', icon: INTERESTS.Vegan(iconSize), selected: false},
-];
+import {INTERESETS} from '../../../Constants/commonConstants';
 
 const renderItem: ListRenderItem<{
   title: string;
@@ -42,13 +21,17 @@ const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
 
+  // ref use
+  const interestsData = useRef(INTERESETS);
   // functions
   const goToAddGender = () => {
-    const selectedItems: string[] = INTERESETS.map(item => {
-      if (item.selected) {
-        return item.title;
-      } else return '';
-    }).filter(val => val);
+    const selectedItems: Array<{title: string; selected: boolean}> =
+      interestsData.current
+        .map(item => {
+          const {title, selected} = item;
+          return {title, selected};
+        })
+        .filter(val => val);
     dispatch(updateUserData({interests: selectedItems}));
     navigation.push('AddGender');
   };
@@ -56,7 +39,7 @@ const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
     <View style={styles.parent}>
       <HeadingText text={STRING.ADD_INTERESTS.TITLE} textStyle={SPACING.mh2} />
       <FlatList
-        data={INTERESETS}
+        data={interestsData.current}
         renderItem={renderItem}
         numColumns={3}
         style={styles.flatListStyle}

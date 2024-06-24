@@ -1,7 +1,5 @@
 export type UserPostProps = {
   postData: {
-    userPhoto: string;
-    userName: string;
     timeSincePostedInMillis: number;
     caption: string;
     photo: string;
@@ -10,6 +8,7 @@ export type UserPostProps = {
     isLiked: boolean;
     id: string;
   };
+  userId: string;
   handleCommentsPress: () => void;
   handleLikesPress: () => void;
 };

@@ -17,7 +17,7 @@ import {InterestItemProps} from './types';
 
 const InterestItem: React.FC<InterestItemProps> = ({item}) => {
   // state ues
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(item.selected);
 
   // reanimated use
   const scale = useSharedValue(ANIMATIONS.sizeNormal);

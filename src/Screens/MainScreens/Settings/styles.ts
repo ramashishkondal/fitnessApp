@@ -11,4 +11,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH3,
     fontWeight: SIZES.fontBold1,
   },
+  editProfileCtr: {
+    marginTop: 40,
+  },
 });

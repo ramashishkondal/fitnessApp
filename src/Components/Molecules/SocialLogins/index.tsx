@@ -44,7 +44,7 @@ const SocialLogins: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   // functions
   const handleGoogleSignIn = async () => {
@@ -53,15 +53,6 @@ const SocialLogins: React.FC = () => {
     if (userData?.additionalUserInfo?.isNewUser) {
       const {email, displayName, photoURL: photo, uid: id} = userData.user;
       if (email !== null && photo !== null) {
-        dispatch(
-          updateUserData({
-            email,
-            firstName: displayName?.split(' ')[0],
-            lastName: displayName?.split(' ')[1],
-            photo,
-            id,
-          }),
-        );
         storeUserData(
           {
             email,

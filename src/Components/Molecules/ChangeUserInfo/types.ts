@@ -1,1 +1,3 @@
-export type ChangeUserInfoProps = {};
+export type ChangeUserInfoProps = {
+  setModalFalse: () => void;
+};

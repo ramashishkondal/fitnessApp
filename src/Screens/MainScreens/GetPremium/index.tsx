@@ -9,7 +9,6 @@ import {IMAGES, SIZES} from '../../../Constants';
 import ActiveCarousel from '../../../Components/Molecules/ActiveCarousel';
 import {CustomButton, DescriptionText, HeadingText} from '../../../Components';
 import PremiumSelectorCard from '../../../Components/Molecules/PremiumSelectorCard';
-import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 const GetPremium = () => {
   // state use
@@ -61,32 +60,21 @@ const GetPremium = () => {
           </View>
         )}
       />
-      <View
-        style={{
-          position: 'absolute',
-          width: 100,
-          top: SIZES.height / 3.85,
-          left: SIZES.width / 2 - 50,
-        }}>
+      <View style={styles.activeCarouselCtr}>
         <ActiveCarousel
           activeIndex={activeCarousel}
           length={carouselItems.length}
         />
       </View>
-      <View style={{flex: 3, marginTop: 56}}>
-        <View
-          style={{
-            marginTop: 32,
-            height: SIZES.height / 6,
-            marginHorizontal: 48,
-          }}>
+      <View style={styles.childCtr}>
+        <View style={styles.headingCtr}>
           <HeadingText text={carouselItems[activeCarousel].heading} />
           <DescriptionText
             text={carouselItems[activeCarousel].desc}
-            textStyle={{marginTop: 8}}
+            textStyle={styles.descriptionText}
           />
         </View>
-        <View style={{marginHorizontal: 16}}>
+        <View style={styles.premiumSelectorCtr}>
           <PremiumSelectorCard
             priceText="4.99"
             priceIntervalTime="month"
@@ -112,26 +100,16 @@ const GetPremium = () => {
             }}
           />
         </View>
-        <View style={{marginHorizontal: 48, marginVertical: 24}}>
-          <Text
-            style={{
-              fontFamily: FONT_FAMILY.BOLD,
-              textAlign: 'center',
-              fontSize: SIZES.font9,
-            }}>
+        <View style={styles.footerCtr}>
+          <Text style={styles.recurringText}>
             Recurring billing, cancel anytime
           </Text>
-          <Text
-            style={{
-              fontFamily: FONT_FAMILY.REGULAR,
-              textAlign: 'center',
-              fontSize: SIZES.font9,
-            }}>
+          <Text style={styles.recurringDescriptionText}>
             Contrary to what many people think, eating healthy is not easier
             said than done. Just a few good habits can make a great difference.
           </Text>
         </View>
-        <CustomButton title="Purchase" parentStyle={{alignSelf: 'center'}} />
+        <CustomButton title="Purchase" parentStyle={styles.customParent} />
       </View>
     </View>
   );

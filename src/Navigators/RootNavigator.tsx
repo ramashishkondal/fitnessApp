@@ -11,7 +11,7 @@ import {PERMISSIONS, check, request} from 'react-native-permissions';
 // custom
 import OnboardingNav from './OnboardingNavigator';
 import AppNavigator from './AppNavigator';
-import {Platform} from 'react-native';
+import {NativeEventEmitter, NativeModules, Platform} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {updateHealthData} from '../Redux/Reducers/health';
 import {CustomLoading} from '../Components';
@@ -25,6 +25,7 @@ const permissions = {
     read: [
       AppleHealthKit.Constants.Permissions.HeartRate,
       AppleHealthKit.Constants.Permissions.Steps,
+      AppleHealthKit.Constants.Permissions.StepCount,
       AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
     ],
     write: [],
@@ -98,6 +99,40 @@ const RootNavigator = () => {
           console.log('error getting permission.');
           return;
         }
+        const observerType = 'StepCount';
+        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+          `healthKit:${observerType}:new`,
+          async () => {
+            console.log(
+              `${observerType}: in newSampleObserver - received a new sample`,
+            );
+          },
+        );
+        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+          `healthKit:${observerType}:failure`,
+          async () => {
+            console.log(
+              `${observerType}: in newSampleObserver - new event failure`,
+            );
+          },
+        );
+        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+          `healthKit:${observerType}:new`,
+          async () => {
+            console.log(
+              `${observerType}: in newSampleObserver - setup success`,
+            );
+          },
+        );
+        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+          `healthKit:${observerType}:setup:failure`,
+          async () => {
+            console.log(
+              `${observerType}: in newSampleObserver - setup failure`,
+            );
+          },
+        );
+
         dispatch(updateHealthData({hasPermission: true}));
         AppleHealthKit.getStepCount({}, (error, result) => {
           if (!error) {

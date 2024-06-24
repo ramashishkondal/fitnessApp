@@ -10,12 +10,23 @@ import {styles} from './styles';
 import {STRING} from '../../../Constants';
 import SettingsCard from '../../../Components/Molecules/SettingsCard';
 import {SettingsProps} from '../../../Defs';
+import {resetUserData} from '../../../Redux/Reducers/currentUser';
+import {useAppDispatch} from '../../../Redux/Store';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
+  // redux use
+  const dispatch = useAppDispatch();
+
+  // functions
+  const logOut = () => {
+    dispatch(resetUserData());
+    auth().signOut();
+  };
+
   return (
     <View style={styles.parent}>
       <Text style={styles.titleText}>{STRING.SETTINGS.TITLE}</Text>
-      <View style={{marginTop: 40}}>
+      <View style={styles.editProfileCtr}>
         <SettingsCard
           title="Edit Profile"
           onPress={() => navigation.push('EditProfile')}
@@ -23,7 +34,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         <SettingsCard title="Push Notification" hasSwitch />
         <SettingsCard title="Give Feedback" />
         <SettingsCard title="About Us" />
-        <SettingsCard title="Log Out" onPress={() => auth().signOut()} />
+        <SettingsCard title="Log Out" onPress={logOut} />
       </View>
     </View>
   );

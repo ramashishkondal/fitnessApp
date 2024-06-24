@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Pressable} from 'react-native';
-import {addLikes, firebaseDB, sendNotification} from '../../../Utils/userUtils';
+import {FlatList, Pressable, Text, View} from 'react-native';
+import {addLikes, firebaseDB} from '../../../Utils/userUtils';
 import UserPost from '../UserPost';
 import {Post} from '../../../Defs';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
@@ -14,6 +14,8 @@ const AllPosts: React.FC<AllPostsProps> = ({
 }) => {
   // state use
   const [postsData, setPostsData] = useState<Post[]>();
+  const [dataLength, setDataLength] = useState<number>(10);
+  const [isLoading, setIsLoading] = useState(false);
 
   // redux use
   const {
@@ -25,27 +27,32 @@ const AllPosts: React.FC<AllPostsProps> = ({
 
   // effect use
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
       .orderBy('createdOn', 'desc')
+      .limit(dataLength)
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as Post[];
-        console.log(x);
         setPostsData(x);
       });
-
+    setIsLoading(false);
     return () => unsubscribe();
-  }, []);
+  }, [dataLength]);
 
   return (
     <View>
-      {postsData
-        ? postsData?.map(val => {
+      {postsData ? (
+        <FlatList
+          scrollEnabled={false}
+          data={postsData}
+          renderItem={({item: val}) => {
             const isLiked = val.likedByUsersId.includes(userId!);
             return (
               <Pressable onPress={goToPostScreen(val.postId!)} key={val.postId}>
                 <UserPost
+                  userId={val.userId}
                   postData={{
                     caption: val.caption,
                     noOfComments: val.comments?.length,
@@ -56,8 +63,6 @@ const AllPosts: React.FC<AllPostsProps> = ({
                     )
                       .toDate()
                       .getTime(),
-                    userName: val.userName,
-                    userPhoto: val.userPhoto,
                     isLiked,
                     id: val.postId!,
                   }}
@@ -68,31 +73,42 @@ const AllPosts: React.FC<AllPostsProps> = ({
                   handleLikesPress={() => {
                     if (isLiked) {
                       addLikes(
+                        userId!,
                         val.postId!,
                         val.likedByUsersId.filter(value => value !== userId),
                       );
-                      if (val.userId !== userId) {
-                        sendNotification(
-                          {
-                            createdOn: Timestamp.fromDate(new Date()),
-                            message: 'liked your post.',
-                            userName: firstName + ' ' + lastName ?? '',
-                            userPhoto: photo,
-                            isUnread: true,
-                            isShownViaPushNotification: false,
-                          },
-                          val.userId,
-                        );
-                      }
                     } else {
-                      addLikes(val.postId!, val.likedByUsersId.concat(userId!));
+                      addLikes(
+                        userId!,
+                        val.postId!,
+                        val.likedByUsersId.concat(userId!),
+                        {
+                          sendNotificationToUserId: val.userId,
+                          userName: firstName + ' ' + lastName ?? '',
+                          userPhoto: photo,
+                        },
+                      );
                     }
                   }}
                 />
               </Pressable>
             );
-          })
-        : null}
+          }}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            console.log('end reached');
+            if (!isLoading) {
+              console.log(dataLength);
+              setDataLength(dataLength + 5);
+            }
+          }}
+          ListFooterComponent={() => {
+            if (isLoading) {
+              return <Text>Loading more...</Text>;
+            }
+          }}
+        />
+      ) : null}
     </View>
   );
 };

@@ -1,23 +1,21 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {View, FlatList} from 'react-native';
 
 // 3rd party
 import firestore from '@react-native-firebase/firestore';
+import {useFocusEffect} from '@react-navigation/native';
 
 // custom
 import {styles} from './styles';
 import {DescriptionText, HeadingText, Notification} from '../../../Components';
-import {SIZES} from '../../../Constants';
 import {
   firebaseDB,
   updateNotificationReadStatus,
 } from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
 import {NotificationsData} from '../../../Defs/user';
-import {FlatList} from 'react-native-gesture-handler';
 import {getTimePassed} from '../../../Utils/commonUtils';
-import {useFocusEffect} from '@react-navigation/native';
 
 const Notifications: React.FC = () => {
   // state ues
@@ -40,42 +38,37 @@ const Notifications: React.FC = () => {
     return () => unsubscribe();
   }, [userId]);
 
+  // navigation hook use
   useFocusEffect(() => {
-    if (notificationsData)
+    if (notificationsData) {
       return () => {
         updateNotificationReadStatus(
           userId!,
           notificationsData?.map(val => ({...val, isUnread: false})),
         );
       };
+    }
   });
 
   return (
     <View style={styles.parent}>
-      <HeadingText
-        text="Notifications"
-        textStyle={{
-          fontSize: SIZES.fontH4,
-          textAlign: 'left',
-          marginHorizontal: 16,
-        }}
-      />
+      <HeadingText text="Notifications" textStyle={styles.headingText} />
       <DescriptionText
         text={`${
           notificationsData?.filter(val => val.isUnread === true).length
         } unread Notifications`}
-        textStyle={{textAlign: 'left', marginHorizontal: 16}}
+        textStyle={styles.descriptionText}
       />
-      <View style={{backgroundColor: 'white', marginVertical: 32}}>
+      <View style={styles.notificationsCtr}>
         <FlatList
           data={notificationsData?.slice().reverse()}
+          style={styles.flatList}
           renderItem={({item}) => (
             <Notification
               isUnread={item.isUnread}
               notificationText={item.message}
               timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
-              userName={item.userName}
-              userPhoto={item.userPhoto}
+              userId={item.userId}
             />
           )}
         />

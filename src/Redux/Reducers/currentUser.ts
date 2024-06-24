@@ -8,7 +8,7 @@ const initialState: {data: User & {password: string | null}} = {
     lastName: 'Doe',
     email: 'johnDoe@gmail.com',
     finger: false,
-    gender: 'male',
+    gender: null,
     interests: [],
     photo: '',
     preferences: [],

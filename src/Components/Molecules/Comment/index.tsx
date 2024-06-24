@@ -1,6 +1,9 @@
 // libs
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
+
+// 3rd party
+import firestore from '@react-native-firebase/firestore';
 
 // custom
 import {CommentProps} from './types';
@@ -8,10 +11,29 @@ import {styles} from './styles';
 import {CustomImage, DescriptionText} from '../../Atoms';
 import {getTimePassed} from '../../../Utils/commonUtils';
 import {SIZES} from '../../../Constants';
+import {firebaseDB} from '../../../Utils/userUtils';
+import {User} from '../../../Defs';
 
 const Comment: React.FC<CommentProps> = ({
-  comment: {userPhoto, userName, commentCreatedOnInMillis, comment},
+  comment: {userId, commentCreatedOnInMillis, comment},
 }) => {
+  // state use
+  const [userData, setUserData] = useState<User>();
+
+  // effect use
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .onSnapshot(snapshot => {
+        const data = snapshot.data() as User;
+        if (data) {
+          setUserData(data);
+        }
+      });
+    return () => unsubscribe();
+  }, [userId]);
+
   return (
     <View
       style={{
@@ -20,13 +42,19 @@ const Comment: React.FC<CommentProps> = ({
       }}>
       <View style={styles.userInfoCtr}>
         <View style={{alignItems: 'center'}}>
-          <CustomImage
-            source={{uri: userPhoto}}
-            imageStyle={styles.userPhoto}
-          />
+          {userData ? (
+            <CustomImage
+              source={{uri: userData.photo}}
+              imageStyle={styles.userPhoto}
+            />
+          ) : null}
         </View>
         <View style={styles.userTextCtr}>
-          <Text style={styles.userNameText}>{userName}</Text>
+          {userData ? (
+            <Text style={styles.userNameText}>
+              {userData.firstName + ' ' + userData.lastName ?? ''}
+            </Text>
+          ) : null}
           <DescriptionText
             text={getTimePassed(commentCreatedOnInMillis)}
             textStyle={{fontSize: SIZES.font11, textAlign: 'left'}}

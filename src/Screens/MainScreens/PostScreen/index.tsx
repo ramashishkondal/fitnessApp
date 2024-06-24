@@ -34,7 +34,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       .doc(route.params.postId)
       .onSnapshot(snapshot => {
         const data = snapshot.data();
-        console.log(data);
         if (data) {
           setPostData(data as Post);
         }
@@ -46,13 +45,18 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // functions
   const postComment = async () => {
     try {
-      if (id !== null && comment !== '') {
-        await storePostComment(route.params.postId, {
-          userName: firstName + ' ' + lastName,
-          userPhoto,
-          comment,
-          createdOn: Timestamp.fromDate(new Date()),
-        });
+      if (id !== null && comment !== '' && postData) {
+        await storePostComment(
+          route.params.postId,
+          {
+            userId: id,
+            comment,
+            createdOn: Timestamp.fromDate(new Date()),
+          },
+          {
+            sendNotificationToUserId: postData.userId,
+          },
+        );
         setComment('');
       }
     } catch (e) {
@@ -62,20 +66,18 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   };
 
   if (postData) {
-    console.log(postData);
     return (
       <>
         <ScrollView style={styles.parent}>
           <View style={{flex: 3}}>
             <UserPost
+              userId={postData.userId}
               postData={{
                 caption: postData.caption,
                 photo: postData.photo,
                 noOfLikes: postData.likedByUsersId.length,
                 noOfComments: postData.comments.length,
                 isLiked: postData.likedByUsersId.includes(id!),
-                userName: postData.userName,
-                userPhoto: postData.userPhoto,
                 id: id!,
                 timeSincePostedInMillis: Timestamp.fromMillis(
                   postData.createdOn.seconds * 1000,
@@ -87,13 +89,20 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                 const isLiked = postData.likedByUsersId.includes(id!);
                 if (isLiked) {
                   addLikes(
+                    id!,
                     route.params.postId,
                     postData.likedByUsersId.filter(value => value !== id),
                   );
                 } else {
                   addLikes(
+                    id!,
                     postData.postId!,
                     postData.likedByUsersId.concat(id!),
+                    {
+                      sendNotificationToUserId: postData.userId,
+                      userName: firstName + ' ' + lastName ?? '',
+                      userPhoto,
+                    },
                   );
                 }
               }}
@@ -111,22 +120,24 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             <Text style={{fontSize: SIZES.font17, fontWeight: SIZES.fontBold0}}>
               Comments
             </Text>
-            {postData.comments.map(val => {
-              return (
-                <Comment
-                  comment={{
-                    comment: val.comment,
-                    commentCreatedOnInMillis: Timestamp.fromMillis(
-                      val.createdOn.seconds * 1000,
-                    )
-                      .toDate()
-                      .getTime(),
-                    userName: val.userName,
-                    userPhoto: val.userPhoto,
-                  }}
-                />
-              );
-            })}
+            {postData.comments
+              .slice(0)
+              .reverse()
+              .map(val => {
+                return (
+                  <Comment
+                    comment={{
+                      comment: val.comment,
+                      commentCreatedOnInMillis: Timestamp.fromMillis(
+                        val.createdOn.seconds * 1000,
+                      )
+                        .toDate()
+                        .getTime(),
+                      userId: val.userId,
+                    }}
+                  />
+                );
+              })}
           </View>
         </ScrollView>
         <View

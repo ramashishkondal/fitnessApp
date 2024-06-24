@@ -10,12 +10,12 @@ export const styles = StyleSheet.create({
     borderRadius: SIZES.rounding2,
   },
   modalCtr: {
-    flex: 16,
+    flex: 0.95,
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderRadius: SIZES.rounding2,
   },
   horizontalLineCtr: {
-    flex: 1,
+    flex: 0.05,
     marginTop: 24,
     alignItems: 'center',
   },

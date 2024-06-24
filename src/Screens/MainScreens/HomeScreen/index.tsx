@@ -43,7 +43,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       <Text style={styles.descriptionText}>
         {STRING.HOME_SCREEN.DESCRIPTION}
       </Text>
-      <TouchableOpacity>
+      <TouchableOpacity activeOpacity={1}>
         <Text style={styles.detailsText}>
           {STRING.HOME_SCREEN.MORE_DETAILS}
         </Text>

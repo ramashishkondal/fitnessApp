@@ -9,15 +9,14 @@ export type User = {
   photo: string;
   gender: 'male' | 'female' | null;
   preferences: Array<{title: string; selected: boolean}>;
-  interests: Array<string>;
+  interests: Array<{title: string; selected: boolean}>;
   healthData: Array<HealthData>;
   storiesWatched: Array<string>;
   notifications: NotificationsData;
 };
 export type NotificationsData = Array<NotificationData>;
 export type NotificationData = {
-  userPhoto: string;
-  userName: string;
+  userId: string;
   message: string;
   createdOn: Timestamp;
   isUnread: boolean;
@@ -49,8 +48,7 @@ export type Post = {
 };
 
 export type Comment = {
-  userName: string;
-  userPhoto: string;
+  userId: string;
   comment: string;
   createdOn: Timestamp;
 };

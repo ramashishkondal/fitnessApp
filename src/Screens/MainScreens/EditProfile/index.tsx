@@ -7,11 +7,12 @@ import {CustomImage, WithModal} from '../../../Components';
 import {COLORS, ICONS} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
 import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
+import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInterests';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
   const [activeModal, setActiveModal] = useState<
-    'userInfo' | 'preferences' | null
+    'userInfo' | 'preferences' | null | 'interests'
   >(null);
 
   // redux use
@@ -19,16 +20,20 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     useAppSelector(state => state.User.data);
 
   // functions
+  const setModalFalse = () => setActiveModal(null);
   const getActiveModalComp = useCallback(() => {
     if (activeModal === 'userInfo') {
-      return <ChangeUserInfo />;
+      return <ChangeUserInfo setModalFalse={setModalFalse} />;
     } else if (activeModal === 'preferences') {
-      return <ChangeUserPreferences />;
+      return <ChangeUserPreferences setModalFalse={setModalFalse} />;
+    } else if (activeModal === 'interests') {
+      return <ChangeUserInterests setModalFalse={setModalFalse} />;
     } else {
       return null;
     }
   }, [activeModal]);
   const ActiveModalComponent = getActiveModalComp();
+
   return (
     <View style={styles.parent}>
       <Text style={styles.cardsHeadingText}>User Info</Text>
@@ -74,13 +79,17 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       <View style={{flex: 5}}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
-          {preferences
-            .filter(val => val.selected === true)
-            .map((val, index) => (
-              <Text key={index} style={styles.infoText}>
-                {val.title}
-              </Text>
-            ))}
+          {preferences.some(val => val.selected) ? (
+            preferences
+              .filter(val => val.selected === true)
+              .map((val, index) => (
+                <Text key={index} style={styles.infoText}>
+                  {val.title}
+                </Text>
+              ))
+          ) : (
+            <Text style={styles.infoText}>No Preferences selected</Text>
+          )}
           <TouchableOpacity
             style={styles.pencilCtr}
             onPress={() => setActiveModal('preferences')}>
@@ -91,12 +100,22 @@ const EditProfile: React.FC<EditProfileProps> = () => {
         </View>
         <Text style={styles.cardsHeadingText}>Interests</Text>
         <View style={styles.cardCtr}>
-          {interests.map((val, index) => (
-            <Text key={index} style={styles.infoText}>
-              {val}
-            </Text>
-          ))}
-          <TouchableOpacity style={styles.pencilCtr}>
+          {interests.some(val => val.selected) ? (
+            interests.map((val, index) => {
+              if (val.selected) {
+                return (
+                  <Text key={index} style={styles.infoText}>
+                    {val.title}
+                  </Text>
+                );
+              }
+            })
+          ) : (
+            <Text style={styles.infoText}>No Interests selected</Text>
+          )}
+          <TouchableOpacity
+            style={styles.pencilCtr}
+            onPress={() => setActiveModal('interests')}>
             <View style={styles.pencilBackCtr}>
               {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>

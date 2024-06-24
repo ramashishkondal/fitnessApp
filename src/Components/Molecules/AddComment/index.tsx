@@ -9,7 +9,7 @@ import {Timestamp} from '@react-native-firebase/firestore';
 import {useAppSelector} from '../../../Redux/Store';
 import CustomButton from '../../Atoms/CustomButton';
 import {COLORS, ICONS, SIZES, STRING} from '../../../Constants';
-import {sendNotification, storePostComment} from '../../../Utils/userUtils';
+import {storePostComment} from '../../../Utils/userUtils';
 import {AddCommentProps} from './type';
 import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
@@ -20,12 +20,9 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const {
-    id: userId,
-    photo: userPhoto,
-    firstName,
-    lastName,
-  } = useAppSelector(state => state.User.data);
+  const {id: userId, photo: userPhoto} = useAppSelector(
+    state => state.User.data,
+  );
 
   // functions
   const handlePost = async () => {
@@ -33,22 +30,16 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
       if (userId !== null) {
         setIsLoading(true);
         if (postId.postId) {
-          await storePostComment(postId.postId, {
-            userName: firstName + ' ' + lastName,
-            userPhoto,
-            comment,
-            createdOn: Timestamp.fromDate(new Date()),
-          });
-          await sendNotification(
+          await storePostComment(
+            postId.postId,
             {
+              userId,
+              comment,
               createdOn: Timestamp.fromDate(new Date()),
-              message: 'commented on your post',
-              userName: firstName + ' ' + lastName,
-              userPhoto,
-              isUnread: true,
-              isShownViaPushNotification: false,
             },
-            postId.userId,
+            {
+              sendNotificationToUserId: postId.userId,
+            },
           );
         }
         setModalFalse();
