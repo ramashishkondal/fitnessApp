@@ -43,7 +43,7 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   return (
     <View style={styles.parent}>
       <HeadingText text="Change Interests" textStyle={SPACING.mt1} />
-      <View style={{flex: 5, ...SPACING.mt2}}>
+      <View style={styles.flatListCtr}>
         <FlatList
           data={interestDataWithIcons}
           renderItem={renderItem}
@@ -51,7 +51,7 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
           style={styles.flatListStyle}
         />
       </View>
-      <View style={{flex: 1, alignItems: 'center', paddingTop: 16}}>
+      <View style={styles.customButtonCtr}>
         <CustomButton title="Change" onPress={handleSubmitChange} />
       </View>
     </View>

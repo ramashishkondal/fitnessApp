@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     fontWeight: SIZES.fontBold0,
     textAlign: 'center',
     ...SPACING.mh2,
+    color: 'black',
   },
   pieChart: {
     justifyContent: 'center',
@@ -33,4 +34,10 @@ export const styles = StyleSheet.create({
   },
   statisticsCtr: {},
   foodCtr: {},
+  pieChartTop: {
+    position: 'relative',
+  },
+  pieChartInside: {
+    position: 'absolute',
+  },
 });

@@ -81,13 +81,15 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
             })}
           </TouchableOpacity>
         </View>
-        <CustomButton
-          title="Post"
-          parentStyle={styles.buttonParentStyle}
-          textStyle={{fontSize: SIZES.font13}}
-          onPress={handlePost}
-          isLoading={isLoading}
-        />
+        <View style={styles.customButtonCtr}>
+          <CustomButton
+            title="Post"
+            parentStyle={styles.buttonParentStyle}
+            textStyle={{fontSize: SIZES.font13}}
+            onPress={handlePost}
+            isLoading={isLoading}
+          />
+        </View>
       </View>
     </View>
   );

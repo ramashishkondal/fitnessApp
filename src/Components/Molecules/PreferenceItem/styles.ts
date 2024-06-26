@@ -23,6 +23,10 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: SIZES.font12,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
+  },
+  bouncyCheckbox: {
+    marginRight: 8,
   },
 });

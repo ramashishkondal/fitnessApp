@@ -8,6 +8,7 @@ import Animated from 'react-native-reanimated';
 // custom
 import {styles} from './styles';
 import {CustomTextInputProps} from './types';
+import {COLORS} from '../../../Constants';
 
 const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
   ({
@@ -34,6 +35,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
         <TextInput
           placeholder={placeHolder}
           style={[styles.textInput, textInputStyle]}
+          placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
           onChangeText={onChangeText}
           autoCapitalize="none"
           autoCorrect={false}

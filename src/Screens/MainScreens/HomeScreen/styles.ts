@@ -18,8 +18,9 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
     marginRight: RFValue(40),
     marginHorizontal: 36,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
     ...SPACING.mt2,
+    color: 'black',
   },
   detailsText: {
     color: COLORS.PRIMARY.PURPLE,
@@ -31,5 +32,8 @@ export const styles = StyleSheet.create({
   },
   catageroiesCtr: {
     ...SPACING.mt5,
+  },
+  headingText: {
+    marginHorizontal: 36,
   },
 });

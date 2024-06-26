@@ -28,4 +28,8 @@ export const styles = StyleSheet.create({
     color: COLORS.PRIMARY.PURPLE,
     fontWeight: SIZES.fontBold0,
   },
+  signInTextCtr: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

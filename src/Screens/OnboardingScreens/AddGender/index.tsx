@@ -54,11 +54,11 @@ const AddGender: React.FC<AddGenderProps> = ({navigation}) => {
       </View>
       <DescriptionText
         text={STRING.ADD_GENDER.DESCRIPTION}
-        textStyle={{marginHorizontal: 32, marginVertical: 48}}
+        textStyle={styles.addGenderDescriptionText}
       />
       <CustomButton
         title={STRING.ADD_GENDER.BUTTON_TEXT}
-        parentStyle={{marginVertical: 32}}
+        parentStyle={styles.customButtonParent}
         onPress={handleSubmit}
       />
     </View>

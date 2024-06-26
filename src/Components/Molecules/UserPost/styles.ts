@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     color: COLORS.SECONDARY.GREY,
     fontWeight: SIZES.fontBold0,
     fontSize: SIZES.font12,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   captionText: {
     marginVertical: 16,
@@ -50,15 +51,27 @@ export const styles = StyleSheet.create({
   userNameText: {
     fontFamily: FONT_FAMILY.BOLD,
     fontSize: SIZES.font13,
+    color: 'black',
   },
   likeCtr: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+  },
+  commentLogoCtr: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   commentCtr: {
     flex: 4.5,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  descriptionText: {
+    fontSize: SIZES.font10,
+    textAlign: 'left',
+  },
+  noCaptionCtr: {
+    marginVertical: 8,
   },
 });

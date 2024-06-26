@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {SIZES} from '../../../Constants/commonStyles';
+import {COLORS, SIZES} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -15,5 +15,9 @@ export const styles = StyleSheet.create({
   },
   customButtonParent: {
     marginTop: 78,
+  },
+  forgotPasswordText: {
+    color: COLORS.PRIMARY.PURPLE,
+    textAlign: 'right',
   },
 });

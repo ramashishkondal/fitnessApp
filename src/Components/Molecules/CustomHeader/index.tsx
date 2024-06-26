@@ -1,6 +1,12 @@
 // libs
 import React, {useCallback} from 'react';
-import {Dimensions, TouchableOpacity, View, SafeAreaView} from 'react-native';
+import {
+  Dimensions,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 
 // 3rd party
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
@@ -21,8 +27,12 @@ const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
         {
           height:
             props.route.name === 'AddInterests'
-              ? Dimensions.get('screen').height / 7
-              : Dimensions.get('screen').height / 4.5,
+              ? Platform.OS === 'ios'
+                ? Dimensions.get('screen').height / 7
+                : Dimensions.get('screen').height / 12
+              : Platform.OS === 'ios'
+              ? Dimensions.get('screen').height / 4.5
+              : Dimensions.get('screen').height / 6.0,
         },
         styles.parent,
       ]}>

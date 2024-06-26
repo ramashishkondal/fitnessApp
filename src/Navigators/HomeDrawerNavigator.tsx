@@ -14,10 +14,9 @@ import {
 } from '../Screens/MainScreens';
 import {homeDrawerParamList} from '../Defs';
 import {COLORS, ICONS, SIZES} from '../Constants';
-import {Platform, Text, TouchableOpacity, View} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {FONT_FAMILY} from '../Constants/commonStyles';
-import {useNavigation} from '@react-navigation/native';
+import {Platform, View} from 'react-native';
+import BackForDrawer from '../Components/Molecules/BackForDrawer';
+import {styles} from './styles';
 
 const iconSize = {
   width: 25,
@@ -31,7 +30,7 @@ const drawerIcon = (
   }) => React.ReactNode,
 ) => {
   return () => {
-    return <View style={{left: 20}}>{icon(iconSize)}</View>;
+    return <View style={styles.drawerIcon}>{icon(iconSize)}</View>;
   };
 };
 const Drawer = createDrawerNavigator<homeDrawerParamList>();
@@ -42,9 +41,6 @@ const HomeNavigator: React.FC = () => {
   const headerRight = () => {
     return <CustomDrawerRight />;
   };
-
-  // navigator use
-  const navigation = useNavigation();
 
   return (
     <Drawer.Navigator
@@ -109,32 +105,7 @@ const HomeNavigator: React.FC = () => {
           drawerIcon: drawerIcon(ICONS.Premium),
           headerTransparent: true,
           headerShown: true,
-          headerLeft: () => {
-            return (
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-                onPress={() => navigation.goBack()}>
-                {ICONS.LeftChevron({
-                  width: RFValue(22),
-                  height: RFValue(30),
-                  color: '#317FFF',
-                })}
-                <Text
-                  style={{
-                    color: '#348AFE',
-                    fontFamily: FONT_FAMILY.SEMI_BOLD,
-                    fontSize: SIZES.font15,
-                    fontWeight: 500,
-                    left: -RFValue(3),
-                  }}>
-                  Back
-                </Text>
-              </TouchableOpacity>
-            );
-          },
+          headerLeft: BackForDrawer,
         }}
       />
       <Drawer.Screen

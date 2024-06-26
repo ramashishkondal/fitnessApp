@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -19,8 +20,10 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.REGULAR,
     textAlign: 'center',
     ...SPACING.mh3,
+    color: 'black',
   },
   highlightedText: {
     color: COLORS.PRIMARY.PURPLE,

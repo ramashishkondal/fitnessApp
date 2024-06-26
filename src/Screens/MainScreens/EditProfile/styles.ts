@@ -30,6 +30,15 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH7,
     // fontSize: RFValue(12),
   },
+  nameAndGenderCtr: {
+    flex: 1,
+  },
+  firstNameAndLastNameCtr: {
+    flex: 2,
+  },
+  otherCtr: {
+    flex: 5,
+  },
   userInfoCtr: {
     flex: 1,
     flexDirection: 'row',
@@ -79,5 +88,9 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     borderRadius: SIZES.rounding2,
     paddingVertical: 24,
+  },
+  genderCtr: {
+    flex: 2,
+    flexDirection: 'row',
   },
 });

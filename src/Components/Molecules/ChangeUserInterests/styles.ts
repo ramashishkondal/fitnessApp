@@ -10,4 +10,13 @@ export const styles = StyleSheet.create({
     ...SPACING.mt3,
     ...SPACING.mh1,
   },
+  flatListCtr: {
+    flex: 5,
+    ...SPACING.mt2,
+  },
+  customButtonCtr: {
+    flex: 1,
+    alignItems: 'center',
+    paddingTop: 16,
+  },
 });

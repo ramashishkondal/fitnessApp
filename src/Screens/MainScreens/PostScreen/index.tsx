@@ -9,7 +9,7 @@ import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
 import {Comment, UserPost} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {ICONS, SIZES} from '../../../Constants';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
@@ -46,6 +46,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const postComment = async () => {
     try {
       if (id !== null && comment !== '' && postData) {
+        setComment('');
         await storePostComment(
           route.params.postId,
           {
@@ -57,7 +58,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             sendNotificationToUserId: postData.userId,
           },
         );
-        setComment('');
       }
     } catch (e) {
       console.log('error', e);
@@ -69,7 +69,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     return (
       <>
         <ScrollView style={styles.parent}>
-          <View style={{flex: 3}}>
+          <View style={styles.userPostCtr}>
             <UserPost
               userId={postData.userId}
               postData={{
@@ -111,21 +111,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               }}
             />
           </View>
-          <View
-            style={{
-              flex: 2,
-              paddingBottom: SIZES.height / 10,
-              paddingHorizontal: 24,
-            }}>
+          <View style={styles.commentsCtr}>
             <Text style={{fontSize: SIZES.font17, fontWeight: SIZES.fontBold0}}>
               Comments
             </Text>
             {postData.comments
               .slice(0)
               .reverse()
-              .map(val => {
+              .map((val, index) => {
                 return (
                   <Comment
+                    key={index}
                     comment={{
                       comment: val.comment,
                       commentCreatedOnInMillis: Timestamp.fromMillis(
@@ -140,27 +136,16 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               })}
           </View>
         </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            borderWidth: 1,
-            flex: 1,
-            height: SIZES.height / 14,
-            width: SIZES.width,
-            backgroundColor: COLORS.SECONDARY.WHITE,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
+        <View style={styles.bottomTextInputCtr}>
           <TextInput
             value={comment}
-            style={{flex: 6, paddingHorizontal: 24, fontSize: SIZES.font12}}
+            style={styles.textInput}
             placeholder="Write a comment..."
             ref={textInputRef}
             onChangeText={setComment}
             onSubmitEditing={postComment}
           />
-          <Pressable style={{flex: 1}} onPress={postComment}>
+          <Pressable style={styles.sendCtr} onPress={postComment}>
             <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
           </Pressable>
         </View>

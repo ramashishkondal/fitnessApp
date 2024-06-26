@@ -19,4 +19,9 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: SIZES.rounding3,
   },
+  bottomSheetModalBackground: {
+    borderRadius: SIZES.rounding3,
+    shadowColor: 'red',
+    shadowRadius: 100,
+  },
 });

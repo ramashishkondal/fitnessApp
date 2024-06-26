@@ -35,7 +35,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.flatListSyle}
-      contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+      contentContainerStyle={styles.flatListCtr}
     />
   );
 };

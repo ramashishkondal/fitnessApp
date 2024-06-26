@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
+import {FlatList, ListRenderItem, Pressable, View} from 'react-native';
 import {addLikes, firebaseDB} from '../../../Utils/userUtils';
 import UserPost from '../UserPost';
 import {Post} from '../../../Defs';
@@ -41,72 +41,75 @@ const AllPosts: React.FC<AllPostsProps> = ({
     return () => unsubscribe();
   }, [dataLength]);
 
+  // functions
+  const handleEndReached = () => {
+    console.log('end reached');
+    if (!isLoading) {
+      console.log(dataLength);
+      setDataLength(dataLength + 5);
+    }
+  };
+  const getHandleCommentPress = (post: Post) => {
+    return () => {
+      postIdRef.current = post;
+      handleCommentPress(true);
+    };
+  };
+
+  const renderItem: ListRenderItem<Post> = ({item: val}) => {
+    const isLiked = val.likedByUsersId.includes(userId!);
+    return (
+      <Pressable onPress={goToPostScreen(val.postId!)} key={val.postId}>
+        <UserPost
+          userId={val.userId}
+          postData={{
+            caption: val.caption,
+            noOfComments: val.comments?.length,
+            noOfLikes: val.likedByUsersId?.length ?? 0,
+            photo: val.photo,
+            timeSincePostedInMillis: Timestamp.fromMillis(
+              val.createdOn.seconds * 1000,
+            )
+              .toDate()
+              .getTime(),
+            isLiked,
+            id: val.postId!,
+          }}
+          handleCommentsPress={getHandleCommentPress(val)}
+          handleLikesPress={() => {
+            if (isLiked) {
+              addLikes(
+                userId!,
+                val.postId!,
+                val.likedByUsersId.filter(value => value !== userId),
+              );
+            } else {
+              addLikes(
+                userId!,
+                val.postId!,
+                val.likedByUsersId.concat(userId!),
+                {
+                  sendNotificationToUserId: val.userId,
+                  userName: firstName + ' ' + lastName ?? '',
+                  userPhoto: photo,
+                },
+              );
+            }
+          }}
+        />
+      </Pressable>
+    );
+  };
+
   return (
     <View>
       {postsData ? (
         <FlatList
           scrollEnabled={false}
           data={postsData}
-          renderItem={({item: val}) => {
-            const isLiked = val.likedByUsersId.includes(userId!);
-            return (
-              <Pressable onPress={goToPostScreen(val.postId!)} key={val.postId}>
-                <UserPost
-                  userId={val.userId}
-                  postData={{
-                    caption: val.caption,
-                    noOfComments: val.comments?.length,
-                    noOfLikes: val.likedByUsersId?.length ?? 0,
-                    photo: val.photo,
-                    timeSincePostedInMillis: Timestamp.fromMillis(
-                      val.createdOn.seconds * 1000,
-                    )
-                      .toDate()
-                      .getTime(),
-                    isLiked,
-                    id: val.postId!,
-                  }}
-                  handleCommentsPress={() => {
-                    postIdRef.current = val;
-                    handleCommentPress(true);
-                  }}
-                  handleLikesPress={() => {
-                    if (isLiked) {
-                      addLikes(
-                        userId!,
-                        val.postId!,
-                        val.likedByUsersId.filter(value => value !== userId),
-                      );
-                    } else {
-                      addLikes(
-                        userId!,
-                        val.postId!,
-                        val.likedByUsersId.concat(userId!),
-                        {
-                          sendNotificationToUserId: val.userId,
-                          userName: firstName + ' ' + lastName ?? '',
-                          userPhoto: photo,
-                        },
-                      );
-                    }
-                  }}
-                />
-              </Pressable>
-            );
-          }}
+          renderItem={renderItem}
           onEndReachedThreshold={0.5}
-          onEndReached={() => {
-            console.log('end reached');
-            if (!isLoading) {
-              console.log(dataLength);
-              setDataLength(dataLength + 5);
-            }
-          }}
-          ListFooterComponent={() => {
-            if (isLoading) {
-              return <Text>Loading more...</Text>;
-            }
-          }}
+          onEndReached={handleEndReached}
         />
       ) : null}
     </View>

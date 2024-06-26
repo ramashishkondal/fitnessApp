@@ -32,7 +32,10 @@ export type MealsSelected = {
   foodData: Array<Meal>;
 };
 const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
+  // redux use
   const dispatch = useAppDispatch();
+
+  // ref use
   const mealsSelected = useRef<MealsSelected>({
     mealTime: {
       snack: false,
@@ -43,6 +46,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
     foodData: [],
   });
 
+  // functions
   const handleSubmit = () => {
     const dtArray: DailyMeals = {
       breakfast: [],
@@ -105,10 +109,11 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
             />
           </View>
           <View style={styles.foodCtr}>
-            {foodData.map(item => (
+            {foodData.map((item, index) => (
               <FoodSelector
                 foodItem={item}
                 foodData={mealsSelected.current.foodData}
+                key={index}
               />
             ))}
           </View>

@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {setModalShown} from '../../../Redux/Reducers/health';
 import GoalAchieved from '../GoalAchieved';
 import {COLORS} from '../../../Constants';
+import {styles} from './styles';
 
 const GoalModal: React.FC<GoalModalProps> = ({children}) => {
   // state use
@@ -26,7 +27,7 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.parent}>
       {children}
       {modalShown ? (
         <WithModal

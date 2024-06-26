@@ -5,6 +5,7 @@ import storage from '@react-native-firebase/storage';
 import {v4 as uuidv4} from 'uuid';
 import {HealthData, User, Post, Comment} from '../Defs';
 import {NotificationData} from '../Defs/user';
+import {debounce} from './commonUtils';
 
 export const firebaseDB = {
   collections: {
@@ -183,7 +184,7 @@ export const addLikes = async (
     });
   console.log(notification);
   if (notification && userId !== notification.sendNotificationToUserId) {
-    await sendNotification(
+    debounce(sendNotification, 10000)(
       {
         message: 'liked your post.',
         userId,
@@ -265,7 +266,7 @@ export const storeStory = async (
       .collection(firebaseDB.collections.users)
       .doc(userId)
       .update({
-        storiesWatched: storiesWatchedData.filter(val => val !== userId),
+        storiesWatched: storiesWatchedData.filter(v => v !== userId),
       });
   } catch (e) {
     console.log('error posting story', e);

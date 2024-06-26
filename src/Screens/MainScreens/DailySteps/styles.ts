@@ -13,8 +13,21 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     ...SPACING.mh3,
     marginBottom: 24,
+    color: 'black',
   },
   stepCountText: {
     color: COLORS.PRIMARY.PURPLE,
+  },
+  pieChartCtr: {
+    alignSelf: 'center',
+  },
+  lineChartCtr: {
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+  },
+  lineChartHeadingText: {
+    textAlign: 'center',
+    fontSize: SIZES.font17,
+    marginVertical: 32,
   },
 });

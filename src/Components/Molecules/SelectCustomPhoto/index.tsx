@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {Pressable, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 
 // 3rd party
 import {
@@ -13,13 +13,13 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
-  useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 
 // custom
-import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {COLORS, ICONS} from '../../../Constants';
 import {SelectCustomPhotoProps} from './types';
 import {styles} from './styles';
+import BackDropSheet from '../BackdropSheet';
 
 const iconSize = 60;
 
@@ -94,29 +94,9 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         onDismiss={onDismiss}
-        backdropComponent={function SheetBackdrop() {
-          const sheet = useBottomSheetModal();
-          return (
-            <Pressable
-              style={{
-                flex: 1,
-                height: '100%',
-                width: '100%',
-                backgroundColor: '',
-                position: 'absolute',
-              }}
-              onPress={() => {
-                sheet.dismissAll();
-              }}
-            />
-          );
-        }}
+        backdropComponent={BackDropSheet}
         backgroundStyle={[
-          {
-            borderRadius: SIZES.rounding3,
-            shadowColor: 'red',
-            shadowRadius: 100,
-          },
+          styles.bottomSheetModalBackground,
           BottomSheetModalStyle,
         ]}>
         <BottomSheetView style={[styles.modalCtr, parentStyle]}>

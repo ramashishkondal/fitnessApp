@@ -33,11 +33,12 @@ export const styles = StyleSheet.create({
   textInput: {
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
+    flexGrow: 1,
   },
   footerCtr: {
     position: 'absolute',
     bottom: 1,
-    flexWrap: 'wrap',
+    flexGrow: 1,
     flexDirection: 'row',
     borderTopWidth: 1,
     marginHorizontal: 16,
@@ -53,5 +54,9 @@ export const styles = StyleSheet.create({
   buttonParentStyle: {
     maxWidth: SIZES.width / 4,
     maxHeight: SIZES.height / 22,
+  },
+  customButtonCtr: {
+    flexGrow: 1,
+    alignItems: 'flex-end',
   },
 });

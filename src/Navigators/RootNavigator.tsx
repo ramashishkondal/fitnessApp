@@ -31,6 +31,7 @@ const permissions = {
     write: [],
   },
 } as HealthKitPermissions;
+
 // android permissions
 const options = {
   scopes: [Scopes.FITNESS_ACTIVITY_READ, Scopes.FITNESS_ACTIVITY_WRITE],
@@ -67,6 +68,7 @@ const RootNavigator = () => {
         NativeModules.FingerPrintModule.doSomething(),
       );
     }
+
     // constants
     const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
     const endDate = date.today().toISOString();
@@ -87,7 +89,7 @@ const RootNavigator = () => {
           endDate: today.toISOString(), // required ISO8601Timestamp
         };
         const calories = await GoogleFit.getDailyCalorieSamples(opt);
-        dispatch(updateHealthData({nutrition: ~~calories[0].calorie}));
+        dispatch(updateHealthData({nutrition: Math.ceil(calories[0].calorie)}));
         dispatch(
           updateHealthData({
             todaysSteps: stepRes.filter(
@@ -135,8 +137,8 @@ const RootNavigator = () => {
                 endDate,
                 includeManuallyAdded: true, // optional
               },
-              (err, results) => {
-                if (err || results.length === 0) {
+              (e, results) => {
+                if (e || results.length === 0) {
                   return;
                 }
                 dispatch(

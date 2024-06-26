@@ -17,7 +17,7 @@ import {
   Story,
   WithModal,
 } from '../../../Components';
-import {COLORS, ICONS, STRING} from '../../../Constants';
+import {ICONS, STRING} from '../../../Constants';
 import {CommunityProps} from '../../../Defs/navigators';
 import {StoryData, firebaseDB, storeStory} from '../../../Utils/userUtils';
 import {styles} from './styles';
@@ -77,7 +77,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
             {ICONS.PostSign(postSignSize)}
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.storiesCtr}>
           <AddStory setModalVisible={() => setStoryModalVisible(true)} />
           <FlatList
             data={storiesData}
@@ -85,7 +85,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
               <Story index={index} allStoryData={storiesData} />
             )}
             horizontal
-            style={{marginVertical: 24}}
+            style={styles.flatList}
             showsHorizontalScrollIndicator={false}
           />
         </View>
@@ -111,11 +111,10 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         modalVisible={storyModalVisible}
         setModalVisible={setStoryModalVisible}
         setPhoto={setStory}
-        parentStyle={{backgroundColor: COLORS.PRIMARY.DARK_GREY}}
-        BottomSheetModalStyle={{backgroundColor: COLORS.PRIMARY.DARK_GREY}}
+        parentStyle={styles.selectCustomPhoto}
+        BottomSheetModalStyle={styles.selectCustomPhoto}
         mediaType="mixed"
         onSuccess={(uri, type) => {
-          console.log(id);
           storeStory(
             {
               storyUrl: uri,

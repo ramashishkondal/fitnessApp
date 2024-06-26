@@ -64,15 +64,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 2, flexDirection: 'row'}}>
-          <View style={{flex: 1}}>
+        <View style={styles.genderCtr}>
+          <View style={styles.nameAndGenderCtr}>
             <Text style={styles.infoTextHeading}>Name :</Text>
             <Text style={styles.infoTextHeading}>Email :</Text>
             {gender ? (
               <Text style={styles.infoTextHeading}>Gender :</Text>
             ) : null}
           </View>
-          <View style={{flex: 2}}>
+          <View style={styles.firstNameAndLastNameCtr}>
             <Text style={styles.infoText}>
               {`${firstName} ${lastName ?? ''}`}
             </Text>
@@ -90,7 +90,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 5}}>
+      <View style={styles.otherCtr}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
           {preferences.some(val => val.selected) ? (

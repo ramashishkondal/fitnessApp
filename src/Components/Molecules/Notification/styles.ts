@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.MEDIUM,
     fontSize: RFValue(12),
     marginRight: 16,
+    color: 'black',
   },
   userNameText: {
     fontWeight: 'bold',

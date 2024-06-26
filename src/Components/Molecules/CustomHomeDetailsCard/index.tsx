@@ -15,8 +15,8 @@ import {CustomHomeDetailsCardProps} from './types';
 import {styles} from './styles';
 
 const size = {
-  width: 40,
-  height: 40,
+  width: 30,
+  height: 30,
 };
 
 const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
@@ -37,7 +37,8 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
     },
   };
   if (markerPercentage > 33 && markerPercentage < 66) {
-    button.style.backgroundColor = '#fad3b9';
+    button.style.backgroundColor = '#FDEFE5';
+    button.textStyle.color = COLORS.SECONDARY.ORANGE;
   } else if (markerPercentage > 66) {
     button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
     button.text = STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_SAFE;

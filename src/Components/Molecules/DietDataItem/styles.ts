@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -23,16 +24,31 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
     paddingBottom: 8,
+    color: 'black',
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   productTitleText: {
     fontSize: SIZES.fontH6,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
   },
   quantityText: {
     color: COLORS.SECONDARY.GREY,
     ...SPACING.mt1,
     fontWeight: SIZES.fontBold1,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   caloriesText: {
+    fontFamily: FONT_FAMILY.REGULAR,
     fontSize: SIZES.font14,
+    color: 'black',
+  },
+  childCtrTop: {
+    borderTopWidth: 1.5,
+  },
+  closeCtr: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 });

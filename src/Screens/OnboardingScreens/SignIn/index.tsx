@@ -18,7 +18,7 @@ import {useAppDispatch} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {SignInProps} from '../../../Defs';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
-import {STRING, ICONS, SPACING, COLORS} from '../../../Constants';
+import {STRING, ICONS, SPACING} from '../../../Constants';
 import {styles} from './styles';
 
 const SignIn = ({navigation}: SignInProps) => {
@@ -80,7 +80,7 @@ const SignIn = ({navigation}: SignInProps) => {
         onChangeText={setPassword}
       />
       <TouchableOpacity onPress={handleForgotPassword} style={SPACING.mt3}>
-        <Text style={{color: COLORS.PRIMARY.PURPLE, textAlign: 'right'}}>
+        <Text style={styles.forgotPasswordText}>
           {STRING.SIGNIN.FORGOT_PASSWORD}
         </Text>
       </TouchableOpacity>

@@ -49,14 +49,7 @@ const GetPremium = () => {
         data={carouselItems}
         onSnapToItem={index => setActiveCarousel(index)}
         renderItem={({index, item}) => (
-          <View
-            key={index}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-              backgroundColor: 'red',
-            }}>
+          <View key={index} style={styles.imageCtr}>
             <Image source={item.image} style={{width: SIZES.width}} />
           </View>
         )}
@@ -79,7 +72,7 @@ const GetPremium = () => {
           <PremiumSelectorCard
             priceText="4.99"
             priceIntervalTime="month"
-            isChecked={paymentChoice == 'monthly'}
+            isChecked={paymentChoice === 'monthly'}
             setIsChecked={val => {
               if (val) {
                 setPaymentChoice('monthly');

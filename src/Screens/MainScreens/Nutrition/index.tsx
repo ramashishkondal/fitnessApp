@@ -102,7 +102,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
       </Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
-          <View style={{position: 'relative'}}>
+          <View style={styles.pieChartTop}>
             <PieChart
               donut
               showText
@@ -112,7 +112,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
-          <View style={{position: 'absolute'}}>
+          <View style={styles.pieChartInside}>
             <PieChart
               donut
               showText
@@ -122,7 +122,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
-          <View style={{position: 'absolute'}}>
+          <View style={styles.pieChartInside}>
             <PieChart
               donut
               showText

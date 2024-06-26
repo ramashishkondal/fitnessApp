@@ -1,10 +1,9 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Pressable, Text, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import firestore from '@react-native-firebase/firestore';
-import {useFocusEffect} from '@react-navigation/native';
 
 // custom
 import {styles} from './styles';
@@ -21,6 +20,7 @@ const Notifications: React.FC = () => {
   // state ues
   const [notificationsData, setNotificationsData] =
     useState<Array<NotificationDataFirebaseDB>>();
+  const [showMenu, setShowMenu] = useState(false);
 
   // redux use
   const {id: userId} = useAppSelector(state => state.User.data);
@@ -31,34 +31,65 @@ const Notifications: React.FC = () => {
       .collection(firebaseDB.collections.users)
       .doc(userId!)
       .onSnapshot(snapshot => {
-        setNotificationsData(
-          snapshot.get('notifications') as Array<NotificationDataFirebaseDB>,
-        );
+        const data: Array<NotificationDataFirebaseDB> =
+          snapshot.get('notifications');
+        setNotificationsData(data);
       });
     return () => unsubscribe();
   }, [userId]);
 
-  // navigation hook use
-  // useFocusEffect(() => {
-  //   if (notificationsData) {
-  //     return () => {
-  //       updateNotificationReadStatus(
-  //         userId!,
-  //         notificationsData?.map(val => ({...val, isUnread: false})),
-  //       );
-  //     };
-  //   }
-  // });
+  const markAllRead = () => {
+    if (notificationsData) {
+      updateNotificationReadStatus(
+        userId!,
+        notificationsData?.map(val => ({...val, isUnread: false})),
+      );
+    }
+    setShowMenu(false);
+  };
+
+  const markAllUnread = () => {
+    if (notificationsData) {
+      updateNotificationReadStatus(
+        userId!,
+        notificationsData?.map(val => ({...val, isUnread: true})),
+      );
+    }
+    setShowMenu(false);
+  };
 
   return (
-    <View style={styles.parent}>
-      <HeadingText text="Notifications" textStyle={styles.headingText} />
-      <DescriptionText
-        text={`${
-          notificationsData?.filter(val => val.isUnread === true).length
-        } unread Notifications`}
-        textStyle={styles.descriptionText}
-      />
+    <TouchableOpacity
+      style={styles.parent}
+      activeOpacity={1}
+      onPress={() => setShowMenu(false)}>
+      <View style={styles.menuCtr}>
+        {showMenu ? (
+          <View style={styles.activeMenuCtr}>
+            <Pressable onPress={markAllRead}>
+              <Text>Mark all as read</Text>
+            </Pressable>
+            <Pressable onPress={markAllUnread}>
+              <Text>Mark all as unread</Text>
+            </Pressable>
+          </View>
+        ) : null}
+        <View>
+          <HeadingText text="Notifications" textStyle={styles.headingText} />
+          <DescriptionText
+            text={`${
+              notificationsData?.filter(val => val.isUnread === true).length
+            } unread Notifications`}
+            textStyle={styles.descriptionText}
+          />
+        </View>
+        <Pressable onPress={() => setShowMenu(!showMenu)}>
+          <View style={styles.dots} />
+          <View style={styles.dots} />
+          <View style={styles.dots} />
+        </Pressable>
+      </View>
+
       <View style={styles.notificationsCtr}>
         <FlatList
           data={notificationsData?.slice().reverse()}
@@ -73,7 +104,7 @@ const Notifications: React.FC = () => {
           )}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

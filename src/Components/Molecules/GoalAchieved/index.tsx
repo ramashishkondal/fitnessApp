@@ -9,8 +9,6 @@ import {getPercentage} from '../../../Utils/commonUtils';
 import InsidePieChart from '../InsidePieChart';
 import {PieChart} from 'react-native-gifted-charts';
 import DataInfoCompare from '../DataInfoCompare';
-import {FONT_FAMILY} from '../../../Constants/commonStyles';
-import {RFValue} from 'react-native-responsive-fontsize';
 
 const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
   // redux use
@@ -22,7 +20,9 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
   } = useAppSelector(state => state.health.value);
 
   // state dependent constants
-  const stepsCompletionPercentage = ~~getPercentage(todaysSteps, totalSteps);
+  const stepsCompletionPercentage = Math.ceil(
+    getPercentage(todaysSteps, totalSteps),
+  );
   const pieData = [
     {value: stepsCompletionPercentage, color: COLORS.PRIMARY.PURPLE},
     {value: 100 - stepsCompletionPercentage, color: COLORS.SECONDARY.WHITE},
@@ -35,18 +35,11 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
 
   return (
     <View style={styles.parent}>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          alignSelf: 'flex-end',
-          top: 8,
-          zIndex: 9,
-        }}
-        onPress={setModalFalse}>
+      <TouchableOpacity style={styles.closeCtr} onPress={setModalFalse}>
         {ICONS.Close({width: 36, height: 36})}
       </TouchableOpacity>
-      <View style={styles.childCtrTop}></View>
-      <View style={styles.childCtrBottom}></View>
+      <View style={styles.childCtrTop} />
+      <View style={styles.childCtrBottom} />
       <View style={styles.cardCtr}>
         <View style={styles.headingCtr}>
           <HeadingText
@@ -60,19 +53,14 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
         </View>
         <View style={styles.card}>
           <View style={styles.userInfo}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.userInfoCtr}>
               <CustomImage
                 source={{uri: photo}}
-                parentStyle={{width: 42, height: 42}}
-                imageStyle={{borderRadius: 100}}
+                parentStyle={styles.customImageParent}
+                imageStyle={styles.customImage}
               />
-              <Text
-                style={{
-                  fontFamily: FONT_FAMILY.REGULAR,
-                  marginLeft: 8,
-                  fontSize: RFValue(11.7),
-                }}>
-                {firstName + ' ' + lastName ?? ''}
+              <Text style={styles.userNameText}>
+                {firstName + ' ' + lastName}
               </Text>
             </View>
             {ICONS.Logo({width: 28, height: 28})}
@@ -98,14 +86,11 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
         </View>
         <CustomButton
           title="Share to friend"
-          parentStyle={{alignSelf: 'center', marginTop: 32}}
+          parentStyle={styles.customButtonParent}
         />
         <CustomButton
           title="Not now"
-          parentStyle={{
-            alignSelf: 'center',
-            backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
-          }}
+          parentStyle={styles.customButtonNotNowParent}
           textStyle={{color: COLORS.PRIMARY.PURPLE}}
           onPress={setModalFalse}
         />

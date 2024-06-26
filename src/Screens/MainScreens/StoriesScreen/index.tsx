@@ -15,7 +15,6 @@ import {StoriesScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import {updateStoriesWatchedArray} from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
-import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -75,66 +74,26 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
-      <View
-        style={{
-          position: 'absolute',
-          height: 40,
-          top: 2,
-          width: '100%',
-          zIndex: 1,
-          // flexDirection: 'column',
-          alignItems: 'center',
-          paddingHorizontal: 16,
-        }}>
-        <View style={{flexDirection: 'row', marginTop: 8}}>
+      <View style={styles.topInfoCtr}>
+        <View style={styles.topCurrentStoryLineCtr}>
           {Array(allStoryData[userIndex].stories.length)
             .fill(0)
             .map((_val, i) => (
               <View
-                style={[
-                  {
-                    flex: 1,
-                    backgroundColor: 'white',
-                    borderWidth: 0.25,
-                    borderColor: 'black',
-                    marginHorizontal: 4,
-                    height: 4,
-                    borderRadius: 200,
-                  },
-                  i === index ? {backgroundColor: COLORS.PRIMARY.PURPLE} : null,
-                ]}
+                style={[styles.line, i === index ? styles.lineActive : null]}
               />
             ))}
         </View>
-        <View
-          style={{flexDirection: 'row', marginTop: 8, alignItems: 'center'}}>
-          <View style={{flex: 0.15}}>
+        <View style={styles.userInfoCtr}>
+          <View style={styles.customImageCtr}>
             <CustomImage
               source={{uri: allStoryData[userIndex].userPhoto}}
-              imageStyle={{
-                borderRadius: 200,
-                borderWidth: 1.0,
-                borderColor: 'white',
-              }}
-              parentStyle={{
-                width: 45,
-                height: 45,
-                shadowColor: '#585858',
-                shadowRadius: 10,
-                shadowOpacity: 0.5,
-              }}
+              imageStyle={styles.userImage}
+              parentStyle={styles.customImageParent}
             />
           </View>
-          <View style={{flex: 0.85}}>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: FONT_FAMILY.BOLD,
-                fontSize: SIZES.font13,
-                textShadowColor: '#585858',
-                textShadowRadius: 10,
-                shadowOpacity: 0.5,
-              }}>
+          <View style={styles.userNameCtr}>
+            <Text style={styles.userNameText}>
               {allStoryData[userIndex].userName}
             </Text>
           </View>

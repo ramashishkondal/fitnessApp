@@ -41,5 +41,12 @@ export const styles = StyleSheet.create({
   },
   customParent: {
     alignSelf: 'center',
+    marginBottom: 16,
+  },
+  imageCtr: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: 'red',
   },
 });

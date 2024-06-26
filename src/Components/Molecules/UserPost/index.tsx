@@ -67,14 +67,14 @@ const UserPost: React.FC<UserPostProps> = ({
           ) : null}
           <DescriptionText
             text={getTimePassed(timeSincePostedInMillis)}
-            textStyle={{fontSize: SIZES.font10, textAlign: 'left'}}
+            textStyle={styles.descriptionText}
           />
         </View>
       </View>
       {caption ? (
         <Text style={styles.captionText}>{caption}</Text>
       ) : (
-        <View style={{marginVertical: 8}} />
+        <View style={styles.noCaptionCtr} />
       )}
       <CustomImage
         source={{uri: photo}}
@@ -90,12 +90,14 @@ const UserPost: React.FC<UserPostProps> = ({
           })}
           <Text style={styles.likesText}>{noOfLikes}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleCommentsPress}
-          style={styles.commentCtr}>
-          {ICONS.Comment(icon)}
-          <Text style={styles.likesText}>{noOfComments}</Text>
-        </TouchableOpacity>
+        <View style={styles.commentCtr}>
+          <TouchableOpacity
+            onPress={handleCommentsPress}
+            style={styles.commentLogoCtr}>
+            {ICONS.Comment(icon)}
+            <Text style={styles.likesText}>{noOfComments}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

@@ -10,7 +10,6 @@ import {CommentProps} from './types';
 import {styles} from './styles';
 import {CustomImage, DescriptionText} from '../../Atoms';
 import {getTimePassed} from '../../../Utils/commonUtils';
-import {SIZES} from '../../../Constants';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {User} from '../../../Defs';
 
@@ -35,13 +34,9 @@ const Comment: React.FC<CommentProps> = ({
   }, [userId]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingVertical: 16,
-      }}>
+    <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
-        <View style={{alignItems: 'center'}}>
+        <View style={styles.customImageCtr}>
           {userData ? (
             <CustomImage
               source={{uri: userData.photo}}
@@ -52,12 +47,12 @@ const Comment: React.FC<CommentProps> = ({
         <View style={styles.userTextCtr}>
           {userData ? (
             <Text style={styles.userNameText}>
-              {userData.firstName + ' ' + userData.lastName ?? ''}
+              {userData.firstName + ' ' + userData.lastName}
             </Text>
           ) : null}
           <DescriptionText
             text={getTimePassed(commentCreatedOnInMillis)}
-            textStyle={{fontSize: SIZES.font11, textAlign: 'left'}}
+            textStyle={styles.descriptionText}
           />
           <View>
             <Text style={styles.commentText}>{comment}</Text>

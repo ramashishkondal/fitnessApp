@@ -10,7 +10,7 @@ import {
   DescriptionText,
   HeadingText,
 } from '../../../Components';
-import {ICONS, SIZES, STRING} from '../../../Constants';
+import {ICONS, STRING} from '../../../Constants';
 import {AddProfilePictureProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
@@ -40,20 +40,14 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
 
   return (
     <View style={styles.parent}>
-      <View style={{height: SIZES.height / 7, alignItems: 'center'}}>
+      <View style={styles.avatarCtr}>
         {isAvatar === false ? (
-          <View style={{alignItems: 'flex-end'}}>
+          <View style={styles.photoCtr}>
             <Image source={{uri: photo}} style={styles.photo} />
             <TouchableOpacity
-              style={{position: 'absolute', flex: 1}}
+              style={styles.closeCtr}
               onPress={() => setIsAvatar(true)}>
-              <View
-                style={{
-                  backgroundColor: 'grey',
-                  borderRadius: 200,
-                  right: 4,
-                  top: 6,
-                }}>
+              <View style={styles.closeIconCtr}>
                 {ICONS.Close({height: 20, width: 20})}
               </View>
             </TouchableOpacity>
@@ -66,7 +60,7 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
           />
         )}
       </View>
-      <View style={{marginTop: 32, alignItems: 'center'}}>
+      <View style={styles.childCtr}>
         <HeadingText text={STRING.ADD_PROFILE_PICTURE.TITLE} />
         <DescriptionText
           text={STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION}

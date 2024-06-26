@@ -36,4 +36,25 @@ export const styles = StyleSheet.create({
     ...SPACING.mt2,
     ...SPACING.mh2,
   },
+  avatarCtr: {
+    height: SIZES.height / 7,
+    alignItems: 'center',
+  },
+  photoCtr: {
+    alignItems: 'flex-end',
+  },
+  closeCtr: {
+    position: 'absolute',
+    flex: 1,
+  },
+  closeIconCtr: {
+    backgroundColor: 'grey',
+    borderRadius: 200,
+    right: 4,
+    top: 6,
+  },
+  childCtr: {
+    marginTop: 32,
+    alignItems: 'center',
+  },
 });

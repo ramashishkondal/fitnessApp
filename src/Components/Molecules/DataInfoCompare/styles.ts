@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font17,
     fontWeight: SIZES.fontBold2,
     fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
   },
   descriptionText: {
     color: COLORS.SECONDARY.GREY,

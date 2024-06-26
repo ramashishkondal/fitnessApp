@@ -35,9 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
         parentStyle={SPACING.mt4}
         onPress={goToStarting}
       />
-      <TouchableOpacity
-        style={{justifyContent: 'center', alignItems: 'center'}}
-        onPress={goToSignIn}>
+      <TouchableOpacity style={styles.signInTextCtr} onPress={goToSignIn}>
         <Text style={[styles.signInText1, SPACING.m2]}>
           {STRING.LANDING_PAGE.SIGNIN_1}{' '}
           <Text style={styles.signInText2}>{STRING.LANDING_PAGE.SIGNIN_2}</Text>

@@ -1,13 +1,11 @@
 // libs
 import React, {useEffect} from 'react';
-import {Platform, Text, TouchableOpacity} from 'react-native';
+import {Platform} from 'react-native';
 
 // 3rd party
 import {useAppDispatch, useAppSelector} from '../Redux/Store';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AppleHealthKit from 'react-native-health';
-import {useNavigation} from '@react-navigation/native';
-import {RFValue} from 'react-native-responsive-fontsize';
 import notifee from '@notifee/react-native';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
@@ -23,7 +21,7 @@ import {
   WaterIntake,
 } from '../Screens/MainScreens';
 import {appStackParamList} from '../Defs';
-import {COLORS, ICONS, STRING} from '../Constants';
+import {COLORS, STRING} from '../Constants';
 import {resetHealthData, updateHealthData} from '../Redux/Reducers/health';
 import {
   UserFromFirebaseDb,
@@ -33,9 +31,10 @@ import {
   updateNotificationReadStatus,
 } from '../Utils/userUtils';
 import {date} from '../Utils/commonUtils';
-import {FONT_FAMILY, SIZES} from '../Constants/commonStyles';
 import EditProfile from '../Screens/MainScreens/EditProfile';
 import {updateUserData} from '../Redux/Reducers/currentUser';
+import BackNavigator from '../Components/Molecules/BackNavigator';
+import ResetPassword from '../Screens/MainScreens/ResetPassword';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -47,6 +46,7 @@ async function onDisplayNotification(message: string) {
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
+    vibration: true,
   });
 
   // Display a notification
@@ -66,7 +66,6 @@ async function onDisplayNotification(message: string) {
 
 const AppNavigator = () => {
   // navigator use
-  const navigation = useNavigation();
 
   // redux use
   const {id} = useAppSelector(state => state.User.data);
@@ -172,35 +171,7 @@ const AppNavigator = () => {
         headerShadowVisible: false,
         headerTitle: '',
         headerStyle: {backgroundColor: COLORS.PRIMARY.LIGHT_GREY},
-        headerLeft: ({canGoBack}) => {
-          if (canGoBack) {
-            return (
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  left: -15,
-                }}
-                onPress={() => navigation.goBack()}>
-                {ICONS.LeftChevron({
-                  width: RFValue(22),
-                  height: RFValue(30),
-                  color: '#317FFF',
-                })}
-                <Text
-                  style={{
-                    color: '#348AFE',
-                    fontFamily: FONT_FAMILY.SEMI_BOLD,
-                    fontSize: SIZES.font15,
-                    fontWeight: 500,
-                    left: -RFValue(3),
-                  }}>
-                  Back
-                </Text>
-              </TouchableOpacity>
-            );
-          } else return null;
-        },
+        headerLeft: BackNavigator,
       }}>
       <Stack.Screen
         name="HomeNavigator"
@@ -223,6 +194,7 @@ const AppNavigator = () => {
         }}
       />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   );
 };

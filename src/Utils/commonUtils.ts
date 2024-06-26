@@ -24,20 +24,22 @@ export const getTimePassed = (timeInMillis: number): string => {
   const currentTime = new Date().getTime();
   const timePassedInSecs = (currentTime - timeInMillis) / 1000;
   const timePassedInMns = Math.ceil(timePassedInSecs / 60);
-  const timePassedInHrs = ~~(timePassedInMns / 60);
+  const timePassedInHrs = Math.floor(timePassedInMns / 60);
   if (timePassedInSecs <= 60) {
-    return `${~~timePassedInSecs} ${
-      ~~timePassedInSecs > 1 ? 'seconds' : 'second'
+    return `${Math.floor(timePassedInSecs)} ${
+      Math.floor(timePassedInSecs) > 1 ? 'seconds' : 'second'
     } ago`;
   } else if (timePassedInMns <= 60) {
     return `${timePassedInMns} ${
-      ~~timePassedInMns > 1 ? 'minutes' : 'minute'
+      Math.floor(timePassedInMns) > 1 ? 'minutes' : 'minute'
     } ago`;
   } else if (timePassedInHrs <= 23) {
-    return `${timePassedInHrs} ${~~timePassedInHrs > 1 ? 'hours' : 'hour'} ago`;
+    return `${timePassedInHrs} ${
+      Math.floor(timePassedInHrs) > 1 ? 'hours' : 'hour'
+    } ago`;
   } else {
-    return `${~~(timePassedInHrs / 24)} ${
-      ~~(timePassedInHrs / 24) > 1 ? 'days' : 'day'
+    return `${Math.floor(timePassedInHrs / 24)} ${
+      Math.floor(timePassedInHrs / 24) > 1 ? 'days' : 'day'
     } ago`;
   }
 };
@@ -106,4 +108,33 @@ export const getLastWeekDayDate = (dayTocomparewith?: Date) => {
     );
   }
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+};
+
+export const throttle = <T extends (...args: any[]) => void>(
+  func: T,
+  delay: number,
+): ((...args: Parameters<T>) => void) => {
+  let timeout: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>) => {
+    if (!timeout) {
+      func(...args);
+      timeout = setTimeout(() => {
+        timeout = null;
+      }, delay);
+    }
+  };
+};
+
+export const debounce = <T extends (...args: any[]) => void>(
+  func: T,
+  delay: number,
+): ((...args: Parameters<T>) => void) => {
+  let timeout: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>) => {
+    if (timeout) {
+      clearTimeout(timeout);
+    } else {
+      timeout = setTimeout(func, delay, ...args);
+    }
+  };
 };

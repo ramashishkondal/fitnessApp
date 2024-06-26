@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 24,
     marginVertical: 16,
+    alignItems: 'center',
   },
   customImageParent: {
     width: 50,
@@ -55,5 +56,8 @@ export const styles = StyleSheet.create({
   },
   customImage: {
     borderRadius: 200,
+  },
+  textInputCtr: {
+    flexGrow: 1,
   },
 });

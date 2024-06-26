@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 15,
     fontSize: SIZES.font13,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
   },
   parentError: {
     borderWidth: 0.5,

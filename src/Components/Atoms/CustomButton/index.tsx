@@ -16,7 +16,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   isLoading,
 }) => {
   return (
-    <TouchableOpacity style={[styles.parent, parentStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.parent, parentStyle]}
+      onPress={isLoading ? () => {} : onPress}>
       <View style={[styles.buttonCtr, buttonCtrStyle]}>
         {isLoading ? (
           <CustomLoading />

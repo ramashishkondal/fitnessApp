@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {flex: 1},
@@ -10,6 +12,29 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.PURPLE,
     borderRadius: 10,
+  },
+  closeCtr: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    top: 8,
+    zIndex: 9,
+  },
+  userInfoCtr: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userNameText: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    marginLeft: 8,
+    fontSize: RFValue(11.7),
+    color: 'black',
+  },
+  customImageParent: {
+    width: 42,
+    height: 42,
+  },
+  customImage: {
+    borderRadius: 100,
   },
   childCtrBottom: {
     flex: 1,
@@ -23,6 +48,14 @@ export const styles = StyleSheet.create({
     // backgroundColor: COLORS.SECONDARY.RED,
     height: '100%',
     width: '100%',
+  },
+  customButtonNotNowParent: {
+    alignSelf: 'center',
+    backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
+  },
+  customButtonParent: {
+    alignSelf: 'center',
+    marginTop: 32,
   },
   card: {
     backgroundColor: COLORS.SECONDARY.WHITE,

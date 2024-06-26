@@ -112,6 +112,7 @@ export type appStackParamList = {
   PostScreen: {postId: string};
   StoriesScreen: {allStoryData: Array<StoryData>; index: number};
   EditProfile: undefined;
+  ResetPassword: undefined;
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 

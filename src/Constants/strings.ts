@@ -115,7 +115,7 @@ export const STRING = {
     TITLE: 'Create Comment',
   },
   CUSTOM_HOME_DETAILS_CARD: {
-    BUTTON_TEXT_WARNING: 'WARNING',
+    BUTTON_TEXT_WARNING: 'Warning',
     BUTTON_TEXT_SAFE: 'On',
   },
   ADD_FIRST_NAME: {

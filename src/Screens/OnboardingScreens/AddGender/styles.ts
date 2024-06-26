@@ -24,4 +24,11 @@ export const styles = StyleSheet.create({
     color: '#AFB1C7',
     ...SPACING.mtMedium,
   },
+  addGenderDescriptionText: {
+    marginHorizontal: 32,
+    marginVertical: 48,
+  },
+  customButtonParent: {
+    marginVertical: 32,
+  },
 });

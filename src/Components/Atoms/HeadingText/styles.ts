@@ -7,9 +7,11 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     textAlign: 'center',
     fontFamily: FONT_FAMILY.BOLD,
+    color: 'black',
   },
   text2: {
     fontSize: SIZES.fontH4,
     fontFamily: FONT_FAMILY.BOLD,
+    color: 'black',
   },
 });

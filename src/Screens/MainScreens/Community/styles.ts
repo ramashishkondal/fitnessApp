@@ -18,10 +18,19 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH4,
   },
-  storiesCtr: {},
   photo: {
     width: 70,
     height: 70,
     borderRadius: 200,
+  },
+  storiesCtr: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  flatList: {
+    marginVertical: 34,
+  },
+  selectCustomPhoto: {
+    backgroundColor: COLORS.PRIMARY.DARK_GREY,
   },
 });

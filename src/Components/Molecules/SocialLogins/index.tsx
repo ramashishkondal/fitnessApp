@@ -9,8 +9,9 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 // custom
 import {SPACING, ICONS, COLORS} from '../../../Constants';
 import CustomLoading from '../../Atoms/CustomLoading';
-import {storeUserData} from '../../../Utils/userUtils';
+import {sendNotification, storeUserData} from '../../../Utils/userUtils';
 import {styles} from './styles';
+import {INTERESETS, preferencesData} from '../../../Constants/commonConstants';
 
 const iconSize = 17;
 
@@ -51,7 +52,7 @@ const SocialLogins: React.FC = () => {
     if (userData?.additionalUserInfo?.isNewUser) {
       const {email, displayName, photoURL: photo, uid: id} = userData.user;
       if (email !== null && photo !== null) {
-        storeUserData(
+        await storeUserData(
           {
             email,
             firstName: displayName?.split(' ')[0] ?? '',
@@ -60,11 +61,23 @@ const SocialLogins: React.FC = () => {
             id,
             finger: false,
             gender: null,
-            interests: [],
-            preferences: [],
+            interests: INTERESETS.map(item => {
+              const {title, selected} = item;
+              return {title, selected};
+            }),
+            preferences: preferencesData,
             healthData: [],
             notifications: [],
             storiesWatched: [],
+          },
+          id,
+        );
+        await sendNotification(
+          {
+            isShownViaPushNotification: false,
+            isUnread: true,
+            message: 'You have successfully registered on FitnessApp !',
+            userId: 'App',
           },
           id,
         );

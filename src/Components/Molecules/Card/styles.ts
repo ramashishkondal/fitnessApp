@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font14,
     fontWeight: SIZES.fontBold0,
     fontFamily: FONT_FAMILY.REGULAR,
+    color: 'black',
   },
   checkboxCtr: {
     width: 8,

@@ -6,4 +6,8 @@ export const styles = StyleSheet.create({
     maxHeight: RFValue(100),
     paddingTop: 9,
   },
+  flatListCtr: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

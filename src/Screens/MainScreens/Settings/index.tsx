@@ -16,7 +16,6 @@ import {useAppDispatch} from '../../../Redux/Store';
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
-
   // functions
   const logOut = () => {
     dispatch(resetUserData());
@@ -32,6 +31,10 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           onPress={() => navigation.push('EditProfile')}
         />
         <SettingsCard title="Push Notification" hasSwitch />
+        <SettingsCard
+          title="Reset Password"
+          onPress={() => navigation.navigate('ResetPassword')}
+        />
         <SettingsCard title="Give Feedback" />
         <SettingsCard title="About Us" />
         <SettingsCard title="Log Out" onPress={logOut} />

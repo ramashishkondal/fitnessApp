@@ -108,13 +108,15 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
               parentStyle={styles.customImageParent}
               imageStyle={styles.customImage}
             />
-            <TextInput
-              autoFocus
-              maxLength={100}
-              onChangeText={setCaption}
-              placeholder="Add a Caption"
-              style={styles.textInput}
-            />
+            <View style={styles.textInputCtr}>
+              <TextInput
+                autoFocus
+                maxLength={100}
+                onChangeText={setCaption}
+                placeholder="Add a Caption"
+                style={styles.textInput}
+              />
+            </View>
           </View>
         </View>
       </KeyboardAwareScrollView>
