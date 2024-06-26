@@ -3,11 +3,14 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import {EditProfileProps} from './types';
 import {styles} from './styles';
 import {useAppSelector} from '../../../Redux/Store';
-import {CustomImage, WithModal} from '../../../Components';
+import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
 import {COLORS, ICONS} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
 import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
 import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInterests';
+import firestore from '@react-native-firebase/firestore';
+import {firebaseDB} from '../../../Utils/userUtils';
+import storage from '@react-native-firebase/storage';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
@@ -15,9 +18,18 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     'userInfo' | 'preferences' | null | 'interests'
   >(null);
 
+  const [photoModalVisible, setPhotoModalVisible] = useState(false);
   // redux use
-  const {photo, firstName, lastName, email, interests, preferences, gender} =
-    useAppSelector(state => state.User.data);
+  const {
+    photo,
+    firstName,
+    lastName,
+    email,
+    interests,
+    preferences,
+    gender,
+    id,
+  } = useAppSelector(state => state.User.data);
 
   // functions
   const setModalFalse = () => setActiveModal(null);
@@ -44,7 +56,9 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             parentStyle={styles.userPhotoParent}
             imageStyle={styles.userPhoto}
           />
-          <TouchableOpacity style={styles.pencilPhotoCtr}>
+          <TouchableOpacity
+            style={styles.pencilPhotoCtr}
+            onPress={() => setPhotoModalVisible(true)}>
             <View style={styles.pencilBackCtr}>
               {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
@@ -128,6 +142,31 @@ const EditProfile: React.FC<EditProfileProps> = () => {
         parentStyle={{backgroundColor: COLORS.PRIMARY.LIGHT_GREY}}>
         {ActiveModalComponent}
       </WithModal>
+      <SelectCustomPhoto
+        setPhoto={() => {}}
+        modalVisible={photoModalVisible}
+        setModalVisible={setPhotoModalVisible}
+        onSuccess={(uri: string) => {
+          (async () => {
+            console.log('ee');
+            try {
+              const reference = storage().ref(
+                'media/' + 'profilePictures' + id + '/' + 'photo',
+              );
+              await reference.putFile(uri);
+              const url = await reference.getDownloadURL();
+              await firestore()
+                .collection(firebaseDB.collections.users)
+                .doc(id!)
+                .update({photo: url});
+              setPhotoModalVisible(false);
+              console.log('zezu');
+            } catch (e) {
+              console.log(e);
+            }
+          })();
+        }}
+      />
     </View>
   );
 };

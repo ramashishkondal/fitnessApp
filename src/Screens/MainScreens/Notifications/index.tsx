@@ -10,17 +10,17 @@ import {useFocusEffect} from '@react-navigation/native';
 import {styles} from './styles';
 import {DescriptionText, HeadingText, Notification} from '../../../Components';
 import {
+  NotificationDataFirebaseDB,
   firebaseDB,
   updateNotificationReadStatus,
 } from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
-import {NotificationsData} from '../../../Defs/user';
 import {getTimePassed} from '../../../Utils/commonUtils';
 
 const Notifications: React.FC = () => {
   // state ues
   const [notificationsData, setNotificationsData] =
-    useState<NotificationsData>();
+    useState<Array<NotificationDataFirebaseDB>>();
 
   // redux use
   const {id: userId} = useAppSelector(state => state.User.data);
@@ -32,23 +32,23 @@ const Notifications: React.FC = () => {
       .doc(userId!)
       .onSnapshot(snapshot => {
         setNotificationsData(
-          snapshot.get('notifications') as NotificationsData,
+          snapshot.get('notifications') as Array<NotificationDataFirebaseDB>,
         );
       });
     return () => unsubscribe();
   }, [userId]);
 
   // navigation hook use
-  useFocusEffect(() => {
-    if (notificationsData) {
-      return () => {
-        updateNotificationReadStatus(
-          userId!,
-          notificationsData?.map(val => ({...val, isUnread: false})),
-        );
-      };
-    }
-  });
+  // useFocusEffect(() => {
+  //   if (notificationsData) {
+  //     return () => {
+  //       updateNotificationReadStatus(
+  //         userId!,
+  //         notificationsData?.map(val => ({...val, isUnread: false})),
+  //       );
+  //     };
+  //   }
+  // });
 
   return (
     <View style={styles.parent}>

@@ -56,12 +56,6 @@ const DailySteps: React.FC = () => {
               today,
             ),
           );
-
-          // setLineData(
-          //   filteredData.map((val) => ({
-          //     value: ~~getPercentage(val.todaysSteps, val.goal.totalSteps),
-          //   }))
-          // );
           const bestWaterIntakeDay = filteredData.reduce(
             (acc, val) => {
               if (

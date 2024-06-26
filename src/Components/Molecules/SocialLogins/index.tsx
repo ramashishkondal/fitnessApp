@@ -7,10 +7,8 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // custom
-import {useAppDispatch} from '../../../Redux/Store';
 import {SPACING, ICONS, COLORS} from '../../../Constants';
 import CustomLoading from '../../Atoms/CustomLoading';
-import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {storeUserData} from '../../../Utils/userUtils';
 import {styles} from './styles';
 

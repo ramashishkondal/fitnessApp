@@ -2,8 +2,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Image, TextInput, Platform} from 'react-native';
 
-// 3rd party libs
-import {Timestamp} from '@react-native-firebase/firestore';
 import {
   CameraOptions,
   ImagePickerResponse,
@@ -20,6 +18,7 @@ import {AddPostProps} from './types';
 import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Timestamp} from '@react-native-firebase/firestore';
 
 const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   // constants

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   childCtr: {
     flex: 3,
-    marginTop: 56,
+    marginTop: 8,
   },
   headingCtr: {
     marginTop: 32,

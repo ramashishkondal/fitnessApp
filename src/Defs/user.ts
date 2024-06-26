@@ -18,7 +18,7 @@ export type NotificationsData = Array<NotificationData>;
 export type NotificationData = {
   userId: string;
   message: string;
-  createdOn: Timestamp;
+  createdOn: string;
   isUnread: boolean;
   isShownViaPushNotification: boolean;
 };
@@ -32,7 +32,7 @@ export type HealthData = {
     noOfGlasses: number;
     totalSteps: number;
   };
-  currentDate: Timestamp;
+  currentDate: string;
 };
 
 export type Post = {

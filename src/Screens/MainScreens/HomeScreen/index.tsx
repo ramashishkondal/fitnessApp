@@ -28,6 +28,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const goToWaterIntake = (): void => navigation.push('WaterIntake');
   const goToDailySteps = (): void => navigation.push('DailySteps');
 
+  // console.log('rendered again');
   return (
     <Animated.View
       style={styles.parent}

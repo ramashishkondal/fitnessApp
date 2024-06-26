@@ -115,6 +115,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         BottomSheetModalStyle={{backgroundColor: COLORS.PRIMARY.DARK_GREY}}
         mediaType="mixed"
         onSuccess={(uri, type) => {
+          console.log(id);
           storeStory(
             {
               storyUrl: uri,

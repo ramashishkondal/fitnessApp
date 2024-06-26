@@ -31,7 +31,6 @@ const permissions = {
     write: [],
   },
 } as HealthKitPermissions;
-
 // android permissions
 const options = {
   scopes: [Scopes.FITNESS_ACTIVITY_READ, Scopes.FITNESS_ACTIVITY_WRITE],
@@ -59,6 +58,18 @@ const RootNavigator = () => {
 
   // effect use
   useEffect(() => {
+    const healthKitEventEmitter = new NativeEventEmitter(
+      NativeModules.AppleHealthKit,
+    );
+    if (Platform.OS === 'android') {
+      console.log(
+        'value of do something',
+        NativeModules.FingerPrintModule.doSomething(),
+      );
+    }
+    // constants
+    const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
+    const endDate = date.today().toISOString();
     const androidHealthSetup = async () => {
       try {
         const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
@@ -71,9 +82,8 @@ const RootNavigator = () => {
         }
         const today = date.today();
         const stepRes = await GoogleFit.getDailySteps(today);
-        const startDate = date.getStartOfDay(today);
         const opt = {
-          startDate: startDate.toISOString(), // required ISO8601Timestamp
+          startDate: startDate, // required ISO8601Timestamp
           endDate: today.toISOString(), // required ISO8601Timestamp
         };
         const calories = await GoogleFit.getDailyCalorieSamples(opt);
@@ -99,40 +109,45 @@ const RootNavigator = () => {
           console.log('error getting permission.');
           return;
         }
-        const observerType = 'StepCount';
-        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
-          `healthKit:${observerType}:new`,
-          async () => {
-            console.log(
-              `${observerType}: in newSampleObserver - received a new sample`,
+        healthKitEventEmitter.addListener('healthKit:StepCount:new', () => {
+          console.log('Step count updated');
+          AppleHealthKit.getStepCount(
+            {includeManuallyAdded: true},
+            (error, result) => {
+              if (!error) {
+                dispatch(updateHealthData({todaysSteps: result.value}));
+                return;
+              }
+              console.log(
+                'error encountered while getting steps data - ',
+                error,
+              );
+            },
+          );
+        });
+        healthKitEventEmitter.addListener(
+          'healthKit:ActiveEnergyBurned:new',
+          () => {
+            console.log('Active energy burned updated');
+            AppleHealthKit.getActiveEnergyBurned(
+              {
+                startDate, // required
+                endDate,
+                includeManuallyAdded: true, // optional
+              },
+              (err, results) => {
+                if (err || results.length === 0) {
+                  return;
+                }
+                dispatch(
+                  updateHealthData({
+                    nutrition: results.reduce((acc, val) => acc + val.value, 0),
+                  }),
+                );
+              },
             );
           },
         );
-        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
-          `healthKit:${observerType}:failure`,
-          async () => {
-            console.log(
-              `${observerType}: in newSampleObserver - new event failure`,
-            );
-          },
-        );
-        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
-          `healthKit:${observerType}:new`,
-          async () => {
-            console.log(
-              `${observerType}: in newSampleObserver - setup success`,
-            );
-          },
-        );
-        new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
-          `healthKit:${observerType}:setup:failure`,
-          async () => {
-            console.log(
-              `${observerType}: in newSampleObserver - setup failure`,
-            );
-          },
-        );
-
         dispatch(updateHealthData({hasPermission: true}));
         AppleHealthKit.getStepCount({}, (error, result) => {
           if (!error) {

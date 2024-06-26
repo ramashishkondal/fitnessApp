@@ -32,28 +32,49 @@ export const createUser = async (email: string, password: string) => {
   }
 };
 
+export type UserFromFirebaseDb = Omit<
+  Omit<Omit<User, 'createdOn'>, 'notifications'>,
+  'healthData'
+> & {
+  createdOn: Timestamp;
+  notifications: Array<NotificationDataFirebaseDB>;
+  healthData: Array<Omit<HealthData, 'currentDate'> & {currentDate: Timestamp}>;
+};
 export const storeUserData = async (
-  user: User,
+  user: Omit<User, 'createdOn'>,
   userId: FirebaseAuthTypes.UserCredential['user']['uid'],
 ) => {
   try {
-    await firestore().collection('users').doc(userId).set(user);
+    const userDataToSend: Omit<User, 'createdOn'> & {
+      createdOn: Timestamp;
+    } = {
+      ...user,
+      createdOn: Timestamp.fromDate(new Date()),
+    };
+    await firestore().collection('users').doc(userId).set(userDataToSend);
     console.log('User added!');
   } catch (e) {
     console.log('error storing User data - ', e);
   }
 };
 
+export type UserHealthDataFirebaseDb = Omit<HealthData, 'currentDate'> & {
+  currentDate: Timestamp;
+};
 export const storeUserHealthData = async (
   healthData: HealthData,
   uid: FirebaseAuthTypes.UserCredential['user']['uid'],
 ) => {
   try {
+    const sendHealthData: UserHealthDataFirebaseDb = {
+      ...healthData,
+      currentDate: Timestamp.fromDate(new Date()),
+    };
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(uid)
       .update({
-        healthData: firestore.FieldValue.arrayUnion(healthData),
+        healthData: firestore.FieldValue.arrayUnion(sendHealthData),
       });
   } catch (e) {
     console.log(e);
@@ -66,7 +87,7 @@ export const getHealthData = async (uid: string) => {
       .collection(firebaseDB.collections.users)
       .doc(uid)
       .get();
-    return snapshot.data() as Array<HealthData>;
+    return snapshot.data() as Array<UserHealthDataFirebaseDb>;
   } catch (e) {
     console.log(e);
   }
@@ -80,7 +101,7 @@ export const getUserData = async (
     .doc(uid)
     .get();
 
-  return snapshot.data() as User;
+  return snapshot.data() as UserFromFirebaseDb;
 };
 
 // posts
@@ -114,7 +135,6 @@ export const storePostComment = async (
     });
   sendNotification(
     {
-      createdOn: comment.createdOn,
       isShownViaPushNotification: false,
       isUnread: true,
       message: 'commented on your post',
@@ -165,7 +185,6 @@ export const addLikes = async (
   if (notification && userId !== notification.sendNotificationToUserId) {
     await sendNotification(
       {
-        createdOn: Timestamp.fromDate(new Date()),
         message: 'liked your post.',
         userId,
         isUnread: true,
@@ -234,6 +253,7 @@ export const storeStory = async (
           ],
           userName: story.userName,
           userPhoto: story.userPhoto,
+          storyByUserId: userId,
         });
     }
     const snap = await firestore()
@@ -264,17 +284,26 @@ export const getAllStoriesData = async () => {
   }
 };
 
+export type NotificationDataFirebaseDB = Omit<NotificationData, 'createdOn'> & {
+  createdOn: Timestamp;
+};
 export const sendNotification = async (
-  notification: NotificationData,
+  notification: Omit<NotificationData, 'createdOn'>,
   sendToUserId: string,
 ) => {
   try {
     console.log('notification sent to ', sendToUserId);
+
+    const notificationToSend: NotificationDataFirebaseDB = {
+      ...notification,
+      createdOn: Timestamp.fromDate(new Date()),
+    };
+
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(sendToUserId)
       .update({
-        notifications: firestore.FieldValue.arrayUnion(notification),
+        notifications: firestore.FieldValue.arrayUnion(notificationToSend),
       });
   } catch (e) {
     console.log('error with sending notifications ', e);
@@ -283,7 +312,7 @@ export const sendNotification = async (
 
 export const updateNotificationReadStatus = async (
   userId: string,
-  newNotificationArray: Array<NotificationData>,
+  newNotificationArray: Array<NotificationDataFirebaseDB>,
 ) => {
   try {
     await firestore()

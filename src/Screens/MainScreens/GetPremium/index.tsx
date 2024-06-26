@@ -9,6 +9,7 @@ import {IMAGES, SIZES} from '../../../Constants';
 import ActiveCarousel from '../../../Components/Molecules/ActiveCarousel';
 import {CustomButton, DescriptionText, HeadingText} from '../../../Components';
 import PremiumSelectorCard from '../../../Components/Molecules/PremiumSelectorCard';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const GetPremium = () => {
   // state use
@@ -37,7 +38,7 @@ const GetPremium = () => {
   ];
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent} showsVerticalScrollIndicator={false}>
       <Carousel
         loop
         autoPlay
@@ -111,7 +112,7 @@ const GetPremium = () => {
         </View>
         <CustomButton title="Purchase" parentStyle={styles.customParent} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

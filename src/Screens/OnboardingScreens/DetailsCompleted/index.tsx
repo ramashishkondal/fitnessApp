@@ -15,7 +15,6 @@ import {
 } from '../../../Utils/userUtils';
 import {COLORS, ICONS, STRING} from '../../../Constants';
 import {styles} from './style';
-import {Timestamp} from '@react-native-firebase/firestore';
 
 const logoSize = {
   width: 40,
@@ -60,24 +59,11 @@ const DetailsCompleted = () => {
           user.healthData = [];
           user.notifications = [];
           user.storiesWatched = [];
-          // dispatch(
-          //   updateUserData({
-          //     id: userCredentials.user.uid,
-          //     healthData: [],
-          //     notifications: [],
-          //     photo: url,
-          //   })
-          // );
-          // dispatch(resetHealthData());
-          // dispatch(resetMealData());
           await storeUserData(user, user.id);
           await sendNotification(
             {
-              createdOn: Timestamp.fromDate(new Date()),
               message: 'You have successfully registered on FitnessApp !',
-              userName: '',
-              userPhoto:
-                'https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FUtils%2Fpencil-ruler-svgrepo-com.jpg?alt=media&token=5ea84d1a-e9ff-4b55-aa3d-8c0522228133',
+              userId: 'App',
               isUnread: true,
               isShownViaPushNotification: false,
             },

@@ -2,9 +2,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, TextInput} from 'react-native';
 
-// 3rd party libs
-import {Timestamp} from '@react-native-firebase/firestore';
-
 // custom
 import {useAppSelector} from '../../../Redux/Store';
 import CustomButton from '../../Atoms/CustomButton';
@@ -13,6 +10,7 @@ import {storePostComment} from '../../../Utils/userUtils';
 import {AddCommentProps} from './type';
 import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
+import {Timestamp} from '@react-native-firebase/firestore';
 
 const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   // state use

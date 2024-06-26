@@ -16,7 +16,6 @@ import {
 } from '../../../Components';
 import {useAppDispatch} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
-import {getUserData} from '../../../Utils/userUtils';
 import {SignInProps} from '../../../Defs';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {STRING, ICONS, SPACING, COLORS} from '../../../Constants';
@@ -38,12 +37,7 @@ const SignIn = ({navigation}: SignInProps) => {
       const {
         user: {uid},
       } = await auth().signInWithEmailAndPassword(email, password);
-      const user = await getUserData(uid);
-      if (user) {
-        dispatch(updateUserData(user));
-      } else {
-        throw Error('SignIn Screen Error: user data null or undefined');
-      }
+      dispatch(updateUserData({id: uid}));
     } catch (e) {
       const error = e as FirestoreError;
       let message = error.message;
