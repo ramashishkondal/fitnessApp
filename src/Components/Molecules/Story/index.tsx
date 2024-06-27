@@ -12,6 +12,7 @@ import {AppNavigationProps} from '../../../Defs/navigators';
 import {useAppSelector} from '../../../Redux/Store';
 import {CustomImage} from '../../Atoms';
 import {COLORS} from '../../../Constants';
+import {Timestamp} from '@react-native-firebase/firestore';
 
 const Story: React.FC<StoryProps> = ({allStoryData, index}) => {
   const navigation = useNavigation<AppNavigationProps>();
@@ -26,7 +27,15 @@ const Story: React.FC<StoryProps> = ({allStoryData, index}) => {
     <TouchableOpacity
       style={[
         styles.parent,
-        storiesWatched.includes(allStoryData[index].storyByUserId)
+        storiesWatched.includes(
+          allStoryData[index].storyByUserId +
+            ' ' +
+            Timestamp.fromMillis(
+              allStoryData[index].latestStoryOn.seconds * 1000,
+            )
+              .toDate()
+              .toISOString(),
+        )
           ? {borderColor: COLORS.SECONDARY.GREY}
           : null,
       ]}

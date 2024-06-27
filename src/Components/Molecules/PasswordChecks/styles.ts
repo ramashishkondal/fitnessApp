@@ -29,6 +29,6 @@ export const styles = StyleSheet.create({
     fontSize: RFValue(12),
     marginLeft: 4,
     fontFamily: FONT_FAMILY.REGULAR,
-    fontWeight: 500,
+    fontWeight: '500',
   },
 });

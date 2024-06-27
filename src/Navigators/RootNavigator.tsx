@@ -63,10 +63,8 @@ const RootNavigator = () => {
       NativeModules.AppleHealthKit,
     );
     if (Platform.OS === 'android') {
-      console.log(
-        'value of do something',
-        NativeModules.FingerPrintModule.doSomething(),
-      );
+      console.log('value of do something');
+      NativeModules.FingerPrintModule.getConstants();
     }
 
     // constants

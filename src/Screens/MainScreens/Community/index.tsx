@@ -22,6 +22,10 @@ import {CommunityProps} from '../../../Defs/navigators';
 import {StoryData, firebaseDB, storeStory} from '../../../Utils/userUtils';
 import {styles} from './styles';
 import {Post} from '../../../Defs';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useObject, useRealm} from '@realm/react';
+import {StoryDb} from '../../../DbModels/story';
+import {UpdateMode} from 'realm';
 
 const postSignSize = {
   width: 20,
@@ -32,7 +36,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   // state use
   const [storyModalVisible, setStoryModalVisible] = useState(false);
   const [activeModal, setActiveModal] = useState('none');
-  // const [story, setStory] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
@@ -40,6 +44,10 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
     state => state.User.data,
   );
 
+  const netInfo = useNetInfo();
+  const realm = useRealm();
+  const storyDataFromOffline = useObject(StoryDb, id!);
+  console.log('story data is ', storyDataFromOffline?.stories);
   // ref use
   const postIdRef = useRef<Post>();
   const story = useRef<string>('');
@@ -48,6 +56,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.stories)
+      .orderBy('latestStoryOn', 'desc')
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as StoryData[];
@@ -59,6 +68,30 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   // functions
   const goToPostScreen = (postId: string) => {
     return () => navigation.navigate('PostScreen', {postId: postId});
+  };
+  const storeDataInRelmDb = (storyType: string, storyUrl: string) => {
+    if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
+      console.log('already exists in db');
+      return;
+    }
+    console.log('adding this ', storyType, storyUrl);
+    realm.write(() => {
+      if (storyDataFromOffline) {
+        storyDataFromOffline?.stories.push({storyType, storyUrl});
+        return;
+      }
+      realm.create(
+        StoryDb,
+        {
+          latestStoryOn: new Date(),
+          userName: firstName + ' ' + lastName,
+          storyByUserId: id!,
+          userPhoto: photo,
+          stories: [{storyType, storyUrl}],
+        },
+        UpdateMode.Modified,
+      );
+    });
   };
   const setStory = (st: string) => (story.current = st);
   const setActiveModalPost = () => setActiveModal('story');
@@ -78,7 +111,11 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.storiesCtr}>
-          <AddStory setModalVisible={() => setStoryModalVisible(true)} />
+          <AddStory
+            setModalVisible={() => setStoryModalVisible(true)}
+            isLoading={isLoading}
+          />
+
           <FlatList
             data={storiesData}
             renderItem={({index}) => (
@@ -115,15 +152,21 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         BottomSheetModalStyle={styles.selectCustomPhoto}
         mediaType="mixed"
         onSuccess={(uri, type) => {
-          storeStory(
-            {
-              storyUrl: uri,
-              userName: firstName + ' ' + lastName,
-              userPhoto: photo,
-              storyType: type!,
-            },
-            id!,
-          );
+          setIsLoading(true);
+          if (netInfo.isConnected) {
+            storeStory(
+              {
+                storyUrl: uri,
+                userName: firstName + ' ' + lastName,
+                userPhoto: photo,
+                storyType: type!,
+              },
+              id!,
+            ).finally(() => setIsLoading(false));
+          } else {
+            console.log('storing data in offline mode');
+            storeDataInRelmDb(type!, uri);
+          }
         }}
       />
     </>

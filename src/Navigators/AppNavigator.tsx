@@ -103,8 +103,6 @@ const AppNavigator = () => {
           );
         },
       );
-    } else {
-      // TODO document why this block is empty
     }
   }, [dispatch]);
 

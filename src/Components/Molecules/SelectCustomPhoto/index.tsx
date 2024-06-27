@@ -58,6 +58,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
           onSuccess(result.assets[0].uri, result.assets[0].type);
         }
       }
+      setModalVisible(false);
     } catch (e) {
       console.log('error uploading photo from camera - ', e);
     }

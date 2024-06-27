@@ -1,5 +1,11 @@
 {
   "cSpell.words": ["firestore", "Millis", "Noto", "Pressable", "Svgs"],
   "svg.preview.background": "dark-transparent",
-  "conventionalCommits.scopes": ["home"]
+  "conventionalCommits.scopes": [
+    "home"
+  ],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "http://localhost:9000",
+    "projectKey": "Fitness-App"
+  }
 }

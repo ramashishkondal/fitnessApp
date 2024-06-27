@@ -165,6 +165,7 @@ export const getAllPost = async () => {
     console.log('error with getting posts ', e);
   }
 };
+// add likes
 
 export const addLikes = async (
   userId: string,
@@ -184,7 +185,8 @@ export const addLikes = async (
     });
   console.log(notification);
   if (notification && userId !== notification.sendNotificationToUserId) {
-    debounce(sendNotification, 10000)(
+    console.log('this ran');
+    debouncedNotification(
       {
         message: 'liked your post.',
         userId,
@@ -199,10 +201,11 @@ export const addLikes = async (
 // story
 
 export type StoryData = {
-  stories: [{storyUrl: string; storyType: string}];
+  stories: {storyUrl: string; storyType: string}[];
   userName: string;
   userPhoto: string;
   storyByUserId: string;
+  latestStoryOn: Timestamp;
 };
 
 export const storeStory = async (
@@ -240,6 +243,7 @@ export const storeStory = async (
           userName: story.userName,
           userPhoto: story.userPhoto,
           storyByUserId: userId,
+          latestStoryOn: Timestamp.fromDate(new Date()),
         });
     } else {
       await firestore()
@@ -261,7 +265,7 @@ export const storeStory = async (
       .collection(firebaseDB.collections.users)
       .doc(userId)
       .get();
-    const storiesWatchedData = snap.get('storiesWatched') as Array<string>;
+    const storiesWatchedData: Array<string> = snap.get('storiesWatched');
     firestore()
       .collection(firebaseDB.collections.users)
       .doc(userId)
@@ -310,6 +314,7 @@ export const sendNotification = async (
     console.log('error with sending notifications ', e);
   }
 };
+const debouncedNotification = debounce(sendNotification, 100);
 
 export const updateNotificationReadStatus = async (
   userId: string,
@@ -331,13 +336,16 @@ export const updateNotificationReadStatus = async (
 export const updateStoriesWatchedArray = async (
   userId: string,
   storyByUserId: string,
+  latestStoryAt: string,
 ) => {
   try {
     await firestore()
       .collection(firebaseDB.collections.users)
       .doc(userId)
       .update({
-        storiesWatched: firestore.FieldValue.arrayUnion(storyByUserId),
+        storiesWatched: firestore.FieldValue.arrayUnion(
+          storyByUserId + ' ' + latestStoryAt,
+        ),
       });
   } catch (e) {
     console.log('error encountered while updating watched stories array -', e);

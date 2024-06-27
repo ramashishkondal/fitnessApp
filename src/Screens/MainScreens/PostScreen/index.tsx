@@ -100,7 +100,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                     postData.likedByUsersId.concat(id!),
                     {
                       sendNotificationToUserId: postData.userId,
-                      userName: firstName + ' ' + lastName ?? '',
+                      userName: firstName + ' ' + lastName,
                       userPhoto,
                     },
                   );

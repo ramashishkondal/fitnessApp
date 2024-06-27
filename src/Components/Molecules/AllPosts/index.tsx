@@ -31,7 +31,6 @@ const AllPosts: React.FC<AllPostsProps> = ({
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
       .orderBy('createdOn', 'desc')
-      .limit(dataLength)
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as Post[];
@@ -90,7 +89,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
                 val.likedByUsersId.concat(userId!),
                 {
                   sendNotificationToUserId: val.userId,
-                  userName: firstName + ' ' + lastName ?? '',
+                  userName: firstName + ' ' + lastName,
                   userPhoto: photo,
                 },
               );
@@ -108,7 +107,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
           scrollEnabled={false}
           data={postsData}
           renderItem={renderItem}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={1}
           onEndReached={handleEndReached}
         />
       ) : null}

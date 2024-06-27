@@ -26,9 +26,10 @@ export const styles = StyleSheet.create({
   storiesCtr: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 24,
   },
   flatList: {
-    marginVertical: 34,
+    // marginVertical: 34,
   },
   selectCustomPhoto: {
     backgroundColor: COLORS.PRIMARY.DARK_GREY,

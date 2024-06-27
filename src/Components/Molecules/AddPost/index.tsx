@@ -115,6 +115,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
                 onChangeText={setCaption}
                 placeholder="Add a Caption"
                 style={styles.textInput}
+                placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
               />
             </View>
           </View>

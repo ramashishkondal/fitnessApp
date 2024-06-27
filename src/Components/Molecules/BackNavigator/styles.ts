@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     color: '#348AFE',
     fontFamily: FONT_FAMILY.SEMI_BOLD,
     fontSize: SIZES.font15,
-    fontWeight: 500,
+    fontWeight: '500',
     left: -RFValue(3),
   },
 });

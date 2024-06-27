@@ -22,7 +22,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void doSomething(){
         System.out.println("do somthing ran");
-        Log.d("do something ran","with ");
+        Log.d("do something ran","with");
     }
 
     @ReactMethod

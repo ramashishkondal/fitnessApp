@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -41,5 +42,9 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
     marginRight: 24,
     marginTop: 2,
+  },
+  menuText: {
+    color: 'black',
+    fontFamily: FONT_FAMILY.REGULAR,
   },
 });

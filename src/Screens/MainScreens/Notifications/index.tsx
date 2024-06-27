@@ -67,10 +67,10 @@ const Notifications: React.FC = () => {
         {showMenu ? (
           <View style={styles.activeMenuCtr}>
             <Pressable onPress={markAllRead}>
-              <Text>Mark all as read</Text>
+              <Text style={styles.menuText}>Mark all as read</Text>
             </Pressable>
             <Pressable onPress={markAllUnread}>
-              <Text>Mark all as unread</Text>
+              <Text style={styles.menuText}>Mark all as unread</Text>
             </Pressable>
           </View>
         ) : null}

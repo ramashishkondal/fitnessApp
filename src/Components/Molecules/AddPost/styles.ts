@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
   textInput: {
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
+    color: 'black',
   },
   footerCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,

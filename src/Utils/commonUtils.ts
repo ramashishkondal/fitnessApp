@@ -132,9 +132,10 @@ export const debounce = <T extends (...args: any[]) => void>(
   let timeout: NodeJS.Timeout | null = null;
   return (...args: Parameters<T>) => {
     if (timeout) {
+      console.log('timeout cleared');
       clearTimeout(timeout);
-    } else {
-      timeout = setTimeout(func, delay, ...args);
     }
+    console.log('set timeout ');
+    timeout = setTimeout(func, delay, ...args);
   };
 };

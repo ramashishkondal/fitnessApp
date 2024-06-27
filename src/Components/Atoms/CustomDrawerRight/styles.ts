@@ -31,4 +31,17 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
     fontFamily: FONT_FAMILY.REGULAR,
   },
+  onlineStatus: {
+    position: 'absolute',
+    backgroundColor: COLORS.SECONDARY.CYAN,
+    borderRadius: 200,
+    justifyContent: 'center',
+    bottom: 4,
+    left: 4,
+    width: 12,
+    height: 12,
+  },
+  onlineStatusNoInternet: {
+    backgroundColor: COLORS.SECONDARY.RED,
+  },
 });

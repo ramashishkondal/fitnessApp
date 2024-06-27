@@ -15,6 +15,7 @@ import {StoriesScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import {updateStoriesWatchedArray} from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
+import {Timestamp} from '@react-native-firebase/firestore';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -40,7 +41,15 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
       setIndex(index + 1);
     } else if (index === stories.length - 1) {
       console.log('watched', allStoryData[userIndex]);
-      updateStoriesWatchedArray(userId!, allStoryData[userIndex].storyByUserId);
+      updateStoriesWatchedArray(
+        userId!,
+        allStoryData[userIndex].storyByUserId,
+        Timestamp.fromMillis(
+          allStoryData[userIndex].latestStoryOn.seconds * 1000,
+        )
+          .toDate()
+          .toISOString(),
+      );
       if (userIndex < allStoryData.length - 1) {
         setUserIndex(userIndex + 1);
         setIndex(0);
