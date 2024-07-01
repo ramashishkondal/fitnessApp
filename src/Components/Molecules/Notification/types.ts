@@ -1,7 +1,6 @@
 export type NotificationProps = {
-  userName: string;
+  userId: string;
   notificationText: string;
   timeAgo: string;
   isUnread: boolean;
-  userPhoto: string;
 };

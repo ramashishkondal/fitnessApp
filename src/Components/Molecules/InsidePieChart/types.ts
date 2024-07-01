@@ -1,1 +1,5 @@
-export type InsidePieChartProps = { percentage: number };
+export type InsidePieChartProps = {
+  value: number;
+  suffix?: string;
+  text?: string;
+};

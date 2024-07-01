@@ -1,6 +1,7 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { RFValue } from "react-native-responsive-fontsize";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -9,33 +10,35 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.PRIMARY.DARK_GREY,
     minHeight: RFValue(100),
     paddingHorizontal: 15,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   allDetailsCtr: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  iconCtr: {flex: 1,},
+  iconCtr: {flex: 1},
   childCtr: {
-    flexDirection: "column",
+    flexDirection: 'column',
     paddingHorizontal: 20,
     flex: 5,
   },
   buttonTextCtr: {
     borderRadius: SIZES.rounding3,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: COLORS.PRIMARY.LIGHT_PURPLE,
     minWidth: 85,
     minHeight: 35,
   },
   buttonText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontWeight: SIZES.fontBold0,
     color: COLORS.PRIMARY.PURPLE,
+    fontSize: SIZES.font10,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
-  detailsCtr: { flexDirection: "column" },
-  upperCtr: { flexDirection: "row", justifyContent: "space-between" },
+  detailsCtr: {flexDirection: 'column'},
+  upperCtr: {flexDirection: 'row', justifyContent: 'space-between'},
   descTextCtr: {
     maxWidth: 150,
   },
@@ -46,13 +49,16 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH6,
     fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: 'black',
   },
   descriptionText: {
     color: COLORS.SECONDARY.GREY,
-    fontWeight: SIZES.fontBold1,
+    fontWeight: '600',
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   lines: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   linePurple: {
     borderWidth: 2,
@@ -70,11 +76,11 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.SECONDARY.ORANGE,
   },
   marker: {
-    position: "absolute",
+    position: 'absolute',
     height: 16,
     width: 2,
     top: -6,
-    left: "0%",
-    backgroundColor: "black",
+    left: '0%',
+    backgroundColor: 'black',
   },
 });

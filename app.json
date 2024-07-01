@@ -1,4 +1,11 @@
 {
   "name": "fitness_App",
-  "displayName": "fitness_App App"
+  "displayName": "fitness_App App",
+  "androidStatusBar": {
+  "backgroundColor": "#000000"
+},
+"android": {
+"softwareKeyboardLayoutMode":  "pan"
 }
+}
+

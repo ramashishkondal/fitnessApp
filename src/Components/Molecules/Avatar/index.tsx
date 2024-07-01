@@ -1,6 +1,6 @@
 // libs
-import React from "react";
-import { Pressable, Image } from "react-native";
+import React from 'react';
+import {Pressable, Image} from 'react-native';
 
 // 3rd party
 import Animated, {
@@ -8,12 +8,12 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withSequence,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 
 // custom
-import { ANIMATIONS } from "../../../Constants";
-import { styles } from "./styles";
-import { AvatarProps } from "./types";
+import {ANIMATIONS} from '../../../Constants';
+import {styles} from './styles';
+import {AvatarProps} from './types';
 
 const Avatar: React.FC<AvatarProps> = ({
   item,
@@ -23,32 +23,26 @@ const Avatar: React.FC<AvatarProps> = ({
 }) => {
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{scale: scale.value}],
   }));
   const handleOnPress = () => {
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease3),
-      withSpring(ANIMATIONS.sizeNormal)
+      withSpring(ANIMATIONS.sizeNormal),
     );
     setSelectedItem(item.name);
     setPhoto(item.name);
-    console.log("photo item is ", item);
+    console.log('photo item is ', item);
   };
   return (
-    <Animated.View
-      style={[{ minWidth: 100, marginHorizontal: 12 }, animatedStyle]}
-    >
+    <Animated.View style={[styles.parent, animatedStyle]}>
       <Pressable
         style={[
           styles.avatarCtr,
           selectedItem === item.name ? styles.avatarSelected : null,
         ]}
-        onPress={handleOnPress}
-      >
-        <Image
-          source={item.image}
-          style={{ width: 80, height: 80, borderRadius: 200 }}
-        />
+        onPress={handleOnPress}>
+        <Image source={item.image} style={styles.image} />
       </Pressable>
     </Animated.View>
   );

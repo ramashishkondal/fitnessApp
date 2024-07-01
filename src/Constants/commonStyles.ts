@@ -1,32 +1,32 @@
-import { Dimensions, StyleSheet } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import { RFValue } from "react-native-responsive-fontsize";
+import {Dimensions, StyleSheet} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const COLORS = {
   PRIMARY: {
-    GREY: "#F4F6FA",
-    PURPLE: "#7265E3",
-    LIGHT_PURPLE: "#E1DDF5",
-    DARK_GREY: "#ECECEC",
-    LIGHT_GREY: "#F4F6FA",
+    GREY: '#F4F6FA',
+    PURPLE: '#7265E3',
+    LIGHT_PURPLE: '#E1DDF5',
+    DARK_GREY: '#ECECEC',
+    LIGHT_GREY: '#F4F6FA',
   },
   SECONDARY: {
-    GREY: "#B0B1C8",
-    WHITE: "#FFFFFF",
-    RED: "#ff0033",
-    ORANGE: "#F7A56D",
-    CYAN: "#44C7BC",
-    LIGHT_GREY: "#DCDDE0",
-    LIGHT_GREY_2: "#F1EFFA",
+    GREY: '#B0B1C8',
+    WHITE: '#FFFFFF',
+    RED: '#ff0033',
+    ORANGE: '#F7A56D',
+    CYAN: '#44C7BC',
+    LIGHT_GREY: '#DCDDE0',
+    LIGHT_GREY_2: '#F1EFFA',
   },
 };
 
 export const FONT_FAMILY = {
-  REGULAR: "NotoSans-Regular",
-  MEDIUM: "NotoSans-Medium",
-  SEMI_BOLD: "NotoSans-SemiBold",
-  BOLD: "NotoSans-Bold",
-  EXTRA_BOLD: "NotoSans-ExtraBold",
+  REGULAR: 'NotoSans-Regular',
+  MEDIUM: 'NotoSans-Medium',
+  SEMI_BOLD: 'NotoSans-SemiBold',
+  BOLD: 'NotoSans-Bold',
+  EXTRA_BOLD: 'NotoSans-ExtraBold',
 };
 
 export const ANIMATIONS = {
@@ -44,8 +44,8 @@ export const SIZES = {
   rounding: 5,
   rounding2: 10,
   rounding3: 25,
-  width: Dimensions.get("screen").width,
-  height: Dimensions.get("screen").height,
+  width: Dimensions.get('screen').width,
+  height: Dimensions.get('screen').height,
   font9: DeviceInfo.isTablet() ? RFValue(8) : RFValue(9.75),
   font10: DeviceInfo.isTablet() ? RFValue(9) : RFValue(10),
   font11: DeviceInfo.isTablet() ? RFValue(10) : RFValue(11),
@@ -65,9 +65,9 @@ export const SIZES = {
   fontH5: RFValue(HEADER_CONST * 1.2),
   fontH6: RFValue(HEADER_CONST * 1.0),
   fontH7: RFValue(HEADER_CONST * 0.9),
-  fontBold0: "bold" as const,
-  fontBold1: "600" as const,
-  fontBold2: "500" as const,
+  fontBold0: 'bold' as const,
+  fontBold1: '600' as const,
+  fontBold2: '500' as const,
 };
 
 export const SPACING = StyleSheet.create({
@@ -86,11 +86,11 @@ export const SPACING = StyleSheet.create({
   m5: {
     margin: 40,
   },
-  mb1: { marginBottom: 8 },
-  mb2: { marginBottom: 16 },
-  mb3: { marginBottom: 24 },
-  mb4: { marginBottom: 32 },
-  mb5: { marginBottom: 40 },
+  mb1: {marginBottom: 8},
+  mb2: {marginBottom: 16},
+  mb3: {marginBottom: 24},
+  mb4: {marginBottom: 32},
+  mb5: {marginBottom: 40},
   p1: {
     padding: 8,
   },

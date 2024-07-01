@@ -1,14 +1,14 @@
-import { THEME } from "../Constants/Enum";
-import { useAppSelector } from "../Redux/Store";
+import {THEME} from '../Constants/Enum';
+import {useAppSelector} from '../Redux/Store';
 
 export const useTheme = () => {
-  const { value: theme } = useAppSelector((state) => state.theme);
+  const {value: theme} = useAppSelector(state => state.theme);
   if (theme === THEME.DARK) {
     return {
-      backgroundColor: "red",
+      backgroundColor: 'red',
     };
   }
   return {
-    backgroundColor: "green",
+    backgroundColor: 'green',
   };
 };

@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
-import { RFValue } from "react-native-responsive-fontsize";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.GREY,
-    alignItems: "center",
+    alignItems: 'center',
   },
   photo: {
     height: RFValue(65),
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold1,
-    textAlign: "center",
+    textAlign: 'center',
     ...SPACING.mh2,
   },
   titleDescriptionText: {
@@ -35,5 +35,26 @@ export const styles = StyleSheet.create({
     fontWeight: SIZES.fontBold0,
     ...SPACING.mt2,
     ...SPACING.mh2,
+  },
+  avatarCtr: {
+    height: SIZES.height / 7,
+    alignItems: 'center',
+  },
+  photoCtr: {
+    alignItems: 'flex-end',
+  },
+  closeCtr: {
+    position: 'absolute',
+    flex: 1,
+  },
+  closeIconCtr: {
+    backgroundColor: 'grey',
+    borderRadius: 200,
+    right: 4,
+    top: 6,
+  },
+  childCtr: {
+    marginTop: 32,
+    alignItems: 'center',
   },
 });

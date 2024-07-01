@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, SPACING } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -12,17 +12,18 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,
-    textAlign: "center",
+    textAlign: 'center',
     ...SPACING.mh2,
+    color: 'black',
   },
   pieChart: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     minWidth: 250,
   },
   childCtr: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     ...SPACING.mt4,
     marginBottom: 16,
   },
@@ -33,4 +34,10 @@ export const styles = StyleSheet.create({
   },
   statisticsCtr: {},
   foodCtr: {},
+  pieChartTop: {
+    position: 'relative',
+  },
+  pieChartInside: {
+    position: 'absolute',
+  },
 });

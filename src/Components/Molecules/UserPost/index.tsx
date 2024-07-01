@@ -1,13 +1,18 @@
 // libs
-import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React, {useEffect, useState} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
+
+// 3rd party
+import firestore from '@react-native-firebase/firestore';
 
 // custom
-import { styles } from "./styles";
-import { UserPostProps } from "./types";
-import { COLORS, ICONS, SIZES } from "../../../Constants";
-import { CustomImage, DescriptionText } from "../../Atoms";
-import { getTimePassed } from "../../../Utils/commonUtils";
+import {styles} from './styles';
+import {UserPostProps} from './types';
+import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {CustomImage, DescriptionText} from '../../Atoms';
+import {getTimePassed} from '../../../Utils/commonUtils';
+import {User} from '../../../Defs';
+import {firebaseDB} from '../../../Utils/userUtils';
 
 const icon = {
   width: 16,
@@ -18,42 +23,64 @@ const icon = {
 const UserPost: React.FC<UserPostProps> = ({
   postData: {
     caption,
-    userName,
     noOfComments,
     noOfLikes,
-    photo,
     timeSincePostedInMillis,
-    userPhoto,
     isLiked,
+    photo,
   },
+  userId,
   handleCommentsPress,
   handleLikesPress,
 }) => {
+  // state use
+  const [userData, setUserData] = useState<User>();
+
+  // effect use
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .onSnapshot(snapshot => {
+        const data = snapshot.data() as User;
+        if (data) {
+          setUserData(data);
+        }
+      });
+    return () => unsubscribe();
+  }, [userId]);
+
   return (
     <View style={styles.parent}>
       <View style={styles.userInfoCtr}>
-        <CustomImage
-          source={{ uri: userPhoto }}
-          imageStyle={styles.userPhoto}
-        />
+        {userData ? (
+          <CustomImage
+            source={{uri: userData?.photo}}
+            imageStyle={styles.userPhoto}
+          />
+        ) : null}
         <View style={styles.userTextCtr}>
-          <Text style={styles.userNameText}>{userName}</Text>
+          {userData ? (
+            <Text style={styles.userNameText}>
+              {userData.firstName + ' ' + userData.lastName}
+            </Text>
+          ) : null}
           <DescriptionText
             text={getTimePassed(timeSincePostedInMillis)}
-            textStyle={{ fontSize: SIZES.font10, textAlign: "left" }}
+            textStyle={styles.descriptionText}
           />
         </View>
       </View>
       {caption ? (
         <Text style={styles.captionText}>{caption}</Text>
       ) : (
-        <View style={{ marginVertical: 8 }} />
+        <View style={styles.noCaptionCtr} />
       )}
       <CustomImage
-        source={{ uri: photo }}
+        source={{uri: photo}}
         parentStyle={styles.photo}
-        imageStyle={{ borderRadius: SIZES.rounding2 }}
-        activityIndicatorSize={"large"}
+        imageStyle={{borderRadius: SIZES.rounding2}}
+        activityIndicatorSize={'large'}
       />
       <View style={styles.likesAndCommentsCtr}>
         <TouchableOpacity onPress={handleLikesPress} style={styles.likeCtr}>
@@ -63,13 +90,14 @@ const UserPost: React.FC<UserPostProps> = ({
           })}
           <Text style={styles.likesText}>{noOfLikes}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleCommentsPress}
-          style={styles.commentCtr}
-        >
-          {ICONS.Comment(icon)}
-          <Text style={styles.likesText}>{noOfComments}</Text>
-        </TouchableOpacity>
+        <View style={styles.commentCtr}>
+          <TouchableOpacity
+            onPress={handleCommentsPress}
+            style={styles.commentLogoCtr}>
+            {ICONS.Comment(icon)}
+            <Text style={styles.likesText}>{noOfComments}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

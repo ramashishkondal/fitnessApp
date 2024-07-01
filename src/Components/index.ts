@@ -10,7 +10,7 @@ export {
   HeadingText,
   NutritionHeaderRight,
   WarningLabel,
-} from "./Atoms";
+} from './Atoms';
 
 export {
   AddComment,
@@ -41,4 +41,4 @@ export {
   AddStory,
   Notification,
   ChooseFood,
-} from "./Molecules";
+} from './Molecules';

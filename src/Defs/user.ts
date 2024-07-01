@@ -1,4 +1,4 @@
-import { Timestamp } from "@react-native-firebase/firestore";
+import {Timestamp} from '@react-native-firebase/firestore';
 
 export type User = {
   id: string | null;
@@ -7,19 +7,18 @@ export type User = {
   email: string;
   finger: boolean;
   photo: string;
-  gender: "male" | "female" | null;
-  preferences: Array<{ title: string; selected: boolean }>;
-  interests: Array<string>;
+  gender: 'male' | 'female' | null;
+  preferences: Array<{title: string; selected: boolean}>;
+  interests: Array<{title: string; selected: boolean}>;
   healthData: Array<HealthData>;
   storiesWatched: Array<string>;
   notifications: NotificationsData;
 };
 export type NotificationsData = Array<NotificationData>;
 export type NotificationData = {
-  userPhoto: string;
-  userName: string;
+  userId: string;
   message: string;
-  createdOn: Timestamp;
+  createdOn: string;
   isUnread: boolean;
   isShownViaPushNotification: boolean;
 };
@@ -33,7 +32,7 @@ export type HealthData = {
     noOfGlasses: number;
     totalSteps: number;
   };
-  currentDate: Timestamp;
+  currentDate: string;
 };
 
 export type Post = {
@@ -49,8 +48,7 @@ export type Post = {
 };
 
 export type Comment = {
-  userName: string;
-  userPhoto: string;
+  userId: string;
   comment: string;
   createdOn: Timestamp;
 };

@@ -1,9 +1,9 @@
 // libs
-import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView } from "react-native";
+import React, {useCallback, useEffect, useState} from 'react';
+import {Text, View, ScrollView} from 'react-native';
 
 // 3rd party
-import { PieChart } from "react-native-gifted-charts";
+import {PieChart} from 'react-native-gifted-charts';
 
 // custom
 import {
@@ -13,22 +13,22 @@ import {
   NutritionStats,
   DietDataFlatList,
   ChooseFood,
-} from "../../../Components";
-import { COLORS, STRING } from "../../../Constants";
-import { NutritionProps } from "../../../Defs/navigators";
-import { styles } from "./styles";
-import { useAppSelector } from "../../../Redux/Store";
-import { getPercentage } from "../../../Utils/commonUtils";
+} from '../../../Components';
+import {COLORS, STRING} from '../../../Constants';
+import {NutritionProps} from '../../../Defs/navigators';
+import {styles} from './styles';
+import {useAppSelector} from '../../../Redux/Store';
+import {getPercentage} from '../../../Utils/commonUtils';
 
-const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
+const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   // state use
   const [modalVisible, setModalVisible] = useState(false);
 
   // redux use
-  const { nutrition: caloriesBurned } = useAppSelector(
-    (state) => state.health.value
+  const {nutrition: caloriesBurned} = useAppSelector(
+    state => state.health.value,
   );
-  const { data: dailyMeals } = useAppSelector((state) => state.dailyMeals);
+  const {data: dailyMeals} = useAppSelector(state => state.dailyMeals);
   const statsData = Object.values(dailyMeals)
     .flat()
     .reduce(
@@ -43,7 +43,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
         carbs: 0,
         fat: 0,
         protein: 0,
-      }
+      },
     );
 
   const proteinData = [
@@ -57,7 +57,6 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
-  console.log("dd", getPercentage(statsData.protein, statsData.calories));
   const carbsData = [
     {
       value: Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
@@ -80,29 +79,30 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
     },
   ];
 
+  // functions
+  const handleOnPress = () => setModalVisible(true);
+  const headerRight = useCallback(
+    () => <NutritionHeaderRight handleOnPress={handleOnPress} />,
+    [],
+  );
+
   // effect use
   useEffect(() => {
     navigation.setOptions({
       headerRight,
     });
-  }, []);
-
-  // functions
-  const handleOnPress = () => setModalVisible(true);
-  const headerRight = () => (
-    <NutritionHeaderRight handleOnPress={handleOnPress} />
-  );
+  }, [headerRight, navigation]);
 
   return (
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
-        {STRING.NUTRITION.TITLE[1]}{" "}
-        <Text style={styles.calorieText}>{caloriesBurned}</Text>{" "}
+        {STRING.NUTRITION.TITLE[1]}{' '}
+        <Text style={styles.calorieText}>{caloriesBurned}</Text>{' '}
         {STRING.NUTRITION.TITLE[2]}
       </Text>
       <View style={styles.childCtr}>
         <View style={styles.pieChart}>
-          <View style={{ position: "relative" }}>
+          <View style={styles.pieChartTop}>
             <PieChart
               donut
               showText
@@ -112,7 +112,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
-          <View style={{ position: "absolute" }}>
+          <View style={styles.pieChartInside}>
             <PieChart
               donut
               showText
@@ -122,7 +122,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
           </View>
-          <View style={{ position: "absolute" }}>
+          <View style={styles.pieChartInside}>
             <PieChart
               donut
               showText
@@ -180,8 +180,7 @@ const Nutrition: React.FC<NutritionProps> = ({ navigation }) => {
       />
       <WithModal
         modalVisible={modalVisible}
-        setModalFalse={() => setModalVisible(false)}
-      >
+        setModalFalse={() => setModalVisible(false)}>
         <ChooseFood setModalFalse={() => setModalVisible(false)} />
       </WithModal>
       <DietDataFlatList />

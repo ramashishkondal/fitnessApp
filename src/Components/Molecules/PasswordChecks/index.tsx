@@ -1,12 +1,12 @@
 // libs
-import React from "react";
-import { View } from "react-native";
+import React from 'react';
+import {View} from 'react-native';
 
 // custom
-import { SPACING, STRING } from "../../../Constants";
-import { DescriptionText } from "../../Atoms";
-import { PasswordChecksProps } from "./types";
-import { styles } from "./styles";
+import {SPACING, STRING} from '../../../Constants';
+import {DescriptionText} from '../../Atoms';
+import {PasswordChecksProps} from './types';
+import {styles} from './styles';
 
 const PasswordChecks = ({
   lengthCheck,

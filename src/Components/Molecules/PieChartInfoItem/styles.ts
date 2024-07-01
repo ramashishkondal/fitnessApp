@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 15,
-    alignItems: "center",
+    alignItems: 'center',
   },
   colorCtr: {
     borderRadius: 100,
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     paddingHorizontal: 5,
-    color: "#C0BBFC",
+    color: '#C0BBFC',
     fontWeight: SIZES.fontBold1,
   },
 });

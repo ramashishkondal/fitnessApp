@@ -4,12 +4,12 @@ import {
   StyleProp,
   ActivityIndicatorProps,
   ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 export type CustomImageProps = {
-  source: ImageProps["source"];
+  source: ImageProps['source'];
   imageStyle?: StyleProp<ImageStyle>;
   parentStyle?: StyleProp<ViewStyle>;
-  activityIndicatorSize?: ActivityIndicatorProps["size"];
+  activityIndicatorSize?: ActivityIndicatorProps['size'];
   handleLoadEnd?: () => void;
 };

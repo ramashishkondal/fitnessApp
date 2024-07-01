@@ -1,10 +1,10 @@
 // libs
-import React from "react";
-import { Text, View } from "react-native";
+import React from 'react';
+import {Text, View} from 'react-native';
 
 // custom
-import { styles } from "./styles";
-import { PerformanceCardProps } from "./types";
+import {styles} from './styles';
+import {PerformanceCardProps} from './types';
 
 const PerformanceCard: React.FC<PerformanceCardProps> = ({
   icon,

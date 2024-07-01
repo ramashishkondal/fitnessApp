@@ -1,4 +1,4 @@
-import { ImageProps } from "react-native";
+import {ImageProps} from 'react-native';
 
 export type SelectAvatarsProps = {
   avatar: string;
@@ -6,6 +6,6 @@ export type SelectAvatarsProps = {
   setPhoto: React.Dispatch<React.SetStateAction<string>>;
 };
 export type AvatarData = {
-  image: ImageProps["source"];
+  image: ImageProps['source'];
   name: string;
 };

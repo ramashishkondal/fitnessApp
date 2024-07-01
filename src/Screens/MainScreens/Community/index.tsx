@@ -1,10 +1,10 @@
 // libs
-import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, TouchableOpacity, View, FlatList } from "react-native";
+import React, {useEffect, useRef, useState} from 'react';
+import {ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
 
 // 3rd party
-import { useAppSelector } from "../../../Redux/Store";
-import firestore from "@react-native-firebase/firestore";
+import {useAppSelector} from '../../../Redux/Store';
+import firestore from '@react-native-firebase/firestore';
 
 // custom
 import {
@@ -16,40 +16,50 @@ import {
   SelectCustomPhoto,
   Story,
   WithModal,
-} from "../../../Components";
-import { COLORS, ICONS, STRING } from "../../../Constants";
-import { CommunityProps } from "../../../Defs/navigators";
-import { StoryData, firebaseDB, storeStory } from "../../../Utils/userUtils";
-import { styles } from "./styles";
-import { Post } from "../../../Defs";
+} from '../../../Components';
+import {ICONS, STRING} from '../../../Constants';
+import {CommunityProps} from '../../../Defs/navigators';
+import {StoryData, firebaseDB, storeStory} from '../../../Utils/userUtils';
+import {styles} from './styles';
+import {Post} from '../../../Defs';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useObject, useRealm} from '@realm/react';
+import {StoryDb} from '../../../DbModels/story';
+import {UpdateMode} from 'realm';
 
 const postSignSize = {
   width: 20,
   height: 20,
 };
 
-const Community: React.FC<CommunityProps> = ({ navigation }) => {
+const Community: React.FC<CommunityProps> = ({navigation}) => {
   // state use
   const [storyModalVisible, setStoryModalVisible] = useState(false);
-  const [activeModal, setActiveModal] = useState("none");
-  const [story, setStory] = useState<string>("");
+  const [activeModal, setActiveModal] = useState('none');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
-  const { firstName, lastName, photo, id } = useAppSelector(
-    (state) => state.User.data
+  const {firstName, lastName, photo, id} = useAppSelector(
+    state => state.User.data,
   );
 
+  const netInfo = useNetInfo();
+  const realm = useRealm();
+  const storyDataFromOffline = useObject(StoryDb, id!);
+  console.log('story data is ', storyDataFromOffline?.stories);
   // ref use
   const postIdRef = useRef<Post>();
+  const story = useRef<string>('');
 
   // effect use
   useEffect(() => {
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.stories)
-      .onSnapshot((snapshot) => {
+      .orderBy('latestStoryOn', 'desc')
+      .onSnapshot(snapshot => {
         const data = snapshot.docs;
-        const x = data.map((val) => val.data()) as StoryData[];
+        const x = data.map(val => val.data()) as StoryData[];
         setStoriesData(x);
       });
     return () => unsubscribe();
@@ -57,11 +67,36 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
 
   // functions
   const goToPostScreen = (postId: string) => {
-    return () => navigation.navigate("PostScreen", { postId: postId });
+    return () => navigation.navigate('PostScreen', {postId: postId});
   };
-  const setActiveModalPost = () => setActiveModal("story");
-  const setActiveModalFalse = () => setActiveModal("none");
-  const showCommentModal = () => setActiveModal("comment");
+  const storeDataInRelmDb = (storyType: string, storyUrl: string) => {
+    if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
+      console.log('already exists in db');
+      return;
+    }
+    console.log('adding this ', storyType, storyUrl);
+    realm.write(() => {
+      if (storyDataFromOffline) {
+        storyDataFromOffline?.stories.push({storyType, storyUrl});
+        return;
+      }
+      realm.create(
+        StoryDb,
+        {
+          latestStoryOn: new Date(),
+          userName: firstName + ' ' + lastName,
+          storyByUserId: id!,
+          userPhoto: photo,
+          stories: [{storyType, storyUrl}],
+        },
+        UpdateMode.Modified,
+      );
+    });
+  };
+  const setStory = (st: string) => (story.current = st);
+  const setActiveModalPost = () => setActiveModal('story');
+  const setActiveModalFalse = () => setActiveModal('none');
+  const showCommentModal = () => setActiveModal('comment');
 
   return (
     <>
@@ -75,15 +110,19 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
             {ICONS.PostSign(postSignSize)}
           </TouchableOpacity>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AddStory setModalVisible={() => setStoryModalVisible(true)} />
+        <View style={styles.storiesCtr}>
+          <AddStory
+            setModalVisible={() => setStoryModalVisible(true)}
+            isLoading={isLoading}
+          />
+
           <FlatList
             data={storiesData}
-            renderItem={({ index }) => (
+            renderItem={({index}) => (
               <Story index={index} allStoryData={storiesData} />
             )}
             horizontal
-            style={{ marginVertical: 24 }}
+            style={styles.flatList}
             showsHorizontalScrollIndicator={false}
           />
         </View>
@@ -93,10 +132,9 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
           handleCommentPress={showCommentModal}
         />
         <WithModal
-          modalVisible={activeModal !== "none"}
-          setModalFalse={setActiveModalFalse}
-        >
-          {activeModal === "story" ? (
+          modalVisible={activeModal !== 'none'}
+          setModalFalse={setActiveModalFalse}>
+          {activeModal === 'story' ? (
             <AddPost setModalFalse={setActiveModalFalse} />
           ) : (
             <AddComment
@@ -110,19 +148,25 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
         modalVisible={storyModalVisible}
         setModalVisible={setStoryModalVisible}
         setPhoto={setStory}
-        parentStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
-        BottomSheetModalStyle={{ backgroundColor: COLORS.PRIMARY.DARK_GREY }}
+        parentStyle={styles.selectCustomPhoto}
+        BottomSheetModalStyle={styles.selectCustomPhoto}
         mediaType="mixed"
         onSuccess={(uri, type) => {
-          storeStory(
-            {
-              storyUrl: uri,
-              userName: firstName + " " + lastName,
-              userPhoto: photo,
-              storyType: type!,
-            },
-            id!
-          );
+          setIsLoading(true);
+          if (netInfo.isConnected) {
+            storeStory(
+              {
+                storyUrl: uri,
+                userName: firstName + ' ' + lastName,
+                userPhoto: photo,
+                storyType: type!,
+              },
+              id!,
+            ).finally(() => setIsLoading(false));
+          } else {
+            console.log('storing data in offline mode');
+            storeDataInRelmDb(type!, uri);
+          }
         }}
       />
     </>

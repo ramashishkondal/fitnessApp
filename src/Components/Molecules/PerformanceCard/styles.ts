@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../../Constants";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -8,12 +8,12 @@ export const styles = StyleSheet.create({
   },
   performanceCtr: {
     padding: 20,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     borderBottomWidth: 1,
     borderColor: COLORS.SECONDARY.LIGHT_GREY,
   },
-  iconCtr: { justifyContent: "center", flex: 1 },
+  iconCtr: {justifyContent: 'center', flex: 1},
   titleAndDescContainer: {
     flex: 6,
   },
@@ -28,6 +28,6 @@ export const styles = StyleSheet.create({
   valueText: {
     fontSize: SIZES.font17,
     flex: 1,
-    textAlign: "right",
+    textAlign: 'right',
   },
 });

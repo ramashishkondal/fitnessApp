@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import <Firebase.h>
+#import "RCTAppleHealthKit.h"
 
 #import <React/RCTBundleURLProvider.h>
 
@@ -10,6 +11,11 @@
   [FIRApp configure];
   self.moduleName = @"fitness_App";
 
+  // apple health kit background observer
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self
+                                              launchOptions:launchOptions];
+  /* Adding Background initializer for HealthKit  */
+    [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
   
   // for loggin out the user after uninstalling the app and then installing it while logged in
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

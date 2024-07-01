@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_FAMILY, SIZES } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 42,
     borderRadius: SIZES.rounding2,
     backgroundColor: COLORS.SECONDARY.WHITE,
@@ -13,15 +13,16 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
     minWidth: 20,
     paddingHorizontal: 14,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     flex: 19,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 15,
     fontSize: SIZES.font13,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
   },
   parentError: {
     borderWidth: 0.5,

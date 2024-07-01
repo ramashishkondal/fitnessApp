@@ -1,4 +1,4 @@
-import { Meal } from "../../../Redux/Reducers/dailyMeal";
+import {Meal} from '../../../Redux/Reducers/dailyMeal';
 
 export type FoodSelectorProps = {
   foodItem: Meal;

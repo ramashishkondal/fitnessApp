@@ -1,6 +1,6 @@
 // libs
-import React, { useState } from "react";
-import { Alert, View } from "react-native";
+import React, {useState} from 'react';
+import {Alert, View} from 'react-native';
 
 // custom
 import {
@@ -8,24 +8,24 @@ import {
   CustomTextInput,
   WithOnboarding,
   HeadingText,
-} from "../../../Components";
-import { SPACING, STRING } from "../../../Constants";
-import { AddEmailLogInProps } from "../../../Defs";
-import { isValidName } from "../../../Utils/checkValidity";
-import { styles } from "./styles";
-import { useAppDispatch } from "../../../Redux/Store";
-import { updateUserData } from "../../../Redux/Reducers/currentUser";
+} from '../../../Components';
+import {SPACING, STRING} from '../../../Constants';
+import {AddEmailLogInProps} from '../../../Defs';
+import {isValidName} from '../../../Utils/checkValidity';
+import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
-const AddLastName: React.FC<AddEmailLogInProps> = ({ navigation }) => {
-  const [lastName, setLastName] = useState<string>("");
+const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
+  const [lastName, setLastName] = useState<string>('');
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
     if (lastName) {
-      dispatch(updateUserData({ lastName }));
-      navigation.push("AddFingerprint");
+      dispatch(updateUserData({lastName}));
+      navigation.push('AddFingerprint');
     } else {
-      Alert.alert("Error", "First name cant be empty!");
+      Alert.alert('Error', 'First name cant be empty!');
     }
   };
   const handleChangeText = (text: string) => {

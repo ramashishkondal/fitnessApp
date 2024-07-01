@@ -1,33 +1,65 @@
-import React, { useState } from "react";
-import { Image, View } from "react-native";
-import { styles } from "./styles";
-import { useAppSelector } from "../../../Redux/Store";
-import CustomLoading from "../CustomLoading";
-import { COLORS } from "../../../Constants";
+// libs
+import React, {useCallback} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
+
+// 3rd party
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useAppSelector} from '../../../Redux/Store';
+import {useNetInfo} from '@react-native-community/netinfo';
+
+// custom
+import CustomImage from '../CustomImage';
+import {appStackParamList, homeDrawerParamList} from '../../../Defs';
+import {styles} from './styles';
 
 const CustomDrawerRight: React.FC = () => {
   // state use
-  const { photo } = useAppSelector((state) => state.User.data);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {photo} = useAppSelector(state => state.User.data);
+
+  // net info
+  const {isConnected} = useNetInfo();
+
+  // redux use
+  const {notifications} = useAppSelector(state => state.User.data);
+  const unreadNotifications = useCallback(
+    () => notifications.filter(val => val.isUnread).length,
+    [notifications],
+  );
+
+  // navigation use
+  const navigation =
+    useNavigation<
+      CompositeNavigationProp<
+        DrawerNavigationProp<homeDrawerParamList>,
+        NativeStackNavigationProp<appStackParamList>
+      >
+    >();
 
   // functions
-  const onLoadEnd = (): void => setIsLoading(false);
-  const onLoadStart = (): void => setIsLoading(true);
-
+  const handlePress = () => {
+    if (unreadNotifications()) {
+      navigation.jumpTo('Notifications');
+    } else {
+      navigation.navigate('EditProfile');
+    }
+  };
   return (
-    <View style={styles.parent}>
-      {isLoading ? (
-        <View style={{ position: "absolute" }}>
-          <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+    <TouchableOpacity style={styles.parent} onPress={handlePress}>
+      <CustomImage source={{uri: photo ?? ''}} imageStyle={styles.image} />
+      <View
+        style={[
+          styles.onlineStatus,
+          !isConnected ? styles.onlineStatusNoInternet : null,
+        ]}
+      />
+      {unreadNotifications() ? (
+        <View style={styles.notificationCtr}>
+          <Text style={styles.notificationText}>{unreadNotifications()}</Text>
         </View>
       ) : null}
-      <Image
-        source={{ uri: photo ?? "" }}
-        style={styles.image}
-        onLoadEnd={onLoadEnd}
-        onLoadStart={onLoadStart}
-      />
-    </View>
+    </TouchableOpacity>
   );
 };
 

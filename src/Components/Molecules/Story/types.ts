@@ -1,4 +1,4 @@
-import { StoryData } from "../../../Utils/userUtils";
+import {StoryData} from '../../../Utils/userUtils';
 
 export type StoryProps = {
   allStoryData: Array<StoryData>;

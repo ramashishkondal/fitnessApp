@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
-import { COLORS } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   logoCtr: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   logos: {
     backgroundColor: COLORS.SECONDARY.WHITE,

@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { SIZES } from "../../../Constants/commonStyles";
+import {StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
     paddingHorizontal: 28,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     maxWidth: 450,
@@ -15,5 +15,9 @@ export const styles = StyleSheet.create({
   },
   customButtonParent: {
     marginTop: 78,
+  },
+  forgotPasswordText: {
+    color: COLORS.PRIMARY.PURPLE,
+    textAlign: 'right',
   },
 });

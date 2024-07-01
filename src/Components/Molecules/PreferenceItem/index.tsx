@@ -1,6 +1,6 @@
 // libs
-import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import React, {useState} from 'react';
+import {Pressable, Text, View} from 'react-native';
 
 // 3rd party
 import Animated, {
@@ -8,22 +8,22 @@ import Animated, {
   useSharedValue,
   withSequence,
   withSpring,
-} from "react-native-reanimated";
-import BouncyCheckbox from "react-native-bouncy-checkbox/build/dist/BouncyCheckbox";
+} from 'react-native-reanimated';
+import BouncyCheckbox from 'react-native-bouncy-checkbox/build/dist/BouncyCheckbox';
 
 // custom
-import { COLORS, ANIMATIONS } from "../../../Constants";
-import { styles } from "./styles";
-import { PreferenceItemProps } from "./types";
+import {COLORS, ANIMATIONS} from '../../../Constants';
+import {styles} from './styles';
+import {PreferenceItemProps} from './types';
 
-const PreferenceItem: React.FC<PreferenceItemProps> = ({ item }) => {
+const PreferenceItem: React.FC<PreferenceItemProps> = ({item}) => {
   // state use
   const [isChecked, setIsChecked] = useState<boolean>(item.selected);
 
   // reanimated use
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{scale: scale.value}],
   }));
 
   // functions
@@ -34,7 +34,7 @@ const PreferenceItem: React.FC<PreferenceItemProps> = ({ item }) => {
   const handleOnPress = () => {
     scale.value = withSequence(
       withSpring(ANIMATIONS.sizeIncrease1),
-      withSpring(ANIMATIONS.sizeNormal)
+      withSpring(ANIMATIONS.sizeNormal),
     );
     toogleIsChecked();
   };
@@ -50,10 +50,10 @@ const PreferenceItem: React.FC<PreferenceItemProps> = ({ item }) => {
             size={28}
             fillColor={COLORS.PRIMARY.PURPLE}
             unFillColor={COLORS.PRIMARY.GREY}
-            innerIconStyle={{ borderColor: COLORS.PRIMARY.GREY }}
+            innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}
             onPress={toogleIsChecked}
             isChecked={isChecked}
-            style={{ marginRight: 8 }}
+            style={styles.bouncyCheckbox}
             disableText
           />
         </View>
