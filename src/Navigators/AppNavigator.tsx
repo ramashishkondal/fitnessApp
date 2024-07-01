@@ -6,8 +6,8 @@ import {Platform} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../Redux/Store';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AppleHealthKit from 'react-native-health';
-import notifee from '@notifee/react-native';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 // navigators
 import HomeNavigator from './HomeDrawerNavigator';
@@ -27,49 +27,34 @@ import {
   UserFromFirebaseDb,
   firebaseDB,
   getUserData,
+  storePost,
+  storeStory,
   storeUserHealthData,
   updateNotificationReadStatus,
 } from '../Utils/userUtils';
-import {date} from '../Utils/commonUtils';
+import {date, onDisplayNotification} from '../Utils/commonUtils';
 import EditProfile from '../Screens/MainScreens/EditProfile';
 import {updateUserData} from '../Redux/Reducers/currentUser';
 import BackNavigator from '../Components/Molecules/BackNavigator';
 import ResetPassword from '../Screens/MainScreens/ResetPassword';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useQuery, useRealm} from '@realm/react';
+import {StoryDb} from '../DbModels/story';
+import {PostDb} from '../DbModels/post';
+import {UserDb} from '../DbModels/user';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
-async function onDisplayNotification(message: string) {
-  // Request permissions (required for iOS)
-  await notifee.requestPermission();
-
-  // Create a channel (required for Android)
-  const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
-    vibration: true,
-  });
-
-  // Display a notification
-  await notifee.displayNotification({
-    title: 'Notification',
-    body: message,
-    android: {
-      channelId,
-      // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-      // pressAction is needed if you want the notification to open the app when pressed
-      pressAction: {
-        id: 'default',
-      },
-    },
-  });
-}
-
 const AppNavigator = () => {
-  // navigator use
+  // net info use
+  const netInfo = useNetInfo();
 
   // redux use
-  const {id} = useAppSelector(state => state.User.data);
+  const {id, firstName, lastName, photo} = useAppSelector(
+    state => state.User.data,
+  );
   const {value: healthData} = useAppSelector(state => state.health);
+  const {allowPushNotifications} = useAppSelector(state => state.settings.data);
   const dispatch = useAppDispatch();
 
   if (
@@ -80,8 +65,132 @@ const AppNavigator = () => {
     dispatch(resetHealthData());
   }
 
+  // realm use
+  const realm = useRealm();
+  const offlineStoryData = useQuery(StoryDb);
+  const offlinePostData = useQuery(PostDb);
+  const offlineUserData = useQuery(UserDb);
+
   // effect use
   useEffect(() => {
+    if (netInfo.isConnected) {
+      if (offlineUserData.length) {
+        const {
+          firstName,
+          lastName,
+          gender,
+          preferences,
+          interests,
+          photo,
+          id: uuid,
+        } = offlineUserData[0];
+        console.log('aaaaaaaa-----', {
+          firstName,
+          lastName,
+          gender,
+          preferences,
+          interests,
+          photo,
+          uuid,
+        });
+        if (photo) {
+          const reference = storage().ref(
+            'media/' + 'profilePictures' + id + '/' + 'photo',
+          );
+          reference.putFile(photo).then(() => {
+            reference.getDownloadURL().then(url => {
+              console.log('url', url);
+              firestore()
+                .collection(firebaseDB.collections.users)
+                .doc(uuid)
+                .update({
+                  firstName,
+                  lastName,
+                  gender,
+                  photo: url,
+                  preferences: preferences?.map(val => val),
+                  interests: interests?.map(val => val),
+                })
+                .catch(e => console.log('error in this fajfaw', e))
+                .finally(() => {
+                  realm.write(() => {
+                    realm.delete(offlineUserData);
+                  });
+                });
+            });
+          });
+        } else {
+          firestore()
+            .collection(firebaseDB.collections.users)
+            .doc(uuid)
+            .update({
+              firstName,
+              lastName,
+              gender,
+              preferences: preferences?.map(val => val),
+              interests: interests?.map(val => val),
+            })
+            .catch(e => console.log('error with syncing ', e))
+            .finally(() => {
+              realm.write(() => {
+                realm.delete(offlineUserData);
+              });
+            });
+        }
+      }
+      if (offlineStoryData.length) {
+        if (offlineStoryData[0].stories.length) {
+          console.log('offline story data', offlineStoryData);
+          offlineStoryData[0].stories.forEach(val => {
+            storeStory(
+              {
+                storyType: val.storyType,
+                storyUrl: val.storyUrl,
+                userName: firstName + ' ' + lastName,
+                userPhoto: photo,
+              },
+              id!,
+            );
+          });
+          realm.write(() => {
+            realm.delete(offlineStoryData);
+          });
+          console.log('deleted story data and added it to firestore');
+        }
+      }
+      if (offlinePostData.length) {
+        console.log('offline post data', offlinePostData);
+        offlinePostData.forEach(val => {
+          storePost({
+            caption: val.caption,
+            comments: [],
+            createdOn: Timestamp.fromDate(new Date()),
+            likedByUsersId: [],
+            photo: val.photo,
+            userId: id!,
+            userName: firstName + ' ' + lastName,
+            userPhoto: photo,
+          });
+        });
+        realm.write(() => {
+          realm.delete(offlinePostData);
+        });
+      }
+    }
+  }, [
+    firstName,
+    id,
+    lastName,
+    netInfo,
+    offlinePostData,
+    offlineStoryData,
+    offlineUserData,
+    photo,
+    realm,
+  ]);
+
+  useEffect(() => {
+    // getting active energy burned data from OS
     if (Platform.OS === 'ios') {
       // constants
       const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
@@ -104,28 +213,29 @@ const AppNavigator = () => {
         },
       );
     }
-  }, [dispatch]);
-
-  // effect use
-  useEffect(() => {
-    if (id) {
+    // fetching user Data from firebase
+    if (id && netInfo.isConnected) {
       const unsubscribe = firestore()
         .collection(firebaseDB.collections.users)
         .doc(id)
         .onSnapshot(snapshot => {
           const userData = snapshot.data() as UserFromFirebaseDb;
           if (userData) {
+            // notifications
+
             updateNotificationReadStatus(
               id,
               userData.notifications.map(val => {
                 if (val.isShownViaPushNotification === false) {
-                  getUserData(val.userId).then(uD => {
-                    setTimeout(
-                      onDisplayNotification,
-                      500,
-                      uD.firstName + ' ' + uD.lastName + ' ' + val.message,
-                    );
-                  });
+                  if (allowPushNotifications) {
+                    getUserData(val.userId).then(uD => {
+                      setTimeout(
+                        onDisplayNotification,
+                        500,
+                        uD.firstName + ' ' + uD.lastName + ' ' + val.message,
+                      );
+                    });
+                  }
                   return {
                     ...val,
                     isShownViaPushNotification: true,
@@ -136,6 +246,7 @@ const AppNavigator = () => {
                 };
               }),
             );
+
             dispatch(
               updateUserData({
                 ...userData,
@@ -159,7 +270,7 @@ const AppNavigator = () => {
         });
       return () => unsubscribe();
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, allowPushNotifications, netInfo.isConnected]);
 
   return (
     <Stack.Navigator

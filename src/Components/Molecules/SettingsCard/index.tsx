@@ -1,27 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {SettingsCardProps} from './types';
 import {COLORS} from '../../../Constants/commonStyles';
 import {Switch} from 'react-native-switch';
-import notifee from '@notifee/react-native';
 import {styles} from './styles';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {updateSettingPushNotification} from '../../../Redux/Reducers/userSettings';
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   title,
   hasSwitch = false,
   onPress,
 }) => {
-  const [switchActive, setSwitchActive] = useState(false);
+  // redux use
+  const dispatch = useAppDispatch();
+  const {allowPushNotifications} = useAppSelector(state => state.settings.data);
 
-  useEffect(() => {
-    notifee.requestPermission().then(settings => {
-      if (settings.authorizationStatus) {
-        setSwitchActive(true);
-      } else {
-        setSwitchActive(false);
-      }
-    });
-  }, []);
+  // state use
+  const [switchActive, setSwitchActive] = useState(allowPushNotifications);
+
   return (
     <Pressable style={styles.parent} onPress={onPress}>
       <Text style={styles.headingText}>{title}</Text>
@@ -35,10 +32,9 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
             value={switchActive}
             onValueChange={val => {
               setSwitchActive(val);
+              dispatch(updateSettingPushNotification(val));
             }}
             disabled={false}
-            activeText={'On'}
-            inActiveText={'Off'}
             circleSize={32}
             barHeight={32}
             circleBorderWidth={2}

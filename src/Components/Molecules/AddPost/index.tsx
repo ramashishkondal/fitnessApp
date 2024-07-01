@@ -19,6 +19,9 @@ import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Timestamp} from '@react-native-firebase/firestore';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {PostDb} from '../../../DbModels/post';
 
 const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   // constants
@@ -29,6 +32,12 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   const [photo, setPhoto] = useState('');
   const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // net info use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
 
   // redux use
   const {
@@ -60,24 +69,38 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
     }
   };
 
+  const storeDataInRealmDb = (postPhoto: string, postCaption: string) => {
+    realm.write(() => {
+      realm.create(PostDb, {
+        caption: postCaption,
+        photo: postPhoto,
+      });
+    });
+  };
+
   const handlePost = async () => {
     try {
       if (photo === '') {
         throw Error('you have to select a photo');
       }
-      if (userId !== null && userPhoto !== null) {
-        setIsLoading(true);
+      if (netInfo.isConnected === true) {
+        if (userId !== null && userPhoto !== null) {
+          setIsLoading(true);
 
-        await storePost({
-          caption,
-          userId,
-          createdOn: Timestamp.fromDate(new Date()),
-          photo,
-          comments: [],
-          likedByUsersId: [],
-          userName: firstName && lastName ? firstName + ' ' + lastName : '',
-          userPhoto,
-        });
+          await storePost({
+            caption,
+            userId,
+            createdOn: Timestamp.fromDate(new Date()),
+            photo,
+            comments: [],
+            likedByUsersId: [],
+            userName: firstName && lastName ? firstName + ' ' + lastName : '',
+            userPhoto,
+          });
+          setModalFalse();
+        }
+      } else {
+        storeDataInRealmDb(photo, caption);
         setModalFalse();
       }
     } catch (e) {
@@ -93,9 +116,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
         style={styles.parent}
         extraHeight={10}
         extraScrollHeight={Platform.OS === 'ios' ? 0 : 80}
-        enableOnAndroid={true}
-        // enableAutomaticScroll={Platform.OS === 'ios'}
-      >
+        enableOnAndroid={true}>
         <View>
           <HeadingText
             text={STRING.ADD_POST.TITLE}

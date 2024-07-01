@@ -1,6 +1,6 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Pressable, Text, TouchableOpacity} from 'react-native';
+import {View, Pressable, Text, FlatList, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import firestore from '@react-native-firebase/firestore';
@@ -60,49 +60,53 @@ const Notifications: React.FC = () => {
 
   return (
     <TouchableOpacity
-      style={styles.parent}
+      style={{flex: 1}}
       activeOpacity={1}
+      disabled={!showMenu}
       onPress={() => setShowMenu(false)}>
-      <View style={styles.menuCtr}>
-        {showMenu ? (
-          <View style={styles.activeMenuCtr}>
-            <Pressable onPress={markAllRead}>
-              <Text style={styles.menuText}>Mark all as read</Text>
-            </Pressable>
-            <Pressable onPress={markAllUnread}>
-              <Text style={styles.menuText}>Mark all as unread</Text>
-            </Pressable>
+      <View style={styles.parent}>
+        <View style={styles.menuCtr}>
+          {showMenu ? (
+            <View style={styles.activeMenuCtr}>
+              <Pressable onPress={markAllRead}>
+                <Text style={styles.menuText}>Mark all as read</Text>
+              </Pressable>
+              <Pressable onPress={markAllUnread}>
+                <Text style={styles.menuText}>Mark all as unread</Text>
+              </Pressable>
+            </View>
+          ) : null}
+          <View>
+            <HeadingText text="Notifications" textStyle={styles.headingText} />
+            <DescriptionText
+              text={`${
+                notificationsData?.filter(val => val.isUnread === true).length
+              } unread Notifications`}
+              textStyle={styles.descriptionText}
+            />
           </View>
-        ) : null}
-        <View>
-          <HeadingText text="Notifications" textStyle={styles.headingText} />
-          <DescriptionText
-            text={`${
-              notificationsData?.filter(val => val.isUnread === true).length
-            } unread Notifications`}
-            textStyle={styles.descriptionText}
+          <Pressable onPress={() => setShowMenu(!showMenu)}>
+            <View style={styles.dots} />
+            <View style={styles.dots} />
+            <View style={styles.dots} />
+          </Pressable>
+        </View>
+
+        <View style={styles.notificationsCtr}>
+          <FlatList
+            scrollEnabled
+            data={notificationsData?.slice().reverse()}
+            style={styles.flatList}
+            renderItem={({item}) => (
+              <Notification
+                isUnread={item.isUnread}
+                notificationText={item.message}
+                timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
+                userId={item.userId}
+              />
+            )}
           />
         </View>
-        <Pressable onPress={() => setShowMenu(!showMenu)}>
-          <View style={styles.dots} />
-          <View style={styles.dots} />
-          <View style={styles.dots} />
-        </Pressable>
-      </View>
-
-      <View style={styles.notificationsCtr}>
-        <FlatList
-          data={notificationsData?.slice().reverse()}
-          style={styles.flatList}
-          renderItem={({item}) => (
-            <Notification
-              isUnread={item.isUnread}
-              notificationText={item.message}
-              timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
-              userId={item.userId}
-            />
-          )}
-        />
       </View>
     </TouchableOpacity>
   );

@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {EditProfileProps} from './types';
 import {styles} from './styles';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
 import {COLORS, ICONS} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
@@ -11,14 +11,19 @@ import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInteres
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
 import storage from '@react-native-firebase/storage';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {UserDb} from '../../../DbModels/user';
+import {UpdateMode} from 'realm';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
   const [activeModal, setActiveModal] = useState<
     'userInfo' | 'preferences' | null | 'interests'
   >(null);
-
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
+
   // redux use
   const {
     photo,
@@ -30,6 +35,13 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     gender,
     id,
   } = useAppSelector(state => state.User.data);
+  const dispatch = useAppDispatch();
+
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
 
   // functions
   const setModalFalse = () => setActiveModal(null);
@@ -148,22 +160,41 @@ const EditProfile: React.FC<EditProfileProps> = () => {
         setModalVisible={setPhotoModalVisible}
         onSuccess={(uri: string) => {
           (async () => {
-            console.log('ee');
-            try {
-              const reference = storage().ref(
-                'media/' + 'profilePictures' + id + '/' + 'photo',
-              );
-              await reference.putFile(uri);
-              const url = await reference.getDownloadURL();
-              await firestore()
-                .collection(firebaseDB.collections.users)
-                .doc(id!)
-                .update({photo: url});
-              setPhotoModalVisible(false);
-              console.log('zezu');
-            } catch (e) {
-              console.log(e);
+            if (!netInfo.isConnected) {
+              if (id) {
+                realm.write(() => {
+                  realm.create(
+                    UserDb,
+                    {
+                      photo: uri,
+                      firstName,
+                      lastName,
+                      interests,
+                      preferences,
+                      gender,
+                      id,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+              }
+              dispatch(updateUserData({photo: uri}));
+            } else {
+              try {
+                const reference = storage().ref(
+                  'media/' + 'profilePictures' + id + '/' + 'photo',
+                );
+                await reference.putFile(uri);
+                const url = await reference.getDownloadURL();
+                await firestore()
+                  .collection(firebaseDB.collections.users)
+                  .doc(id!)
+                  .update({photo: url});
+              } catch (e) {
+                console.log(e);
+              }
             }
+            setPhotoModalVisible(false);
           })();
         }}
       />

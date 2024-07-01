@@ -44,10 +44,14 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
     state => state.User.data,
   );
 
+  // net info use
   const netInfo = useNetInfo();
+
+  // realm use
   const realm = useRealm();
   const storyDataFromOffline = useObject(StoryDb, id!);
   console.log('story data is ', storyDataFromOffline?.stories);
+
   // ref use
   const postIdRef = useRef<Post>();
   const story = useRef<string>('');
@@ -69,7 +73,8 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const goToPostScreen = (postId: string) => {
     return () => navigation.navigate('PostScreen', {postId: postId});
   };
-  const storeDataInRelmDb = (storyType: string, storyUrl: string) => {
+
+  const storeStoryDataInRealmDb = (storyType: string, storyUrl: string) => {
     if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
       console.log('already exists in db');
       return;
@@ -93,6 +98,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
       );
     });
   };
+
   const setStory = (st: string) => (story.current = st);
   const setActiveModalPost = () => setActiveModal('story');
   const setActiveModalFalse = () => setActiveModal('none');
@@ -113,7 +119,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         <View style={styles.storiesCtr}>
           <AddStory
             setModalVisible={() => setStoryModalVisible(true)}
-            isLoading={isLoading}
+            isLoading={isLoading && netInfo.isConnected ? true : false}
           />
 
           <FlatList
@@ -162,11 +168,12 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
                 storyType: type!,
               },
               id!,
-            ).finally(() => setIsLoading(false));
+            );
           } else {
             console.log('storing data in offline mode');
-            storeDataInRelmDb(type!, uri);
+            storeStoryDataInRealmDb(type!, uri);
           }
+          setIsLoading(false);
         }}
       />
     </>

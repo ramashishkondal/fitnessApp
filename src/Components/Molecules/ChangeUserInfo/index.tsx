@@ -6,20 +6,34 @@ import {styles} from './styles';
 import {ICONS, SPACING, STRING} from '../../../Constants';
 import Card from '../Card';
 import {User} from '../../../Defs';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {UserDb} from '../../../DbModels/user';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import {UpdateMode} from 'realm';
 
 const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   // redux use
-  const {gender, id} = useAppSelector(state => state.User.data);
+  const {gender, id, preferences, interests} = useAppSelector(
+    state => state.User.data,
+  );
+  const dispatch = useAppDispatch();
+
+  // net info use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
 
   // state use
   const [selectedGender, setSelectedGender] = useState<User['gender'] | null>(
     gender,
   );
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
 
   const toggleCheckBox = (g: User['gender']) => {
     setSelectedGender(g);
@@ -27,17 +41,35 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmitChange = async () => {
-    if (firstName !== '' && lastName !== '') {
-      await firestore()
-        .collection(firebaseDB.collections.users)
-        .doc(id!)
-        .update({
-          firstName,
-          lastName,
-          gender,
-        });
-      setModalFalse();
+    if (netInfo.isConnected) {
+      if (firstName !== '' && lastName !== '') {
+        await firestore()
+          .collection(firebaseDB.collections.users)
+          .doc(id!)
+          .update({
+            firstName,
+            lastName,
+            gender: selectedGender,
+          });
+      }
+    } else {
+      realm.write(() => {
+        realm.create(
+          UserDb,
+          {
+            firstName: firstName,
+            lastName: lastName,
+            gender: selectedGender,
+            id: id!,
+            interests,
+            preferences,
+          },
+          UpdateMode.Modified,
+        );
+      });
+      dispatch(updateUserData({firstName, lastName, gender: selectedGender}));
     }
+    setModalFalse();
   };
   return (
     <View style={styles.parent}>

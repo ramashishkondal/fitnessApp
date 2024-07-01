@@ -1,3 +1,4 @@
+import {FONT_FAMILY} from './../../../Constants/commonStyles';
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants/commonStyles';
 
@@ -12,6 +13,8 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: SIZES.font14,
+    color: 'black',
+    fontFamily: FONT_FAMILY.MEDIUM,
   },
   customButtonParent: {
     marginTop: 78,

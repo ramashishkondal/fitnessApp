@@ -9,7 +9,7 @@ import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
 import {Comment, UserPost} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {ICONS, SIZES} from '../../../Constants';
+import {ICONS} from '../../../Constants';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
@@ -112,9 +112,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             />
           </View>
           <View style={styles.commentsCtr}>
-            <Text style={{fontSize: SIZES.font17, fontWeight: SIZES.fontBold0}}>
-              Comments
-            </Text>
+            <Text style={styles.commentText}>Comments</Text>
             {postData.comments
               .slice(0)
               .reverse()
