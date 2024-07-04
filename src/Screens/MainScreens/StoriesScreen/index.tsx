@@ -89,6 +89,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
             .fill(0)
             .map((_val, i) => (
               <View
+                key={i}
                 style={[styles.line, i === index ? styles.lineActive : null]}
               />
             ))}

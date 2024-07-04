@@ -49,7 +49,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
 
   // realm use
   const realm = useRealm();
-  const storyDataFromOffline = useObject(StoryDb, id!);
+  const storyDataFromOffline = useObject(StoryDb, id ?? '');
   console.log('story data is ', storyDataFromOffline?.stories);
 
   // ref use

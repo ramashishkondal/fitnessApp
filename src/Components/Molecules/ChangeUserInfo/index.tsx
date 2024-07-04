@@ -41,6 +41,9 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmitChange = async () => {
+    if (firstName === '' || lastName === '') {
+      return;
+    }
     if (netInfo.isConnected) {
       if (firstName !== '' && lastName !== '') {
         await firestore()

@@ -24,6 +24,9 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
 
   // functions
   const handlePost = async () => {
+    if (comment.trim() === '') {
+      return;
+    }
     try {
       if (userId !== null) {
         setIsLoading(true);
@@ -68,6 +71,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
             onChangeText={setComment}
             placeholder="Add a Comment"
             style={styles.textInput}
+            multiline
           />
         </View>
       </View>

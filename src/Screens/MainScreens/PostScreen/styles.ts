@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
     flex: 6,
     paddingHorizontal: 24,
     fontSize: SIZES.font12,
+    color: 'black',
   },
   sendCtr: {
     flex: 1,

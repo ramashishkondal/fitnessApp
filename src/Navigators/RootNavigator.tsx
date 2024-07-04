@@ -58,14 +58,11 @@ const RootNavigator = () => {
   );
 
   // effect use
+
   useEffect(() => {
     const healthKitEventEmitter = new NativeEventEmitter(
       NativeModules.AppleHealthKit,
     );
-    if (Platform.OS === 'android') {
-      console.log('value of do something');
-      NativeModules.FingerPrintModule.getConstants();
-    }
 
     // constants
     const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
@@ -80,6 +77,37 @@ const RootNavigator = () => {
           await GoogleFit.authorize(options);
           dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
         }
+        GoogleFit.startRecording(
+          callbackStatus => {
+            console.log('google fit callback is ', callbackStatus);
+            if (callbackStatus.recording) {
+              console.log('Google Fit recording started successfully');
+              // Optionally, process data from callback.data
+              const today = date.today();
+              GoogleFit.getDailySteps(today).then(val =>
+                console.log(
+                  'val is ',
+                  val.filter(
+                    val =>
+                      val.source === 'com.google.android.gms:estimated_steps',
+                  )[0].steps[0].value,
+                ),
+              );
+              GoogleFit.observeSteps((isError, result) => {
+                console.log('result in observer steps is ', result);
+                if (isError) {
+                  console.log('error in listening ', isError);
+                }
+              });
+            } else {
+              console.log(
+                'Error starting Google Fit recording:',
+                callbackStatus.message,
+              );
+            }
+          },
+          ['step'],
+        );
         const today = date.today();
         const stepRes = await GoogleFit.getDailySteps(today);
         const opt = {
@@ -100,7 +128,7 @@ const RootNavigator = () => {
       }
     };
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    if (Platform.OS !== 'ios') {
+    if (Platform.OS === 'android') {
       androidHealthSetup();
       console.log('android -----');
     } else {

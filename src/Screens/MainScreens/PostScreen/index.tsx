@@ -7,14 +7,15 @@ import firestore, {Timestamp} from '@react-native-firebase/firestore';
 import {styles} from './styles';
 import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
-import {Comment, UserPost} from '../../../Components';
+import {Comment, CustomLoading, UserPost} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {ICONS} from '../../../Constants';
+import {COLORS, ICONS} from '../../../Constants';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
   const [postData, setPostData] = useState<Post>();
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // ref ues
   const textInputRef = useRef<TextInput | null>(null);
@@ -44,6 +45,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   // functions
   const postComment = async () => {
+    setIsLoading(true);
     try {
       if (id !== null && comment !== '' && postData) {
         setComment('');
@@ -61,8 +63,8 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       }
     } catch (e) {
       console.log('error', e);
-    } finally {
     }
+    setIsLoading(false);
   };
 
   if (postData) {
@@ -142,9 +144,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             ref={textInputRef}
             onChangeText={setComment}
             onSubmitEditing={postComment}
+            placeholderTextColor={'black'}
           />
-          <Pressable style={styles.sendCtr} onPress={postComment}>
-            <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
+          <Pressable
+            style={styles.sendCtr}
+            onPress={postComment}
+            disabled={isLoading}>
+            {isLoading ? (
+              <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+            ) : (
+              <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
+            )}
           </Pressable>
         </View>
       </>

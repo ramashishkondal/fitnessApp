@@ -79,10 +79,13 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   };
 
   const handlePost = async () => {
+    if (photo === '') {
+      return;
+    }
+    if (caption === '') {
+      return;
+    }
     try {
-      if (photo === '') {
-        throw Error('you have to select a photo');
-      }
       if (netInfo.isConnected === true) {
         if (userId !== null && userPhoto !== null) {
           setIsLoading(true);

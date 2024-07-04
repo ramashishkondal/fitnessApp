@@ -1,6 +1,13 @@
 // libs
-import React, {useState} from 'react';
-import {Alert, Text, View, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  Text,
+  View,
+  TouchableOpacity,
+  NativeModules,
+  Platform,
+} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -14,7 +21,7 @@ import {
   SocialLogins,
   CustomErrorText,
 } from '../../../Components';
-import {useAppDispatch} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {SignInProps} from '../../../Defs';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
@@ -23,12 +30,43 @@ import {styles} from './styles';
 
 const SignIn = ({navigation}: SignInProps) => {
   // state use
-  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // redux use
+  const {cachedData} = useAppSelector(state => state.settings.data);
   const dispatch = useAppDispatch();
+
+  const [email, setEmail] = useState<string>(
+    cachedData.isBiometricEnabled ? cachedData.email : '',
+  );
+  // effect use
+  useEffect(() => {
+    const handleBiometricAuth = () => {
+      if (Platform.OS === 'android') {
+        NativeModules.FingerPrintModule.authenticateFingerPrint().then(() =>
+          auth().signInWithEmailAndPassword(
+            cachedData.email,
+            cachedData.password,
+          ),
+        );
+      } else {
+        const handleFaceIDAuthentication = async () => {
+          try {
+            const result =
+              await NativeModules.FaceIdModule.authenticateWithFaceID();
+            Alert.alert('Authentication Success', result);
+          } catch (error: any) {
+            Alert.alert('Authentication Error', error.message);
+          }
+        };
+        handleFaceIDAuthentication();
+      }
+    };
+    if (cachedData.isBiometricEnabled) {
+      handleBiometricAuth();
+    }
+  }, [cachedData]);
 
   // functions
   const handleSignIn = async () => {
@@ -64,11 +102,12 @@ const SignIn = ({navigation}: SignInProps) => {
   return (
     <View style={styles.parent}>
       <CustomTextInput
+        value={email}
         placeHolder={STRING.SIGNIN.EMAIL}
         icon={ICONS.User({width: 18, height: 18})}
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
-        autoFocus
+        autoFocus={!cachedData.isBiometricEnabled}
       />
       {email && !isValidEmail(email) ? (
         <CustomErrorText text="Invalid Email Address" />

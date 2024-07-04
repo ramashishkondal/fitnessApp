@@ -113,6 +113,7 @@ export type appStackParamList = {
   StoriesScreen: {allStoryData: Array<StoryData>; index: number};
   EditProfile: undefined;
   ResetPassword: undefined;
+  Biometric: undefined;
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 

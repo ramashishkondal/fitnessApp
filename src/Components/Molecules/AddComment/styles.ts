@@ -33,7 +33,8 @@ export const styles = StyleSheet.create({
   textInput: {
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
-    flexGrow: 1,
+    // flexGrow: 1,
+    color: 'black',
   },
   footerCtr: {
     position: 'absolute',
