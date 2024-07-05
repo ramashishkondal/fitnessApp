@@ -5,6 +5,7 @@ import {TouchableOpacity, View} from 'react-native';
 // 3rd party
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {LoginManager} from 'react-native-fbsdk-next';
 
 // custom
 import {SPACING, ICONS, COLORS} from '../../../Constants';
@@ -40,14 +41,16 @@ const googleSignIn = async () => {
 
 const SocialLogins: React.FC = () => {
   // state use
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<
+    'google' | 'facebook' | 'twitter' | null
+  >(null);
 
   // redux use
   // const dispatch = useAppDispatch();
 
   // functions
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
+    setIsLoading('google');
     const userData = await googleSignIn();
     if (userData?.additionalUserInfo?.isNewUser) {
       const {email, displayName, photoURL: photo, uid: id} = userData.user;
@@ -83,19 +86,32 @@ const SocialLogins: React.FC = () => {
         );
       }
     }
-    setIsLoading(false);
+    setIsLoading(null);
+  };
+  const handleFacebookSignIn = async () => {
+    setIsLoading('facebook');
+    await LoginManager.logInWithPermissions(['public_profile', 'email']);
+    setIsLoading(null);
   };
 
   return (
     <View style={[styles.logoCtr, SPACING.mt3]}>
       <TouchableOpacity style={styles.logos}>
-        {ICONS.TwitterLogo({width: iconSize, height: iconSize})}
+        {isLoading === 'twitter' ? (
+          <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+        ) : (
+          ICONS.TwitterLogo({width: iconSize, height: iconSize})
+        )}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logos}>
-        {ICONS.FacebookLogo({width: iconSize, height: iconSize})}
+      <TouchableOpacity style={styles.logos} onPress={handleFacebookSignIn}>
+        {isLoading === 'facebook' ? (
+          <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+        ) : (
+          ICONS.FacebookLogo({width: iconSize, height: iconSize})
+        )}
       </TouchableOpacity>
       <TouchableOpacity style={styles.logos} onPress={handleGoogleSignIn}>
-        {isLoading ? (
+        {isLoading === 'google' ? (
           <CustomLoading color={COLORS.PRIMARY.PURPLE} />
         ) : (
           ICONS.GoogleLogo({

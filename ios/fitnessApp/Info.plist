@@ -33,6 +33,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1158156518828095</string>
+	<key>FacebookClientToken</key>
+	<string>eafac8d57553819ead2b94a6d1b7ce11</string>
+	<key>FacebookDisplayName</key>
+	<string>fitnessApp</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

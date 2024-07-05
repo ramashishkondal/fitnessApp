@@ -533,7 +533,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chicmic.app1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chicmic.app;
 				PRODUCT_NAME = fitnessApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -562,7 +562,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chicmic.app1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chicmic.app;
 				PRODUCT_NAME = fitnessApp;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
