@@ -1,3 +1,5 @@
+import {Platform} from 'react-native';
+
 export const STRING = {
   LANDING_PAGE: {
     TITLE: 'Welcome to Fitness App',
@@ -36,9 +38,10 @@ export const STRING = {
     },
   },
   ADD_FINGERPRINT: {
-    TITLE: 'Enable Fingerprint',
-    TITLE_DESCRIPTION:
-      "If you enable touch ID, you don't need to enter your password when you login.",
+    TITLE: Platform.OS === 'android' ? 'Enable Fingerprint' : 'Enable Face ID',
+    TITLE_DESCRIPTION: `If you enable ${
+      Platform.OS === 'android' ? 'touch ID' : 'Face ID'
+    }, you don't need to enter your password when you login.`,
     SUBMIT_BUTTON_TEXT: 'Continue',
     REJECT_BUTTON_TEXT: 'Not Now',
   },

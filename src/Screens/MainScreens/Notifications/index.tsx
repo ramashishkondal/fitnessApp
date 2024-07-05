@@ -18,8 +18,9 @@ import {getTimePassed} from '../../../Utils/commonUtils';
 
 const Notifications: React.FC = () => {
   // state ues
-  const [notificationsData, setNotificationsData] =
-    useState<Array<NotificationDataFirebaseDB>>();
+  const [notificationsData, setNotificationsData] = useState<
+    Array<NotificationDataFirebaseDB>
+  >([]);
   const [showMenu, setShowMenu] = useState(false);
 
   // redux use
@@ -58,6 +59,10 @@ const Notifications: React.FC = () => {
     setShowMenu(false);
   };
 
+  const clearAllNotifications = () => {
+    updateNotificationReadStatus(userId!, []);
+  };
+
   return (
     <TouchableOpacity
       style={{flex: 1}}
@@ -73,6 +78,9 @@ const Notifications: React.FC = () => {
               </Pressable>
               <Pressable onPress={markAllUnread}>
                 <Text style={styles.menuText}>Mark all as unread</Text>
+              </Pressable>
+              <Pressable onPress={clearAllNotifications}>
+                <Text style={styles.menuText}>Clear all</Text>
               </Pressable>
             </View>
           ) : null}
@@ -93,19 +101,26 @@ const Notifications: React.FC = () => {
         </View>
 
         <View style={styles.notificationsCtr}>
-          <FlatList
-            scrollEnabled
-            data={notificationsData?.slice().reverse()}
-            style={styles.flatList}
-            renderItem={({item}) => (
-              <Notification
-                isUnread={item.isUnread}
-                notificationText={item.message}
-                timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
-                userId={item.userId}
-              />
-            )}
-          />
+          {notificationsData.length ? (
+            <FlatList
+              scrollEnabled
+              data={notificationsData?.slice().reverse()}
+              style={styles.flatList}
+              renderItem={({item}) => (
+                <Notification
+                  isUnread={item.isUnread}
+                  notificationText={item.message}
+                  timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
+                  userId={item.userId}
+                />
+              )}
+            />
+          ) : (
+            <DescriptionText
+              text="There is no notification for now"
+              textStyle={styles.descriptionTextNoNotification}
+            />
+          )}
         </View>
       </View>
     </TouchableOpacity>

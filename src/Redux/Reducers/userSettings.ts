@@ -1,12 +1,23 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
+export type UserSettings = {
+  allowPushNotifications: boolean;
+  cachedData: {
+    isBiometricEnabled: boolean;
+    password: string;
+    email: string;
+    shouldAskBiometics: boolean;
+  };
+};
+
+const initialState: {data: UserSettings} = {
   data: {
     allowPushNotifications: false,
     cachedData: {
-      isBiometricEnabled: true,
+      isBiometricEnabled: false,
       password: '',
       email: '',
+      shouldAskBiometics: true,
     },
   },
 };
@@ -15,18 +26,17 @@ export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    updateSettingPushNotification(state, action: PayloadAction<boolean>) {
+    updateSettingPushNotification(
+      state,
+      action: PayloadAction<UserSettings['allowPushNotifications']>,
+    ) {
       state.data.allowPushNotifications = action.payload;
     },
     updateSettingsCachedData(
       state,
-      action: PayloadAction<{
-        isBiometricEnabled: boolean;
-        password: string;
-        email: string;
-      }>,
+      action: PayloadAction<Partial<UserSettings['cachedData']>>,
     ) {
-      state.data.cachedData = action.payload;
+      state.data.cachedData = {...state.data.cachedData, ...action.payload};
     },
   },
 });

@@ -117,8 +117,8 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
     <>
       <KeyboardAwareScrollView
         style={styles.parent}
-        extraHeight={10}
-        extraScrollHeight={Platform.OS === 'ios' ? 0 : 80}
+        extraHeight={20}
+        extraScrollHeight={Platform.OS === 'ios' ? 160 : 80}
         enableOnAndroid={true}>
         <View>
           <HeadingText
@@ -139,6 +139,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
                 onChangeText={setCaption}
                 placeholder="Add a Caption"
                 style={styles.textInput}
+                multiline
                 placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
               />
             </View>

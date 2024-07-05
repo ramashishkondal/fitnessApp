@@ -12,11 +12,8 @@ export const styles = StyleSheet.create({
   },
   topInfoCtr: {
     position: 'absolute',
-    height: 40,
-    top: 2,
     width: '100%',
     zIndex: 1,
-    // flexDirection: 'column',
     alignItems: 'center',
     paddingHorizontal: 16,
   },

@@ -11,12 +11,6 @@ import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {INTERESETS} from '../../../Constants/commonConstants';
 
-const renderItem: ListRenderItem<{
-  title: string;
-  icon: React.ReactNode;
-  selected: boolean;
-}> = ({item}) => <InterestItem item={item} />;
-
 const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
@@ -35,6 +29,12 @@ const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
     dispatch(updateUserData({interests: selectedItems}));
     navigation.push('AddGender');
   };
+
+  const renderItem: ListRenderItem<{
+    title: string;
+    icon: React.ReactNode;
+    selected: boolean;
+  }> = ({item}) => <InterestItem item={item} />;
   return (
     <View style={styles.parent}>
       <HeadingText text={STRING.ADD_INTERESTS.TITLE} textStyle={SPACING.mh2} />

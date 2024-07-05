@@ -1,6 +1,14 @@
 // libs
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, ScrollView, TextInput, Pressable} from 'react-native';
+import {
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  Pressable,
+  KeyboardAvoidingView,
+  Keyboard,
+} from 'react-native';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
@@ -64,12 +72,16 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     } catch (e) {
       console.log('error', e);
     }
+    Keyboard.dismiss();
     setIsLoading(false);
   };
 
   if (postData) {
     return (
-      <>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={95}>
         <ScrollView style={styles.parent}>
           <View style={styles.userPostCtr}>
             <UserPost
@@ -157,7 +169,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             )}
           </Pressable>
         </View>
-      </>
+      </KeyboardAvoidingView>
     );
   }
 };

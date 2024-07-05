@@ -4,21 +4,28 @@ import {Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // custom
 import {styles} from './styles';
 import {STRING} from '../../../Constants';
 import SettingsCard from '../../../Components/Molecules/SettingsCard';
 import {SettingsProps} from '../../../Defs';
-import {resetUserData} from '../../../Redux/Reducers/currentUser';
-import {useAppDispatch} from '../../../Redux/Store';
+// import {resetUserData} from '../../../Redux/Reducers/currentUser';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
+  const {finger} = useAppSelector(state => state.User.data);
+
   // functions
   const logOut = () => {
-    dispatch(resetUserData());
+    dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
+    // dispatch(resetUserData());
+    GoogleSignin.signOut();
+    auth().signOut();
     auth().signOut();
   };
 

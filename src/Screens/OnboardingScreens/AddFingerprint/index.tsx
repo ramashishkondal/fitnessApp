@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 
 // custom
 import {
@@ -9,13 +9,13 @@ import {
   DescriptionText,
   HeadingText,
 } from '../../../Components';
-import {ICONS, SPACING, STRING} from '../../../Constants';
+import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import {styles} from './styles';
 import {AddProfilePictureProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
-const fingerprintSize = 75;
+const iconSize = {width: 80, height: 80, color: COLORS.PRIMARY.PURPLE};
 const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
@@ -32,7 +32,9 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <View style={styles.iconCtr}>
-        {ICONS.Fingerprint({width: fingerprintSize, height: fingerprintSize})}
+        {Platform.OS === 'android'
+          ? ICONS.Fingerprint(iconSize)
+          : ICONS.FaceId(iconSize)}
       </View>
       <HeadingText
         text={STRING.ADD_FINGERPRINT.TITLE}

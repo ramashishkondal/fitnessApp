@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
     color: 'black',
+    maxWidth: 240,
   },
   footerCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,

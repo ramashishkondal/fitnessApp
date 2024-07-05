@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 24,
     marginVertical: 32,
+    alignItems: 'center',
   },
   customImageParent: {
     width: 50,
@@ -35,6 +36,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     // flexGrow: 1,
     color: 'black',
+    maxWidth: 240,
   },
   footerCtr: {
     position: 'absolute',

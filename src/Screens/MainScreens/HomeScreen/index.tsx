@@ -1,27 +1,63 @@
 // libs
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 
 // custom
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomHomeDetailsCard, HeadingText} from '../../../Components';
 import {ICONS, STRING} from '../../../Constants';
 import {HomeScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
-import {getPercentage} from '../../../Utils/commonUtils';
-
-const currentTime = new Date().getHours();
+import {date, getPercentage} from '../../../Utils/commonUtils';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
+  const dispatch = useAppDispatch();
+
   const {
     todaysSteps,
     waterIntake,
     nutrition,
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
-  const {firstName} = useAppSelector(state => state.User.data);
+  const {firstName, finger} = useAppSelector(state => state.User.data);
+  const {cachedData} = useAppSelector(state => state.settings.data);
+  const {isBiometricEnabled, shouldAskBiometics} = useAppSelector(
+    state => state.settings.data.cachedData,
+  );
+
+  console.log('cached data in home screen is ', cachedData);
+  // effect use
+  useEffect(() => {
+    if (finger && isBiometricEnabled === false && shouldAskBiometics) {
+      Alert.alert(
+        'Biometric: Sign in from new device detected',
+        'You have enabled biometric for SignIn in this account would you like to enable it on this device?',
+        [
+          {
+            text: 'Confirm',
+            onPress: () => {
+              dispatch(
+                updateSettingsCachedData({
+                  isBiometricEnabled: true,
+                  shouldAskBiometics: false,
+                }),
+              );
+            },
+          },
+          {text: 'Cancel'},
+          {
+            text: "Don't ask again",
+            onPress: () => {
+              dispatch(updateSettingsCachedData({shouldAskBiometics: false}));
+            },
+          },
+        ],
+      );
+    }
+  }, [dispatch, finger, isBiometricEnabled, shouldAskBiometics]);
 
   // functions
   const goToNutrition = (): void => navigation.push('Nutrition');
@@ -34,7 +70,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       entering={SlideInLeft.easing(Easing.ease)}>
       <HeadingText
         text={`${STRING.HOME_SCREEN.TITLE} ${
-          currentTime > 13 ? 'Evening' : 'Morning'
+          date.today().getHours() > 12 ? 'Afternoon' : 'Morning'
         }, ${firstName}`}
         headingTextStyle={2}
         textStyle={styles.headingText}

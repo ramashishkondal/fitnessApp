@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   bottomTextInputCtr: {
     position: 'absolute',
     bottom: 0,
-    borderWidth: 1,
+    borderTopWidth: 1,
     flex: 1,
     height: SIZES.height / 14,
     width: SIZES.width,

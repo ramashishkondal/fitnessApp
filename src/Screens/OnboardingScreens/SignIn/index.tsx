@@ -27,6 +27,7 @@ import {SignInProps} from '../../../Defs';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {STRING, ICONS, SPACING} from '../../../Constants';
 import {styles} from './styles';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const SignIn = ({navigation}: SignInProps) => {
   // state use
@@ -37,9 +38,12 @@ const SignIn = ({navigation}: SignInProps) => {
   const {cachedData} = useAppSelector(state => state.settings.data);
   const dispatch = useAppDispatch();
 
+  // cached data dependent use state
   const [email, setEmail] = useState<string>(
     cachedData.isBiometricEnabled ? cachedData.email : '',
   );
+  console.log('cached data in sign in time is ', cachedData);
+
   // effect use
   useEffect(() => {
     const handleBiometricAuth = () => {
@@ -53,20 +57,27 @@ const SignIn = ({navigation}: SignInProps) => {
       } else {
         const handleFaceIDAuthentication = async () => {
           try {
-            const result =
-              await NativeModules.FaceIdModule.authenticateWithFaceID();
-            Alert.alert('Authentication Success', result);
+            await NativeModules.FaceIdModule.authenticateWithFaceID();
+            auth().signInWithEmailAndPassword(
+              cachedData.email,
+              cachedData.password,
+            );
           } catch (error: any) {
+            if (error.message === 'Authentication failed') {
+              return;
+            }
             Alert.alert('Authentication Error', error.message);
           }
         };
-        handleFaceIDAuthentication();
+        if (cachedData.isBiometricEnabled) {
+          handleFaceIDAuthentication();
+        }
       }
     };
     if (cachedData.isBiometricEnabled) {
       handleBiometricAuth();
     }
-  }, [cachedData]);
+  }, [cachedData, dispatch]);
 
   // functions
   const handleSignIn = async () => {
@@ -75,6 +86,7 @@ const SignIn = ({navigation}: SignInProps) => {
       const {
         user: {uid},
       } = await auth().signInWithEmailAndPassword(email, password);
+      dispatch(updateSettingsCachedData({email, password}));
       dispatch(updateUserData({id: uid}));
     } catch (e) {
       const error = e as FirestoreError;

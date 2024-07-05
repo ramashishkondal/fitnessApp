@@ -19,19 +19,28 @@ export const styles = StyleSheet.create({
   notificationsCtr: {
     backgroundColor: 'white',
     marginVertical: 32,
+    zIndex: -1,
+    flex: 1,
   },
-  flatList: {marginVertical: 16},
+  flatList: {
+    marginVertical: 16,
+  },
   menuCtr: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   activeMenuCtr: {
+    // elevation: 150,
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 10,
     position: 'absolute',
     backgroundColor: 'white',
     zIndex: 1,
     borderRadius: SIZES.rounding0,
-    right: 32,
+    right: 36,
     padding: 8,
     top: 32,
   },
@@ -46,5 +55,9 @@ export const styles = StyleSheet.create({
   menuText: {
     color: 'black',
     fontFamily: FONT_FAMILY.REGULAR,
+  },
+  descriptionTextNoNotification: {
+    textAlign: 'left',
+    margin: 16,
   },
 });

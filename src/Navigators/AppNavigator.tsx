@@ -307,7 +307,7 @@ const AppNavigator = () => {
         options={{
           headerShown: false,
           animation: 'slide_from_bottom',
-          presentation: Platform.OS === 'ios' ? 'modal' : 'containedModal',
+          presentation: 'containedModal',
         }}
       />
       <Stack.Screen name="EditProfile" component={EditProfile} />

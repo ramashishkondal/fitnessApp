@@ -259,6 +259,7 @@ export const storeStory = async (
           userName: story.userName,
           userPhoto: story.userPhoto,
           storyByUserId: userId,
+          latestStoryOn: Timestamp.fromDate(new Date()),
         });
     }
     const snap = await firestore()

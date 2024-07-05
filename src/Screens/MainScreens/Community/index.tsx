@@ -64,6 +64,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as StoryData[];
+        console.log('stories data is ', x);
         setStoriesData(x);
       });
     return () => unsubscribe();
@@ -119,7 +120,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         <View style={styles.storiesCtr}>
           <AddStory
             setModalVisible={() => setStoryModalVisible(true)}
-            isLoading={isLoading && netInfo.isConnected ? true : false}
+            isLoading={!!(isLoading && netInfo.isConnected)}
           />
 
           <FlatList
