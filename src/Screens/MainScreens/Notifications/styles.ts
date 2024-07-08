@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeMenuCtr: {
-    // elevation: 150,
+    elevation: 20,
     shadowColor: 'black',
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 4},

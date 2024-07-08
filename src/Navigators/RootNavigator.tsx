@@ -1,5 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useState} from 'react';
+import {Linking} from 'react-native';
 
 // 3rd party
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,17 +8,20 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import AppleHealthKit, {HealthKitPermissions} from 'react-native-health';
 import GoogleFit, {Scopes} from 'react-native-google-fit';
 import {PERMISSIONS, check, request} from 'react-native-permissions';
+import BootSplash from 'react-native-bootsplash';
+import RNRestart from 'react-native-restart';
 
 // custom
 import OnboardingNav from './OnboardingNavigator';
 import AppNavigator from './AppNavigator';
-import {NativeEventEmitter, NativeModules, Platform} from 'react-native';
+import {Alert, NativeEventEmitter, NativeModules, Platform} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {updateHealthData} from '../Redux/Reducers/health';
 import {CustomLoading} from '../Components';
 import {date} from '../Utils/commonUtils';
 import {updateUserData} from '../Redux/Reducers/currentUser';
 import GoalModal from '../Components/Molecules/GoalModal';
+import {useAppSelector} from '../Redux/Store';
 
 // iOS health kit permissions
 const permissions = {
@@ -44,6 +48,7 @@ const RootNavigator = () => {
 
   // redux use
   const dispatch = useDispatch();
+  const {hasPermission} = useAppSelector(state => state.health.value);
 
   // functions
   const onAuthStateChanged = useCallback(
@@ -68,10 +73,38 @@ const RootNavigator = () => {
     const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
     const endDate = date.today().toISOString();
     const androidHealthSetup = async () => {
+      const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
       try {
-        const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
         if (authority === 'denied') {
-          await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
+          const userAllowed = await request(
+            PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION,
+          );
+          console.log(userAllowed);
+          if (userAllowed === 'blocked' || userAllowed === 'denied') {
+            Alert.alert(
+              'Activity Recognition permissions denied',
+              'You have to allow Activity recognition from the App settings to use full features of the app',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    Alert.alert(
+                      'Restart App',
+                      'The app needs to be restarted to apply the changes. Please click "OK" to restart now.',
+                      [{text: 'OK', onPress: RNRestart.restart}],
+                    );
+
+                    Linking.openSettings();
+                  },
+                },
+                {
+                  text: 'Cancel',
+                },
+              ],
+            );
+
+            return;
+          }
         }
         if (!GoogleFit.isAuthorized) {
           await GoogleFit.authorize(options);
@@ -187,14 +220,14 @@ const RootNavigator = () => {
       });
     }
     return subscriber;
-  }, [dispatch, onAuthStateChanged]);
+  }, [dispatch, onAuthStateChanged, hasPermission]);
 
   if (initializing) {
     return <CustomLoading />;
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={() => BootSplash.hide({fade: true})}>
       {user ? (
         <GoalModal>
           <AppNavigator />

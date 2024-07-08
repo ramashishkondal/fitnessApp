@@ -40,7 +40,23 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // functions
   const goNext = () => {
     console.log('goNext called with', index);
-    if (index < stories.length - 1) {
+    if (index === 0 && stories.length === 1) {
+      updateStoriesWatchedArray(
+        userId!,
+        allStoryData[userIndex].storyByUserId,
+        Timestamp.fromMillis(
+          allStoryData[userIndex].latestStoryOn.seconds * 1000,
+        )
+          .toDate()
+          .toISOString(),
+      );
+      if (userIndex < allStoryData.length - 1) {
+        setIndex(0);
+        setUserIndex(userIndex + 1);
+      } else {
+        navigation.goBack();
+      }
+    } else if (index < stories.length - 1) {
       if (index + 1 === stories.length - 1) {
         updateStoriesWatchedArray(
           userId!,
@@ -90,6 +106,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
     storyTimer.pause();
     videoRef.current?.pause();
   };
+  const handleResume = () => {
+    storyTimer.resume();
+    videoRef.current?.resume();
+  };
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
@@ -123,15 +143,33 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
         style={styles.gestureRecognizer}
         onSwipeLeft={handleLeftSwipe}
         onSwipeRight={handleRightSwipe}
-        onSwipeDown={() => navigation.goBack()}>
+        onSwipeDown={() => {
+          if (index === 0 && stories.length === 1) {
+            updateStoriesWatchedArray(
+              userId!,
+              allStoryData[userIndex].storyByUserId,
+              Timestamp.fromMillis(
+                allStoryData[userIndex].latestStoryOn.seconds * 1000,
+              )
+                .toDate()
+                .toISOString(),
+            );
+          }
+          navigation.goBack();
+        }}>
         <View style={styles.touchablesCtr}>
           <Pressable
             style={styles.leftPressable}
             onPress={handleLeftTap}
-            onLongPress={() => storyTimer.pause()}
-            onPressOut={() => storyTimer.resume()}
+            onLongPress={handlePause}
+            onPressOut={handleResume}
           />
-          <Pressable style={styles.rightPressable} onPress={goNext} />
+          <Pressable
+            style={styles.rightPressable}
+            onPress={goNext}
+            onLongPress={handlePause}
+            onPressOut={handleResume}
+          />
         </View>
         {stories[index].storyType.includes('video') ? (
           <View style={styles.videoCtr}>

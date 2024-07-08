@@ -11,6 +11,7 @@ import {SPACING, STRING} from '../../../Constants';
 import {styles} from './styles';
 import {useAppSelector} from '../../../Redux/Store';
 import {isValidPassword} from '../../../Utils/checkValidity';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const ResetPassword: React.FC = () => {
   // state use
@@ -18,11 +19,18 @@ const ResetPassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // netInfo use
+  const netInfo = useNetInfo();
+
   // redux use
   const {email} = useAppSelector(state => state.User.data);
 
   // functions
   const handleSubmit = async () => {
+    if (!netInfo.isConnected) {
+      Alert.alert('Network Error', 'Internet connection is disabled');
+      return;
+    }
     setIsLoading(true);
     const user = auth().currentUser;
 
@@ -49,7 +57,7 @@ const ResetPassword: React.FC = () => {
           } else {
             Alert.alert(
               'Error',
-              'Invalid password entered make sure the password entered is valid',
+              'Invalid new password entered make sure entered password includes 1 Capital character , 1 digit and the password is 8 characters long',
             );
           }
         })

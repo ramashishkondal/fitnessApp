@@ -28,11 +28,17 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {STRING, ICONS, SPACING} from '../../../Constants';
 import {styles} from './styles';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const SignIn = ({navigation}: SignInProps) => {
   // state use
   const [password, setPassword] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<'socialLogin' | 'continue' | null>(
+    null,
+  );
+
+  // netinfo use
+  const netInfo = useNetInfo();
 
   // redux use
   const {cachedData} = useAppSelector(state => state.settings.data);
@@ -42,28 +48,41 @@ const SignIn = ({navigation}: SignInProps) => {
   const [email, setEmail] = useState<string>(
     cachedData.isBiometricEnabled ? cachedData.email : '',
   );
-  console.log('cached data in sign in time is ', cachedData);
 
   // effect use
   useEffect(() => {
     const handleBiometricAuth = () => {
       if (Platform.OS === 'android') {
-        NativeModules.FingerPrintModule.authenticateFingerPrint().then(() =>
-          auth().signInWithEmailAndPassword(
-            cachedData.email,
-            cachedData.password,
-          ),
-        );
+        NativeModules.FingerPrintModule.authenticateFingerPrint()
+          .then(() =>
+            auth()
+              .signInWithEmailAndPassword(cachedData.email, cachedData.password)
+              .catch(error => {
+                if (error.code === 'auth/network-request-failed') {
+                  Alert.alert('Network Error', 'Network connection disabled');
+                }
+              }),
+          )
+          .catch((error: {message: string}) => {
+            if (error.message === 'Authentication failed') {
+              return;
+            }
+            Alert.alert('Authentication Error', error.message);
+          });
       } else {
         const handleFaceIDAuthentication = async () => {
           try {
             await NativeModules.FaceIdModule.authenticateWithFaceID();
-            auth().signInWithEmailAndPassword(
+            await auth().signInWithEmailAndPassword(
               cachedData.email,
               cachedData.password,
             );
           } catch (error: any) {
             if (error.message === 'Authentication failed') {
+              return;
+            }
+            if (error.code === 'auth/network-request-failed') {
+              Alert.alert('Authentication Error', error.code);
               return;
             }
             Alert.alert('Authentication Error', error.message);
@@ -81,8 +100,20 @@ const SignIn = ({navigation}: SignInProps) => {
 
   // functions
   const handleSignIn = async () => {
+    if (!netInfo.isConnected) {
+      Alert.alert('Network Error', 'Internet connection is disabled');
+      return;
+    }
+    if (email.trim() === '') {
+      Alert.alert('Error', "Email address can't be empty");
+      return;
+    }
+    if (password === '') {
+      Alert.alert('Error', "Password can't be empty");
+      return;
+    }
     try {
-      setIsLoading(true);
+      setIsLoading('continue');
       const {
         user: {uid},
       } = await auth().signInWithEmailAndPassword(email, password);
@@ -103,7 +134,7 @@ const SignIn = ({navigation}: SignInProps) => {
       Alert.alert(message);
       console.log('error with sign in ', error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(null);
     }
   };
 
@@ -130,7 +161,10 @@ const SignIn = ({navigation}: SignInProps) => {
         parentStyle={[SPACING.mt3, styles.textInput]}
         onChangeText={setPassword}
       />
-      <TouchableOpacity onPress={handleForgotPassword} style={SPACING.mt3}>
+      <TouchableOpacity
+        onPress={handleForgotPassword}
+        style={SPACING.mt3}
+        disabled={isLoading !== null}>
         <Text style={styles.forgotPasswordText}>
           {STRING.SIGNIN.FORGOT_PASSWORD}
         </Text>
@@ -138,12 +172,22 @@ const SignIn = ({navigation}: SignInProps) => {
       <Text style={[styles.text, SPACING.mtMedium]}>
         {STRING.SIGNIN.SIGN_IN_WITH}
       </Text>
-      <SocialLogins />
+      <SocialLogins
+        isLoading={isLoading === 'socialLogin'}
+        setIsLoading={(val: boolean) => {
+          if (val) {
+            setIsLoading('socialLogin');
+          } else {
+            setIsLoading(null);
+          }
+        }}
+      />
       <CustomButton
         title={STRING.SIGNIN.BUTTON_TEXT}
         parentStyle={styles.customButtonParent}
         onPress={handleSignIn}
-        isLoading={isLoading}
+        isLoading={isLoading === 'continue'}
+        disabled={isLoading === 'socialLogin'}
       />
     </View>
   );

@@ -4,7 +4,7 @@ import {View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+// import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // custom
 import {CustomLoading} from '../../../Components';
@@ -22,7 +22,7 @@ const LogOut = () => {
   useEffect(() => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
     // dispatch(resetUserData());
-    GoogleSignin.signOut();
+    // GoogleSignin.signOut();
     auth().signOut();
   }, [dispatch, finger]);
 

@@ -30,7 +30,6 @@ const simleySize = {
 
 const WaterIntake: React.FC = () => {
   // constants
-  const today = date.today();
 
   // state use
   const [rating, setRating] = useState<{
@@ -47,8 +46,10 @@ const WaterIntake: React.FC = () => {
   const dispatch = useAppDispatch();
   // effect use
   useEffect(() => {
+    const today = date.today();
     getHealthData(id!)
       .then(healthData => {
+        console.log('health Data is', healthData);
         if (healthData) {
           const filteredData = healthData.filter(val =>
             checkWeek(
@@ -108,7 +109,7 @@ const WaterIntake: React.FC = () => {
       .catch(e =>
         console.log('error encounterd in getting user health info', e),
       );
-  }, [id, today]);
+  }, [id]);
 
   // memo use
   const glasses = useMemo(

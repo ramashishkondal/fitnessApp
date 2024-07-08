@@ -1,6 +1,14 @@
 // libs
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Image, TextInput, Platform} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Platform,
+  Pressable,
+  Alert,
+} from 'react-native';
 
 import {
   CameraOptions,
@@ -8,6 +16,7 @@ import {
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import EmojiSelector from 'react-native-emoji-selector';
 
 // custom
 import CustomButton from '../../Atoms/CustomButton';
@@ -32,6 +41,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   const [photo, setPhoto] = useState('');
   const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isEmojiShown, setIsEmojiShown] = useState(false);
 
   // net info use
   const netInfo = useNetInfo();
@@ -80,9 +90,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
 
   const handlePost = async () => {
     if (photo === '') {
-      return;
-    }
-    if (caption === '') {
+      Alert.alert('Error', 'You have to select an image to post');
       return;
     }
     try {
@@ -115,37 +123,56 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
 
   return (
     <>
-      <KeyboardAwareScrollView
-        style={styles.parent}
-        extraHeight={20}
-        extraScrollHeight={Platform.OS === 'ios' ? 160 : 80}
-        enableOnAndroid={true}>
-        <View>
-          <HeadingText
-            text={STRING.ADD_POST.TITLE}
-            textStyle={styles.titleText}
-          />
-          {photo ? <Image source={{uri: photo}} style={styles.image} /> : null}
-          <View style={styles.addPostCtr}>
-            <CustomImage
-              source={{uri: userPhoto}}
-              parentStyle={styles.customImageParent}
-              imageStyle={styles.customImage}
+      <Pressable style={{flex: 1}} onPress={() => setIsEmojiShown(false)}>
+        <KeyboardAwareScrollView
+          style={styles.parent}
+          // extraHeight={60}
+          extraScrollHeight={Platform.OS === 'ios' ? 160 : -100}
+          enableOnAndroid={true}>
+          <View>
+            <HeadingText
+              text={STRING.ADD_POST.TITLE}
+              textStyle={styles.titleText}
             />
-            <View style={styles.textInputCtr}>
-              <TextInput
-                autoFocus
-                maxLength={100}
-                onChangeText={setCaption}
-                placeholder="Add a Caption"
-                style={styles.textInput}
-                multiline
-                placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
+            <View style={styles.addPostCtr}>
+              <CustomImage
+                source={{uri: userPhoto}}
+                parentStyle={styles.customImageParent}
+                imageStyle={styles.customImage}
               />
+              <View style={styles.textInputCtr}>
+                <TextInput
+                  value={caption}
+                  autoFocus
+                  maxLength={100}
+                  onChangeText={setCaption}
+                  placeholder="Add a Caption"
+                  style={styles.textInput}
+                  multiline
+                  placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
+                  onPress={() => setIsEmojiShown(false)}
+                />
+              </View>
             </View>
+            {photo ? (
+              <Image source={{uri: photo}} style={styles.image} />
+            ) : null}
           </View>
+        </KeyboardAwareScrollView>
+      </Pressable>
+      {isEmojiShown ? (
+        <View style={styles.EmojiSelectorCtr}>
+          <EmojiSelector
+            onEmojiSelected={emoji => {
+              setCaption(caption + emoji);
+            }}
+            showTabs={false}
+            showSectionTitles
+            columns={8}
+            theme={COLORS.SECONDARY.GREY}
+          />
         </View>
-      </KeyboardAwareScrollView>
+      ) : null}
       <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>
           <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
@@ -162,7 +189,11 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
               color: COLORS.SECONDARY.GREY,
             })}
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconsCtr}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsEmojiShown(state => !state);
+            }}
+            style={styles.iconsCtr}>
             {ICONS.SmileyGood({
               width: 24,
               height: 24,

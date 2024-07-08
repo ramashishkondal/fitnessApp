@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, Linking, Alert} from 'react-native';
 import {SettingsCardProps} from './types';
 import {COLORS} from '../../../Constants/commonStyles';
 import {Switch} from 'react-native-switch';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateSettingPushNotification} from '../../../Redux/Reducers/userSettings';
+import {PERMISSIONS, check, request} from 'react-native-permissions';
+import RNRestart from 'react-native-restart';
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   title,
@@ -30,9 +32,46 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
           ]}>
           <Switch
             value={switchActive}
-            onValueChange={val => {
-              setSwitchActive(val);
-              dispatch(updateSettingPushNotification(val));
+            onValueChange={async val => {
+              const notificationPerm = await check(
+                PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+              );
+              if (notificationPerm === 'granted' || val === false) {
+                setSwitchActive(val);
+                dispatch(updateSettingPushNotification(val));
+              }
+              if (val && notificationPerm !== 'granted') {
+                const notificationAuth = await request(
+                  PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+                );
+                if (notificationAuth === 'granted') {
+                  setSwitchActive(val);
+                  dispatch(updateSettingPushNotification(val));
+                }
+                if (notificationAuth === 'blocked') {
+                  Alert.alert(
+                    'Notifications permissions denied',
+                    'You have to allow Notification permissions from the App settings to use full features of the app',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => {
+                          Alert.alert(
+                            'Restart App',
+                            'The app needs to be restarted to apply the changes. Please click "OK" to restart now.',
+                            [{text: 'OK', onPress: RNRestart.restart}],
+                          );
+
+                          Linking.openSettings();
+                        },
+                      },
+                      {
+                        text: 'Cancel',
+                      },
+                    ],
+                  );
+                }
+              }
             }}
             disabled={false}
             circleSize={32}

@@ -117,7 +117,7 @@ const Notifications: React.FC = () => {
             />
           ) : (
             <DescriptionText
-              text="There is no notification for now"
+              text="There are no notifications for now"
               textStyle={styles.descriptionTextNoNotification}
             />
           )}

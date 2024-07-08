@@ -88,7 +88,7 @@ export const getHealthData = async (uid: string) => {
       .collection(firebaseDB.collections.users)
       .doc(uid)
       .get();
-    return snapshot.data() as Array<UserHealthDataFirebaseDb>;
+    return snapshot.get('healthData') as Array<UserHealthDataFirebaseDb>;
   } catch (e) {
     console.log(e);
   }
@@ -126,7 +126,7 @@ export const storePost = async (post: Post) => {
 export const storePostComment = async (
   postId: string,
   comment: Comment,
-  notification: {sendNotificationToUserId: string},
+  notification?: {sendNotificationToUserId: string},
 ) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
@@ -134,15 +134,17 @@ export const storePostComment = async (
     .update({
       comments: firestore.FieldValue.arrayUnion(comment),
     });
-  sendNotification(
-    {
-      isShownViaPushNotification: false,
-      isUnread: true,
-      message: 'commented on your post',
-      userId: comment.userId,
-    },
-    notification.sendNotificationToUserId,
-  );
+  if (notification) {
+    sendNotification(
+      {
+        isShownViaPushNotification: false,
+        isUnread: true,
+        message: 'commented on your post',
+        userId: comment.userId,
+      },
+      notification.sendNotificationToUserId,
+    );
+  }
 };
 
 export const getPost = async (postId: string) => {

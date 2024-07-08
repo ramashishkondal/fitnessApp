@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
   parent: {
     backgroundColor: COLORS.SECONDARY.WHITE,
     marginHorizontal: 16,
-    marginVertical: SIZES.width / 7,
+    marginTop: 40,
+    marginBottom: 48,
     top: SIZES.height / 40,
     borderRadius: SIZES.rounding2,
   },

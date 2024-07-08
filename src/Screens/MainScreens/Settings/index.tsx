@@ -4,14 +4,12 @@ import {Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // custom
 import {styles} from './styles';
 import {STRING} from '../../../Constants';
 import SettingsCard from '../../../Components/Molecules/SettingsCard';
 import {SettingsProps} from '../../../Defs';
-// import {resetUserData} from '../../../Redux/Reducers/currentUser';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
@@ -23,9 +21,6 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // functions
   const logOut = () => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
-    // dispatch(resetUserData());
-    GoogleSignin.signOut();
-    auth().signOut();
     auth().signOut();
   };
 
@@ -42,8 +37,14 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Reset Password"
           onPress={() => navigation.navigate('ResetPassword')}
         />
-        <SettingsCard title="Give Feedback" />
-        <SettingsCard title="About Us" />
+        <SettingsCard
+          title="Give Feedback"
+          onPress={() => navigation.push('GiveFeedback')}
+        />
+        <SettingsCard
+          title="About Us"
+          onPress={() => navigation.navigate('AboutUs')}
+        />
         <SettingsCard title="Log Out" onPress={logOut} />
       </View>
     </View>

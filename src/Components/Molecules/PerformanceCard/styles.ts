@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -18,15 +19,20 @@ export const styles = StyleSheet.create({
     flex: 6,
   },
   descTitleText: {
-    fontSize: SIZES.font17,
+    fontSize: SIZES.font15,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: 'black',
   },
   descText: {
     color: COLORS.SECONDARY.GREY,
     fontSize: SIZES.font12,
     fontWeight: SIZES.fontBold2,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   valueText: {
-    fontSize: SIZES.font17,
+    fontSize: SIZES.font15,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: 'black',
     flex: 1,
     textAlign: 'right',
   },

@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   parent: {
     maxWidth: '100%',
     flex: 1,
+    justifyContent: 'space-between',
   },
   addCommentCtr: {
     flexDirection: 'row',
@@ -37,6 +38,7 @@ export const styles = StyleSheet.create({
     // flexGrow: 1,
     color: 'black',
     maxWidth: 240,
+    minWidth: 200,
   },
   footerCtr: {
     position: 'absolute',
@@ -51,6 +53,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 40,
+    backgroundColor: 'white',
   },
   childFooterCtr: {flexDirection: 'row'},
   iconsCtr: {marginHorizontal: 8},
@@ -61,5 +64,11 @@ export const styles = StyleSheet.create({
   customButtonCtr: {
     flexGrow: 1,
     alignItems: 'flex-end',
+  },
+  EmojiSelectorCtr: {
+    height: 300,
+    bottom: 100,
+    alignItems: 'flex-end',
+    marginHorizontal: 16,
   },
 });

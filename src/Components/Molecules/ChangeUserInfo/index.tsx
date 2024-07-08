@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert, Platform, View} from 'react-native';
 import {CustomButton, CustomTextInput, HeadingText} from '../../Atoms';
 import {ChangeUserInfoProps} from './types';
 import {styles} from './styles';
-import {ICONS, SPACING, STRING} from '../../../Constants';
+import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import Card from '../Card';
 import {User} from '../../../Defs';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
@@ -15,6 +15,7 @@ import {UserDb} from '../../../DbModels/user';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {UpdateMode} from 'realm';
 import {isValidName} from '../../../Utils/checkValidity';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   // redux use
@@ -88,44 +89,53 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
     }
   };
   return (
-    <View style={styles.parent}>
-      <HeadingText text="Edit User Info" textStyle={SPACING.mt1} />
-      <CustomTextInput
-        value={firstName}
-        placeHolder="First Name"
-        parentStyle={[SPACING.mh1, SPACING.mt5]}
-        textInputStyle={styles.customTextInputStyle}
-        onChangeText={handleChangeFirstName}
-      />
-      <CustomTextInput
-        value={lastName}
-        placeHolder="Last Name"
-        parentStyle={[SPACING.mh1, SPACING.mt5]}
-        textInputStyle={styles.customTextInputStyle}
-        onChangeText={handleChangeLastName}
-      />
-      <View style={styles.genderCtr}>
-        <View style={styles.genderCardsCtr}>
-          <Card
-            text={STRING.ADD_GENDER.MALE}
-            icon={ICONS.Male}
-            onToggle={() => toggleCheckBox('male')}
-            isChecked={selectedGender === 'male'}
-          />
-          <Card
-            text={STRING.ADD_GENDER.FEMALE}
-            icon={ICONS.Female}
-            onToggle={() => toggleCheckBox('female')}
-            isChecked={selectedGender === 'female'}
-          />
+    <KeyboardAwareScrollView
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
+        borderRadius: 10,
+      }}
+      extraScrollHeight={Platform.OS === 'ios' ? 160 : -275}
+      enableOnAndroid={true}>
+      <View style={styles.parent}>
+        <HeadingText text="Edit User Info" textStyle={SPACING.mt1} />
+        <CustomTextInput
+          value={firstName}
+          placeHolder="First Name"
+          parentStyle={[SPACING.mh1, SPACING.mt5]}
+          textInputStyle={styles.customTextInputStyle}
+          onChangeText={handleChangeFirstName}
+        />
+        <CustomTextInput
+          value={lastName}
+          placeHolder="Last Name"
+          parentStyle={[SPACING.mh1, SPACING.mt5]}
+          textInputStyle={styles.customTextInputStyle}
+          onChangeText={handleChangeLastName}
+        />
+        <View style={styles.genderCtr}>
+          <View style={styles.genderCardsCtr}>
+            <Card
+              text={STRING.ADD_GENDER.MALE}
+              icon={ICONS.Male}
+              onToggle={() => toggleCheckBox('male')}
+              isChecked={selectedGender === 'male'}
+            />
+            <Card
+              text={STRING.ADD_GENDER.FEMALE}
+              icon={ICONS.Female}
+              onToggle={() => toggleCheckBox('female')}
+              isChecked={selectedGender === 'female'}
+            />
+          </View>
         </View>
+        <CustomButton
+          title="Submit"
+          parentStyle={SPACING.mtXLarge}
+          onPress={handleSubmitChange}
+        />
       </View>
-      <CustomButton
-        title="Submit"
-        parentStyle={SPACING.mtXLarge}
-        onPress={handleSubmitChange}
-      />
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

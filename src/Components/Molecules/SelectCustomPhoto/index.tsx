@@ -37,6 +37,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
     mediaType,
     quality: 0.5,
     videoQuality: 'low',
+    cameraType: 'front',
   };
 
   // effect use

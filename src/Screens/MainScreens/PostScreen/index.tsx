@@ -8,6 +8,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Keyboard,
+  Platform,
 } from 'react-native';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
@@ -80,8 +81,8 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     return (
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="height"
-        keyboardVerticalOffset={95}>
+        behavior={Platform.OS === 'ios' ? 'height' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 95 : 0}>
         <ScrollView style={styles.parent}>
           <View style={styles.userPostCtr}>
             <UserPost

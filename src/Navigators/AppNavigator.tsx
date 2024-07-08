@@ -43,7 +43,8 @@ import {useQuery, useRealm} from '@realm/react';
 import {StoryDb} from '../DbModels/story';
 import {PostDb} from '../DbModels/post';
 import {UserDb} from '../DbModels/user';
-import Biometric from '../Screens/MainScreens/Biometric';
+import GiveFeedback from '../Screens/MainScreens/GiveFeedback';
+import AboutUs from '../Screens/MainScreens/AboutUs';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -312,7 +313,8 @@ const AppNavigator = () => {
       />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="Biometric" component={Biometric} />
+      <Stack.Screen name="GiveFeedback" component={GiveFeedback} />
+      <Stack.Screen name="AboutUs" component={AboutUs} />
     </Stack.Navigator>
   );
 };

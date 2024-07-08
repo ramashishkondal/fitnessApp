@@ -22,7 +22,8 @@ const WithModal: React.FC<WithModalProps> = ({
       onBackdropPress={setModalFalse}
       swipeDirection={'down'}
       avoidKeyboard={false}
-      statusBarTranslucent={true}
+      // statusBarTranslucent={true}
+      renderToHardwareTextureAndroid
       style={[styles.parent, parentStyle]}
       propagateSwipe={true}>
       {barShown ? (

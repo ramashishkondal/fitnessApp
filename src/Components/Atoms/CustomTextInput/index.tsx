@@ -21,6 +21,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
     autoFocus,
     hasError,
     value,
+    textInputProps,
   }) => {
     return (
       <Animated.View
@@ -41,6 +42,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
           autoCorrect={false}
           autoFocus={autoFocus}
           value={value}
+          {...textInputProps}
         />
       </Animated.View>
     );

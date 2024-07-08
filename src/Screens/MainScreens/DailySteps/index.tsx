@@ -119,7 +119,7 @@ const DailySteps: React.FC = () => {
       })
       .catch(e =>
         console.log(
-          'error encounterd fetching health data in daily steps - ',
+          'error encountered fetching health data in daily steps - ',
           e,
         ),
       );
@@ -138,10 +138,14 @@ const DailySteps: React.FC = () => {
         (error, result) => {
           if (!error) {
             console.log('res is', result);
+
             setLineData(
-              result.map(val => ({
-                value: getPercentage(val.value, totalSteps),
-              })),
+              result.map(val => {
+                console.log('val');
+                return {
+                  value: getPercentage(val.value, totalSteps),
+                };
+              }),
             );
             return;
           }
@@ -228,7 +232,7 @@ const DailySteps: React.FC = () => {
             isAnimated
             adjustToWidth
             curved
-            yAxisOffset={-27.5}
+            // yAxisOffset={-15.5}
             initialSpacing={0}
             data={lineData}
             hideOrigin

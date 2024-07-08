@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   image: {
     height: SIZES.height / 3,
     marginHorizontal: 16,
-    marginVertical: 32,
+    marginVertical: 16,
     borderRadius: SIZES.rounding2,
   },
   captionText: {marginTop: 8, fontSize: SIZES.font13, marginHorizontal: 16},
@@ -61,5 +61,19 @@ export const styles = StyleSheet.create({
   },
   textInputCtr: {
     flexGrow: 1,
+  },
+  EmojiSelectorCtr: {
+    height: 300,
+    bottom: 100,
+    position: 'absolute',
+    marginHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: SIZES.rounding0,
+    elevation: 8,
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: -300},
+    shadowRadius: 300,
+    // borderWidth: 1,
   },
 });

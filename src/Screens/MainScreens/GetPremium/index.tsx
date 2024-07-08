@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Alert, Image, Platform, Text, View} from 'react-native';
 
 // custom
 import {styles} from './styles';
@@ -45,12 +45,16 @@ const GetPremium = () => {
         autoPlayInterval={5000}
         scrollAnimationDuration={1000}
         width={SIZES.width}
-        height={SIZES.height / 3.25}
+        height={Platform.OS === 'ios' ? SIZES.height / 3.7 : SIZES.height / 4}
         data={carouselItems}
         onSnapToItem={index => setActiveCarousel(index)}
         renderItem={({index, item}) => (
           <View key={index} style={styles.imageCtr}>
-            <Image source={item.image} style={{width: SIZES.width}} />
+            <Image
+              source={item.image}
+              style={{width: SIZES.width}}
+              resizeMode="contain"
+            />
           </View>
         )}
       />
@@ -103,7 +107,13 @@ const GetPremium = () => {
             said than done. Just a few good habits can make a great difference.
           </Text>
         </View>
-        <CustomButton title="Purchase" parentStyle={styles.customParent} />
+        <CustomButton
+          title="Purchase"
+          parentStyle={styles.customParent}
+          onPress={() =>
+            Alert.alert('Coming Soon', 'premium feature coming soon.')
+          }
+        />
       </View>
     </ScrollView>
   );
