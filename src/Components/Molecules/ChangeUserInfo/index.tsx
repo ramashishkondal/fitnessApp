@@ -19,9 +19,14 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   // redux use
-  const {gender, id, preferences, interests} = useAppSelector(
-    state => state.User.data,
-  );
+  const {
+    gender,
+    id,
+    preferences,
+    interests,
+    firstName: fn,
+    lastName: ln,
+  } = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
 
   // net info use
@@ -34,8 +39,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   const [selectedGender, setSelectedGender] = useState<User['gender'] | null>(
     gender,
   );
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>(fn);
+  const [lastName, setLastName] = useState<string>(ln);
 
   const toggleCheckBox = (g: User['gender']) => {
     setSelectedGender(g);

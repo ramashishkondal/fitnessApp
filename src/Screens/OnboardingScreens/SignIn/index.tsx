@@ -36,6 +36,7 @@ const SignIn = ({navigation}: SignInProps) => {
   const [isLoading, setIsLoading] = useState<'socialLogin' | 'continue' | null>(
     null,
   );
+  const [activeOut, setActiveOut] = useState(false);
 
   // netinfo use
   const netInfo = useNetInfo();
@@ -63,11 +64,12 @@ const SignIn = ({navigation}: SignInProps) => {
                 }
               }),
           )
-          .catch((error: {message: string}) => {
-            if (error.message === 'Authentication failed') {
+          .catch((error: string) => {
+            if (error === 'Authentication failed') {
               return;
             }
-            Alert.alert('Authentication Error', error.message);
+            console.log('error in auth fingerprint', error);
+            // Alert.alert('Authentication Error', error.message);
           });
       } else {
         const handleFaceIDAuthentication = async () => {
@@ -151,8 +153,9 @@ const SignIn = ({navigation}: SignInProps) => {
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
         autoFocus={!cachedData.isBiometricEnabled}
+        textInputProps={{onBlur: () => setActiveOut(true)}}
       />
-      {email && !isValidEmail(email) ? (
+      {activeOut && email && !isValidEmail(email) ? (
         <CustomErrorText text="Invalid Email Address" />
       ) : null}
       <CustomTextInput

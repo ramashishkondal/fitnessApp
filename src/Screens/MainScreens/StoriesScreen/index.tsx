@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 
 // 3rd party
-import Video, {VideoRef} from 'react-native-video';
+import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -102,14 +102,14 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const storyTimer = new Timer(goNext);
-  const handlePause = () => {
-    storyTimer.pause();
-    videoRef.current?.pause();
-  };
-  const handleResume = () => {
-    storyTimer.resume();
-    videoRef.current?.resume();
-  };
+  // const handlePause = () => {
+  //   storyTimer.pause();
+  //   videoRef.current?.pause();
+  // };
+  // const handleResume = () => {
+  //   storyTimer.resume();
+  //   videoRef.current?.resume();
+  // };
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
@@ -158,18 +158,8 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
           navigation.goBack();
         }}>
         <View style={styles.touchablesCtr}>
-          <Pressable
-            style={styles.leftPressable}
-            onPress={handleLeftTap}
-            onLongPress={handlePause}
-            onPressOut={handleResume}
-          />
-          <Pressable
-            style={styles.rightPressable}
-            onPress={goNext}
-            onLongPress={handlePause}
-            onPressOut={handleResume}
-          />
+          <Pressable style={styles.leftPressable} onPress={handleLeftTap} />
+          <Pressable style={styles.rightPressable} onPress={goNext} />
         </View>
         {stories[index].storyType.includes('video') ? (
           <View style={styles.videoCtr}>
@@ -188,6 +178,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
                 storyTimer.start(duration < 15 ? duration * 1000 - 100 : 10000)
               }
               resizeMode="cover"
+              bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
             />
           </View>
         ) : (

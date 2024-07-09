@@ -122,6 +122,10 @@ export type NutritionProps = NativeStackScreenProps<
   appStackParamList,
   'Nutrition'
 >;
+export type ResetPasswordProps = NativeStackScreenProps<
+  appStackParamList,
+  'ResetPassword'
+>;
 export type HomeNavigatorProps = NativeStackScreenProps<
   appStackParamList,
   'HomeNavigator'

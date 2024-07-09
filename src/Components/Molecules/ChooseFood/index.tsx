@@ -118,12 +118,12 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
             ))}
           </View>
         </TouchableOpacity>
-        <CustomButton
-          title="Add"
-          onPress={handleSubmit}
-          parentStyle={styles.customButtonParent}
-        />
       </ScrollView>
+      <CustomButton
+        title="Add"
+        onPress={handleSubmit}
+        parentStyle={styles.customButtonParent}
+      />
     </View>
   );
 };

@@ -16,7 +16,7 @@ const GetPremium = () => {
   const [activeCarousel, setActiveCarousel] = useState<number>(0);
   const [paymentChoice, setPaymentChoice] = useState<
     'monthly' | 'yearly' | null
-  >(null);
+  >('monthly');
 
   // state dependent constants
   const carouselItems = [
@@ -111,7 +111,10 @@ const GetPremium = () => {
           title="Purchase"
           parentStyle={styles.customParent}
           onPress={() =>
-            Alert.alert('Coming Soon', 'premium feature coming soon.')
+            Alert.alert(
+              'Email Sent',
+              'Confirmation email sent to you email address',
+            )
           }
         />
       </View>

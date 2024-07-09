@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     ...SPACING.mtMedium,
     marginBottom: 54,
+    alignItems: 'center',
   },
   titleText: {
     fontSize: SIZES.fontH5,

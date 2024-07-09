@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Pressable, Text, FlatList, TouchableOpacity} from 'react-native';
 
 // 3rd party
-import firestore from '@react-native-firebase/firestore';
+import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
 import {styles} from './styles';
@@ -53,7 +53,7 @@ const Notifications: React.FC = () => {
     if (notificationsData) {
       updateNotificationReadStatus(
         userId!,
-        notificationsData?.map(val => ({...val, isUnread: true})),
+        notificationsData.map(val => ({...val, isUnread: true})),
       );
     }
     setShowMenu(false);
@@ -61,6 +61,15 @@ const Notifications: React.FC = () => {
 
   const clearAllNotifications = () => {
     updateNotificationReadStatus(userId!, []);
+  };
+
+  const handleDeleteNotification = (createdOn: Timestamp) => {
+    updateNotificationReadStatus(
+      userId!,
+      notificationsData.filter(
+        val => createdOn.seconds * 1000 !== val.createdOn.seconds * 1000,
+      ),
+    );
   };
 
   return (
@@ -73,13 +82,15 @@ const Notifications: React.FC = () => {
         <View style={styles.menuCtr}>
           {showMenu ? (
             <View style={styles.activeMenuCtr}>
-              <Pressable onPress={markAllRead}>
+              <Pressable onPress={markAllRead} style={styles.menuTextCtr}>
                 <Text style={styles.menuText}>Mark all as read</Text>
               </Pressable>
-              <Pressable onPress={markAllUnread}>
+              <Pressable onPress={markAllUnread} style={styles.menuTextCtr}>
                 <Text style={styles.menuText}>Mark all as unread</Text>
               </Pressable>
-              <Pressable onPress={clearAllNotifications}>
+              <Pressable
+                onPress={clearAllNotifications}
+                style={styles.menuTextCtrLast}>
                 <Text style={styles.menuText}>Clear all</Text>
               </Pressable>
             </View>
@@ -93,7 +104,9 @@ const Notifications: React.FC = () => {
               textStyle={styles.descriptionText}
             />
           </View>
-          <Pressable onPress={() => setShowMenu(!showMenu)}>
+          <Pressable
+            onPress={() => setShowMenu(!showMenu)}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
             <View style={styles.dots} />
             <View style={styles.dots} />
             <View style={styles.dots} />
@@ -108,10 +121,14 @@ const Notifications: React.FC = () => {
               style={styles.flatList}
               renderItem={({item}) => (
                 <Notification
+                  key={item.createdOn.seconds * 1000}
                   isUnread={item.isUnread}
                   notificationText={item.message}
                   timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
                   userId={item.userId}
+                  handleDeletePressed={() =>
+                    handleDeleteNotification(item.createdOn)
+                  }
                 />
               )}
             />

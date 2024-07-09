@@ -16,6 +16,7 @@ const initialState: {data: User & {password: string | null}} = {
     healthData: [],
     notifications: [],
     storiesWatched: [],
+    createdOn: '',
   },
 };
 

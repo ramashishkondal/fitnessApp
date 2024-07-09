@@ -16,6 +16,8 @@ import {
 import {COLORS, ICONS, STRING} from '../../../Constants';
 import {styles} from './style';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {resetHealthData} from '../../../Redux/Reducers/health';
+import {resetMealData} from '../../../Redux/Reducers/dailyMeal';
 
 const logoSize = {
   width: 40,
@@ -38,14 +40,18 @@ const DetailsCompleted = () => {
     try {
       setIsLoading(true);
       if (password !== null) {
-        const userCredentials = await createUser(user.email, password);
         dispatch(
           updateSettingsCachedData({
             email: user.email,
             password,
             isBiometricEnabled: user.finger,
+            shouldAskBiometics: false,
           }),
         );
+        dispatch(resetMealData());
+        const userCredentials = await createUser(user.email, password);
+        dispatch(resetHealthData());
+
         let url = '';
         if (RegExp('avatar+').test(user.photo)) {
           url = await storage()

@@ -29,7 +29,6 @@ const options = {
 
 const DailySteps: React.FC = () => {
   // constants
-  const today = date.today();
 
   // state use
   const [lineData, setLineData] = useState<Array<{value: number}>>([]);
@@ -42,6 +41,7 @@ const DailySteps: React.FC = () => {
   const {
     todaysSteps,
     nutrition,
+    hasPermission,
     goal: {totalSteps},
   } = useAppSelector(state => state.health.value);
   const {id} = useAppSelector(state => state.User.data);
@@ -60,6 +60,7 @@ const DailySteps: React.FC = () => {
   useEffect(() => {
     getHealthData(id!)
       .then(healthData => {
+        const today = date.today();
         if (healthData) {
           const filteredData = healthData.filter(val =>
             checkWeek(
@@ -67,7 +68,7 @@ const DailySteps: React.FC = () => {
               today,
             ),
           );
-          const bestWaterIntakeDay = filteredData.reduce(
+          const bestStepsDay = filteredData.reduce(
             (acc, val) => {
               if (
                 Math.ceil(
@@ -89,7 +90,7 @@ const DailySteps: React.FC = () => {
             },
             {value: -Infinity, week: ''},
           );
-          const worstWaterIntakeDay = filteredData.reduce(
+          const worstStepsDay = filteredData.reduce(
             (acc, val) => {
               if (
                 Math.ceil(
@@ -114,7 +115,7 @@ const DailySteps: React.FC = () => {
               week: '',
             },
           );
-          setRating({best: bestWaterIntakeDay, worst: worstWaterIntakeDay});
+          setRating({best: bestStepsDay, worst: worstStepsDay});
         }
       })
       .catch(e =>
@@ -123,7 +124,7 @@ const DailySteps: React.FC = () => {
           e,
         ),
       );
-  }, [id, today]);
+  }, [id]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -153,8 +154,6 @@ const DailySteps: React.FC = () => {
         },
       );
     } else {
-      // const startDate = date.getStartOfDay(new Date()).toISOString();
-      // const today = date.today();
       const androidHealthSetup = async () => {
         console.log('android setup start');
         try {
@@ -174,20 +173,63 @@ const DailySteps: React.FC = () => {
           };
 
           const stepRes = await GoogleFit.getDailyStepCountSamples(opt);
+          const stepData = stepRes.filter(val =>
+            val.source.includes('estimated_steps'),
+          )[0];
           setLineData(
-            stepRes
-              .filter(val => val.source.includes('estimated_steps'))[0]
-              .steps.map(val => ({
-                value: getPercentage(val.value, totalSteps),
-              })),
+            stepData.steps.map(val => ({
+              value: getPercentage(val.value, totalSteps),
+            })),
           );
+          console.log(
+            'steps data in android ',
+            stepRes.filter(val => val.source.includes('estimated_steps'))[0]
+              .steps,
+          );
+          const bestStepsDay = stepData.steps.reduce(
+            (acc, val) => {
+              if (
+                Math.ceil(getPercentage(val.value, totalSteps) / 10) >=
+                acc.value
+              ) {
+                return {
+                  value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                  week: weekday[new Date(val.date).getDay()],
+                };
+              }
+              return acc;
+            },
+            {value: -Infinity, week: ''},
+          );
+          const worstStepsDay = stepData.steps.reduce(
+            (acc, val) => {
+              if (
+                Math.ceil(getPercentage(val.value, totalSteps) / 10) <=
+                acc.value
+              ) {
+                return {
+                  value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                  week: weekday[new Date(val.date).getDay()],
+                };
+              }
+              return acc;
+            },
+            {value: +Infinity, week: ''},
+          );
+
+          setRating({
+            best: bestStepsDay,
+            worst: worstStepsDay,
+          });
         } catch (e) {
           console.log('Error encountered - ', e);
         }
       };
-      androidHealthSetup();
+      if (hasPermission) {
+        androidHealthSetup();
+      }
     }
-  }, [dispatch, totalSteps]);
+  }, [dispatch, totalSteps, hasPermission]);
 
   // callback use
   const centerLabelComponent = useCallback(() => {
@@ -225,32 +267,34 @@ const DailySteps: React.FC = () => {
         totalInfoName="Daily Goal"
         parentStyle={SPACING.mtMedium}
       />
-      <View style={styles.lineChartCtr}>
-        <Text style={styles.lineChartHeadingText}>Statistics</Text>
-        {lineData ? (
-          <LineChart
-            isAnimated
-            adjustToWidth
-            curved
-            // yAxisOffset={-15.5}
-            initialSpacing={0}
-            data={lineData}
-            hideOrigin
-            areaChart
-            startFillColor="#F8B631"
-            endFillColor1="#FBDA95"
-            hideDataPoints
-            hideRules
-            thickness={4}
-            yAxisTextStyle={{color: COLORS.SECONDARY.GREY}}
-            yAxisColor="#ffff"
-            xAxisColor="#ffff"
-            color="#F7A608"
-            disableScroll
-            onlyPositive
-          />
-        ) : null}
-      </View>
+      {hasPermission ? (
+        <View style={styles.lineChartCtr}>
+          <Text style={styles.lineChartHeadingText}>Statistics</Text>
+          {lineData ? (
+            <LineChart
+              isAnimated
+              adjustToWidth
+              curved
+              // yAxisOffset={-15.5}
+              initialSpacing={0}
+              data={lineData}
+              hideOrigin
+              areaChart
+              startFillColor="#F8B631"
+              endFillColor1="#FBDA95"
+              hideDataPoints
+              hideRules
+              thickness={4}
+              yAxisTextStyle={{color: COLORS.SECONDARY.GREY}}
+              yAxisColor="#ffff"
+              xAxisColor="#ffff"
+              color="#F7A608"
+              disableScroll
+              onlyPositive
+            />
+          ) : null}
+        </View>
+      ) : null}
       <View style={SPACING.mV3}>
         {rating === undefined || rating?.best.value === -Infinity ? null : (
           <PerformanceCard
@@ -269,7 +313,7 @@ const DailySteps: React.FC = () => {
             icon={ICONS.SmileyBad({width: 20, height: 20})}
             onDay={rating?.worst.week}
             value={rating?.worst.value}
-            performanceText="Best Performance"
+            performanceText="Worst Performance"
           />
         )}
       </View>

@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   headingCtr: {
     marginTop: 32,
-    height: SIZES.height / 6,
+    height: SIZES.height / 7,
     marginHorizontal: 48,
   },
   descriptionText: {

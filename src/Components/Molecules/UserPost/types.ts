@@ -11,4 +11,5 @@ export type UserPostProps = {
   userId: string;
   handleCommentsPress: () => void;
   handleLikesPress: () => void;
+  handlePhotoPress?: () => void;
 };

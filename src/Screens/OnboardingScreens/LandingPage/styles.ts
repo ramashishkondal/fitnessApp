@@ -15,8 +15,8 @@ export const styles = StyleSheet.create({
     width: RFValue(250),
   },
   image: {
-    width: RFValue(310),
-    height: RFValue(210),
+    width: '100%',
+    height: 245,
     ...SPACING.mt2,
   },
   signInText1: {

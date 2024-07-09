@@ -16,6 +16,7 @@ import {useRealm} from '@realm/react';
 import {UserDb} from '../../../DbModels/user';
 import {UpdateMode} from 'realm';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import CustomCardUserItems from '../../../Components/Molecules/CustomCardUserItems';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
@@ -71,7 +72,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           <TouchableOpacity
             style={styles.pencilPhotoCtr}
             onPress={() => setPhotoModalVisible(true)}>
-            <View style={styles.pencilBackCtr}>
+            <View style={styles.pencilBackPhotoCtr}>
               {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
@@ -94,14 +95,14 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             {gender ? <Text style={styles.infoText}>{gender}</Text> : null}
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.pencilCtr}
-          onPress={() => setActiveModal('userInfo')}>
-          <View style={styles.pencilBackCtr}>
-            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-          </View>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        style={styles.pencilCtr}
+        onPress={() => setActiveModal('userInfo')}>
+        <View style={styles.pencilBackCtr}>
+          {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+        </View>
+      </TouchableOpacity>
       <View style={styles.otherCtr}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
@@ -109,36 +110,32 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             preferences
               .filter(val => val.selected === true)
               .map((val, index) => (
-                <Text key={index} style={styles.infoText}>
-                  {val.title}
-                </Text>
+                <CustomCardUserItems text={val.title} key={index} />
               ))
           ) : (
             <Text style={styles.infoText}>No Preferences selected</Text>
           )}
-          <TouchableOpacity
-            style={styles.pencilCtr}
-            onPress={() => setActiveModal('preferences')}>
-            <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-            </View>
-          </TouchableOpacity>
         </View>
-        <Text style={styles.cardsHeadingText}>Interests</Text>
-        <View style={styles.cardCtr}>
-          {interests.some(val => val.selected) ? (
-            interests.map((val, index) => {
-              if (val.selected) {
-                return (
-                  <Text key={index} style={styles.infoText}>
-                    {val.title}
-                  </Text>
-                );
-              }
-            })
-          ) : (
-            <Text style={styles.infoText}>No Interests selected</Text>
-          )}
+        <TouchableOpacity
+          style={styles.pencilCtr}
+          onPress={() => setActiveModal('preferences')}>
+          <View style={styles.pencilBackCtr}>
+            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.cardsHeadingText}>Interests</Text>
+          <View style={styles.cardCtr}>
+            {interests.some(val => val.selected) ? (
+              interests.map((val, index) => {
+                if (val.selected) {
+                  return <CustomCardUserItems text={val.title} key={index} />;
+                }
+              })
+            ) : (
+              <Text style={styles.infoText}>No Interests selected</Text>
+            )}
+          </View>
           <TouchableOpacity
             style={styles.pencilCtr}
             onPress={() => setActiveModal('interests')}>

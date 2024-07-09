@@ -64,8 +64,9 @@ const AppNavigator = () => {
     new Date().toDateString() !==
     new Date(healthData.currentDate).toDateString()
   ) {
-    storeUserHealthData(healthData, id!);
-    dispatch(resetHealthData());
+    storeUserHealthData(healthData, id!).then(() => {
+      dispatch(resetHealthData());
+    });
   }
 
   // realm use
@@ -202,10 +203,15 @@ const AppNavigator = () => {
               id,
               userData.notifications.map(handleNotifications),
             );
-
+            console.log('seconds ', userData);
             dispatch(
               updateUserData({
                 ...userData,
+                createdOn: Timestamp.fromMillis(
+                  userData.createdOn.seconds * 1000,
+                )
+                  .toDate()
+                  .toISOString(),
                 healthData: userData.healthData.map(val => ({
                   ...val,
                   currentDate: Timestamp.fromMillis(

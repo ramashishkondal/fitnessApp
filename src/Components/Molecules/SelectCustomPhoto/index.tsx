@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 // 3rd party
 import {
@@ -20,6 +20,7 @@ import {COLORS, ICONS} from '../../../Constants';
 import {SelectCustomPhotoProps} from './types';
 import {styles} from './styles';
 import BackDropSheet from '../BackdropSheet';
+import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 
 const iconSize = 60;
 
@@ -32,14 +33,6 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   mediaType = 'photo',
   onSuccess,
 }) => {
-  // constants
-  const options: CameraOptions = {
-    mediaType,
-    quality: 0.5,
-    videoQuality: 'low',
-    cameraType: 'front',
-  };
-
   // effect use
   useEffect(() => {
     if (modalVisible) {
@@ -50,7 +43,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   }, [modalVisible]);
 
   // functions
-  const openCamera = async () => {
+  const openCamera = async (options: CameraOptions) => {
     try {
       const result: ImagePickerResponse = await launchCamera(options);
       if (result.assets !== undefined && result.assets[0].uri !== undefined) {
@@ -59,12 +52,15 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
           onSuccess(result.assets[0].uri, result.assets[0].type);
         }
       }
+      if (mediaType === 'mixed') {
+        bottomSheetModalCameraOptionsRef.current?.close();
+      }
       setModalVisible(false);
     } catch (e) {
       console.log('error uploading photo from camera - ', e);
     }
   };
-  const openGallery = async () => {
+  const openGallery = async (options: CameraOptions) => {
     try {
       const result: ImagePickerResponse = await launchImageLibrary(options);
       if (result.assets !== undefined && result.assets[0].uri !== undefined) {
@@ -81,6 +77,10 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
 
   // bottom sheet
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalCameraOptionsRef = useRef<BottomSheetModal>(null);
+  const handleOpenSecondSheet = useCallback(() => {
+    bottomSheetModalCameraOptionsRef.current?.present();
+  }, []);
   const snapPoints = useMemo(() => ['30%'], []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log('sheet changes', index);
@@ -103,14 +103,33 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         ]}>
         <BottomSheetView style={[styles.modalCtr, parentStyle]}>
           <View style={styles.iconsCtr}>
-            <TouchableOpacity style={styles.icons} onPress={openCamera}>
+            <TouchableOpacity
+              style={styles.icons}
+              onPress={
+                mediaType === 'mixed'
+                  ? handleOpenSecondSheet
+                  : () =>
+                      openCamera({
+                        mediaType,
+                        quality: 0.5,
+                        videoQuality: 'low',
+                      })
+              }>
               {ICONS.Camera({
                 width: iconSize,
                 height: iconSize,
                 color: COLORS.PRIMARY.PURPLE,
               })}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icons} onPress={openGallery}>
+            <TouchableOpacity
+              style={styles.icons}
+              onPress={() =>
+                openGallery({
+                  mediaType,
+                  quality: 0.5,
+                  videoQuality: 'low',
+                })
+              }>
               {ICONS.Gallery({
                 width: iconSize,
                 height: iconSize,
@@ -120,6 +139,64 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
           </View>
         </BottomSheetView>
       </BottomSheetModal>
+      {mediaType === 'mixed' ? (
+        <BottomSheetModal
+          ref={bottomSheetModalCameraOptionsRef}
+          index={0}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          onDismiss={onDismiss}
+          backdropComponent={BackDropSheet}
+          backgroundStyle={[
+            styles.bottomSheetModalBackground,
+            BottomSheetModalStyle,
+          ]}>
+          <BottomSheetView style={[styles.modalCtr, parentStyle]}>
+            <View style={styles.iconsCtr}>
+              <TouchableOpacity
+                style={styles.cameraOptionsCtr}
+                onPress={() =>
+                  openCamera({
+                    mediaType: 'video',
+                    quality: 0.5,
+                    videoQuality: 'low',
+                  })
+                }>
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.REGULAR,
+                    fontSize: SIZES.fontH2,
+                    color: 'white',
+                    fontWeight: 'bold',
+                    padding: 16,
+                  }}>
+                  Video
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cameraOptionsCtr}
+                onPress={() =>
+                  openCamera({
+                    mediaType: 'photo',
+                    quality: 0.5,
+                    videoQuality: 'low',
+                  })
+                }>
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.REGULAR,
+                    fontSize: SIZES.fontH2,
+                    color: 'white',
+                    fontWeight: 'bold',
+                    padding: 16,
+                  }}>
+                  Photo
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </BottomSheetView>
+        </BottomSheetModal>
+      ) : null}
     </BottomSheetModalProvider>
   );
 };

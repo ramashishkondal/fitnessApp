@@ -13,6 +13,7 @@ export type User = {
   healthData: Array<HealthData>;
   storiesWatched: Array<string>;
   notifications: NotificationsData;
+  createdOn: string;
 };
 export type NotificationsData = Array<NotificationData>;
 export type NotificationData = {

@@ -63,6 +63,35 @@ const RootNavigator = () => {
   );
 
   // effect use
+  // useEffect(() => {
+  // const subscription = AppState.addEventListener('change', nextAppState => {
+  //   if (
+  //     appState.current.match(/inactive|background/) &&
+  //     nextAppState === 'active'
+  //   ) {
+  //     console.log('App has come to the foreground!');
+  //     if (Platform.OS === 'android') {
+  //       check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION).then(val => {
+  //         if (val !== 'granted') {
+  //           RNRestart.restart();
+  //         }
+  //       });
+  //       if (allowPushNotifications) {
+  //         check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then(val => {
+  //           if (val !== 'granted') {
+  //             RNRestart.restart();
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  //   appState.current = nextAppState;
+  // });
+
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, [allowPushNotifications]);
 
   useEffect(() => {
     const healthKitEventEmitter = new NativeEventEmitter(
@@ -90,8 +119,11 @@ const RootNavigator = () => {
                   onPress: () => {
                     Alert.alert(
                       'Restart App',
-                      'The app needs to be restarted to apply the changes. Please click "OK" to restart now.',
-                      [{text: 'OK', onPress: RNRestart.restart}],
+                      'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
+                      [
+                        {text: 'OK', onPress: RNRestart.restart},
+                        {text: 'Cancel'},
+                      ],
                     );
 
                     Linking.openSettings();
@@ -106,56 +138,42 @@ const RootNavigator = () => {
             return;
           }
         }
-        if (!GoogleFit.isAuthorized) {
-          await GoogleFit.authorize(options);
-          dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
+        if (!hasPermission) {
+          Alert.alert(
+            'Google Fit SignIn required',
+            'To track your health data we need access to your google fit account ',
+            [
+              {
+                text: 'ok',
+                onPress: async () => {
+                  if (!GoogleFit.isAuthorized) {
+                    await GoogleFit.authorize(options);
+                    dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
+                  }
+                },
+              },
+            ],
+          );
         }
-        GoogleFit.startRecording(
-          callbackStatus => {
-            console.log('google fit callback is ', callbackStatus);
-            if (callbackStatus.recording) {
-              console.log('Google Fit recording started successfully');
-              // Optionally, process data from callback.data
-              const today = date.today();
-              GoogleFit.getDailySteps(today).then(val =>
-                console.log(
-                  'val is ',
-                  val.filter(
-                    val =>
-                      val.source === 'com.google.android.gms:estimated_steps',
-                  )[0].steps[0].value,
-                ),
-              );
-              GoogleFit.observeSteps((isError, result) => {
-                console.log('result in observer steps is ', result);
-                if (isError) {
-                  console.log('error in listening ', isError);
-                }
-              });
-            } else {
-              console.log(
-                'Error starting Google Fit recording:',
-                callbackStatus.message,
-              );
-            }
-          },
-          ['step'],
-        );
-        const today = date.today();
-        const stepRes = await GoogleFit.getDailySteps(today);
-        const opt = {
-          startDate: startDate, // required ISO8601Timestamp
-          endDate: today.toISOString(), // required ISO8601Timestamp
-        };
-        const calories = await GoogleFit.getDailyCalorieSamples(opt);
-        dispatch(updateHealthData({nutrition: Math.ceil(calories[0].calorie)}));
-        dispatch(
-          updateHealthData({
-            todaysSteps: stepRes.filter(
-              val => val.source === 'com.google.android.gms:estimated_steps',
-            )[0].steps[0].value,
-          }),
-        );
+        if (GoogleFit.isAuthorized) {
+          const today = date.today();
+          const stepRes = await GoogleFit.getDailySteps(today);
+          const opt = {
+            startDate: startDate, // required ISO8601Timestamp
+            endDate: today.toISOString(), // required ISO8601Timestamp
+          };
+          const calories = await GoogleFit.getDailyCalorieSamples(opt);
+          dispatch(
+            updateHealthData({nutrition: Math.ceil(calories[0].calorie)}),
+          );
+          dispatch(
+            updateHealthData({
+              todaysSteps: stepRes.filter(
+                val => val.source === 'com.google.android.gms:estimated_steps',
+              )[0].steps[0].value,
+            }),
+          );
+        }
       } catch (e) {
         console.log('Error encountered - ', e);
       }
@@ -168,8 +186,10 @@ const RootNavigator = () => {
       AppleHealthKit.initHealthKit(permissions, err => {
         if (err) {
           console.log('error getting permission.');
+          dispatch(updateHealthData({hasPermission: false}));
           return;
         }
+        dispatch(updateHealthData({hasPermission: true}));
         healthKitEventEmitter.addListener('healthKit:StepCount:new', () => {
           console.log('Step count updated');
           AppleHealthKit.getStepCount(
@@ -209,7 +229,7 @@ const RootNavigator = () => {
             );
           },
         );
-        dispatch(updateHealthData({hasPermission: true}));
+
         AppleHealthKit.getStepCount({}, (error, result) => {
           if (!error) {
             dispatch(updateHealthData({todaysSteps: result.value}));

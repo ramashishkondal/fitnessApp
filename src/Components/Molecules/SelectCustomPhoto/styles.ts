@@ -24,4 +24,9 @@ export const styles = StyleSheet.create({
     shadowColor: 'red',
     shadowRadius: 100,
   },
+  cameraOptionsCtr: {
+    backgroundColor: COLORS.PRIMARY.PURPLE,
+    padding: 10,
+    borderRadius: SIZES.rounding3,
+  },
 });
