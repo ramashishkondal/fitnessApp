@@ -11,4 +11,4 @@ const CustomCardUserItems: React.FC<CustomCardUserItemsProps> = ({text}) => {
   );
 };
 
-export default CustomCardUserItems;
+export default React.memo(CustomCardUserItems);

@@ -47,7 +47,9 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
     try {
       const result: ImagePickerResponse = await launchCamera(options);
       if (result.assets !== undefined && result.assets[0].uri !== undefined) {
-        setPhoto(result.assets[0].uri);
+        if (setPhoto) {
+          setPhoto(result.assets[0].uri);
+        }
         if (onSuccess) {
           onSuccess(result.assets[0].uri, result.assets[0].type);
         }
@@ -64,7 +66,9 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
     try {
       const result: ImagePickerResponse = await launchImageLibrary(options);
       if (result.assets !== undefined && result.assets[0].uri !== undefined) {
-        setPhoto(result?.assets[0]?.uri);
+        if (setPhoto) {
+          setPhoto(result?.assets[0]?.uri);
+        }
         if (onSuccess) {
           onSuccess(result.assets[0].uri, result.assets[0].type);
         }

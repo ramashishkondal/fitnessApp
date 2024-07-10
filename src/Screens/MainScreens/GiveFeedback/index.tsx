@@ -6,6 +6,7 @@ import {Alert, View} from 'react-native';
 import {CustomTextInput, CustomButton, HeadingText} from '../../../Components';
 import {SPACING} from '../../../Constants';
 import {styles} from './styles';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const GiveFeedback: React.FC = () => {
   // state use
@@ -22,7 +23,7 @@ const GiveFeedback: React.FC = () => {
   };
 
   return (
-    <View style={styles.parent}>
+    <KeyboardAwareScrollView style={styles.parent}>
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>
         <HeadingText text="Give Feedback" />
         <CustomTextInput
@@ -31,7 +32,6 @@ const GiveFeedback: React.FC = () => {
           parentStyle={[SPACING.mh2, SPACING.mt5]}
           textInputStyle={styles.textInput}
           onChangeText={setFeedback}
-          autoFocus
           textInputProps={{multiline: true, maxLength: 250}}
         />
         <CustomButton
@@ -40,7 +40,7 @@ const GiveFeedback: React.FC = () => {
           onPress={handleSubmit}
         />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

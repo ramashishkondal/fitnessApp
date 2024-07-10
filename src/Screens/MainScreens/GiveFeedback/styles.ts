@@ -16,5 +16,6 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     textAlign: 'center',
+    height: SIZES.height / 8,
   },
 });

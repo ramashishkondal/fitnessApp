@@ -73,5 +73,11 @@ export const styles = StyleSheet.create({
   descriptionTextNoNotification: {
     textAlign: 'left',
     margin: 16,
+    fontSize: SIZES.font17,
+  },
+  noNotificationTextCtr: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

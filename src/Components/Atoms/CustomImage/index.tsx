@@ -16,6 +16,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
   activityIndicatorSize,
   parentStyle,
   handleLoadEnd = () => {},
+  resizeMode,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
@@ -35,6 +36,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
           setIsLoading(false);
           handleLoadEnd();
         }}
+        resizeMode={resizeMode}
       />
     </View>
   );

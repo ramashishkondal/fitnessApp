@@ -21,7 +21,7 @@ import {
   weekday,
 } from '../../../Utils/commonUtils';
 import {Timestamp} from '@react-native-firebase/firestore';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const simleySize = {
   width: 21,
@@ -64,6 +64,7 @@ const WaterIntake: React.FC = () => {
             checkWeek(
               Timestamp.fromMillis(val.currentDate.seconds * 1000).toDate(),
               today,
+              false,
             ),
           );
           const bestWaterIntakeDay = filteredData.reduce(
@@ -116,7 +117,7 @@ const WaterIntake: React.FC = () => {
         }
       })
       .catch(e =>
-        console.log('error encounterd in getting user health info', e),
+        console.log('error encountered in getting user health info', e),
       );
   }, [id, waterIntake]);
 
@@ -138,7 +139,7 @@ const WaterIntake: React.FC = () => {
   };
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
         You drank{' '}
         <Text style={styles.highlightedText}>{waterIntake} glasses</Text> today
@@ -157,7 +158,14 @@ const WaterIntake: React.FC = () => {
         <TouchableOpacity
           onPress={() => {
             setGlassesLength(glassesLength + 1);
-          }}>
+          }}
+          style={{
+            width: 50,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
           {ICONS.Plus(plusSize)}
         </TouchableOpacity>
       </View>
@@ -190,7 +198,7 @@ const WaterIntake: React.FC = () => {
           value={rating?.worst.value ?? 0}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 

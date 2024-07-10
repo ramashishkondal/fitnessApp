@@ -61,6 +61,7 @@ const Notifications: React.FC = () => {
 
   const clearAllNotifications = () => {
     updateNotificationReadStatus(userId!, []);
+    setShowMenu(false);
   };
 
   const handleDeleteNotification = (createdOn: Timestamp) => {
@@ -104,17 +105,19 @@ const Notifications: React.FC = () => {
               textStyle={styles.descriptionText}
             />
           </View>
-          <Pressable
-            onPress={() => setShowMenu(!showMenu)}
-            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-            <View style={styles.dots} />
-            <View style={styles.dots} />
-            <View style={styles.dots} />
-          </Pressable>
+          {notificationsData?.length ? (
+            <Pressable
+              onPress={() => setShowMenu(!showMenu)}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+            </Pressable>
+          ) : null}
         </View>
 
         <View style={styles.notificationsCtr}>
-          {notificationsData.length ? (
+          {notificationsData?.length ? (
             <FlatList
               scrollEnabled
               data={notificationsData?.slice().reverse()}
@@ -133,10 +136,12 @@ const Notifications: React.FC = () => {
               )}
             />
           ) : (
-            <DescriptionText
-              text="There are no notifications for now"
-              textStyle={styles.descriptionTextNoNotification}
-            />
+            <View style={styles.noNotificationTextCtr}>
+              <DescriptionText
+                text="There are no notifications for now"
+                textStyle={styles.descriptionTextNoNotification}
+              />
+            </View>
           )}
         </View>
       </View>

@@ -36,6 +36,7 @@ const UserPost: React.FC<UserPostProps> = ({
 }) => {
   // state use
   const [userData, setUserData] = useState<User>();
+  console.log('user post ender');
 
   // effect use
   useEffect(() => {
@@ -115,4 +116,4 @@ const UserPost: React.FC<UserPostProps> = ({
   );
 };
 
-export default UserPost;
+export default React.memo(UserPost);

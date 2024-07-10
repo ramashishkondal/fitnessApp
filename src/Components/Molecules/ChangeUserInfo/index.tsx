@@ -41,6 +41,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   );
   const [firstName, setFirstName] = useState<string>(fn);
   const [lastName, setLastName] = useState<string>(ln);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleCheckBox = (g: User['gender']) => {
     setSelectedGender(g);
@@ -55,6 +56,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
 
     if (netInfo.isConnected) {
       if (firstName !== '' && lastName !== '') {
+        setIsLoading(true);
         await firestore()
           .collection(firebaseDB.collections.users)
           .doc(id!)
@@ -62,7 +64,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
             firstName,
             lastName,
             gender: selectedGender,
-          });
+          })
+          .finally(() => setIsLoading(false));
       }
     } else {
       realm.write(() => {
@@ -138,6 +141,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
           title="Submit"
           parentStyle={SPACING.mtXLarge}
           onPress={handleSubmitChange}
+          isLoading={isLoading}
         />
       </View>
     </KeyboardAwareScrollView>

@@ -1,6 +1,15 @@
 // libs
 import React, {useEffect} from 'react';
-import {Alert, Linking, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import AppleHealthKit from 'react-native-health';
 
 // custom
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
@@ -37,6 +46,41 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   console.log('cached data in home screen is ', cachedData);
   // effect use
   useEffect(() => {
+    if (Platform.OS === 'ios') {
+      AppleHealthKit.getAuthStatus(
+        {
+          permissions: {
+            read: [
+              AppleHealthKit.Constants.Permissions.HeartRate,
+              AppleHealthKit.Constants.Permissions.Steps,
+              AppleHealthKit.Constants.Permissions.StepCount,
+              AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+            ],
+            write: [],
+          },
+        },
+        (err, results) => {
+          console.log('resfewfw fwef w');
+          console.log(err, results);
+        },
+      );
+      AppleHealthKit.initHealthKit(
+        {
+          permissions: {
+            read: [
+              AppleHealthKit.Constants.Permissions.HeartRate,
+              AppleHealthKit.Constants.Permissions.Steps,
+              AppleHealthKit.Constants.Permissions.StepCount,
+              AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+            ],
+            write: [],
+          },
+        },
+        err => {
+          console.log('error', err);
+        },
+      );
+    }
     if (finger && isBiometricEnabled === false && shouldAskBiometics) {
       Alert.alert(
         'Biometric: Sign in from new device detected',

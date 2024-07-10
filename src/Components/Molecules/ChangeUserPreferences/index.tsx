@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {View} from 'react-native';
 import {ChangeUserPreferencesProps} from './types';
 import PreferenceItem from '../PreferenceItem';
@@ -19,6 +19,9 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
   setModalFalse,
 }) => {
   // state use
+  const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
   const {preferences, id, firstName, lastName, interests, gender} =
     useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
@@ -37,12 +40,14 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
   // functions
   const handleSubmitChange = async () => {
     if (netInfo.isConnected) {
+      setIsLoading(true);
       await firestore()
         .collection(firebaseDB.collections.users)
         .doc(id!)
         .update({
           preferences: preferencedData.current,
-        });
+        })
+        .finally(() => setIsLoading(false));
     } else {
       realm.write(() => {
         realm.create(
@@ -75,6 +80,7 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
           title="Change"
           parentStyle={styles.customButtonParentStyle}
           onPress={handleSubmitChange}
+          isLoading={isLoading}
         />
       </View>
     </View>

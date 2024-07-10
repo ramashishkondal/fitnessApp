@@ -143,7 +143,6 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
               <View style={styles.textInputCtr}>
                 <TextInput
                   value={caption}
-                  autoFocus
                   maxLength={100}
                   onChangeText={setCaption}
                   placeholder="Add a Caption"

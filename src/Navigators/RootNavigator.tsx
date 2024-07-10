@@ -38,7 +38,11 @@ const permissions = {
 
 // android permissions
 const options = {
-  scopes: [Scopes.FITNESS_ACTIVITY_READ, Scopes.FITNESS_ACTIVITY_WRITE],
+  scopes: [
+    Scopes.FITNESS_ACTIVITY_READ,
+    Scopes.FITNESS_ACTIVITY_WRITE,
+    Scopes.FITNESS_BODY_READ,
+  ],
 };
 
 const RootNavigator = () => {
@@ -189,9 +193,7 @@ const RootNavigator = () => {
           dispatch(updateHealthData({hasPermission: false}));
           return;
         }
-        dispatch(updateHealthData({hasPermission: true}));
         healthKitEventEmitter.addListener('healthKit:StepCount:new', () => {
-          console.log('Step count updated');
           AppleHealthKit.getStepCount(
             {includeManuallyAdded: true},
             (error, result) => {
@@ -209,7 +211,6 @@ const RootNavigator = () => {
         healthKitEventEmitter.addListener(
           'healthKit:ActiveEnergyBurned:new',
           () => {
-            console.log('Active energy burned updated');
             AppleHealthKit.getActiveEnergyBurned(
               {
                 startDate, // required
@@ -232,7 +233,12 @@ const RootNavigator = () => {
 
         AppleHealthKit.getStepCount({}, (error, result) => {
           if (!error) {
-            dispatch(updateHealthData({todaysSteps: result.value}));
+            dispatch(
+              updateHealthData({
+                todaysSteps: result.value,
+                hasPermission: true,
+              }),
+            );
             return;
           }
           console.log('error encountered while getting steps data - ', error);

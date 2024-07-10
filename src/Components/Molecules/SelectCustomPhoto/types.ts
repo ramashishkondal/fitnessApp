@@ -6,7 +6,8 @@ export type SelectCustomPhotoProps = {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setPhoto:
     | React.Dispatch<React.SetStateAction<string>>
-    | ((st: string) => void);
+    | ((st: string) => void)
+    | undefined;
   parentStyle?: StyleProp<ViewStyle>;
   BottomSheetModalStyle?: StyleProp<
     Omit<ViewStyle, 'position' | 'left' | 'right' | 'top' | 'bottom'>

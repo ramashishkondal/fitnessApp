@@ -105,4 +105,7 @@ export const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'row',
   },
+  withModalParent: {
+    backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
+  },
 });

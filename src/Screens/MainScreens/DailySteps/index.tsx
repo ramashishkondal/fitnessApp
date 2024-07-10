@@ -8,7 +8,11 @@ import GoogleFit, {Scopes} from 'react-native-google-fit';
 
 // custom
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
-import {DataInfoCompare, PerformanceCard} from '../../../Components';
+import {
+  DataInfoCompare,
+  DescriptionText,
+  PerformanceCard,
+} from '../../../Components';
 import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import InsidePieChart from '../../../Components/Molecules/InsidePieChart';
 import {
@@ -165,7 +169,7 @@ const DailySteps: React.FC = () => {
           }
           if (!GoogleFit.isAuthorized) {
             await GoogleFit.authorize(options);
-            dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
+            dispatch(updateHealthData({hasPermission: true}));
           }
           const opt = {
             startDate: getLastWeekDayDate(new Date()).toISOString(), // required ISO8601Timestamp
@@ -267,7 +271,7 @@ const DailySteps: React.FC = () => {
         totalInfoName="Daily Goal"
         parentStyle={SPACING.mtMedium}
       />
-      {hasPermission ? (
+      {hasPermission && lineData && lineData.some(val => val) ? (
         <View style={styles.lineChartCtr}>
           <Text style={styles.lineChartHeadingText}>Statistics</Text>
           {lineData ? (
@@ -294,7 +298,12 @@ const DailySteps: React.FC = () => {
             />
           ) : null}
         </View>
-      ) : null}
+      ) : (
+        <DescriptionText
+          text="No Data History Available"
+          textStyle={SPACING.mt3}
+        />
+      )}
       <View style={SPACING.mV3}>
         {rating === undefined || rating?.best.value === -Infinity ? null : (
           <PerformanceCard
@@ -308,7 +317,7 @@ const DailySteps: React.FC = () => {
             performanceText="Best Performance"
           />
         )}
-        {rating === undefined || rating?.worst.value === Infinity ? null : (
+        {rating?.worst.value === Infinity || rating === undefined ? null : (
           <PerformanceCard
             icon={ICONS.SmileyBad({width: 20, height: 20})}
             onDay={rating?.worst.week}

@@ -61,8 +61,8 @@ const AppNavigator = () => {
   const dispatch = useAppDispatch();
 
   if (
-    new Date().toDateString() !==
-    new Date(healthData.currentDate).toDateString()
+    new Date().setHours(0, 0, 0, 0) !==
+    new Date(healthData.currentDate).setHours(0, 0, 0, 0)
   ) {
     storeUserHealthData(healthData, id!).then(() => {
       dispatch(resetHealthData());

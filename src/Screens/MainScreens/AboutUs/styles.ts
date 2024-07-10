@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import {COLORS, FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.PRIMARY.GREY,
     alignItems: 'center',
   },
   logo: {

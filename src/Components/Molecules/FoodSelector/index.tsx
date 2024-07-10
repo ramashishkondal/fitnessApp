@@ -4,12 +4,14 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {COLORS} from '../../../Constants';
 import {FoodSelectorProps} from './types';
 import {styles} from './styles';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
 const FoodSelector: React.FC<FoodSelectorProps> = ({foodItem, foodData}) => {
   const [isChecked, setIsChecked] = useState(false);
   const handleOnPress = () => {
     if (!isChecked) {
-      foodData.push(foodItem);
+      foodData.push({...foodItem, id: uuidv4()});
     } else {
       const index = foodData.findIndex(item => item.name === foodItem.name);
       if (index !== -1) {

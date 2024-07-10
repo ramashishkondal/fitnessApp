@@ -6,12 +6,14 @@ import {v4 as uuidv4} from 'uuid';
 import {HealthData, User, Post, Comment} from '../Defs';
 import {NotificationData} from '../Defs/user';
 import {debounce} from './commonUtils';
+import {DailyMeals} from '../Redux/Reducers/dailyMeal';
 
 export const firebaseDB = {
   collections: {
     users: 'users',
     posts: 'posts',
     stories: 'stories',
+    dailyMeals: 'dailyMeals',
   },
   documents: {
     users: {},
@@ -353,4 +355,19 @@ export const updateStoriesWatchedArray = async (
   } catch (e) {
     console.log('error encountered while updating watched stories array -', e);
   }
+};
+
+export const storeMealData = async (userId: string, dailyMeals: DailyMeals) => {
+  await firestore()
+    .collection(firebaseDB.collections.dailyMeals)
+    .doc(userId)
+    .set(dailyMeals);
+};
+
+export const getMealData = async (userId: string) => {
+  const val = await firestore()
+    .collection(firebaseDB.collections.dailyMeals)
+    .doc(userId)
+    .get();
+  return val.data() as DailyMeals;
 };

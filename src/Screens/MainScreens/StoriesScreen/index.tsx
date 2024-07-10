@@ -8,8 +8,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import {useFocusEffect} from '@react-navigation/native';
 
 // custom
-import {CustomImage, CustomLoading} from '../../../Components';
-import {COLORS} from '../../../Constants';
+import {CustomImage} from '../../../Components';
 import {Timer} from '../../../Utils/commonUtils';
 import {StoriesScreenProps} from '../../../Defs';
 import {styles} from './styles';
@@ -163,22 +162,19 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
         </View>
         {stories[index].storyType.includes('video') ? (
           <View style={styles.videoCtr}>
-            <CustomLoading
-              size={'large'}
-              style={styles.customLoading}
-              color={COLORS.PRIMARY.PURPLE}
-            />
             <Video
               source={{
                 uri: stories[index].storyUrl,
               }}
               ref={videoRef}
               style={styles.video}
-              onLoad={({duration}) =>
-                storyTimer.start(duration < 15 ? duration * 1000 - 100 : 10000)
-              }
+              onLoad={({duration}) => {
+                storyTimer.start(duration < 15 ? duration * 1000 : 10000);
+              }}
               resizeMode="cover"
               bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
+              shutterColor="transparent"
+              bufferConfig={{cacheSizeMB: 200}}
             />
           </View>
         ) : (

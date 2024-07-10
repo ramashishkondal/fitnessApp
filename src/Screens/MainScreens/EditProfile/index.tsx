@@ -4,7 +4,7 @@ import {EditProfileProps} from './types';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
-import {COLORS, ICONS} from '../../../Constants';
+import {ICONS} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
 import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
 import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInterests';
@@ -58,6 +58,10 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     }
   }, [activeModal]);
   const ActiveModalComponent = getActiveModalComp();
+  const handleWithModalFalse = useCallback(
+    (): void => setActiveModal(null),
+    [],
+  );
 
   return (
     <View style={styles.parent}>
@@ -147,12 +151,12 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       </View>
       <WithModal
         modalVisible={activeModal !== null}
-        setModalFalse={() => setActiveModal(null)}
-        parentStyle={{backgroundColor: COLORS.PRIMARY.LIGHT_GREY}}>
+        setModalFalse={handleWithModalFalse}
+        parentStyle={styles.withModalParent}>
         {ActiveModalComponent}
       </WithModal>
       <SelectCustomPhoto
-        setPhoto={() => {}}
+        setPhoto={undefined}
         modalVisible={photoModalVisible}
         setModalVisible={setPhotoModalVisible}
         onSuccess={(uri: string) => {

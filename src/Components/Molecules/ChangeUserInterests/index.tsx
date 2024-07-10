@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, ListRenderItem, View} from 'react-native';
 import {styles} from './styles';
 import InterestItem from '../InterestItem';
@@ -25,6 +25,9 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   setModalFalse,
 }) => {
   // state use
+  const [isLoading, setIsLoading] = useState(false);
+
+  // redux use
   const {preferences, id, firstName, lastName, gender, interests} =
     useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
@@ -44,6 +47,7 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   // functions
   const handleSubmitChange = async () => {
     if (netInfo.isConnected) {
+      setIsLoading(true);
       await firestore()
         .collection(firebaseDB.collections.users)
         .doc(id!)
@@ -52,7 +56,8 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
             const {selected, title} = val;
             return {selected, title};
           }),
-        });
+        })
+        .finally(() => setIsLoading(false));
     } else {
       realm.write(() => {
         realm.create(
@@ -95,7 +100,11 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
         />
       </View>
       <View style={styles.customButtonCtr}>
-        <CustomButton title="Change" onPress={handleSubmitChange} />
+        <CustomButton
+          title="Change"
+          onPress={handleSubmitChange}
+          isLoading={isLoading}
+        />
       </View>
     </View>
   );

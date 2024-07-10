@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 25,
     paddingTop: 8,
+    borderRadius: 10,
   },
   child: {
     flex: 3,

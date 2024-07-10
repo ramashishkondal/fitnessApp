@@ -1,5 +1,5 @@
 // libs
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 
 // custom
@@ -8,14 +8,11 @@ import {ChooseFoodProps} from './types';
 import {ICONS} from '../../../Constants';
 import MealSelector from '../MealSelector';
 import FoodSelector from '../FoodSelector';
-import {
-  DailyMeals,
-  Meal,
-  updateAllMealData,
-} from '../../../Redux/Reducers/dailyMeal';
-import {useAppDispatch} from '../../../Redux/Store';
+import {DailyMeals, Meal} from '../../../Redux/Reducers/dailyMeal';
+import {useAppSelector} from '../../../Redux/Store';
 import {styles} from './styles';
 import {foodData} from '../../../Constants/commonConstants';
+import {storeMealData} from '../../../Utils/userUtils';
 
 const size = {
   width: 50,
@@ -32,8 +29,12 @@ export type MealsSelected = {
   foodData: Array<Meal>;
 };
 const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
+  // state use
+  const [isLoading, setIsLoading] = useState(false);
+
   // redux use
-  const dispatch = useAppDispatch();
+  const {id} = useAppSelector(state => state.User.data);
+  const {data: mealsData} = useAppSelector(state => state.dailyMeals);
 
   // ref use
   const mealsSelected = useRef<MealsSelected>({
@@ -48,6 +49,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmit = () => {
+    setIsLoading(true);
     const dtArray: DailyMeals = {
       breakfast: [],
       dinner: [],
@@ -78,8 +80,15 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
       );
       return;
     }
-    dispatch(updateAllMealData(dtArray));
-    setModalFalse();
+    storeMealData(id!, {
+      breakfast: mealsData.breakfast.concat(dtArray.breakfast),
+      dinner: mealsData.dinner.concat(dtArray.dinner),
+      lunch: mealsData.lunch.concat(dtArray.lunch),
+      snack: mealsData.snack.concat(dtArray.snack),
+    }).finally(() => {
+      setIsLoading(false);
+      setModalFalse();
+    });
   };
   return (
     <View style={styles.parent}>
@@ -123,6 +132,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
         title="Add"
         onPress={handleSubmit}
         parentStyle={styles.customButtonParent}
+        isLoading={isLoading}
       />
     </View>
   );

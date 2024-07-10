@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
 
 // 3rd party
@@ -71,9 +71,12 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   }, []);
 
   // functions
-  const goToPostScreen = (postId: string) => {
-    return () => navigation.navigate('PostScreen', {postId: postId});
-  };
+  const goToPostScreen = useCallback(
+    (postId: string) => {
+      return () => navigation.navigate('PostScreen', {postId: postId});
+    },
+    [navigation],
+  );
 
   const storeStoryDataInRealmDb = (storyType: string, storyUrl: string) => {
     if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
@@ -101,9 +104,9 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   };
 
   const setStory = (st: string) => (story.current = st);
-  const setActiveModalPost = () => setActiveModal('story');
-  const setActiveModalFalse = () => setActiveModal('none');
-  const showCommentModal = () => setActiveModal('comment');
+  const setActiveModalPost = useCallback(() => setActiveModal('story'), []);
+  const setActiveModalFalse = useCallback(() => setActiveModal('none'), []);
+  const showCommentModal = useCallback(() => setActiveModal('comment'), []);
 
   return (
     <>
@@ -119,7 +122,9 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         </View>
         <View style={styles.storiesCtr}>
           <AddStory
-            setModalVisible={() => setStoryModalVisible(true)}
+            setModalVisible={() => {
+              setStoryModalVisible(true);
+            }}
             isLoading={!!(isLoading && netInfo.isConnected)}
           />
 

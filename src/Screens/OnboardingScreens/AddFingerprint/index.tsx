@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {Platform, View} from 'react-native';
+import {Alert, Platform, View} from 'react-native';
 
 // custom
 import {
@@ -25,7 +25,24 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
     navigation.push('AddProfilePicture');
   };
   const handleBiometricAdded = () => {
-    dispatch(updateUserData({finger: true}));
+    Alert.alert(
+      `${Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'}`,
+      `${
+        Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'
+      } login on this device enabled`,
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            dispatch(updateUserData({finger: true}));
+            goToAddProfilePicture();
+          },
+        },
+      ],
+    );
+  };
+  const handleNotNow = () => {
+    dispatch(updateUserData({finger: false}));
     goToAddProfilePicture();
   };
 
@@ -53,7 +70,7 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
         title={STRING.ADD_FINGERPRINT.REJECT_BUTTON_TEXT}
         parentStyle={styles.notNowParent}
         textStyle={styles.notNowText}
-        onPress={goToAddProfilePicture}
+        onPress={handleNotNow}
       />
     </View>
   );

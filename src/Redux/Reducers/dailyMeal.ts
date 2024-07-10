@@ -7,6 +7,7 @@ export type Meal = {
   protein: number;
   calories: number;
   serving_size_g: number;
+  id: string;
 };
 export type DailyMeals = {
   snack: Array<Meal>;

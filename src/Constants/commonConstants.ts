@@ -48,7 +48,7 @@ export const INTERESETS = [
   {title: 'Vegan', icon: INTERESTS.Vegan(iconSizeInterests), selected: false},
 ];
 
-export const foodData: Array<Meal> = [
+export const foodData: Array<Omit<Meal, 'id'>> = [
   {
     name: 'Apple',
     carbs: 25,

@@ -84,6 +84,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   customLoading: {
+    flex: 1,
     position: 'absolute',
     alignSelf: 'center',
   },

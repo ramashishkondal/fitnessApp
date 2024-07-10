@@ -82,7 +82,6 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
           />
           <TextInput
             value={comment}
-            autoFocus
             maxLength={100}
             onChangeText={setComment}
             placeholder="Add a Comment"

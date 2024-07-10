@@ -68,7 +68,10 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={handleEmailChange}
         autoFocus
-        textInputProps={{onBlur: () => setActiveOut(true)}}
+        textInputProps={{
+          onBlur: () => setActiveOut(true),
+          keyboardType: 'email-address',
+        }}
       />
       {activeOut && email && !isValidEmail(email) ? (
         <CustomErrorText text={STRING.ADD_EMAIL.EMAIL_ERROR} />

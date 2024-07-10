@@ -24,7 +24,7 @@ import {
   UserPost,
 } from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {COLORS, ICONS} from '../../../Constants';
+import {COLORS, ICONS, SIZES} from '../../../Constants';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
@@ -190,13 +190,13 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               position: 'absolute',
               backgroundColor: '#11111199',
               width: '100%',
-              height: '100%',
-              justifyContent: 'center',
+              height: SIZES.height,
             }}>
             {postData ? (
               <CustomImage
                 source={{uri: postData?.photo}}
                 imageStyle={{width: '100%', height: '80%'}}
+                resizeMode="contain"
               />
             ) : null}
           </TouchableOpacity>
