@@ -2,23 +2,29 @@ import React, {useCallback, useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {EditProfileProps} from './types';
 import {styles} from './styles';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
-import {COLORS, ICONS} from '../../../Constants';
+import {ICONS} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
 import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
 import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInterests';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
 import storage from '@react-native-firebase/storage';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {UserDb} from '../../../DbModels/user';
+import {UpdateMode} from 'realm';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import CustomCardUserItems from '../../../Components/Molecules/CustomCardUserItems';
 
 const EditProfile: React.FC<EditProfileProps> = () => {
   // state use
   const [activeModal, setActiveModal] = useState<
     'userInfo' | 'preferences' | null | 'interests'
   >(null);
-
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
+
   // redux use
   const {
     photo,
@@ -30,6 +36,13 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     gender,
     id,
   } = useAppSelector(state => state.User.data);
+  const dispatch = useAppDispatch();
+
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
 
   // functions
   const setModalFalse = () => setActiveModal(null);
@@ -45,6 +58,10 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     }
   }, [activeModal]);
   const ActiveModalComponent = getActiveModalComp();
+  const handleWithModalFalse = useCallback(
+    (): void => setActiveModal(null),
+    [],
+  );
 
   return (
     <View style={styles.parent}>
@@ -59,7 +76,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           <TouchableOpacity
             style={styles.pencilPhotoCtr}
             onPress={() => setPhotoModalVisible(true)}>
-            <View style={styles.pencilBackCtr}>
+            <View style={styles.pencilBackPhotoCtr}>
               {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
@@ -82,14 +99,14 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             {gender ? <Text style={styles.infoText}>{gender}</Text> : null}
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.pencilCtr}
-          onPress={() => setActiveModal('userInfo')}>
-          <View style={styles.pencilBackCtr}>
-            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-          </View>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        style={styles.pencilCtr}
+        onPress={() => setActiveModal('userInfo')}>
+        <View style={styles.pencilBackCtr}>
+          {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+        </View>
+      </TouchableOpacity>
       <View style={styles.otherCtr}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
@@ -97,36 +114,32 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             preferences
               .filter(val => val.selected === true)
               .map((val, index) => (
-                <Text key={index} style={styles.infoText}>
-                  {val.title}
-                </Text>
+                <CustomCardUserItems text={val.title} key={index} />
               ))
           ) : (
             <Text style={styles.infoText}>No Preferences selected</Text>
           )}
-          <TouchableOpacity
-            style={styles.pencilCtr}
-            onPress={() => setActiveModal('preferences')}>
-            <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-            </View>
-          </TouchableOpacity>
         </View>
-        <Text style={styles.cardsHeadingText}>Interests</Text>
-        <View style={styles.cardCtr}>
-          {interests.some(val => val.selected) ? (
-            interests.map((val, index) => {
-              if (val.selected) {
-                return (
-                  <Text key={index} style={styles.infoText}>
-                    {val.title}
-                  </Text>
-                );
-              }
-            })
-          ) : (
-            <Text style={styles.infoText}>No Interests selected</Text>
-          )}
+        <TouchableOpacity
+          style={styles.pencilCtr}
+          onPress={() => setActiveModal('preferences')}>
+          <View style={styles.pencilBackCtr}>
+            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.cardsHeadingText}>Interests</Text>
+          <View style={styles.cardCtr}>
+            {interests.some(val => val.selected) ? (
+              interests.map((val, index) => {
+                if (val.selected) {
+                  return <CustomCardUserItems text={val.title} key={index} />;
+                }
+              })
+            ) : (
+              <Text style={styles.infoText}>No Interests selected</Text>
+            )}
+          </View>
           <TouchableOpacity
             style={styles.pencilCtr}
             onPress={() => setActiveModal('interests')}>
@@ -138,32 +151,51 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       </View>
       <WithModal
         modalVisible={activeModal !== null}
-        setModalFalse={() => setActiveModal(null)}
-        parentStyle={{backgroundColor: COLORS.PRIMARY.LIGHT_GREY}}>
+        setModalFalse={handleWithModalFalse}
+        parentStyle={styles.withModalParent}>
         {ActiveModalComponent}
       </WithModal>
       <SelectCustomPhoto
-        setPhoto={() => {}}
+        setPhoto={undefined}
         modalVisible={photoModalVisible}
         setModalVisible={setPhotoModalVisible}
         onSuccess={(uri: string) => {
           (async () => {
-            console.log('ee');
-            try {
-              const reference = storage().ref(
-                'media/' + 'profilePictures' + id + '/' + 'photo',
-              );
-              await reference.putFile(uri);
-              const url = await reference.getDownloadURL();
-              await firestore()
-                .collection(firebaseDB.collections.users)
-                .doc(id!)
-                .update({photo: url});
-              setPhotoModalVisible(false);
-              console.log('zezu');
-            } catch (e) {
-              console.log(e);
+            if (!netInfo.isConnected) {
+              if (id) {
+                realm.write(() => {
+                  realm.create(
+                    UserDb,
+                    {
+                      photo: uri,
+                      firstName,
+                      lastName,
+                      interests,
+                      preferences,
+                      gender,
+                      id,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+              }
+              dispatch(updateUserData({photo: uri}));
+            } else {
+              try {
+                const reference = storage().ref(
+                  'media/' + 'profilePictures' + id + '/' + 'photo',
+                );
+                await reference.putFile(uri);
+                const url = await reference.getDownloadURL();
+                await firestore()
+                  .collection(firebaseDB.collections.users)
+                  .doc(id!)
+                  .update({photo: url});
+              } catch (e) {
+                console.log(e);
+              }
             }
+            setPhotoModalVisible(false);
           })();
         }}
       />

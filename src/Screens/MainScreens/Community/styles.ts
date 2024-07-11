@@ -32,6 +32,6 @@ export const styles = StyleSheet.create({
     // marginVertical: 34,
   },
   selectCustomPhoto: {
-    backgroundColor: COLORS.PRIMARY.DARK_GREY,
+    backgroundColor: COLORS.SECONDARY.WHITE,
   },
 });

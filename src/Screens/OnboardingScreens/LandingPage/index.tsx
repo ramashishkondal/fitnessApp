@@ -1,6 +1,6 @@
 //libs
 import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 
 // custom
 import {
@@ -12,14 +12,20 @@ import {
 import {SPACING, STRING, IMAGES} from '../../../Constants/';
 import {LandingPageProps} from '../../../Defs';
 import {styles} from './styles';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
+  const netInfo = useNetInfo();
   // functions
   const goToSignIn = () => {
     navigation.push('SignIn');
   };
   const goToStarting = () => {
-    navigation.navigate('AddEmail');
+    if (netInfo.isConnected) {
+      navigation.navigate('AddEmail');
+    } else {
+      Alert.alert('Network Error', 'Internet connection is disabled');
+    }
   };
 
   return (
@@ -29,7 +35,11 @@ const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
         text={STRING.LANDING_PAGE.TITLE_DESCRIPTION}
         textStyle={[SPACING.mh2, SPACING.mt1]}
       />
-      <Image source={IMAGES.LANDING_PAGE} style={styles.image} />
+      <Image
+        source={IMAGES.LANDING_PAGE}
+        style={styles.image}
+        resizeMode="contain"
+      />
       <CustomButton
         title={STRING.LANDING_PAGE.BUTTON_TEXT}
         parentStyle={SPACING.mt4}

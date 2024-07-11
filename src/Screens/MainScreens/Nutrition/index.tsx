@@ -17,7 +17,7 @@ import {
 import {COLORS, STRING} from '../../../Constants';
 import {NutritionProps} from '../../../Defs/navigators';
 import {styles} from './styles';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {getPercentage} from '../../../Utils/commonUtils';
 
 const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
@@ -28,7 +28,9 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   const {nutrition: caloriesBurned} = useAppSelector(
     state => state.health.value,
   );
+  const dispatch = useAppDispatch();
   const {data: dailyMeals} = useAppSelector(state => state.dailyMeals);
+
   const statsData = Object.values(dailyMeals)
     .flat()
     .reduce(
@@ -91,7 +93,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
     navigation.setOptions({
       headerRight,
     });
-  }, [headerRight, navigation]);
+  }, [dispatch, headerRight, navigation]);
 
   return (
     <ScrollView style={styles.parent}>

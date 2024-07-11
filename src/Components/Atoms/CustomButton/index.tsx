@@ -14,11 +14,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   buttonCtrStyle,
   textStyle,
   isLoading,
+  disabled,
 }) => {
   return (
     <TouchableOpacity
       style={[styles.parent, parentStyle]}
-      onPress={isLoading ? () => {} : onPress}>
+      disabled={disabled || isLoading}
+      onPress={onPress}>
       <View style={[styles.buttonCtr, buttonCtrStyle]}>
         {isLoading ? (
           <CustomLoading />

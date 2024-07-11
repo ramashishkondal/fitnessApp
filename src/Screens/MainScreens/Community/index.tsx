@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
 
 // 3rd party
@@ -44,10 +44,14 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
     state => state.User.data,
   );
 
+  // net info use
   const netInfo = useNetInfo();
+
+  // realm use
   const realm = useRealm();
-  const storyDataFromOffline = useObject(StoryDb, id!);
+  const storyDataFromOffline = useObject(StoryDb, id ?? '');
   console.log('story data is ', storyDataFromOffline?.stories);
+
   // ref use
   const postIdRef = useRef<Post>();
   const story = useRef<string>('');
@@ -60,16 +64,21 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as StoryData[];
+        console.log('stories data is ', x);
         setStoriesData(x);
       });
     return () => unsubscribe();
   }, []);
 
   // functions
-  const goToPostScreen = (postId: string) => {
-    return () => navigation.navigate('PostScreen', {postId: postId});
-  };
-  const storeDataInRelmDb = (storyType: string, storyUrl: string) => {
+  const goToPostScreen = useCallback(
+    (postId: string) => {
+      return () => navigation.navigate('PostScreen', {postId: postId});
+    },
+    [navigation],
+  );
+
+  const storeStoryDataInRealmDb = (storyType: string, storyUrl: string) => {
     if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
       console.log('already exists in db');
       return;
@@ -93,10 +102,11 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
       );
     });
   };
+
   const setStory = (st: string) => (story.current = st);
-  const setActiveModalPost = () => setActiveModal('story');
-  const setActiveModalFalse = () => setActiveModal('none');
-  const showCommentModal = () => setActiveModal('comment');
+  const setActiveModalPost = useCallback(() => setActiveModal('story'), []);
+  const setActiveModalFalse = useCallback(() => setActiveModal('none'), []);
+  const showCommentModal = useCallback(() => setActiveModal('comment'), []);
 
   return (
     <>
@@ -112,8 +122,10 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         </View>
         <View style={styles.storiesCtr}>
           <AddStory
-            setModalVisible={() => setStoryModalVisible(true)}
-            isLoading={isLoading}
+            setModalVisible={() => {
+              setStoryModalVisible(true);
+            }}
+            isLoading={!!(isLoading && netInfo.isConnected)}
           />
 
           <FlatList
@@ -162,11 +174,12 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
                 storyType: type!,
               },
               id!,
-            ).finally(() => setIsLoading(false));
+            );
           } else {
             console.log('storing data in offline mode');
-            storeDataInRelmDb(type!, uri);
+            storeStoryDataInRealmDb(type!, uri);
           }
+          setIsLoading(false);
         }}
       />
     </>

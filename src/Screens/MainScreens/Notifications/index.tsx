@@ -1,9 +1,9 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Pressable, Text, TouchableOpacity} from 'react-native';
+import {View, Pressable, Text, FlatList, TouchableOpacity} from 'react-native';
 
 // 3rd party
-import firestore from '@react-native-firebase/firestore';
+import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
 import {styles} from './styles';
@@ -18,8 +18,9 @@ import {getTimePassed} from '../../../Utils/commonUtils';
 
 const Notifications: React.FC = () => {
   // state ues
-  const [notificationsData, setNotificationsData] =
-    useState<Array<NotificationDataFirebaseDB>>();
+  const [notificationsData, setNotificationsData] = useState<
+    Array<NotificationDataFirebaseDB>
+  >([]);
   const [showMenu, setShowMenu] = useState(false);
 
   // redux use
@@ -52,57 +53,97 @@ const Notifications: React.FC = () => {
     if (notificationsData) {
       updateNotificationReadStatus(
         userId!,
-        notificationsData?.map(val => ({...val, isUnread: true})),
+        notificationsData.map(val => ({...val, isUnread: true})),
       );
     }
     setShowMenu(false);
   };
 
+  const clearAllNotifications = () => {
+    updateNotificationReadStatus(userId!, []);
+    setShowMenu(false);
+  };
+
+  const handleDeleteNotification = (createdOn: Timestamp) => {
+    updateNotificationReadStatus(
+      userId!,
+      notificationsData.filter(
+        val => createdOn.seconds * 1000 !== val.createdOn.seconds * 1000,
+      ),
+    );
+  };
+
   return (
     <TouchableOpacity
-      style={styles.parent}
+      style={{flex: 1}}
       activeOpacity={1}
+      disabled={!showMenu}
       onPress={() => setShowMenu(false)}>
-      <View style={styles.menuCtr}>
-        {showMenu ? (
-          <View style={styles.activeMenuCtr}>
-            <Pressable onPress={markAllRead}>
-              <Text style={styles.menuText}>Mark all as read</Text>
-            </Pressable>
-            <Pressable onPress={markAllUnread}>
-              <Text style={styles.menuText}>Mark all as unread</Text>
-            </Pressable>
-          </View>
-        ) : null}
-        <View>
-          <HeadingText text="Notifications" textStyle={styles.headingText} />
-          <DescriptionText
-            text={`${
-              notificationsData?.filter(val => val.isUnread === true).length
-            } unread Notifications`}
-            textStyle={styles.descriptionText}
-          />
-        </View>
-        <Pressable onPress={() => setShowMenu(!showMenu)}>
-          <View style={styles.dots} />
-          <View style={styles.dots} />
-          <View style={styles.dots} />
-        </Pressable>
-      </View>
-
-      <View style={styles.notificationsCtr}>
-        <FlatList
-          data={notificationsData?.slice().reverse()}
-          style={styles.flatList}
-          renderItem={({item}) => (
-            <Notification
-              isUnread={item.isUnread}
-              notificationText={item.message}
-              timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
-              userId={item.userId}
+      <View style={styles.parent}>
+        <View style={styles.menuCtr}>
+          {showMenu ? (
+            <View style={styles.activeMenuCtr}>
+              <Pressable onPress={markAllRead} style={styles.menuTextCtr}>
+                <Text style={styles.menuText}>Mark all as read</Text>
+              </Pressable>
+              <Pressable onPress={markAllUnread} style={styles.menuTextCtr}>
+                <Text style={styles.menuText}>Mark all as unread</Text>
+              </Pressable>
+              <Pressable
+                onPress={clearAllNotifications}
+                style={styles.menuTextCtrLast}>
+                <Text style={styles.menuText}>Clear all</Text>
+              </Pressable>
+            </View>
+          ) : null}
+          <View>
+            <HeadingText text="Notifications" textStyle={styles.headingText} />
+            <DescriptionText
+              text={`${
+                notificationsData?.filter(val => val.isUnread === true).length
+              } unread Notifications`}
+              textStyle={styles.descriptionText}
             />
+          </View>
+          {notificationsData?.length ? (
+            <Pressable
+              onPress={() => setShowMenu(!showMenu)}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+            </Pressable>
+          ) : null}
+        </View>
+
+        <View style={styles.notificationsCtr}>
+          {notificationsData?.length ? (
+            <FlatList
+              scrollEnabled
+              data={notificationsData?.slice().reverse()}
+              style={styles.flatList}
+              renderItem={({item}) => (
+                <Notification
+                  key={item.createdOn.seconds * 1000}
+                  isUnread={item.isUnread}
+                  notificationText={item.message}
+                  timeAgo={getTimePassed(item.createdOn.seconds * 1000)}
+                  userId={item.userId}
+                  handleDeletePressed={() =>
+                    handleDeleteNotification(item.createdOn)
+                  }
+                />
+              )}
+            />
+          ) : (
+            <View style={styles.noNotificationTextCtr}>
+              <DescriptionText
+                text="There are no notifications for now"
+                textStyle={styles.descriptionTextNoNotification}
+              />
+            </View>
           )}
-        />
+        </View>
       </View>
     </TouchableOpacity>
   );

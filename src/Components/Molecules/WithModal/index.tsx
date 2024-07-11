@@ -16,13 +16,15 @@ const WithModal: React.FC<WithModalProps> = ({
   parentStyle,
   barShown = true,
 }) => {
+  console.log('with modal ere');
   return (
     <Modal
       isVisible={modalVisible}
       onBackdropPress={setModalFalse}
       swipeDirection={'down'}
       avoidKeyboard={false}
-      statusBarTranslucent={true}
+      // statusBarTranslucent={true}
+      renderToHardwareTextureAndroid
       style={[styles.parent, parentStyle]}
       propagateSwipe={true}>
       {barShown ? (
@@ -35,4 +37,4 @@ const WithModal: React.FC<WithModalProps> = ({
   );
 };
 
-export default WithModal;
+export default React.memo(WithModal);

@@ -1,21 +1,21 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {Platform, Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 
 // 3rd party
-import Video, {VideoRef} from 'react-native-video';
+import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {useFocusEffect} from '@react-navigation/native';
 
 // custom
-import {CustomImage, CustomLoading} from '../../../Components';
-import {COLORS} from '../../../Constants';
+import {CustomImage} from '../../../Components';
 import {Timer} from '../../../Utils/commonUtils';
 import {StoriesScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import {updateStoriesWatchedArray} from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -23,6 +23,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   // redux use
   const {id: userId} = useAppSelector(state => state.User.data);
+  const insets = useSafeAreaInsets();
 
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
@@ -37,10 +38,8 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   // functions
   const goNext = () => {
-    if (index < stories.length - 1) {
-      setIndex(index + 1);
-    } else if (index === stories.length - 1) {
-      console.log('watched', allStoryData[userIndex]);
+    console.log('goNext called with', index);
+    if (index === 0 && stories.length === 1) {
       updateStoriesWatchedArray(
         userId!,
         allStoryData[userIndex].storyByUserId,
@@ -51,9 +50,29 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
           .toISOString(),
       );
       if (userIndex < allStoryData.length - 1) {
-        setUserIndex(userIndex + 1);
         setIndex(0);
-      } else if (userIndex === allStoryData.length - 1) {
+        setUserIndex(userIndex + 1);
+      } else {
+        navigation.goBack();
+      }
+    } else if (index < stories.length - 1) {
+      if (index + 1 === stories.length - 1) {
+        updateStoriesWatchedArray(
+          userId!,
+          allStoryData[userIndex].storyByUserId,
+          Timestamp.fromMillis(
+            allStoryData[userIndex].latestStoryOn.seconds * 1000,
+          )
+            .toDate()
+            .toISOString(),
+        );
+      }
+      setIndex(index + 1);
+    } else {
+      if (userIndex < allStoryData.length - 1) {
+        setIndex(0);
+        setUserIndex(userIndex + 1);
+      } else {
         navigation.goBack();
       }
     }
@@ -76,19 +95,30 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   const handleLeftTap = () => {
     if (index > 0) {
       setIndex(index - 1);
+    } else if (index === 0 && userIndex !== 0) {
+      setUserIndex(userIndex - 1);
     }
   };
 
   const storyTimer = new Timer(goNext);
+  // const handlePause = () => {
+  //   storyTimer.pause();
+  //   videoRef.current?.pause();
+  // };
+  // const handleResume = () => {
+  //   storyTimer.resume();
+  //   videoRef.current?.resume();
+  // };
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
-      <View style={styles.topInfoCtr}>
+      <View style={[styles.topInfoCtr, {top: insets.top}]}>
         <View style={styles.topCurrentStoryLineCtr}>
           {Array(allStoryData[userIndex].stories.length)
             .fill(0)
             .map((_val, i) => (
               <View
+                key={i}
                 style={[styles.line, i === index ? styles.lineActive : null]}
               />
             ))}
@@ -112,35 +142,39 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
         style={styles.gestureRecognizer}
         onSwipeLeft={handleLeftSwipe}
         onSwipeRight={handleRightSwipe}
-        onSwipeDown={
-          Platform.OS === 'android' ? () => navigation.goBack() : () => {}
-        }>
+        onSwipeDown={() => {
+          if (index === 0 && stories.length === 1) {
+            updateStoriesWatchedArray(
+              userId!,
+              allStoryData[userIndex].storyByUserId,
+              Timestamp.fromMillis(
+                allStoryData[userIndex].latestStoryOn.seconds * 1000,
+              )
+                .toDate()
+                .toISOString(),
+            );
+          }
+          navigation.goBack();
+        }}>
         <View style={styles.touchablesCtr}>
-          <Pressable
-            style={styles.leftPressable}
-            onPress={handleLeftTap}
-            onLongPress={() => storyTimer.pause()}
-            onPressOut={() => storyTimer.resume()}
-          />
+          <Pressable style={styles.leftPressable} onPress={handleLeftTap} />
           <Pressable style={styles.rightPressable} onPress={goNext} />
         </View>
         {stories[index].storyType.includes('video') ? (
           <View style={styles.videoCtr}>
-            <CustomLoading
-              size={'large'}
-              style={styles.customLoading}
-              color={COLORS.PRIMARY.PURPLE}
-            />
             <Video
               source={{
                 uri: stories[index].storyUrl,
               }}
               ref={videoRef}
               style={styles.video}
-              onLoad={({duration}) =>
-                storyTimer.start(duration < 15 ? duration * 1000 - 300 : 10000)
-              }
+              onLoad={({duration}) => {
+                storyTimer.start(duration < 15 ? duration * 1000 : 10000);
+              }}
               resizeMode="cover"
+              bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
+              shutterColor="transparent"
+              bufferConfig={{cacheSizeMB: 200}}
             />
           </View>
         ) : (

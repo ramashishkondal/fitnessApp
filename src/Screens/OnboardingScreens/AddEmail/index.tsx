@@ -22,6 +22,7 @@ import {firebaseDB} from '../../../Utils/userUtils';
 const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
   const [email, setEmail] = useState<string>('');
+  const [activeOut, setActiveOut] = useState(false);
 
   // ref use
   const emailRef = useRef(email);
@@ -67,8 +68,12 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={handleEmailChange}
         autoFocus
+        textInputProps={{
+          onBlur: () => setActiveOut(true),
+          keyboardType: 'email-address',
+        }}
       />
-      {email && !isValidEmail(email) ? (
+      {activeOut && email && !isValidEmail(email) ? (
         <CustomErrorText text={STRING.ADD_EMAIL.EMAIL_ERROR} />
       ) : null}
       <CustomButton

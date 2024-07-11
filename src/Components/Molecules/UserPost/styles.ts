@@ -47,6 +47,7 @@ export const styles = StyleSheet.create({
     marginVertical: 16,
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: SIZES.font12,
+    color: 'black',
   },
   userNameText: {
     fontFamily: FONT_FAMILY.BOLD,

@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
   detailsText: {
     color: COLORS.PRIMARY.PURPLE,
     fontWeight: SIZES.fontBold0,
-    fontSize: SIZES.font12,
+    fontSize: SIZES.font13,
     marginHorizontal: 36,
     fontFamily: FONT_FAMILY.REGULAR,
     ...SPACING.mt3,
   },
   catageroiesCtr: {
-    ...SPACING.mt5,
+    ...SPACING.mt3,
   },
   headingText: {
     marginHorizontal: 36,

@@ -1,4 +1,4 @@
-import {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {StyleProp, TextInputProps, TextStyle, ViewStyle} from 'react-native';
 
 export type CustomTextInputProps = {
   placeHolder?: string;
@@ -12,4 +12,6 @@ export type CustomTextInputProps = {
   autoFocus?: boolean;
   hasError?: boolean;
   value?: string;
+  textInputProps?: TextInputProps;
+  allowPeeking?: boolean;
 };

@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {View} from 'react-native';
+import {Alert, Platform, View} from 'react-native';
 
 // custom
 import {
@@ -9,19 +9,49 @@ import {
   DescriptionText,
   HeadingText,
 } from '../../../Components';
-import {ICONS, SPACING, STRING} from '../../../Constants';
+import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import {styles} from './styles';
 import {AddProfilePictureProps} from '../../../Defs';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
-const fingerprintSize = 75;
+const iconSize = {width: 80, height: 80, color: COLORS.PRIMARY.PURPLE};
 const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
+  // redux use
+  const dispatch = useAppDispatch();
+
+  // functions
   const goToAddProfilePicture = () => {
     navigation.push('AddProfilePicture');
   };
+  const handleBiometricAdded = () => {
+    Alert.alert(
+      `${Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'}`,
+      `${
+        Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'
+      } login on this device enabled`,
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            dispatch(updateUserData({finger: true}));
+            goToAddProfilePicture();
+          },
+        },
+      ],
+    );
+  };
+  const handleNotNow = () => {
+    dispatch(updateUserData({finger: false}));
+    goToAddProfilePicture();
+  };
+
   return (
     <View style={styles.parent}>
       <View style={styles.iconCtr}>
-        {ICONS.Fingerprint({width: fingerprintSize, height: fingerprintSize})}
+        {Platform.OS === 'android'
+          ? ICONS.Fingerprint(iconSize)
+          : ICONS.FaceId(iconSize)}
       </View>
       <HeadingText
         text={STRING.ADD_FINGERPRINT.TITLE}
@@ -34,12 +64,13 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
       <CustomButton
         title={STRING.ADD_FINGERPRINT.SUBMIT_BUTTON_TEXT}
         parentStyle={styles.customButtonParentStyle}
+        onPress={handleBiometricAdded}
       />
       <CustomButton
         title={STRING.ADD_FINGERPRINT.REJECT_BUTTON_TEXT}
         parentStyle={styles.notNowParent}
         textStyle={styles.notNowText}
-        onPress={goToAddProfilePicture}
+        onPress={handleNotNow}
       />
     </View>
   );

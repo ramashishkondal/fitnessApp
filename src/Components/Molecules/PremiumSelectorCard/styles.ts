@@ -39,4 +39,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.MEDIUM,
     fontSize: SIZES.font12,
   },
+  pressable: {
+    flex: 1,
+  },
 });

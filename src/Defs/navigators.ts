@@ -113,12 +113,18 @@ export type appStackParamList = {
   StoriesScreen: {allStoryData: Array<StoryData>; index: number};
   EditProfile: undefined;
   ResetPassword: undefined;
+  GiveFeedback: undefined;
+  AboutUs: undefined;
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 
 export type NutritionProps = NativeStackScreenProps<
   appStackParamList,
   'Nutrition'
+>;
+export type ResetPasswordProps = NativeStackScreenProps<
+  appStackParamList,
+  'ResetPassword'
 >;
 export type HomeNavigatorProps = NativeStackScreenProps<
   appStackParamList,

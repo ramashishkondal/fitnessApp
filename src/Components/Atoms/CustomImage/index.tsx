@@ -1,6 +1,8 @@
 // libs
 import React, {useState} from 'react';
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
+
+import FastImage from 'react-native-fast-image';
 
 // custom
 import {CustomImageProps} from './types';
@@ -14,6 +16,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
   activityIndicatorSize,
   parentStyle,
   handleLoadEnd = () => {},
+  resizeMode,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
@@ -25,7 +28,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
           size={activityIndicatorSize}
         />
       ) : null}
-      <Image
+      <FastImage
         source={source}
         style={[styles.image, imageStyle]}
         onLoadStart={() => setIsLoading(true)}
@@ -33,6 +36,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
           setIsLoading(false);
           handleLoadEnd();
         }}
+        resizeMode={resizeMode}
       />
     </View>
   );

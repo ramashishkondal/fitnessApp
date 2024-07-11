@@ -1,15 +1,11 @@
-import {
-  ImageProps,
-  ImageStyle,
-  StyleProp,
-  ActivityIndicatorProps,
-  ViewStyle,
-} from 'react-native';
+import {StyleProp, ActivityIndicatorProps, ViewStyle} from 'react-native';
+import {Source, ImageStyle, FastImageProps} from 'react-native-fast-image';
 
 export type CustomImageProps = {
-  source: ImageProps['source'];
+  source: number | Source | undefined;
   imageStyle?: StyleProp<ImageStyle>;
   parentStyle?: StyleProp<ViewStyle>;
   activityIndicatorSize?: ActivityIndicatorProps['size'];
   handleLoadEnd?: () => void;
+  resizeMode?: FastImageProps['resizeMode'];
 };

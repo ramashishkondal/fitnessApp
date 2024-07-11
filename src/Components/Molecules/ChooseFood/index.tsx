@@ -1,5 +1,5 @@
 // libs
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 
 // custom
@@ -11,11 +11,16 @@ import FoodSelector from '../FoodSelector';
 import {
   DailyMeals,
   Meal,
-  updateAllMealData,
+  resetMealDataItems,
 } from '../../../Redux/Reducers/dailyMeal';
-import {useAppDispatch} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {styles} from './styles';
 import {foodData} from '../../../Constants/commonConstants';
+import {storeMealData} from '../../../Utils/userUtils';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {MealDb} from '../../../DbModels/mealData';
+import {UpdateMode} from 'realm';
 
 const size = {
   width: 50,
@@ -32,7 +37,18 @@ export type MealsSelected = {
   foodData: Array<Meal>;
 };
 const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
+  // state use
+  const [isLoading, setIsLoading] = useState(false);
+
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
+
   // redux use
+  const {id} = useAppSelector(state => state.User.data);
+  const {data: mealsData} = useAppSelector(state => state.dailyMeals);
   const dispatch = useAppDispatch();
 
   // ref use
@@ -48,6 +64,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmit = () => {
+    setIsLoading(true);
     const dtArray: DailyMeals = {
       breakfast: [],
       dinner: [],
@@ -78,9 +95,45 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
       );
       return;
     }
-    dispatch(updateAllMealData(dtArray));
-    setModalFalse();
+    if (netInfo.isConnected) {
+      storeMealData(id!, {
+        breakfast: mealsData.breakfast.concat(dtArray.breakfast),
+        dinner: mealsData.dinner.concat(dtArray.dinner),
+        lunch: mealsData.lunch.concat(dtArray.lunch),
+        snack: mealsData.snack.concat(dtArray.snack),
+      }).finally(() => {
+        setIsLoading(false);
+        setModalFalse();
+      });
+    } else {
+      realm.write(() => {
+        realm.create(
+          MealDb,
+          {
+            breakfast: mealsData.breakfast
+              .concat(dtArray.breakfast)
+              .filter(val => val),
+            dinner: mealsData.dinner.concat(dtArray.dinner).map(val => val),
+            lunch: mealsData.lunch.concat(dtArray.lunch).map(val => val),
+            snack: mealsData.snack.concat(dtArray.snack).map(val => val),
+            uid: id!,
+          },
+          UpdateMode.Modified,
+        );
+      });
+      dispatch(
+        resetMealDataItems({
+          breakfast: mealsData.breakfast.concat(dtArray.breakfast),
+          dinner: mealsData.dinner.concat(dtArray.dinner),
+          lunch: mealsData.lunch.concat(dtArray.lunch),
+          snack: mealsData.snack.concat(dtArray.snack),
+        }),
+      );
+      setModalFalse();
+      setIsLoading(false);
+    }
   };
+
   return (
     <View style={styles.parent}>
       <ScrollView style={styles.parent}>
@@ -118,12 +171,13 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
             ))}
           </View>
         </TouchableOpacity>
-        <CustomButton
-          title="Add"
-          onPress={handleSubmit}
-          parentStyle={styles.customButtonParent}
-        />
       </ScrollView>
+      <CustomButton
+        title="Add"
+        onPress={handleSubmit}
+        parentStyle={styles.customButtonParent}
+        isLoading={isLoading}
+      />
     </View>
   );
 };

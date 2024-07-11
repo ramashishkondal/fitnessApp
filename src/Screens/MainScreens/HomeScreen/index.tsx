@@ -1,27 +1,135 @@
 // libs
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  Alert,
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import AppleHealthKit from 'react-native-health';
 
 // custom
-import {useAppSelector} from '../../../Redux/Store';
-import {CustomHomeDetailsCard, HeadingText} from '../../../Components';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {
+  CustomHomeDetailsCard,
+  HeadingText,
+  WarningLabel,
+} from '../../../Components';
 import {ICONS, STRING} from '../../../Constants';
 import {HomeScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
-import {getPercentage} from '../../../Utils/commonUtils';
-
-const currentTime = new Date().getHours();
+import {date, getPercentage} from '../../../Utils/commonUtils';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import RNRestart from 'react-native-restart';
+import {
+  DailyMeals,
+  resetMealDataItems,
+} from '../../../Redux/Reducers/dailyMeal';
+import {firebaseDB} from '../../../Utils/userUtils';
+import firestore from '@react-native-firebase/firestore';
+import {useHealth} from '../../../Hooks/useHealth';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
+  const dispatch = useAppDispatch();
+
   const {
     todaysSteps,
     waterIntake,
     nutrition,
+    hasPermission,
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
-  const {firstName} = useAppSelector(state => state.User.data);
+  const {firstName, finger, id} = useAppSelector(state => state.User.data);
+  const {isBiometricEnabled, shouldAskBiometics} = useAppSelector(
+    state => state.settings.data.cachedData,
+  );
+
+  useHealth();
+  // effect use
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      AppleHealthKit.getAuthStatus(
+        {
+          permissions: {
+            read: [
+              AppleHealthKit.Constants.Permissions.HeartRate,
+              AppleHealthKit.Constants.Permissions.Steps,
+              AppleHealthKit.Constants.Permissions.StepCount,
+              AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+            ],
+            write: [],
+          },
+        },
+        (err, results) => {
+          console.log('resfewfw fwef w');
+          console.log(err, results);
+        },
+      );
+      AppleHealthKit.initHealthKit(
+        {
+          permissions: {
+            read: [
+              AppleHealthKit.Constants.Permissions.HeartRate,
+              AppleHealthKit.Constants.Permissions.Steps,
+              AppleHealthKit.Constants.Permissions.StepCount,
+              AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+            ],
+            write: [],
+          },
+        },
+        err => {
+          console.log('error', err);
+        },
+      );
+    }
+    if (finger && isBiometricEnabled === false && shouldAskBiometics) {
+      Alert.alert(
+        'Biometric: Sign in from new device detected',
+        'You have enabled biometric for SignIn in this account would you like to enable it on this device?',
+        [
+          {
+            text: 'Confirm',
+            onPress: () => {
+              dispatch(
+                updateSettingsCachedData({
+                  isBiometricEnabled: true,
+                  shouldAskBiometics: false,
+                }),
+              );
+            },
+          },
+          {text: 'Cancel'},
+          {
+            text: "Don't ask again",
+            onPress: () => {
+              dispatch(updateSettingsCachedData({shouldAskBiometics: false}));
+            },
+          },
+        ],
+      );
+    }
+  }, [dispatch, finger, isBiometricEnabled, shouldAskBiometics]);
+
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.dailyMeals)
+      .doc(id!)
+      .onSnapshot(snapshot => {
+        if (snapshot.exists) {
+          const x = snapshot.data() as DailyMeals;
+          if (x) {
+            console.log('daily meal data is ', x);
+            dispatch(resetMealDataItems(x));
+          }
+        }
+      });
+    return () => unsubscribe();
+  }, [dispatch, id]);
 
   // functions
   const goToNutrition = (): void => navigation.push('Nutrition');
@@ -34,7 +142,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       entering={SlideInLeft.easing(Easing.ease)}>
       <HeadingText
         text={`${STRING.HOME_SCREEN.TITLE} ${
-          currentTime > 13 ? 'Evening' : 'Morning'
+          date.today().getHours() > 12 ? 'Afternoon' : 'Morning'
         }, ${firstName}`}
         headingTextStyle={2}
         textStyle={styles.headingText}
@@ -83,6 +191,38 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           markerPercentage={getPercentage(todaysSteps, totalSteps)}
         />
       </View>
+      {!hasPermission ? (
+        <WarningLabel
+          text="Activity Recognition Permissions not allowed you are using the app in limited mode."
+          parentStyle={{padding: 16}}
+          onPress={() =>
+            Alert.alert(
+              'Activity Recognition permissions denied',
+              'You have to allow Activity recognition from the App settings to use full features of the app',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    Alert.alert(
+                      'Restart App',
+                      'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
+                      [
+                        {text: 'OK', onPress: RNRestart.restart},
+                        {text: 'Cancel'},
+                      ],
+                    );
+
+                    Linking.openSettings();
+                  },
+                },
+                {
+                  text: 'Cancel',
+                },
+              ],
+            )
+          }
+        />
+      ) : null}
     </Animated.View>
   );
 };

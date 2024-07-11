@@ -1,30 +1,19 @@
 import Realm, {ObjectSchema} from 'realm';
-import {Post} from '../Defs';
 
-export class StoryDb extends Realm.Object {
-  latestStoryOn!: Date;
-  storyByUserId!: string;
-  userName!: string;
-  userPhoto!: string;
-  stories!: Post;
+export class PostDb extends Realm.Object {
+  photo!: string;
+  caption!: string;
 
   public static readonly schema: ObjectSchema = {
-    name: 'UserStory',
+    name: 'UserPost',
     properties: {
-      latestStoryOn: {
-        type: 'date',
-      },
-      storyByUserId: {
+      photo: {
         type: 'string',
       },
-      userName: {
+      caption: {
         type: 'string',
       },
-      userPhoto: {
-        type: 'string',
-      },
-      stories: 'Story[]',
     },
-    primaryKey: 'storyByUserId',
+    primaryKey: 'photo',
   };
 }

@@ -2,6 +2,9 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, TextInput} from 'react-native';
 
+import EmojiSelector from 'react-native-emoji-selector';
+import {Timestamp} from '@react-native-firebase/firestore';
+
 // custom
 import {useAppSelector} from '../../../Redux/Store';
 import CustomButton from '../../Atoms/CustomButton';
@@ -10,12 +13,12 @@ import {storePostComment} from '../../../Utils/userUtils';
 import {AddCommentProps} from './type';
 import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
-import {Timestamp} from '@react-native-firebase/firestore';
 
 const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   // state use
   const [comment, setComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isEmojiShown, setIsEmojiShown] = useState(false);
 
   // redux use
   const {id: userId, photo: userPhoto} = useAppSelector(
@@ -24,21 +27,33 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
 
   // functions
   const handlePost = async () => {
+    if (comment.trim() === '') {
+      return;
+    }
     try {
       if (userId !== null) {
         setIsLoading(true);
+
         if (postId.postId) {
-          await storePostComment(
-            postId.postId,
-            {
+          if (postId.userId === userId!) {
+            await storePostComment(postId.postId, {
               userId,
               comment,
               createdOn: Timestamp.fromDate(new Date()),
-            },
-            {
-              sendNotificationToUserId: postId.userId,
-            },
-          );
+            });
+          } else {
+            await storePostComment(
+              postId.postId,
+              {
+                userId,
+                comment,
+                createdOn: Timestamp.fromDate(new Date()),
+              },
+              {
+                sendNotificationToUserId: postId.userId,
+              },
+            );
+          }
         }
         setModalFalse();
       }
@@ -50,7 +65,10 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <TouchableOpacity
+      style={styles.parent}
+      onPress={() => setIsEmojiShown(false)}
+      activeOpacity={1}>
       <View>
         <HeadingText
           text={STRING.ADD_Comment.TITLE}
@@ -63,17 +81,35 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
             imageStyle={styles.customImage}
           />
           <TextInput
-            autoFocus
+            value={comment}
             maxLength={100}
             onChangeText={setComment}
             placeholder="Add a Comment"
             style={styles.textInput}
+            placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
+            onPress={() => setIsEmojiShown(false)}
+            multiline
           />
         </View>
       </View>
+      {isEmojiShown ? (
+        <View style={styles.EmojiSelectorCtr}>
+          <EmojiSelector
+            onEmojiSelected={emoji => {
+              setComment(comment + emoji);
+            }}
+            showTabs={false}
+            showSectionTitles
+            columns={8}
+            theme={COLORS.SECONDARY.GREY}
+          />
+        </View>
+      ) : null}
       <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>
-          <TouchableOpacity style={styles.iconsCtr}>
+          <TouchableOpacity
+            style={styles.iconsCtr}
+            onPress={() => setIsEmojiShown(!isEmojiShown)}>
             {ICONS.SmileyGood({
               width: 24,
               height: 24,
@@ -91,7 +127,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

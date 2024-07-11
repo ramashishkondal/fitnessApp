@@ -1,5 +1,14 @@
 {
-  "cSpell.words": ["firestore", "Millis", "Noto", "Pressable", "Svgs"],
+  "cSpell.words": [
+    "firestore",
+    "Millis",
+    "netinfo",
+    "notifee",
+    "Noto",
+    "preferenced",
+    "Pressable",
+    "Svgs"
+  ],
   "svg.preview.background": "dark-transparent",
   "conventionalCommits.scopes": [
     "home"

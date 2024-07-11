@@ -1,27 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Pressable, Linking, Alert, Platform} from 'react-native';
 import {SettingsCardProps} from './types';
 import {COLORS} from '../../../Constants/commonStyles';
 import {Switch} from 'react-native-switch';
-import notifee from '@notifee/react-native';
 import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateSettingPushNotification} from '../../../Redux/Reducers/userSettings';
+import {PERMISSIONS, check, request} from 'react-native-permissions';
+import RNRestart from 'react-native-restart';
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   title,
   hasSwitch = false,
   onPress,
 }) => {
+  // redux use
+  const dispatch = useAppDispatch();
+  // const {allowPushNotifications} = useAppSelector(state => state.settings.data);
+
+  // state use
   const [switchActive, setSwitchActive] = useState(false);
 
-  useEffect(() => {
-    notifee.requestPermission().then(settings => {
-      if (settings.authorizationStatus) {
-        setSwitchActive(true);
-      } else {
-        setSwitchActive(false);
-      }
-    });
-  }, []);
   return (
     <Pressable style={styles.parent} onPress={onPress}>
       <Text style={styles.headingText}>{title}</Text>
@@ -33,12 +32,56 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
           ]}>
           <Switch
             value={switchActive}
-            onValueChange={val => {
-              setSwitchActive(val);
+            onValueChange={async val => {
+              if (Platform.OS === 'android' && Platform.Version >= 33) {
+                const notificationPerm = await check(
+                  PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+                );
+                if (notificationPerm === 'granted' || val === false) {
+                  setSwitchActive(val);
+                  dispatch(updateSettingPushNotification(val));
+                }
+                if (val && notificationPerm !== 'granted') {
+                  const notificationAuth = await request(
+                    PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+                  );
+                  if (notificationAuth === 'granted') {
+                    setSwitchActive(val);
+                    dispatch(updateSettingPushNotification(val));
+                  }
+                  if (notificationAuth === 'blocked') {
+                    Alert.alert(
+                      'Notifications permissions denied',
+                      'You have to allow Notification permissions from the App settings to use notification feature of the app',
+                      [
+                        {
+                          text: 'Ok',
+                          onPress: () => {
+                            Alert.alert(
+                              'Restart App',
+                              'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
+                              [
+                                {text: 'OK', onPress: RNRestart.restart},
+                                {text: 'Cancel'},
+                              ],
+                            );
+
+                            Linking.openSettings();
+                          },
+                        },
+                        {
+                          text: 'Cancel',
+                        },
+                      ],
+                    );
+                  }
+                }
+              } else {
+                setSwitchActive(val);
+                dispatch(updateSettingPushNotification(val));
+              }
             }}
             disabled={false}
-            activeText={'On'}
-            inActiveText={'Off'}
             circleSize={32}
             barHeight={32}
             circleBorderWidth={2}

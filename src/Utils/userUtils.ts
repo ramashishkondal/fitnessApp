@@ -6,12 +6,15 @@ import {v4 as uuidv4} from 'uuid';
 import {HealthData, User, Post, Comment} from '../Defs';
 import {NotificationData} from '../Defs/user';
 import {debounce} from './commonUtils';
+import {DailyMeals} from '../Redux/Reducers/dailyMeal';
 
 export const firebaseDB = {
   collections: {
     users: 'users',
     posts: 'posts',
     stories: 'stories',
+    dailyMeals: 'dailyMeals',
+    healthData: 'healthData',
   },
   documents: {
     users: {},
@@ -88,7 +91,7 @@ export const getHealthData = async (uid: string) => {
       .collection(firebaseDB.collections.users)
       .doc(uid)
       .get();
-    return snapshot.data() as Array<UserHealthDataFirebaseDb>;
+    return snapshot.get('healthData') as Array<UserHealthDataFirebaseDb>;
   } catch (e) {
     console.log(e);
   }
@@ -126,7 +129,7 @@ export const storePost = async (post: Post) => {
 export const storePostComment = async (
   postId: string,
   comment: Comment,
-  notification: {sendNotificationToUserId: string},
+  notification?: {sendNotificationToUserId: string},
 ) => {
   await firestore()
     .collection(firebaseDB.collections.posts)
@@ -134,15 +137,17 @@ export const storePostComment = async (
     .update({
       comments: firestore.FieldValue.arrayUnion(comment),
     });
-  sendNotification(
-    {
-      isShownViaPushNotification: false,
-      isUnread: true,
-      message: 'commented on your post',
-      userId: comment.userId,
-    },
-    notification.sendNotificationToUserId,
-  );
+  if (notification) {
+    sendNotification(
+      {
+        isShownViaPushNotification: false,
+        isUnread: true,
+        message: 'commented on your post',
+        userId: comment.userId,
+      },
+      notification.sendNotificationToUserId,
+    );
+  }
 };
 
 export const getPost = async (postId: string) => {
@@ -259,6 +264,7 @@ export const storeStory = async (
           userName: story.userName,
           userPhoto: story.userPhoto,
           storyByUserId: userId,
+          latestStoryOn: Timestamp.fromDate(new Date()),
         });
     }
     const snap = await firestore()
@@ -351,3 +357,56 @@ export const updateStoriesWatchedArray = async (
     console.log('error encountered while updating watched stories array -', e);
   }
 };
+
+export const storeMealData = async (userId: string, dailyMeals: DailyMeals) => {
+  await firestore()
+    .collection(firebaseDB.collections.dailyMeals)
+    .doc(userId)
+    .set(dailyMeals);
+};
+
+export const getMealData = async (userId: string) => {
+  const val = await firestore()
+    .collection(firebaseDB.collections.dailyMeals)
+    .doc(userId)
+    .get();
+  return val.data() as DailyMeals;
+};
+
+export const storeNewUserHealthData = async (
+  userId: string,
+  healthData: HealthData,
+) => {
+  console.log('storing new health data ran');
+  try {
+    await firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(userId)
+      .set({
+        [new Date().setHours(0, 0, 0, 0).toString()]: healthData,
+      });
+  } catch (e) {
+    console.log('errror storing new health data', e);
+  }
+};
+export const updateWaterIntake = async (
+  userId: string,
+  waterIntake: HealthData['waterIntake'],
+) => {
+  try {
+    const updateAt =
+      new Date().setHours(0, 0, 0, 0).toString() + '.waterIntake';
+    await firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(userId)
+      .update({
+        [updateAt]: waterIntake,
+      });
+  } catch (e) {
+    console.log('errror storing new health data', e);
+  }
+};
+
+// healthData -> id -> date -> {HealthData}
+//
+//

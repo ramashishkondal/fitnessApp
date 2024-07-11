@@ -9,7 +9,7 @@ import {useAppSelector} from '../../../Redux/Store';
 const DietDataList: React.FC = () => {
   // redux use
   const {data: dailyMeals} = useAppSelector(state => state.dailyMeals);
-
+  console.log('daik', dailyMeals);
   return (
     <View>
       <DietDataItem item={dailyMeals.breakfast} timeOfMeal="Breakfast" />

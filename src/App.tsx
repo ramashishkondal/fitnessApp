@@ -8,10 +8,22 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ModalPortal} from 'react-native-modals';
 import {RealmProvider} from '@realm/react';
 import {SingleStoryDb, StoryDb} from './DbModels/story';
+import {PostDb} from './DbModels/post';
+import {UserDb, UserPreferencesAndInterests} from './DbModels/user';
+import {FoodDb, MealDb} from './DbModels/mealData';
 
 const App = () => {
   return (
-    <RealmProvider schema={[StoryDb, SingleStoryDb]}>
+    <RealmProvider
+      schema={[
+        StoryDb,
+        SingleStoryDb,
+        PostDb,
+        UserDb,
+        UserPreferencesAndInterests,
+        MealDb,
+        FoodDb,
+      ]}>
       <GestureHandlerRootView>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

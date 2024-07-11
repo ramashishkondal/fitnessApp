@@ -32,9 +32,11 @@ const UserPost: React.FC<UserPostProps> = ({
   userId,
   handleCommentsPress,
   handleLikesPress,
+  handlePhotoPress,
 }) => {
   // state use
   const [userData, setUserData] = useState<User>();
+  console.log('user post ender');
 
   // effect use
   useEffect(() => {
@@ -76,12 +78,23 @@ const UserPost: React.FC<UserPostProps> = ({
       ) : (
         <View style={styles.noCaptionCtr} />
       )}
-      <CustomImage
-        source={{uri: photo}}
-        parentStyle={styles.photo}
-        imageStyle={{borderRadius: SIZES.rounding2}}
-        activityIndicatorSize={'large'}
-      />
+      {handlePhotoPress ? (
+        <TouchableOpacity onPress={handlePhotoPress}>
+          <CustomImage
+            source={{uri: photo}}
+            parentStyle={styles.photo}
+            imageStyle={{borderRadius: SIZES.rounding2}}
+            activityIndicatorSize={'large'}
+          />
+        </TouchableOpacity>
+      ) : (
+        <CustomImage
+          source={{uri: photo}}
+          parentStyle={styles.photo}
+          imageStyle={{borderRadius: SIZES.rounding2}}
+          activityIndicatorSize={'large'}
+        />
+      )}
       <View style={styles.likesAndCommentsCtr}>
         <TouchableOpacity onPress={handleLikesPress} style={styles.likeCtr}>
           {ICONS.HeartLike({
@@ -103,4 +116,4 @@ const UserPost: React.FC<UserPostProps> = ({
   );
 };
 
-export default UserPost;
+export default React.memo(UserPost);

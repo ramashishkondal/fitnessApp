@@ -16,14 +16,38 @@ import {SPACING, STRING} from '../../../Constants';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {ForgotPasswordProps} from '../../../Defs/navigators';
 import {styles} from './styles';
+import {useNetInfo} from '@react-native-community/netinfo';
+import firestore from '@react-native-firebase/firestore';
+import {firebaseDB} from '../../../Utils/userUtils';
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   // state use
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // netInfo use
+  const netInfo = useNetInfo();
+
   // functions
   const handleSubmit = async () => {
+    if (!netInfo.isConnected) {
+      Alert.alert('Network Error', 'Internet connection is disabled');
+      return;
+    }
+    if (email.trim() === '') {
+      Alert.alert('Error', "Email address can't be empty");
+    }
+    if (!isValidEmail(email)) {
+      return;
+    }
+    const snapshot = await firestore()
+      .collection(firebaseDB.collections.users)
+      .where('email', '==', email)
+      .get();
+    if (snapshot.docs.length === 0) {
+      Alert.alert('Error', 'Email address is not registered with Fitness App.');
+      return;
+    }
     setIsLoading(true);
     try {
       await auth().sendPasswordResetEmail(email);

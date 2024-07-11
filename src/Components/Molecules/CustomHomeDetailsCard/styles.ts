@@ -77,10 +77,11 @@ export const styles = StyleSheet.create({
   },
   marker: {
     position: 'absolute',
-    height: 16,
-    width: 2,
-    top: -6,
+    height: 14,
+    width: 2.5,
+    top: -5,
     left: '0%',
     backgroundColor: 'black',
+    borderRadius: 200,
   },
 });

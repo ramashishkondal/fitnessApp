@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   bottomTextInputCtr: {
     position: 'absolute',
     bottom: 0,
-    borderWidth: 1,
+    borderTopWidth: 1,
     flex: 1,
     height: SIZES.height / 14,
     width: SIZES.width,
@@ -26,11 +27,18 @@ export const styles = StyleSheet.create({
     flex: 6,
     paddingHorizontal: 24,
     fontSize: SIZES.font12,
+    color: 'black',
   },
   sendCtr: {
     flex: 1,
   },
   userPostCtr: {
     flex: 3,
+  },
+  commentText: {
+    fontSize: SIZES.font17,
+    fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    color: 'black',
   },
 });

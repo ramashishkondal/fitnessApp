@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateHealthData} from '../../../Redux/Reducers/health';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
-import {getHealthData} from '../../../Utils/userUtils';
+import {getHealthData, updateWaterIntake} from '../../../Utils/userUtils';
 import {
   checkWeek,
   date,
@@ -21,17 +21,19 @@ import {
   weekday,
 } from '../../../Utils/commonUtils';
 import {Timestamp} from '@react-native-firebase/firestore';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const simleySize = {
   width: 21,
   height: 21,
   color: COLORS.SECONDARY.ORANGE,
 };
+const plusSize = {
+  width: 15,
+  height: 15,
+};
 
 const WaterIntake: React.FC = () => {
-  // constants
-  const today = date.today();
-
   // state use
   const [rating, setRating] = useState<{
     best: {value: number; week: string};
@@ -45,15 +47,22 @@ const WaterIntake: React.FC = () => {
   } = useAppSelector(state => state.health.value);
   const {id} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
+
+  const [glassesLength, setGlassesLength] = useState<number>(
+    waterIntake > noOfGlasses ? waterIntake : noOfGlasses,
+  );
   // effect use
   useEffect(() => {
+    const today = date.today();
     getHealthData(id!)
       .then(healthData => {
+        console.log('health Data is', healthData);
         if (healthData) {
           const filteredData = healthData.filter(val =>
             checkWeek(
               Timestamp.fromMillis(val.currentDate.seconds * 1000).toDate(),
               today,
+              false,
             ),
           );
           const bestWaterIntakeDay = filteredData.reduce(
@@ -75,7 +84,7 @@ const WaterIntake: React.FC = () => {
               }
               return acc;
             },
-            {value: -Infinity, week: ''},
+            {value: waterIntake, week: 'today'},
           );
           const worstWaterIntakeDay = filteredData.reduce(
             (acc, val) => {
@@ -98,37 +107,42 @@ const WaterIntake: React.FC = () => {
               return acc;
             },
             {
-              value: +Infinity,
-              week: '',
+              value: waterIntake,
+              week: 'today',
             },
           );
           setRating({best: bestWaterIntakeDay, worst: worstWaterIntakeDay});
         }
       })
       .catch(e =>
-        console.log('error encounterd in getting user health info', e),
+        console.log('error encountered in getting user health info', e),
       );
-  }, [id, today]);
+  }, [id, waterIntake]);
 
   // memo use
   const glasses = useMemo(
     () =>
-      Array(noOfGlasses)
+      Array(glassesLength)
         .fill(true, 0, waterIntake + 1)
         .fill(false, waterIntake),
-    [noOfGlasses, waterIntake],
+    [glassesLength, waterIntake],
   );
 
   // functions
-  const handleGlassDrank = () => {
-    dispatch(updateHealthData({waterIntake: waterIntake + 1}));
+  const handleGlassDrank = (i: number) => {
+    updateWaterIntake(id!, i + 1);
+    dispatch(updateHealthData({waterIntake: i + 1}));
   };
-  const handleGlassEmpty = () => {
-    dispatch(updateHealthData({waterIntake: waterIntake - 1}));
+  const handleGlassEmpty = (i: number) => {
+    updateWaterIntake(id!, i + 1);
+    if (i >= noOfGlasses) {
+      setGlassesLength(i + 1);
+    }
+    dispatch(updateHealthData({waterIntake: i + 1}));
   };
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
         You drank{' '}
         <Text style={styles.highlightedText}>{waterIntake} glasses</Text> today
@@ -138,12 +152,25 @@ const WaterIntake: React.FC = () => {
           return (
             <CustomGlass
               isFilled={val}
-              handleOnPress={handleGlassDrank}
-              handleDelete={handleGlassEmpty}
+              handleOnPress={() => handleGlassDrank(i)}
+              handleDelete={() => handleGlassEmpty(i)}
               key={i}
             />
           );
         })}
+        <TouchableOpacity
+          onPress={() => {
+            setGlassesLength(glassesLength + 1);
+          }}
+          style={{
+            width: 50,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
+          {ICONS.Plus(plusSize)}
+        </TouchableOpacity>
       </View>
       <View>
         <DataInfoCompare
@@ -154,9 +181,11 @@ const WaterIntake: React.FC = () => {
           totalSuffix="glasses"
           totalInfoName="Daily Goal"
         />
-        {waterIntake < noOfGlasses ? <WarningLabel /> : null}
+        {waterIntake < noOfGlasses ? (
+          <WarningLabel text="You didn't drink enough water for today" />
+        ) : null}
       </View>
-      {rating === undefined || rating?.best.value === -Infinity ? null : (
+      {rating === undefined ? null : (
         <PerformanceCard
           icon={ICONS.SmileyGood(simleySize)}
           performanceText="Best Performance"
@@ -164,7 +193,7 @@ const WaterIntake: React.FC = () => {
           value={rating?.best.value ?? 0}
         />
       )}
-      {rating === undefined || rating?.worst.value === Infinity ? null : (
+      {rating === undefined ? null : (
         <PerformanceCard
           icon={ICONS.SmileyBad(simleySize)}
           performanceText="Worst Performance"
@@ -172,7 +201,7 @@ const WaterIntake: React.FC = () => {
           value={rating?.worst.value ?? 0}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 

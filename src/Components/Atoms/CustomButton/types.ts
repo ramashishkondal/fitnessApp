@@ -7,4 +7,5 @@ export type CustomButtonProps = {
   buttonCtrStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   isLoading?: boolean;
+  disabled?: boolean;
 };

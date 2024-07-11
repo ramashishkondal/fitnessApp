@@ -1,6 +1,6 @@
 import {Meal} from '../../../Redux/Reducers/dailyMeal';
 
 export type FoodSelectorProps = {
-  foodItem: Meal;
+  foodItem: Omit<Meal, 'id'>;
   foodData: Array<Meal>;
 };

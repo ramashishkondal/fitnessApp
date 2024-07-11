@@ -35,9 +35,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
       );
     } else if (isValidPassword.checkAllValidations(password)) {
       dispatch(updateUserData({password}));
-      navigation.reset({
-        routes: [{name: 'AddFirstName'}],
-      });
+      navigation.push('AddFirstName');
     } else {
       Alert.alert(
         STRING.ADD_PASSWORD.ERROR.HEADING,
@@ -55,6 +53,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
         autoFocus
+        textInputProps={{secureTextEntry: true}}
       />
       <PasswordChecks
         lengthCheck={isValidPassword.lengthCheck(password)}

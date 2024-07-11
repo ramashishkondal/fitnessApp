@@ -1,20 +1,37 @@
 // libs
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, ScrollView, TextInput, Pressable} from 'react-native';
+import {
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  Pressable,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
 import {styles} from './styles';
 import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
-import {Comment, UserPost} from '../../../Components';
+import {
+  Comment,
+  CustomImage,
+  CustomLoading,
+  UserPost,
+} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {ICONS, SIZES} from '../../../Constants';
+import {COLORS, ICONS, SIZES} from '../../../Constants';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
   const [postData, setPostData] = useState<Post>();
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPhoto, setShowPhoto] = useState(false);
 
   // ref ues
   const textInputRef = useRef<TextInput | null>(null);
@@ -44,6 +61,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   // functions
   const postComment = async () => {
+    setIsLoading(true);
     try {
       if (id !== null && comment !== '' && postData) {
         setComment('');
@@ -61,94 +79,128 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       }
     } catch (e) {
       console.log('error', e);
-    } finally {
     }
+    Keyboard.dismiss();
+    setIsLoading(false);
   };
 
   if (postData) {
     return (
       <>
-        <ScrollView style={styles.parent}>
-          <View style={styles.userPostCtr}>
-            <UserPost
-              userId={postData.userId}
-              postData={{
-                caption: postData.caption,
-                photo: postData.photo,
-                noOfLikes: postData.likedByUsersId.length,
-                noOfComments: postData.comments.length,
-                isLiked: postData.likedByUsersId.includes(id!),
-                id: id!,
-                timeSincePostedInMillis: Timestamp.fromMillis(
-                  postData.createdOn.seconds * 1000,
-                )
-                  .toDate()
-                  .getTime(),
-              }}
-              handleLikesPress={() => {
-                const isLiked = postData.likedByUsersId.includes(id!);
-                if (isLiked) {
-                  addLikes(
-                    id!,
-                    route.params.postId,
-                    postData.likedByUsersId.filter(value => value !== id),
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'height' : undefined}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 95 : 0}>
+          <ScrollView style={styles.parent}>
+            <View style={styles.userPostCtr}>
+              <UserPost
+                userId={postData.userId}
+                postData={{
+                  caption: postData.caption,
+                  photo: postData.photo,
+                  noOfLikes: postData.likedByUsersId.length,
+                  noOfComments: postData.comments.length,
+                  isLiked: postData.likedByUsersId.includes(id!),
+                  id: id!,
+                  timeSincePostedInMillis: Timestamp.fromMillis(
+                    postData.createdOn.seconds * 1000,
+                  )
+                    .toDate()
+                    .getTime(),
+                }}
+                handleLikesPress={() => {
+                  const isLiked = postData.likedByUsersId.includes(id!);
+                  if (isLiked) {
+                    addLikes(
+                      id!,
+                      route.params.postId,
+                      postData.likedByUsersId.filter(value => value !== id),
+                    );
+                  } else {
+                    addLikes(
+                      id!,
+                      postData.postId!,
+                      postData.likedByUsersId.concat(id!),
+                      {
+                        sendNotificationToUserId: postData.userId,
+                        userName: firstName + ' ' + lastName,
+                        userPhoto,
+                      },
+                    );
+                  }
+                }}
+                handleCommentsPress={() => {
+                  textInputRef.current?.focus();
+                }}
+                handlePhotoPress={() => {
+                  setShowPhoto(true);
+                  console.log('phto pressed');
+                }}
+              />
+            </View>
+            <View style={styles.commentsCtr}>
+              <Text style={styles.commentText}>Comments</Text>
+              {postData.comments
+                .slice(0)
+                .reverse()
+                .map((val, index) => {
+                  return (
+                    <Comment
+                      key={index}
+                      comment={{
+                        comment: val.comment,
+                        commentCreatedOnInMillis: Timestamp.fromMillis(
+                          val.createdOn.seconds * 1000,
+                        )
+                          .toDate()
+                          .getTime(),
+                        userId: val.userId,
+                      }}
+                    />
                   );
-                } else {
-                  addLikes(
-                    id!,
-                    postData.postId!,
-                    postData.likedByUsersId.concat(id!),
-                    {
-                      sendNotificationToUserId: postData.userId,
-                      userName: firstName + ' ' + lastName,
-                      userPhoto,
-                    },
-                  );
-                }
-              }}
-              handleCommentsPress={() => {
-                textInputRef.current?.focus();
-              }}
+                })}
+            </View>
+          </ScrollView>
+          <View style={styles.bottomTextInputCtr}>
+            <TextInput
+              value={comment}
+              style={styles.textInput}
+              placeholder="Write a comment..."
+              ref={textInputRef}
+              onChangeText={setComment}
+              onSubmitEditing={postComment}
+              placeholderTextColor={'black'}
             />
+            <Pressable
+              style={styles.sendCtr}
+              onPress={postComment}
+              disabled={isLoading}>
+              {isLoading ? (
+                <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+              ) : (
+                <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
+              )}
+            </Pressable>
           </View>
-          <View style={styles.commentsCtr}>
-            <Text style={{fontSize: SIZES.font17, fontWeight: SIZES.fontBold0}}>
-              Comments
-            </Text>
-            {postData.comments
-              .slice(0)
-              .reverse()
-              .map((val, index) => {
-                return (
-                  <Comment
-                    key={index}
-                    comment={{
-                      comment: val.comment,
-                      commentCreatedOnInMillis: Timestamp.fromMillis(
-                        val.createdOn.seconds * 1000,
-                      )
-                        .toDate()
-                        .getTime(),
-                      userId: val.userId,
-                    }}
-                  />
-                );
-              })}
-          </View>
-        </ScrollView>
-        <View style={styles.bottomTextInputCtr}>
-          <TextInput
-            value={comment}
-            style={styles.textInput}
-            placeholder="Write a comment..."
-            ref={textInputRef}
-            onChangeText={setComment}
-            onSubmitEditing={postComment}
-          />
-          <Pressable style={styles.sendCtr} onPress={postComment}>
-            <View>{ICONS.ArrowUp({width: 30, height: 30})}</View>
-          </Pressable>
-        </View>
+        </KeyboardAvoidingView>
+        {showPhoto ? (
+          <TouchableOpacity
+            onPress={() => setShowPhoto(false)}
+            style={{
+              position: 'absolute',
+              backgroundColor: '#11111199',
+              width: '100%',
+              height: SIZES.height,
+            }}>
+            {postData ? (
+              <CustomImage
+                source={{uri: postData?.photo}}
+                imageStyle={{width: '100%', height: '80%'}}
+                resizeMode="contain"
+              />
+            ) : null}
+          </TouchableOpacity>
+        ) : null}
       </>
     );
   }

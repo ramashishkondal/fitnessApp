@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   activeCarouselCtr: {
     position: 'absolute',
     width: 100,
-    top: SIZES.height / 3.85,
+    top: Platform.OS === 'ios' ? SIZES.height / 4.25 : SIZES.height / 4.75,
     left: SIZES.width / 2 - 50,
   },
   childCtr: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   headingCtr: {
     marginTop: 32,
-    height: SIZES.height / 6,
+    height: SIZES.height / 7,
     marginHorizontal: 48,
   },
   descriptionText: {
@@ -33,20 +33,21 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.BOLD,
     textAlign: 'center',
     fontSize: SIZES.font9,
+    color: 'black',
   },
   recurringDescriptionText: {
     fontFamily: FONT_FAMILY.REGULAR,
     textAlign: 'center',
     fontSize: SIZES.font9,
+    color: 'black',
   },
   customParent: {
     alignSelf: 'center',
     marginBottom: 16,
   },
   imageCtr: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     flex: 1,
-    backgroundColor: 'red',
   },
 });

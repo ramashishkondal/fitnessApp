@@ -6,7 +6,7 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import storage from '@react-native-firebase/storage';
 
 // custom
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomLoading} from '../../../Components';
 import {
   storeUserData,
@@ -15,6 +15,9 @@ import {
 } from '../../../Utils/userUtils';
 import {COLORS, ICONS, STRING} from '../../../Constants';
 import {styles} from './style';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {resetHealthData} from '../../../Redux/Reducers/health';
+import {resetMealData} from '../../../Redux/Reducers/dailyMeal';
 
 const logoSize = {
   width: 40,
@@ -31,13 +34,24 @@ const DetailsCompleted = () => {
   // redux use
   const {data} = useAppSelector(state => state.User);
   const {password, ...user} = data;
-
+  const dispatch = useAppDispatch();
   // functions
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
       if (password !== null) {
+        dispatch(
+          updateSettingsCachedData({
+            email: user.email,
+            password,
+            isBiometricEnabled: user.finger,
+            shouldAskBiometics: false,
+          }),
+        );
+        dispatch(resetMealData());
         const userCredentials = await createUser(user.email, password);
+        dispatch(resetHealthData());
+
         let url = '';
         if (RegExp('avatar+').test(user.photo)) {
           url = await storage()
@@ -50,6 +64,7 @@ const DetailsCompleted = () => {
               '/' +
               'photo',
           );
+
           await reference.putFile(user.photo);
           url = await reference.getDownloadURL();
         }

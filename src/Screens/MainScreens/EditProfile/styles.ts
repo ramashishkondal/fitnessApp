@@ -67,10 +67,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     borderRadius: 200,
   },
+  pencilBackPhotoCtr: {
+    backgroundColor: 'grey',
+    borderRadius: 200,
+    padding: 8,
+  },
   pencilBackCtr: {
     backgroundColor: 'grey',
     borderRadius: 200,
     padding: 8,
+    marginRight: 16,
   },
   pencilCtr: {
     position: 'absolute',
@@ -88,9 +94,18 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     borderRadius: SIZES.rounding2,
     paddingVertical: 24,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    columnGap: 16,
+    rowGap: 16,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   genderCtr: {
     flex: 2,
     flexDirection: 'row',
+  },
+  withModalParent: {
+    backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
   },
 });

@@ -4,7 +4,7 @@ import {COLORS, FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
-    height: 42,
+    // height: 42,
     borderRadius: SIZES.rounding2,
     backgroundColor: COLORS.SECONDARY.WHITE,
   },
@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
+    padding: 10,
     flex: 19,
     flexDirection: 'row',
     paddingHorizontal: 15,

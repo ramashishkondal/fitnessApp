@@ -1,3 +1,31 @@
+import notifee from '@notifee/react-native';
+
+export const onDisplayNotification = async (message: string) => {
+  // Request permissions (required for iOS)
+  await notifee.requestPermission();
+
+  // Create a channel (required for Android)
+  const channelId = await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+    vibration: true,
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    title: 'Notification',
+    body: message,
+    android: {
+      channelId,
+      // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+      // pressAction is needed if you want the notification to open the app when pressed
+      pressAction: {
+        id: 'default',
+      },
+    },
+  });
+};
+
 export const getPercentage = (
   value: number,
   total: number,
@@ -86,28 +114,45 @@ export class Timer {
   };
 }
 
-export const checkWeek = (toCheckDate: Date, checkDateWith: Date) => {
+export const checkWeek = (
+  toCheckDate: Date,
+  checkDateWith: Date,
+  includeCurrentDate: boolean = true,
+) => {
+  // Check if the dates are in the same month and year
   if (
     checkDateWith.getMonth() !== toCheckDate.getMonth() ||
     checkDateWith.getFullYear() !== toCheckDate.getFullYear()
   ) {
     return false;
   }
-  if (checkDateWith.getDate() - toCheckDate.getDate() <= 7) {
-    return true;
+
+  // Calculate the difference in days
+  const dateDifference = checkDateWith.getDate() - toCheckDate.getDate();
+
+  // Check if the date difference is within the desired range
+  if (includeCurrentDate) {
+    if (dateDifference >= 0 && dateDifference <= 7) {
+      return true;
+    }
+  } else {
+    if (dateDifference > 0 && dateDifference <= 7) {
+      return true;
+    }
   }
+
+  return false;
 };
 
-export const getLastWeekDayDate = (dayTocomparewith?: Date) => {
-  const now = date.today();
-  if (dayTocomparewith) {
-    return new Date(
-      dayTocomparewith.getFullYear(),
-      dayTocomparewith.getMonth(),
-      dayTocomparewith.getDate() - 6,
-    );
-  }
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+export const getLastWeekDayDate = (dayToCompareWith?: Date) => {
+  const now = new Date();
+  const baseDate = dayToCompareWith || now;
+  const lastWeekDayDate = new Date(baseDate);
+
+  // Subtract 6 days
+  lastWeekDayDate.setDate(baseDate.getDate() - 6);
+
+  return lastWeekDayDate;
 };
 
 export const throttle = <T extends (...args: any[]) => void>(

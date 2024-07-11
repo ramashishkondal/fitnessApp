@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, ListRenderItem, View} from 'react-native';
 import {styles} from './styles';
 import InterestItem from '../InterestItem';
 import {CustomButton, HeadingText} from '../../Atoms';
 import {SPACING} from '../../../Constants';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {INTERESETS} from '../../../Constants/commonConstants';
 import {ChangeUserInterestsProps} from './type';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {UserDb} from '../../../DbModels/user';
+import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import {UpdateMode} from 'realm';
 
 const renderItem: ListRenderItem<{
   title: string;
@@ -19,8 +24,21 @@ const renderItem: ListRenderItem<{
 const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   setModalFalse,
 }) => {
-  const {interests, id} = useAppSelector(state => state.User.data);
+  // state use
+  const [isLoading, setIsLoading] = useState(false);
 
+  // redux use
+  const {preferences, id, firstName, lastName, gender, interests} =
+    useAppSelector(state => state.User.data);
+  const dispatch = useAppDispatch();
+
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
+
+  // state dependent constant
   const interestDataWithIcons = interests.map((val, index) => ({
     ...val,
     icon: INTERESETS[index].icon,
@@ -28,15 +46,45 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
 
   // functions
   const handleSubmitChange = async () => {
-    await firestore()
-      .collection(firebaseDB.collections.users)
-      .doc(id!)
-      .update({
-        interests: interestDataWithIcons.map(val => {
-          const {selected, title} = val;
-          return {selected, title};
-        }),
+    if (netInfo.isConnected) {
+      setIsLoading(true);
+      await firestore()
+        .collection(firebaseDB.collections.users)
+        .doc(id!)
+        .update({
+          interests: interestDataWithIcons.map(val => {
+            const {selected, title} = val;
+            return {selected, title};
+          }),
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      realm.write(() => {
+        realm.create(
+          UserDb,
+          {
+            id: id!,
+            interests: interestDataWithIcons.map(val => {
+              const {selected, title} = val;
+              return {selected, title};
+            }),
+            firstName,
+            lastName,
+            preferences,
+            gender,
+          },
+          UpdateMode.Modified,
+        );
       });
+      dispatch(
+        updateUserData({
+          interests: interestDataWithIcons.map(val => {
+            const {selected, title} = val;
+            return {selected, title};
+          }),
+        }),
+      );
+    }
     setModalFalse();
   };
 
@@ -52,7 +100,11 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
         />
       </View>
       <View style={styles.customButtonCtr}>
-        <CustomButton title="Change" onPress={handleSubmitChange} />
+        <CustomButton
+          title="Change"
+          onPress={handleSubmitChange}
+          isLoading={isLoading}
+        />
       </View>
     </View>
   );
