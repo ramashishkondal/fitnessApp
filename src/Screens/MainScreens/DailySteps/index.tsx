@@ -146,7 +146,7 @@ const DailySteps: React.FC = () => {
 
             setLineData(
               result.map(val => {
-                console.log('val');
+                console.log('val', val);
                 return {
                   value: getPercentage(val.value, totalSteps),
                 };

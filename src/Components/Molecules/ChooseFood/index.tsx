@@ -93,6 +93,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
         'Error',
         'Please select the mealtime you consumed your food on.',
       );
+      setIsLoading(false);
       return;
     }
     if (netInfo.isConnected) {
