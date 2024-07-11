@@ -14,6 +14,7 @@ export const firebaseDB = {
     posts: 'posts',
     stories: 'stories',
     dailyMeals: 'dailyMeals',
+    healthData: 'healthData',
   },
   documents: {
     users: {},
@@ -371,3 +372,19 @@ export const getMealData = async (userId: string) => {
     .get();
   return val.data() as DailyMeals;
 };
+
+export const storeNewUserHealthData = async (
+  userId: string,
+  healthData: HealthData,
+) => {
+  await firestore()
+    .collection(firebaseDB.collections.healthData)
+    .doc(userId)
+    .update({
+      [new Date().setHours(0, 0, 0, 0).toString()]: healthData,
+    });
+};
+
+// healthData -> id -> date -> {HealthData}
+//
+//

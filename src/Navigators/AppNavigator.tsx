@@ -45,12 +45,15 @@ import {PostDb} from '../DbModels/post';
 import {UserDb} from '../DbModels/user';
 import GiveFeedback from '../Screens/MainScreens/GiveFeedback';
 import AboutUs from '../Screens/MainScreens/AboutUs';
+import {useHealth} from '../Hooks/useHealth';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
 const AppNavigator = () => {
   // net info use
   const netInfo = useNetInfo();
+  // getting health data
+  useHealth();
 
   // redux use
   const {id, firstName, lastName, photo} = useAppSelector(
@@ -198,7 +201,6 @@ const AppNavigator = () => {
           const userData = snapshot.data() as UserFromFirebaseDb;
           if (userData) {
             // notifications
-
             updateNotificationReadStatus(
               id,
               userData.notifications.map(handleNotifications),

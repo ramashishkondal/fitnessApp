@@ -1,5 +1,7 @@
+import AppleHealthKit, {HealthKitPermissions} from 'react-native-health';
 import {Meal} from '../Redux/Reducers/dailyMeal';
 import {INTERESTS} from './icons';
+import {Scopes} from 'react-native-google-fit';
 
 export const preferencesData = [
   {title: 'Weight Loss', selected: false},
@@ -7,6 +9,28 @@ export const preferencesData = [
   {title: 'Track my nutrition', selected: false},
   {title: 'Improve overall fitness', selected: false},
 ];
+
+// iOS health kit permissions
+export const AppleHealthPermissions = {
+  permissions: {
+    read: [
+      AppleHealthKit.Constants.Permissions.HeartRate,
+      AppleHealthKit.Constants.Permissions.Steps,
+      AppleHealthKit.Constants.Permissions.StepCount,
+      AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+    ],
+    write: [],
+  },
+} as HealthKitPermissions;
+
+// android permissions
+export const AndroidGoogleFitPermissions = {
+  scopes: [
+    Scopes.FITNESS_ACTIVITY_READ,
+    Scopes.FITNESS_ACTIVITY_WRITE,
+    Scopes.FITNESS_BODY_READ,
+  ],
+};
 
 const iconSizeInterests = {
   width: 35,
