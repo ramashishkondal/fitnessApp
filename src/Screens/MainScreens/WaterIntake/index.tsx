@@ -135,9 +135,9 @@ const WaterIntake: React.FC = () => {
   };
   const handleGlassEmpty = (i: number) => {
     updateWaterIntake(id!, i + 1);
-    if (i >= noOfGlasses) {
-      setGlassesLength(i + 1);
-    }
+
+    setGlassesLength(i + 1 <= noOfGlasses ? noOfGlasses : i + 1);
+
     dispatch(updateHealthData({waterIntake: i + 1}));
   };
 
@@ -162,12 +162,7 @@ const WaterIntake: React.FC = () => {
           onPress={() => {
             setGlassesLength(glassesLength + 1);
           }}
-          style={{
-            width: 50,
-            height: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={styles.plusCtr}
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
           {ICONS.Plus(plusSize)}
         </TouchableOpacity>

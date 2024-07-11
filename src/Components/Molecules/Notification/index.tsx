@@ -45,7 +45,6 @@ const Notification: React.FC<NotificationProps> = ({
     return (
       <TouchableOpacity
         style={{
-          flex: 1,
           backgroundColor: COLORS.SECONDARY.RED,
           justifyContent: 'center',
           alignItems: 'center',

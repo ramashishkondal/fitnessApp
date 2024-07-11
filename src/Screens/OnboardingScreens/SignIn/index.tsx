@@ -169,7 +169,7 @@ const SignIn = ({navigation}: SignInProps) => {
       />
       <TouchableOpacity
         onPress={handleForgotPassword}
-        style={SPACING.mt3}
+        style={styles.forgotPasswordCtr}
         disabled={isLoading !== null}>
         <Text style={styles.forgotPasswordText}>
           {STRING.SIGNIN.FORGOT_PASSWORD}

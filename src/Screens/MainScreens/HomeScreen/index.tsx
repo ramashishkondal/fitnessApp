@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Linking,
@@ -32,10 +32,13 @@ import {
 import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
 import {useHealth} from '../../../Hooks/useHealth';
+import {PERMISSIONS, check} from 'react-native-permissions';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
+  const [isActivityPermissionsEnabled, setIsActivityPermissionsEnabled] =
+    useState(true);
 
   const {
     todaysSteps,
@@ -86,6 +89,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           console.log('error', err);
         },
       );
+    } else {
+      check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION).then(val => {
+        if (val !== 'granted') {
+          setIsActivityPermissionsEnabled(false);
+        }
+      });
     }
     if (finger && isBiometricEnabled === false && shouldAskBiometics) {
       Alert.alert(
@@ -191,7 +200,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           markerPercentage={getPercentage(todaysSteps, totalSteps)}
         />
       </View>
-      {!hasPermission ? (
+      {isActivityPermissionsEnabled ? null : (
         <WarningLabel
           text="Activity Recognition Permissions not allowed you are using the app in limited mode."
           parentStyle={{padding: 16}}
@@ -220,6 +229,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
                 },
               ],
             )
+          }
+        />
+      )}
+      {!hasPermission ? (
+        <WarningLabel
+          text={`${
+            Platform.OS === 'android'
+              ? 'Google Fit not configured'
+              : 'Health Kit Permissions denied'
+          } you are using the app in limited mode.`}
+          parentStyle={{padding: 16}}
+          onPress={
+            Platform.OS === 'ios'
+              ? () => {
+                  Linking.openSettings();
+                }
+              : undefined
           }
         />
       ) : null}

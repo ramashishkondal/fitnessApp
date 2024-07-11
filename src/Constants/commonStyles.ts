@@ -61,7 +61,7 @@ export const SIZES = {
   fontH1: RFValue(HEADER_CONST * 2),
   fontH2: RFValue(HEADER_CONST * 1.8),
   fontH3: RFValue(HEADER_CONST * 1.65),
-  fontH4: RFValue(HEADER_CONST * 1.5),
+  fontH4: RFValue(HEADER_CONST * 1.3),
   fontH5: RFValue(HEADER_CONST * 1.2),
   fontH6: RFValue(HEADER_CONST * 1.0),
   fontH7: RFValue(HEADER_CONST * 0.9),

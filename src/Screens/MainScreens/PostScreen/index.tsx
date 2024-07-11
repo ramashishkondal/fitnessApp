@@ -17,14 +17,10 @@ import firestore, {Timestamp} from '@react-native-firebase/firestore';
 import {styles} from './styles';
 import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
-import {
-  Comment,
-  CustomImage,
-  CustomLoading,
-  UserPost,
-} from '../../../Components';
+import {Comment, CustomLoading, UserPost} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
 import {COLORS, ICONS, SIZES} from '../../../Constants';
+import FastImage from 'react-native-fast-image';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // sate use
@@ -63,7 +59,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const postComment = async () => {
     setIsLoading(true);
     try {
-      if (id !== null && comment !== '' && postData) {
+      if (id !== null && comment.trim() !== '' && postData) {
         setComment('');
         await storePostComment(
           route.params.postId,
@@ -193,9 +189,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               height: SIZES.height,
             }}>
             {postData ? (
-              <CustomImage
+              // <CustomImage
+              //   source={{uri: postData?.photo}}
+              //   imageStyle={{width: '100%', height: '80%'}}
+              //   resizeMode="contain"
+              // />
+
+              <FastImage
                 source={{uri: postData?.photo}}
-                imageStyle={{width: '100%', height: '80%'}}
+                style={{width: '100%', height: '80%'}}
+                onLoadStart={() => setIsLoading(true)}
+                onLoadEnd={() => {}}
                 resizeMode="contain"
               />
             ) : null}

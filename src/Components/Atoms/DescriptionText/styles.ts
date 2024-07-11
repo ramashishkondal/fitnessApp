@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font13,
     color: COLORS.SECONDARY.GREY,
     textAlign: 'center',
-    fontFamily: FONT_FAMILY.MEDIUM,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontWeight: '500',
   },
 });

@@ -56,4 +56,10 @@ export const styles = StyleSheet.create({
     textAlign: 'right',
   },
   iconCtr: {justifyContent: 'center', flex: 1},
+  plusCtr: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

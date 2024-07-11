@@ -95,12 +95,14 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
           textInputStyle={styles.textInput}
           onChangeText={setPassword}
           autoFocus
+          textInputProps={{secureTextEntry: true}}
         />
         <CustomTextInput
           placeHolder="Enter new Password"
           parentStyle={[SPACING.mh2, SPACING.mt5]}
           textInputStyle={styles.textInput}
           onChangeText={setNewPassword}
+          textInputProps={{secureTextEntry: true}}
         />
         <CustomButton
           title={STRING.ADD_EMAIL.BUTTON_TEXT}

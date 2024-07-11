@@ -29,8 +29,8 @@ const GiveFeedback: React.FC = () => {
         <CustomTextInput
           value={feedback}
           placeHolder="Send feedback"
-          parentStyle={[SPACING.mh2, SPACING.mt5]}
-          textInputStyle={styles.textInput}
+          // parentStyle={[SPACING.mh2, SPACING.mt5]}
+          parentStyle={styles.textInput}
           onChangeText={setFeedback}
           textInputProps={{multiline: true, maxLength: 250}}
         />

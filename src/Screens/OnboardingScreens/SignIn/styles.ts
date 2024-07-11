@@ -21,6 +21,12 @@ export const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     color: COLORS.PRIMARY.PURPLE,
-    textAlign: 'right',
+    textAlign: 'left',
+  },
+  forgotPasswordCtr: {
+    marginTop: 16,
+    flex: 1,
+    width: '100%',
+    alignItems: 'flex-end',
   },
 });

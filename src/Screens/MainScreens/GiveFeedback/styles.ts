@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, SIZES} from '../../../Constants';
+import {COLORS, SIZES, SPACING} from '../../../Constants';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -17,5 +17,8 @@ export const styles = StyleSheet.create({
   textInput: {
     textAlign: 'center',
     height: SIZES.height / 8,
+    alignItems: 'flex-start',
+    ...SPACING.mh2,
+    ...SPACING.mt5,
   },
 });

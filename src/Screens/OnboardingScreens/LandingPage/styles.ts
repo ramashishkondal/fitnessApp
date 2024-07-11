@@ -1,5 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, SIZES, SPACING} from '../../../Constants/commonStyles';
+import {
+  COLORS,
+  FONT_FAMILY,
+  SIZES,
+  SPACING,
+} from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
@@ -22,14 +27,21 @@ export const styles = StyleSheet.create({
   signInText1: {
     color: COLORS.SECONDARY.GREY,
     fontSize: SIZES.font14,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontWeight: '500',
   },
   signInText2: {
     fontSize: SIZES.font14,
     color: COLORS.PRIMARY.PURPLE,
     fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
   },
   signInTextCtr: {
+    marginLeft: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  signInInsteadCtr: {
+    flexDirection: 'row',
   },
 });
