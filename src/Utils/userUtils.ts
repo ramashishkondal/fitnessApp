@@ -377,12 +377,34 @@ export const storeNewUserHealthData = async (
   userId: string,
   healthData: HealthData,
 ) => {
-  await firestore()
-    .collection(firebaseDB.collections.healthData)
-    .doc(userId)
-    .update({
-      [new Date().setHours(0, 0, 0, 0).toString()]: healthData,
-    });
+  console.log('storing new health data ran');
+  try {
+    await firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(userId)
+      .set({
+        [new Date().setHours(0, 0, 0, 0).toString()]: healthData,
+      });
+  } catch (e) {
+    console.log('errror storing new health data', e);
+  }
+};
+export const updateWaterIntake = async (
+  userId: string,
+  waterIntake: HealthData['waterIntake'],
+) => {
+  try {
+    const updateAt =
+      new Date().setHours(0, 0, 0, 0).toString() + '.waterIntake';
+    await firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(userId)
+      .update({
+        [updateAt]: waterIntake,
+      });
+  } catch (e) {
+    console.log('errror storing new health data', e);
+  }
 };
 
 // healthData -> id -> date -> {HealthData}

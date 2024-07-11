@@ -31,6 +31,7 @@ import {
 } from '../../../Redux/Reducers/dailyMeal';
 import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
+import {useHealth} from '../../../Hooks/useHealth';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -44,12 +45,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
   const {firstName, finger, id} = useAppSelector(state => state.User.data);
-  const {cachedData} = useAppSelector(state => state.settings.data);
   const {isBiometricEnabled, shouldAskBiometics} = useAppSelector(
     state => state.settings.data.cachedData,
   );
 
-  console.log('cached data in home screen is ', cachedData);
+  useHealth();
   // effect use
   useEffect(() => {
     if (Platform.OS === 'ios') {

@@ -12,16 +12,19 @@ import {
   AndroidGoogleFitPermissions,
   AppleHealthPermissions,
 } from '../Constants/commonConstants';
+import firestore from '@react-native-firebase/firestore';
 import {updateHealthData} from '../Redux/Reducers/health';
 import {date} from '../Utils/commonUtils';
 import RNRestart from 'react-native-restart';
 import {useAppDispatch, useAppSelector} from '../Redux/Store';
 import {useCallback, useEffect} from 'react';
+import {firebaseDB, storeNewUserHealthData} from '../Utils/userUtils';
 
 export const useHealth = () => {
   // redux use
   const dispatch = useAppDispatch();
   const {hasPermission} = useAppSelector(state => state.health.value);
+  const {id} = useAppSelector(state => state.User.data);
 
   // functions
   const androidHealthSetup = useCallback(async () => {
@@ -88,6 +91,22 @@ export const useHealth = () => {
           endDate: today.toISOString(), // required ISO8601Timestamp
         };
         const calories = await GoogleFit.getDailyCalorieSamples(opt);
+
+        storeNewUserHealthData(id!, {
+          nutrition: Math.ceil(calories[0].calorie),
+          waterIntake: 0,
+          goal: {
+            totalCalorie: 8000,
+            noOfGlasses: 6,
+            totalSteps: 10000,
+          },
+          currentDate: new Date().toISOString(),
+          todaysSteps: stepRes.filter(
+            val => val.source === 'com.google.android.gms:estimated_steps',
+          )[0].steps[0].value,
+          hasPermission,
+        });
+
         dispatch(updateHealthData({nutrition: Math.ceil(calories[0].calorie)}));
         dispatch(
           updateHealthData({
@@ -100,7 +119,7 @@ export const useHealth = () => {
     } catch (e) {
       console.log('Error encountered - ', e);
     }
-  }, [dispatch, hasPermission]);
+  }, [dispatch, hasPermission, id]);
 
   const iosHealthSetup = useCallback(() => {
     const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
@@ -161,19 +180,44 @@ export const useHealth = () => {
               hasPermission: true,
             }),
           );
+          storeNewUserHealthData(id!, {
+            nutrition: 0,
+            waterIntake: 0,
+            goal: {
+              totalCalorie: 8000,
+              noOfGlasses: 6,
+              totalSteps: 10000,
+            },
+            currentDate: new Date().toISOString(),
+            todaysSteps: result.value,
+            hasPermission,
+          });
           return;
         }
         console.log('error encountered while getting steps data - ', error);
       });
     });
-  }, [dispatch]);
+  }, [dispatch, hasPermission, id]);
 
   // effect use
   useEffect(() => {
+    firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(id!)
+      .onSnapshot(snapshot => {
+        if (snapshot.exists) {
+          const waterIntake: number = snapshot.get(
+            `${new Date().setHours(0, 0, 0, 0).toString()}.waterIntake`,
+          );
+          if (waterIntake) {
+            dispatch(updateHealthData({waterIntake}));
+          }
+        }
+      });
     if (Platform.OS === 'android') {
       androidHealthSetup();
     } else {
       iosHealthSetup();
     }
-  }, [androidHealthSetup, iosHealthSetup]);
+  }, [androidHealthSetup, dispatch, id, iosHealthSetup]);
 };

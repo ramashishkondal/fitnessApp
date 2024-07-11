@@ -53,6 +53,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
         autoFocus
+        textInputProps={{secureTextEntry: true}}
       />
       <PasswordChecks
         lengthCheck={isValidPassword.lengthCheck(password)}

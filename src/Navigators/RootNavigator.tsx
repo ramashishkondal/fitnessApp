@@ -9,23 +9,24 @@ import BootSplash from 'react-native-bootsplash';
 // custom
 import OnboardingNav from './OnboardingNavigator';
 import AppNavigator from './AppNavigator';
-import {useDispatch} from 'react-redux';
+import {useAppDispatch} from '../Redux/Store';
 import {CustomLoading} from '../Components';
 import {updateUserData} from '../Redux/Reducers/currentUser';
 import GoalModal from '../Components/Molecules/GoalModal';
-import {useAppSelector} from '../Redux/Store';
 
 const RootNavigator = () => {
   // state use
   const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 
   // redux use
-  const dispatch = useDispatch();
-  const {id} = useAppSelector(state => state.User.data);
+  const dispatch = useAppDispatch();
 
   // functions
   const onAuthStateChanged = useCallback(
     (userN: FirebaseAuthTypes.User | null) => {
+      setUser(userN);
+
       dispatch(updateUserData({id: userN === null ? undefined : userN.uid}));
       if (initializing) {
         setInitializing(false);
@@ -45,7 +46,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer onReady={() => BootSplash.hide({fade: true})}>
-      {id ? (
+      {user ? (
         <GoalModal>
           <AppNavigator />
         </GoalModal>

@@ -37,6 +37,8 @@ import FoodBowl from '../Assets/Svgs/foodBowl.svg';
 import LeftChevron from '../Assets/Svgs/leftChevron.svg';
 import Pencil from '../Assets/Svgs/pencil.svg';
 import FaceId from '../Assets/Svgs/faceId.svg';
+import EyeOpen from '../Assets/Svgs/eyeOpen.svg';
+import EyeClose from '../Assets/Svgs/eyeClose.svg';
 
 import {
   Fashion,
@@ -93,6 +95,8 @@ export const ICONS = {
   ...HOME_SCREEN,
   ...NUTRITION,
   Pencil: (params: iconProps) => Pencil({...iconStyle({...params})}),
+  EyeOpen: (params: iconProps) => EyeOpen({...iconStyle({...params})}),
+  EyeClose: (params: iconProps) => EyeClose({...iconStyle({...params})}),
   FaceId: (params: iconProps) => FaceId({...iconStyle({...params})}),
   LeftArrow: (params: iconProps) => LeftArrow({...iconStyle({...params})}),
   LeftChevron: (params: iconProps) => LeftChevron({...iconStyle({...params})}),

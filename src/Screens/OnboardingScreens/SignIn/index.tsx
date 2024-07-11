@@ -152,8 +152,10 @@ const SignIn = ({navigation}: SignInProps) => {
         icon={ICONS.User({width: 18, height: 18})}
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
-        autoFocus={!cachedData.isBiometricEnabled}
-        textInputProps={{onBlur: () => setActiveOut(true)}}
+        textInputProps={{
+          onBlur: () => setActiveOut(true),
+          keyboardType: 'email-address',
+        }}
       />
       {activeOut && email && !isValidEmail(email) ? (
         <CustomErrorText text="Invalid Email Address" />
@@ -163,6 +165,7 @@ const SignIn = ({navigation}: SignInProps) => {
         icon={ICONS.Lock({width: 18, height: 18})}
         parentStyle={[SPACING.mt3, styles.textInput]}
         onChangeText={setPassword}
+        allowPeeking
       />
       <TouchableOpacity
         onPress={handleForgotPassword}

@@ -13,4 +13,5 @@ export type CustomTextInputProps = {
   hasError?: boolean;
   value?: string;
   textInputProps?: TextInputProps;
+  allowPeeking?: boolean;
 };

@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateHealthData} from '../../../Redux/Reducers/health';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
-import {getHealthData} from '../../../Utils/userUtils';
+import {getHealthData, updateWaterIntake} from '../../../Utils/userUtils';
 import {
   checkWeek,
   date,
@@ -34,8 +34,6 @@ const plusSize = {
 };
 
 const WaterIntake: React.FC = () => {
-  // constants
-
   // state use
   const [rating, setRating] = useState<{
     best: {value: number; week: string};
@@ -132,9 +130,14 @@ const WaterIntake: React.FC = () => {
 
   // functions
   const handleGlassDrank = (i: number) => {
+    updateWaterIntake(id!, i + 1);
     dispatch(updateHealthData({waterIntake: i + 1}));
   };
   const handleGlassEmpty = (i: number) => {
+    updateWaterIntake(id!, i + 1);
+    if (i >= noOfGlasses) {
+      setGlassesLength(i + 1);
+    }
     dispatch(updateHealthData({waterIntake: i + 1}));
   };
 
