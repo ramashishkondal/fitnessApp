@@ -10,6 +10,7 @@ import {RealmProvider} from '@realm/react';
 import {SingleStoryDb, StoryDb} from './DbModels/story';
 import {PostDb} from './DbModels/post';
 import {UserDb, UserPreferencesAndInterests} from './DbModels/user';
+import {FoodDb, MealDb} from './DbModels/mealData';
 
 const App = () => {
   return (
@@ -20,6 +21,8 @@ const App = () => {
         PostDb,
         UserDb,
         UserPreferencesAndInterests,
+        MealDb,
+        FoodDb,
       ]}>
       <GestureHandlerRootView>
         <Provider store={store}>

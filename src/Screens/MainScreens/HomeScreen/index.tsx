@@ -25,6 +25,12 @@ import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
 import {date, getPercentage} from '../../../Utils/commonUtils';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import RNRestart from 'react-native-restart';
+import {
+  DailyMeals,
+  resetMealDataItems,
+} from '../../../Redux/Reducers/dailyMeal';
+import {firebaseDB} from '../../../Utils/userUtils';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -37,7 +43,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     hasPermission,
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
-  const {firstName, finger} = useAppSelector(state => state.User.data);
+  const {firstName, finger, id} = useAppSelector(state => state.User.data);
   const {cachedData} = useAppSelector(state => state.settings.data);
   const {isBiometricEnabled, shouldAskBiometics} = useAppSelector(
     state => state.settings.data.cachedData,
@@ -108,6 +114,22 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       );
     }
   }, [dispatch, finger, isBiometricEnabled, shouldAskBiometics]);
+
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.dailyMeals)
+      .doc(id!)
+      .onSnapshot(snapshot => {
+        if (snapshot.exists) {
+          const x = snapshot.data() as DailyMeals;
+          if (x) {
+            console.log('daily meal data is ', x);
+            dispatch(resetMealDataItems(x));
+          }
+        }
+      });
+    return () => unsubscribe();
+  }, [dispatch, id]);
 
   // functions
   const goToNutrition = (): void => navigation.push('Nutrition');

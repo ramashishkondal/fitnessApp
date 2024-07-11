@@ -8,11 +8,19 @@ import {ChooseFoodProps} from './types';
 import {ICONS} from '../../../Constants';
 import MealSelector from '../MealSelector';
 import FoodSelector from '../FoodSelector';
-import {DailyMeals, Meal} from '../../../Redux/Reducers/dailyMeal';
-import {useAppSelector} from '../../../Redux/Store';
+import {
+  DailyMeals,
+  Meal,
+  resetMealDataItems,
+} from '../../../Redux/Reducers/dailyMeal';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {styles} from './styles';
 import {foodData} from '../../../Constants/commonConstants';
 import {storeMealData} from '../../../Utils/userUtils';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {MealDb} from '../../../DbModels/mealData';
+import {UpdateMode} from 'realm';
 
 const size = {
   width: 50,
@@ -32,9 +40,16 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   // state use
   const [isLoading, setIsLoading] = useState(false);
 
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
+
   // redux use
   const {id} = useAppSelector(state => state.User.data);
   const {data: mealsData} = useAppSelector(state => state.dailyMeals);
+  const dispatch = useAppDispatch();
 
   // ref use
   const mealsSelected = useRef<MealsSelected>({
@@ -80,16 +95,45 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
       );
       return;
     }
-    storeMealData(id!, {
-      breakfast: mealsData.breakfast.concat(dtArray.breakfast),
-      dinner: mealsData.dinner.concat(dtArray.dinner),
-      lunch: mealsData.lunch.concat(dtArray.lunch),
-      snack: mealsData.snack.concat(dtArray.snack),
-    }).finally(() => {
-      setIsLoading(false);
+    if (netInfo.isConnected) {
+      storeMealData(id!, {
+        breakfast: mealsData.breakfast.concat(dtArray.breakfast),
+        dinner: mealsData.dinner.concat(dtArray.dinner),
+        lunch: mealsData.lunch.concat(dtArray.lunch),
+        snack: mealsData.snack.concat(dtArray.snack),
+      }).finally(() => {
+        setIsLoading(false);
+        setModalFalse();
+      });
+    } else {
+      realm.write(() => {
+        realm.create(
+          MealDb,
+          {
+            breakfast: mealsData.breakfast
+              .concat(dtArray.breakfast)
+              .filter(val => val),
+            dinner: mealsData.dinner.concat(dtArray.dinner).map(val => val),
+            lunch: mealsData.lunch.concat(dtArray.lunch).map(val => val),
+            snack: mealsData.snack.concat(dtArray.snack).map(val => val),
+            uid: id!,
+          },
+          UpdateMode.Modified,
+        );
+      });
+      dispatch(
+        resetMealDataItems({
+          breakfast: mealsData.breakfast.concat(dtArray.breakfast),
+          dinner: mealsData.dinner.concat(dtArray.dinner),
+          lunch: mealsData.lunch.concat(dtArray.lunch),
+          snack: mealsData.snack.concat(dtArray.snack),
+        }),
+      );
       setModalFalse();
-    });
+      setIsLoading(false);
+    }
   };
+
   return (
     <View style={styles.parent}>
       <ScrollView style={styles.parent}>

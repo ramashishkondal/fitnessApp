@@ -28,6 +28,7 @@ import {
   UserFromFirebaseDb,
   firebaseDB,
   getUserData,
+  storeMealData,
   storePost,
   storeStory,
   storeUserHealthData,
@@ -46,6 +47,7 @@ import {UserDb} from '../DbModels/user';
 import GiveFeedback from '../Screens/MainScreens/GiveFeedback';
 import AboutUs from '../Screens/MainScreens/AboutUs';
 import {useHealth} from '../Hooks/useHealth';
+import {MealDb} from '../DbModels/mealData';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -77,6 +79,23 @@ const AppNavigator = () => {
   const offlineStoryData = useQuery(StoryDb);
   const offlinePostData = useQuery(PostDb);
   const offlineUserData = useQuery(UserDb);
+  const offlineMealData = useQuery(MealDb);
+
+  const handleOfflineMealData = useCallback(async () => {
+    console.log('mealData is ', offlineMealData);
+    if (offlineMealData.length) {
+      const {uid, ...mealData} = offlineMealData[0];
+      await storeMealData(uid, {
+        breakfast: mealData.breakfast.map(val => val),
+        lunch: mealData.lunch.map(val => val),
+        dinner: mealData.dinner.map(val => val),
+        snack: mealData.snack.map(val => val),
+      });
+      realm.write(() => {
+        realm.delete(offlineMealData);
+      });
+    }
+  }, [offlineMealData, realm]);
 
   const handleOfflineUser = useCallback(async () => {
     if (offlineUserData.length) {
@@ -243,6 +262,9 @@ const AppNavigator = () => {
         if (offlineUserData.length) {
           await handleOfflineUser();
         }
+        if (offlineMealData.length) {
+          handleOfflineMealData();
+        }
         if (offlinePostData.length) {
           await handleOfflinePost();
         }
@@ -255,10 +277,12 @@ const AppNavigator = () => {
     }
   }, [
     handleGetUserData,
+    handleOfflineMealData,
     handleOfflinePost,
     handleOfflineStory,
     handleOfflineUser,
     netInfo.isConnected,
+    offlineMealData.length,
     offlinePostData.length,
     offlineStoryData.length,
     offlineUserData.length,

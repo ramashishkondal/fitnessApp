@@ -6,31 +6,86 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {COLORS, ICONS, SIZES} from '../../../Constants';
 import {DietDataItemProps} from './types';
 import {styles} from './styles';
-import {useAppSelector} from '../../../Redux/Store';
-import {Meal} from '../../../Redux/Reducers/dailyMeal';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
+import {Meal, resetMealDataItems} from '../../../Redux/Reducers/dailyMeal';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 import {Swipeable} from 'react-native-gesture-handler';
 import {storeMealData} from '../../../Utils/userUtils';
+import {useNetInfo} from '@react-native-community/netinfo';
+import {useRealm} from '@realm/react';
+import {MealDb} from '../../../DbModels/mealData';
+import {UpdateMode} from 'realm';
 
 const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
   // redux use
   const {data: mealsData} = useAppSelector(state => state.dailyMeals);
   const {id} = useAppSelector(state => state.User.data);
+  const dispatch = useAppDispatch();
+
+  // netInfo use
+  const netInfo = useNetInfo();
+
+  // realm use
+  const realm = useRealm();
 
   // functions
   const handleClose = () => {
     switch (timeOfMeal) {
       case 'Breakfast':
-        storeMealData(id!, {...mealsData, breakfast: []});
+        if (netInfo.isConnected) {
+          storeMealData(id!, {...mealsData, breakfast: []});
+        } else {
+          realm.write(() => {
+            realm.create(
+              MealDb,
+              {...mealsData, breakfast: [], uid: id!},
+              UpdateMode.Modified,
+            );
+          });
+          dispatch(resetMealDataItems({...mealsData, breakfast: []}));
+        }
         break;
       case 'Snack':
-        storeMealData(id!, {...mealsData, snack: []});
+        if (netInfo.isConnected) {
+          storeMealData(id!, {...mealsData, snack: []});
+        } else {
+          realm.write(() => {
+            realm.create(
+              MealDb,
+              {...mealsData, snack: [], uid: id!},
+              UpdateMode.Modified,
+            );
+          });
+          dispatch(resetMealDataItems({...mealsData, snack: []}));
+        }
         break;
       case 'Lunch':
-        storeMealData(id!, {...mealsData, lunch: []});
+        if (netInfo.isConnected) {
+          storeMealData(id!, {...mealsData, lunch: []});
+        } else {
+          realm.write(() => {
+            realm.create(
+              MealDb,
+              {...mealsData, lunch: [], uid: id!},
+              UpdateMode.Modified,
+            );
+          });
+          dispatch(resetMealDataItems({...mealsData, lunch: []}));
+        }
         break;
       case 'Dinner':
-        storeMealData(id!, {...mealsData, dinner: []});
+        if (netInfo.isConnected) {
+          storeMealData(id!, {...mealsData, dinner: []});
+        } else {
+          realm.write(() => {
+            realm.create(
+              MealDb,
+              {...mealsData, dinner: [], uid: id!},
+              UpdateMode.Modified,
+            );
+          });
+          dispatch(resetMealDataItems({...mealsData, dinner: []}));
+        }
         break;
     }
   };
@@ -53,29 +108,109 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
           console.log('delete pressed');
           switch (timeOfMeal) {
             case 'Breakfast':
-              storeMealData(id!, {
-                ...mealsData,
-                breakfast: item.filter(val => val.name !== name),
-              });
+              if (netInfo.isConnected) {
+                storeMealData(id!, {
+                  ...mealsData,
+                  breakfast: item.filter(val => val.name !== name),
+                });
+              } else {
+                realm.write(() => {
+                  realm.create(
+                    MealDb,
+                    {
+                      ...mealsData,
+                      breakfast: item.filter(val => val.name !== name),
+                      uid: id!,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+                dispatch(
+                  resetMealDataItems({
+                    ...mealsData,
+                    breakfast: item.filter(val => val.name !== name),
+                  }),
+                );
+              }
 
               break;
             case 'Snack':
-              storeMealData(id!, {
-                ...mealsData,
-                snack: item.filter(val => val.name !== name),
-              });
+              if (netInfo.isConnected) {
+                storeMealData(id!, {
+                  ...mealsData,
+                  snack: item.filter(val => val.name !== name),
+                });
+              } else {
+                realm.write(() => {
+                  realm.create(
+                    MealDb,
+                    {
+                      ...mealsData,
+                      snack: item.filter(val => val.name !== name),
+                      uid: id!,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+                dispatch(
+                  resetMealDataItems({
+                    ...mealsData,
+                    snack: item.filter(val => val.name !== name),
+                  }),
+                );
+              }
               break;
             case 'Lunch':
-              storeMealData(id!, {
-                ...mealsData,
-                lunch: item.filter(val => val.name !== name),
-              });
+              if (netInfo.isConnected) {
+                storeMealData(id!, {
+                  ...mealsData,
+                  lunch: item.filter(val => val.name !== name),
+                });
+              } else {
+                realm.write(() => {
+                  realm.create(
+                    MealDb,
+                    {
+                      ...mealsData,
+                      lunch: item.filter(val => val.name !== name),
+                      uid: id!,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+                dispatch(
+                  resetMealDataItems({
+                    ...mealsData,
+                    lunch: item.filter(val => val.name !== name),
+                  }),
+                );
+              }
               break;
             case 'Dinner':
-              storeMealData(id!, {
-                ...mealsData,
-                dinner: item.filter(val => val.name !== name),
-              });
+              if (netInfo.isConnected) {
+                storeMealData(id!, {
+                  ...mealsData,
+                  dinner: item.filter(val => val.name !== name),
+                });
+              } else {
+                realm.write(() => {
+                  realm.create(
+                    MealDb,
+                    {
+                      ...mealsData,
+                      dinner: item.filter(val => val.name !== name),
+                      uid: id!,
+                    },
+                    UpdateMode.Modified,
+                  );
+                });
+                dispatch(
+                  resetMealDataItems({
+                    ...mealsData,
+                    dinner: item.filter(val => val.name !== name),
+                  }),
+                );
+              }
               break;
           }
         }}>

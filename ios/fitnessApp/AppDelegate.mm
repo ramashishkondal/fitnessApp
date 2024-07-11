@@ -24,7 +24,7 @@
   // for loggin out the user after uninstalling the app and then installing it while logged in
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults boolForKey:@"notFirstRun"]) {
-      [defaults setBool:YES forKey:@"notFirstRun"];
+       [defaults setBool:YES forKey:@"notFirstRun"];
       [defaults synchronize];
       [[FIRAuth auth] signOut:NULL];
     }

@@ -4,7 +4,6 @@ import {Text, View, ScrollView} from 'react-native';
 
 // 3rd party
 import {PieChart} from 'react-native-gifted-charts';
-import firestore from '@react-native-firebase/firestore';
 
 // custom
 import {
@@ -20,11 +19,6 @@ import {NutritionProps} from '../../../Defs/navigators';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {getPercentage} from '../../../Utils/commonUtils';
-import {
-  DailyMeals,
-  resetMealDataItems,
-} from '../../../Redux/Reducers/dailyMeal';
-import {firebaseDB} from '../../../Utils/userUtils';
 
 const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   // state use
@@ -34,9 +28,9 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   const {nutrition: caloriesBurned} = useAppSelector(
     state => state.health.value,
   );
-  const {id} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
   const {data: dailyMeals} = useAppSelector(state => state.dailyMeals);
+
   const statsData = Object.values(dailyMeals)
     .flat()
     .reduce(
@@ -99,20 +93,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
     navigation.setOptions({
       headerRight,
     });
-    const unsubscribe = firestore()
-      .collection(firebaseDB.collections.dailyMeals)
-      .doc(id!)
-      .onSnapshot(snapshot => {
-        if (snapshot.exists) {
-          const x = snapshot.data() as DailyMeals;
-          if (x) {
-            console.log('stories data is ', x);
-            dispatch(resetMealDataItems(x));
-          }
-        }
-      });
-    return () => unsubscribe();
-  }, [dispatch, headerRight, id, navigation]);
+  }, [dispatch, headerRight, navigation]);
 
   return (
     <ScrollView style={styles.parent}>
