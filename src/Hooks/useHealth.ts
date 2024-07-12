@@ -199,7 +199,7 @@ export const useHealth = () => {
           });
           return;
         }
-        console.log('error encountered while getting steps data - ', error);
+        console.log('error encountered while getting steps data -  ', error);
       });
     });
   }, [dispatch, hasPermission, id]);
