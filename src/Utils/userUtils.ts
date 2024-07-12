@@ -377,13 +377,17 @@ export const storeNewUserHealthData = async (
   userId: string,
   healthData: HealthData,
 ) => {
-  console.log('storing new health data ran');
+  console.log(
+    'storing new health data ran',
+    new Date().setHours(0, 0, 0, 0).toString(),
+  );
+  const updateAt = new Date().setHours(0, 0, 0, 0).toString();
   try {
     await firestore()
       .collection(firebaseDB.collections.healthData)
       .doc(userId)
       .set({
-        [new Date().setHours(0, 0, 0, 0).toString()]: healthData,
+        [updateAt]: healthData,
       });
   } catch (e) {
     console.log('errror storing new health data', e);

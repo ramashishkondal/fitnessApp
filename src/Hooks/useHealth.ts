@@ -209,6 +209,11 @@ export const useHealth = () => {
           const waterIntake: number = snapshot.get(
             `${new Date().setHours(0, 0, 0, 0).toString()}.waterIntake`,
           );
+          console.log(
+            'water intake is ',
+            waterIntake,
+            new Date().setHours(0, 0, 0, 0).toString(),
+          );
           if (waterIntake) {
             dispatch(updateHealthData({waterIntake}));
           }
