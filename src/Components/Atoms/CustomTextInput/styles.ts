@@ -4,7 +4,6 @@ import {COLORS, FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
-    // height: 42,
     borderRadius: SIZES.rounding2,
     backgroundColor: COLORS.SECONDARY.WHITE,
   },

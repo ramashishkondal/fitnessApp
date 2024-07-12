@@ -75,8 +75,12 @@ export const useHealth = () => {
               text: 'ok',
               onPress: async () => {
                 if (!GoogleFit.isAuthorized) {
-                  await GoogleFit.authorize(AndroidGoogleFitPermissions);
-                  dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
+                  try {
+                    await GoogleFit.authorize(AndroidGoogleFitPermissions);
+                    dispatch(updateHealthData({hasPermission: true})); // check for if user denies the permissions later in settings
+                  } catch (e) {
+                    console.log('error with google fit config', e);
+                  }
                 }
               },
             },
@@ -141,6 +145,7 @@ export const useHealth = () => {
           {includeManuallyAdded: true},
           (error, result) => {
             if (!error) {
+              console.log('steps changed', result);
               dispatch(updateHealthData({todaysSteps: result.value}));
               return;
             }

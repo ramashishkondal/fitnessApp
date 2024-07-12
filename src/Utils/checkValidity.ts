@@ -6,10 +6,13 @@ export const isValidPassword = {
   lengthCheck: (password: string) => password.length >= 8,
   caseCheck: (password: string) => RegExp(/[A-Z]/).test(password),
   numberCheck: (password: string) => RegExp(/[0-9]/).test(password),
+  specialCharacterCheck: (password: string) =>
+    RegExp(/[^a-zA-Z0-9_]/).test(password),
   checkAllValidations: (password: string) =>
     password.length >= 8 &&
     RegExp(/[A-Z]/).test(password) &&
-    RegExp(/[0-9]/).test(password),
+    RegExp(/[0-9]/).test(password) &&
+    RegExp(/[^a-zA-Z0-9_]/).test(password),
 };
 
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]*(?:[-' ][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;

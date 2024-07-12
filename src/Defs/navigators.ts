@@ -111,7 +111,7 @@ export type appStackParamList = {
   DailySteps: undefined;
   PostScreen: {postId: string};
   StoriesScreen: {allStoryData: Array<StoryData>; index: number};
-  EditProfile: undefined;
+  EditProfile: {from: 'Home' | 'Settings'};
   ResetPassword: undefined;
   GiveFeedback: undefined;
   AboutUs: undefined;
@@ -145,4 +145,8 @@ export type PostScreenProps = NativeStackScreenProps<
 export type StoriesScreenProps = NativeStackScreenProps<
   appStackParamList,
   'StoriesScreen'
+>;
+export type EditProfileProps = NativeStackScreenProps<
+  appStackParamList,
+  'EditProfile'
 >;

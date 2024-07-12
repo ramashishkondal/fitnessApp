@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useState} from 'react';
-import {Text, View, ScrollView, Platform} from 'react-native';
+import {Text, View, ScrollView, Platform, Alert} from 'react-native';
 import {LineChart, PieChart} from 'react-native-gifted-charts';
 import AppleHealthKit from 'react-native-health';
 import {PERMISSIONS, check, request} from 'react-native-permissions';
@@ -139,6 +139,11 @@ const DailySteps: React.FC = () => {
             date.today().getMonth(),
             date.today().getDate() - 6,
           ).toISOString(),
+          endDate: new Date(
+            date.today().getFullYear(),
+            date.today().getMonth(),
+            date.today().getDate(),
+          ).toISOString(),
         },
         (error, result) => {
           if (!error) {
@@ -152,6 +157,42 @@ const DailySteps: React.FC = () => {
                 };
               }),
             );
+            const bestStepsDay = result.reduce(
+              (acc, val) => {
+                if (
+                  Math.ceil(getPercentage(val.value, totalSteps) / 10) >=
+                  acc.value
+                ) {
+                  return {
+                    value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                    week: weekday[new Date(val.startDate).getDay()],
+                  };
+                }
+                return acc;
+              },
+              {value: -Infinity, week: ''},
+            );
+            const worstStepsDay = result.reduce(
+              (acc, val) => {
+                console.log('acc', acc, val);
+                if (
+                  Math.ceil(getPercentage(val.value, totalSteps) / 10) <=
+                  acc.value
+                ) {
+                  return {
+                    value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                    week: weekday[new Date(val.startDate).getDay()],
+                  };
+                }
+                return acc;
+              },
+              {value: +Infinity, week: ''},
+            );
+            setRating({
+              best: bestStepsDay,
+              worst: worstStepsDay,
+            });
+
             return;
           }
           console.log('error - ', error);
@@ -168,8 +209,16 @@ const DailySteps: React.FC = () => {
             await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
           }
           if (!GoogleFit.isAuthorized) {
-            await GoogleFit.authorize(options);
-            dispatch(updateHealthData({hasPermission: true}));
+            if (!hasPermission) {
+              Alert.alert(
+                'Google Fit',
+                'To access Steps Data history google fit access is required',
+              );
+            }
+            const authorizeResponse = await GoogleFit.authorize(options);
+            if (authorizeResponse.success) {
+              dispatch(updateHealthData({hasPermission: true}));
+            }
           }
           const opt = {
             startDate: getLastWeekDayDate(new Date()).toISOString(), // required ISO8601Timestamp

@@ -1,5 +1,5 @@
 // libs
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {TextInput, View} from 'react-native';
 
 // 3rd party
@@ -32,6 +32,9 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
     // state use
     const [isTextSecure, setIsTextSecure] = useState(allowPeeking);
 
+    // ref use
+    const textInputRef = useRef<TextInput>(null);
+
     return (
       <Animated.View
         style={[
@@ -43,6 +46,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
           <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View>
         ) : null}
         <TextInput
+          ref={textInputRef}
           placeholder={placeHolder}
           style={[styles.textInput, textInputStyle]}
           placeholderTextColor={COLORS.PRIMARY.DARK_GREY}

@@ -19,11 +19,13 @@ import {styles} from './styles';
 import {useNetInfo} from '@react-native-community/netinfo';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   // state use
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isActiveOut, setIsActiveOut] = useState(false);
 
   // netInfo use
   const netInfo = useNetInfo();
@@ -62,7 +64,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <KeyboardAwareScrollView style={styles.parent}>
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>
         <HeadingText text={STRING.ADD_EMAIL.TITLE} />
         <CustomTextInput
@@ -71,8 +73,12 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
           textInputStyle={styles.textInput}
           onChangeText={setEmail}
           autoFocus
+          textInputProps={{
+            onBlur: () => setIsActiveOut(true),
+            keyboardType: 'email-address',
+          }}
         />
-        {email && !isValidEmail(email) ? (
+        {email && isActiveOut && !isValidEmail(email) ? (
           <CustomErrorText text={STRING.ADD_EMAIL.EMAIL_ERROR} />
         ) : null}
         <CustomButton
@@ -82,7 +88,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
           isLoading={isLoading}
         />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

@@ -16,7 +16,9 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   titleText: {
-    fontSize: SIZES.fontH4,
+    fontSize: SIZES.fontH3,
+    textAlign: 'left',
+    fontWeight: '700',
   },
   photo: {
     width: 70,

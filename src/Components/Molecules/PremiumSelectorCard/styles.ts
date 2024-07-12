@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
-    // width: SIZES.width,
+
     paddingVertical: 20,
     backgroundColor: COLORS.PRIMARY.GREY,
     borderRadius: SIZES.rounding2,
@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
   priceText: {
     fontFamily: FONT_FAMILY.BOLD,
     fontSize: SIZES.font15,
+    color: 'black',
   },
   outOfText: {
     fontFamily: FONT_FAMILY.MEDIUM,

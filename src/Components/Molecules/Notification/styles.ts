@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {COLORS} from '../../../Constants';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
@@ -23,12 +23,12 @@ export const styles = StyleSheet.create({
     minWidth: 55,
     padding: 5,
     borderRadius: 200,
-    // borderWidth: 1,
   },
   customImageStyle: {
     borderRadius: 200,
   },
   deleteCtr: {
+    flexGrow: Platform.OS === 'android' ? 1 : undefined,
     backgroundColor: COLORS.SECONDARY.RED,
     justifyContent: 'center',
     alignItems: 'center',
@@ -47,12 +47,14 @@ export const styles = StyleSheet.create({
   textCtr: {flex: 6},
   notificationText: {
     fontFamily: FONT_FAMILY.MEDIUM,
-    fontSize: RFValue(12),
+    fontSize: RFValue(13.5),
+    fontWeight: '600',
     marginRight: 16,
     color: 'black',
   },
   userNameText: {
-    fontWeight: 'bold',
+    fontFamily: FONT_FAMILY.BOLD,
+    fontSize: RFValue(13.5),
   },
   descriptionText: {
     textAlign: 'left',

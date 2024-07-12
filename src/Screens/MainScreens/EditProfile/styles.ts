@@ -7,6 +7,17 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
   },
+  editText: {
+    color: '#348AFE',
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontSize: SIZES.font15,
+    fontWeight: '500',
+  },
+  editCtr: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginRight: 8,
+  },
   infoTextHeading: {
     marginBottom: 3,
     color: 'black',

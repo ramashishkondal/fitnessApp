@@ -40,10 +40,11 @@ const AppNavigator = () => {
 
   // effect use
   useEffect(() => {
-    // getting active energy burned data from OS
+    // Getting active energy burned data from OS
     if (Platform.OS === 'ios') {
       const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
       const endDate = date.today().toISOString();
+
       AppleHealthKit.getActiveEnergyBurned(
         {
           startDate, // required

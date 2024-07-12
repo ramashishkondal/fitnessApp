@@ -110,12 +110,16 @@ const GetPremium = () => {
         <CustomButton
           title="Purchase"
           parentStyle={styles.customParent}
-          onPress={() =>
+          onPress={() => {
+            if (paymentChoice === null) {
+              Alert.alert('Error', 'Please select a billing method');
+              return;
+            }
             Alert.alert(
               'Email Sent',
               'Confirmation email sent to you email address',
-            )
-          }
+            );
+          }}
         />
       </View>
     </ScrollView>

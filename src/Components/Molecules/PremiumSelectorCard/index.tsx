@@ -46,7 +46,7 @@ const PremiumSelectorCard: React.FC<PremiumSelectorCardProps> = ({
             disableText
           />
           <View style={styles.priceCtr}>
-            <Text style={styles.freeTrialtext}>
+            <Text style={styles.priceText}>
               ${priceText}
               <Text style={styles.outOfText}>/{priceIntervalTime}</Text>
             </Text>

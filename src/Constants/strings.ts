@@ -30,10 +30,11 @@ export const STRING = {
       LENGTH: '8+ characters',
       CASE: 'At least 1 uppercase',
       NUMBER: 'At least 1 number',
+      SPECIAL_CHAR: 'At least 1 special character',
     },
     ERROR: {
       HEADING: 'Invalid Password',
-      BODY: 'Make sure your password is 8+ characters long and contains 1 uppercase character and 1 number.',
+      BODY: 'Make sure your password is 8+ characters long, contains at least 1 uppercase character , 1 number and 1 special character.',
       EMPTY: "Password can't be empty",
     },
   },

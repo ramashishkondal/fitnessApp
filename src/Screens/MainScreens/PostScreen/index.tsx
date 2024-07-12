@@ -139,7 +139,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               {postData.comments
                 .slice(0)
                 .reverse()
-                .map((val, index) => {
+                .map((val, index, arr) => {
                   return (
                     <Comment
                       key={index}
@@ -152,6 +152,11 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                           .getTime(),
                         userId: val.userId,
                       }}
+                      parentStyle={
+                        index === arr.length - 1
+                          ? styles.lastComment
+                          : undefined
+                      }
                     />
                   );
                 })}
@@ -193,8 +198,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               <FastImage
                 source={{uri: postData?.photo}}
                 style={styles.fullscreenImage}
-                onLoadStart={() => setIsLoading(true)}
-                onLoadEnd={() => {}}
                 resizeMode="contain"
               />
             ) : null}

@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -20,8 +20,18 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
 
   // functions
   const logOut = () => {
-    dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
-    auth().signOut();
+    Alert.alert('Logging Out', 'Are you sure you want to log out?', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
+          auth().signOut();
+        },
+      },
+      {
+        text: 'Cancel',
+      },
+    ]);
   };
 
   return (
@@ -30,7 +40,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       <View style={styles.editProfileCtr}>
         <SettingsCard
           title="Edit Profile"
-          onPress={() => navigation.push('EditProfile')}
+          onPress={() => navigation.push('EditProfile', {from: 'Settings'})}
         />
         <SettingsCard title="Push Notification" hasSwitch />
         <SettingsCard

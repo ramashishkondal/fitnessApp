@@ -12,6 +12,7 @@ const PasswordChecks = ({
   lengthCheck,
   caseCheck,
   numberCheck,
+  specialCharCheck,
 }: PasswordChecksProps) => {
   return (
     <View style={[styles.parent, SPACING.mt1]}>
@@ -39,6 +40,18 @@ const PasswordChecks = ({
         />
         <DescriptionText
           text={STRING.ADD_PASSWORD.CHECKS.NUMBER}
+          textStyle={styles.text}
+        />
+      </View>
+      <View style={styles.childCtr}>
+        <View
+          style={[
+            styles.square,
+            specialCharCheck ? styles.squareChecked : null,
+          ]}
+        />
+        <DescriptionText
+          text={STRING.ADD_PASSWORD.CHECKS.SPECIAL_CHAR}
           textStyle={styles.text}
         />
       </View>

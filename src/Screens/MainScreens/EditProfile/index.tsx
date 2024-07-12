@@ -1,6 +1,5 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
-import {EditProfileProps} from './types';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
@@ -17,13 +16,16 @@ import {UserDb} from '../../../DbModels/user';
 import {UpdateMode} from 'realm';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import CustomCardUserItems from '../../../Components/Molecules/CustomCardUserItems';
+import {EditProfileProps} from '../../../Defs/navigators';
 
-const EditProfile: React.FC<EditProfileProps> = () => {
+const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
   // state use
   const [activeModal, setActiveModal] = useState<
     'userInfo' | 'preferences' | null | 'interests'
   >(null);
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
+  console.log('got from params', route.params.from === 'Home');
+  const [isEditable, setIsEditable] = useState(false);
 
   // redux use
   const {
@@ -43,6 +45,24 @@ const EditProfile: React.FC<EditProfileProps> = () => {
 
   // realm use
   const realm = useRealm();
+
+  // effect use
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight:
+        route.params.from === 'Home'
+          ? () => (
+              <TouchableOpacity
+                style={styles.editCtr}
+                onPress={() => setIsEditable(!isEditable)}>
+                <Text style={styles.editText}>
+                  {isEditable ? 'Done' : 'Edit'}
+                </Text>
+              </TouchableOpacity>
+            )
+          : undefined,
+    });
+  }, [isEditable, navigation, route.params.from]);
 
   // functions
   const setModalFalse = () => setActiveModal(null);
@@ -73,13 +93,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             parentStyle={styles.userPhotoParent}
             imageStyle={styles.userPhoto}
           />
-          <TouchableOpacity
-            style={styles.pencilPhotoCtr}
-            onPress={() => setPhotoModalVisible(true)}>
-            <View style={styles.pencilBackPhotoCtr}>
-              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-            </View>
-          </TouchableOpacity>
+          {isEditable || route.params.from === 'Settings' ? (
+            <TouchableOpacity
+              style={styles.pencilPhotoCtr}
+              onPress={() => setPhotoModalVisible(true)}>
+              <View style={styles.pencilBackPhotoCtr}>
+                {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+              </View>
+            </TouchableOpacity>
+          ) : null}
         </View>
         <View style={styles.genderCtr}>
           <View style={styles.nameAndGenderCtr}>
@@ -100,13 +122,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.pencilCtr}
-        onPress={() => setActiveModal('userInfo')}>
-        <View style={styles.pencilBackCtr}>
-          {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-        </View>
-      </TouchableOpacity>
+      {isEditable || route.params.from === 'Settings' ? (
+        <TouchableOpacity
+          style={styles.pencilCtr}
+          onPress={() => setActiveModal('userInfo')}>
+          <View style={styles.pencilBackCtr}>
+            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+          </View>
+        </TouchableOpacity>
+      ) : null}
       <View style={styles.otherCtr}>
         <Text style={styles.cardsHeadingText}>Preferences</Text>
         <View style={styles.cardCtr}>
@@ -120,13 +144,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
             <Text style={styles.infoText}>No Preferences selected</Text>
           )}
         </View>
-        <TouchableOpacity
-          style={styles.pencilCtr}
-          onPress={() => setActiveModal('preferences')}>
-          <View style={styles.pencilBackCtr}>
-            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-          </View>
-        </TouchableOpacity>
+        {isEditable || route.params.from === 'Settings' ? (
+          <TouchableOpacity
+            style={styles.pencilCtr}
+            onPress={() => setActiveModal('preferences')}>
+            <View style={styles.pencilBackCtr}>
+              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+            </View>
+          </TouchableOpacity>
+        ) : null}
         <View>
           <Text style={styles.cardsHeadingText}>Interests</Text>
           <View style={styles.cardCtr}>
@@ -140,13 +166,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
               <Text style={styles.infoText}>No Interests selected</Text>
             )}
           </View>
-          <TouchableOpacity
-            style={styles.pencilCtr}
-            onPress={() => setActiveModal('interests')}>
-            <View style={styles.pencilBackCtr}>
-              {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-            </View>
-          </TouchableOpacity>
+          {isEditable || route.params.from === 'Settings' ? (
+            <TouchableOpacity
+              style={styles.pencilCtr}
+              onPress={() => setActiveModal('interests')}>
+              <View style={styles.pencilBackCtr}>
+                {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+              </View>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
       <WithModal

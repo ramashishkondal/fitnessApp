@@ -1,11 +1,13 @@
 import {StyleSheet} from 'react-native';
 import {SIZES} from '../../../Constants';
-import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import {COLORS, FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
     paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderColor: COLORS.SECONDARY.LIGHT_GREY_2,
   },
   userInfoCtr: {
     flexDirection: 'row',

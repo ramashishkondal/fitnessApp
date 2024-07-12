@@ -15,6 +15,7 @@ import {User} from '../../../Defs';
 
 const Comment: React.FC<CommentProps> = ({
   comment: {userId, commentCreatedOnInMillis, comment},
+  parentStyle,
 }) => {
   // state use
   const [userData, setUserData] = useState<User>();
@@ -34,7 +35,7 @@ const Comment: React.FC<CommentProps> = ({
   }, [userId]);
 
   return (
-    <View style={styles.parent}>
+    <View style={[styles.parent, parentStyle]}>
       <View style={styles.userInfoCtr}>
         <View style={styles.customImageCtr}>
           {userData ? (

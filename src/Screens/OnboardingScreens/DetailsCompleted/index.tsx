@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Alert} from 'react-native';
 
 // 3rd party
 import storage from '@react-native-firebase/storage';
@@ -18,6 +18,7 @@ import {styles} from './style';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {resetHealthData} from '../../../Redux/Reducers/health';
 import {resetMealData} from '../../../Redux/Reducers/dailyMeal';
+import {DetailsCompletedProps} from '../../../Defs';
 
 const logoSize = {
   width: 40,
@@ -27,7 +28,7 @@ const arrowSize = {
   width: 30,
   height: 30,
 };
-const DetailsCompleted = () => {
+const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   // state use
   const [isLoading, setIsLoading] = useState(false);
 
@@ -88,6 +89,14 @@ const DetailsCompleted = () => {
       }
     } catch (e) {
       console.log('error in creating user - ', e);
+      Alert.alert('Error', 'something went wrong', [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.navigate('LandingPage');
+          },
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }

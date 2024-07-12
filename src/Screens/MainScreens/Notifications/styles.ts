@@ -11,13 +11,14 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
   },
   headingText: {
-    fontSize: SIZES.fontH4,
+    fontSize: SIZES.fontH3,
     textAlign: 'left',
-    marginHorizontal: 16,
+    marginHorizontal: 18,
+    fontWeight: '700',
   },
   descriptionText: {
     textAlign: 'left',
-    marginHorizontal: 16,
+    marginHorizontal: 18,
   },
   notificationsCtr: {
     backgroundColor: 'white',

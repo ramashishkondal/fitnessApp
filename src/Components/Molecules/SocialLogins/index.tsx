@@ -18,11 +18,6 @@ import {SocialLoginProps} from './types';
 
 const iconSize = 17;
 
-GoogleSignin.configure({
-  webClientId:
-    '330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com',
-});
-
 const googleSignIn = async () => {
   try {
     // Check if your device supports Google Play

@@ -4,7 +4,6 @@ import {View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
-// import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // custom
 import {CustomLoading} from '../../../Components';
@@ -13,6 +12,7 @@ import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 // import {resetUserData} from '../../../Redux/Reducers/currentUser';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import googleFit from 'react-native-google-fit';
 
 const LogOut = () => {
   // redux use
@@ -23,6 +23,7 @@ const LogOut = () => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
     // dispatch(resetUserData());
     // GoogleSignin.signOut();
+    googleFit.disconnect();
     auth().signOut();
   }, [dispatch, finger]);
 

@@ -39,11 +39,7 @@ const CustomDrawerRight: React.FC = () => {
 
   // functions
   const handlePress = () => {
-    if (unreadNotifications()) {
-      navigation.jumpTo('Notifications');
-    } else {
-      navigation.navigate('EditProfile');
-    }
+    navigation.navigate('EditProfile', {from: 'Home'});
   };
   return (
     <TouchableOpacity style={styles.parent} onPress={handlePress}>

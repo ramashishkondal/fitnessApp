@@ -13,7 +13,12 @@ import {useAppDispatch} from '../Redux/Store';
 import {CustomLoading} from '../Components';
 import {updateUserData} from '../Redux/Reducers/currentUser';
 import GoalModal from '../Components/Molecules/GoalModal';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
+GoogleSignin.configure({
+  webClientId:
+    '330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com',
+});
 const RootNavigator = () => {
   // state use
   const [initializing, setInitializing] = useState(true);

@@ -51,7 +51,8 @@ const HomeNavigator: React.FC = () => {
         headerStyle: {
           backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
           height:
-            Platform.OS === 'ios' ? SIZES.height / 6.5 : SIZES.height / 10,
+            Platform.OS === 'ios' ? SIZES.height / 7.5 : SIZES.height / 17,
+          borderWidth: 1,
         },
         headerLeft,
         drawerStyle: {

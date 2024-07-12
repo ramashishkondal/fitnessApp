@@ -53,12 +53,13 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={setPassword}
         autoFocus
-        textInputProps={{secureTextEntry: true}}
+        allowPeeking
       />
       <PasswordChecks
         lengthCheck={isValidPassword.lengthCheck(password)}
         caseCheck={isValidPassword.caseCheck(password)}
         numberCheck={isValidPassword.numberCheck(password)}
+        specialCharCheck={isValidPassword.specialCharacterCheck(password)}
       />
       <CustomButton
         title={STRING.ADD_PASSWORD.BUTTON_TEXT}

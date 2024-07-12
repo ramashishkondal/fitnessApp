@@ -44,7 +44,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
     if (currentEmail === '') {
       Alert.alert('Email address cant be empty');
     } else if (currentEmail && isValidEmail(currentEmail)) {
-      dispatch(updateUserData({email: currentEmail}));
+      dispatch(updateUserData({email: currentEmail.toLowerCase()}));
       navigation.push('AddPassword');
     } else {
       Alert.alert(

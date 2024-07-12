@@ -30,11 +30,17 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#11111199',
     width: '100%',
-    height: SIZES.height,
+    height: '100%',
+    padding: 8,
+    alignItems: 'center',
+  },
+  lastComment: {
+    borderBottomWidth: 0,
   },
   fullscreenImage: {
     width: '100%',
-    height: '80%',
+    height: '100%',
+    borderRadius: 8,
   },
   textInput: {
     flex: 6,
