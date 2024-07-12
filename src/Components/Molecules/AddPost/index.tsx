@@ -123,7 +123,9 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
 
   return (
     <>
-      <Pressable style={{flex: 1}} onPress={() => setIsEmojiShown(false)}>
+      <Pressable
+        style={styles.parentPressable}
+        onPress={() => setIsEmojiShown(false)}>
         <KeyboardAwareScrollView
           style={styles.parent}
           // extraHeight={60}

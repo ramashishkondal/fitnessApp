@@ -75,7 +75,7 @@ const Notifications: React.FC = () => {
 
   return (
     <TouchableOpacity
-      style={{flex: 1}}
+      style={styles.touchable}
       activeOpacity={1}
       disabled={!showMenu}
       onPress={() => setShowMenu(false)}>

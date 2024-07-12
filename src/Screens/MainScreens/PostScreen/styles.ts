@@ -3,6 +3,9 @@ import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
+  keyboardAvoiding: {
+    flex: 1,
+  },
   parent: {
     flex: 1,
     backgroundColor: COLORS.SECONDARY.WHITE,
@@ -22,6 +25,16 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.SECONDARY.WHITE,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  enlargeImageCtr: {
+    position: 'absolute',
+    backgroundColor: '#11111199',
+    width: '100%',
+    height: SIZES.height,
+  },
+  fullscreenImage: {
+    width: '100%',
+    height: '80%',
   },
   textInput: {
     flex: 6,

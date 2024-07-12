@@ -3,6 +3,9 @@ import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
+  touchable: {
+    flex: 1,
+  },
   parent: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.LIGHT_GREY,

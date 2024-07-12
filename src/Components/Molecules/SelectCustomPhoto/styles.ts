@@ -1,9 +1,17 @@
 import {StyleSheet} from 'react-native';
 import {SIZES, COLORS} from '../../../Constants';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
+  },
+  cameraTypeOptionsCtr: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: SIZES.fontH2,
+    color: 'white',
+    fontWeight: 'bold',
+    padding: 16,
   },
   modalCtr: {
     flex: 1,

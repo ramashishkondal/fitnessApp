@@ -20,7 +20,6 @@ import {COLORS, ICONS} from '../../../Constants';
 import {SelectCustomPhotoProps} from './types';
 import {styles} from './styles';
 import BackDropSheet from '../BackdropSheet';
-import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 
 const iconSize = 60;
 
@@ -158,7 +157,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
           <BottomSheetView style={[styles.modalCtr, parentStyle]}>
             <View style={styles.iconsCtr}>
               <TouchableOpacity
-                style={styles.cameraOptionsCtr}
+                style={styles.cameraTypeOptionsCtr}
                 onPress={() =>
                   openCamera({
                     mediaType: 'video',
@@ -166,16 +165,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                     videoQuality: 'low',
                   })
                 }>
-                <Text
-                  style={{
-                    fontFamily: FONT_FAMILY.REGULAR,
-                    fontSize: SIZES.fontH2,
-                    color: 'white',
-                    fontWeight: 'bold',
-                    padding: 16,
-                  }}>
-                  Video
-                </Text>
+                <Text style={styles.cameraOptionsCtr}>Video</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.cameraOptionsCtr}
@@ -186,16 +176,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                     videoQuality: 'low',
                   })
                 }>
-                <Text
-                  style={{
-                    fontFamily: FONT_FAMILY.REGULAR,
-                    fontSize: SIZES.fontH2,
-                    color: 'white',
-                    fontWeight: 'bold',
-                    padding: 16,
-                  }}>
-                  Photo
-                </Text>
+                <Text style={styles.cameraTypeOptionsCtr}>Photo</Text>
               </TouchableOpacity>
             </View>
           </BottomSheetView>

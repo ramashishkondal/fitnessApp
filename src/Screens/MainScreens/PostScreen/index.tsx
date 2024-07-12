@@ -19,7 +19,7 @@ import {Post, PostScreenProps} from '../../../Defs';
 import {addLikes, firebaseDB, storePostComment} from '../../../Utils/userUtils';
 import {Comment, CustomLoading, UserPost} from '../../../Components';
 import {useAppSelector} from '../../../Redux/Store';
-import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {COLORS, ICONS} from '../../../Constants';
 import FastImage from 'react-native-fast-image';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
@@ -84,7 +84,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     return (
       <>
         <KeyboardAvoidingView
-          style={{flex: 1}}
+          style={styles.keyboardAvoiding}
           behavior={Platform.OS === 'ios' ? 'height' : undefined}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 95 : 0}>
           <ScrollView style={styles.parent}>
@@ -182,12 +182,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
         {showPhoto ? (
           <TouchableOpacity
             onPress={() => setShowPhoto(false)}
-            style={{
-              position: 'absolute',
-              backgroundColor: '#11111199',
-              width: '100%',
-              height: SIZES.height,
-            }}>
+            style={styles.enlargeImageCtr}>
             {postData ? (
               // <CustomImage
               //   source={{uri: postData?.photo}}
@@ -197,7 +192,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
               <FastImage
                 source={{uri: postData?.photo}}
-                style={{width: '100%', height: '80%'}}
+                style={styles.fullscreenImage}
                 onLoadStart={() => setIsLoading(true)}
                 onLoadEnd={() => {}}
                 resizeMode="contain"

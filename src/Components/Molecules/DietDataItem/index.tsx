@@ -95,15 +95,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
   const rightSwipeActions = (name: string) => {
     return (
       <TouchableOpacity
-        style={{
-          backgroundColor: COLORS.SECONDARY.RED,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 16,
-          width: 100,
-          marginHorizontal: 8,
-          marginVertical: 8,
-        }}
+        style={styles.deleteCtr}
         onPress={() => {
           console.log('delete pressed');
           switch (timeOfMeal) {
@@ -214,16 +206,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
               break;
           }
         }}>
-        <Text
-          style={{
-            color: COLORS.SECONDARY.WHITE,
-            fontWeight: 'bold',
-            paddingHorizontal: 8,
-            fontFamily: FONT_FAMILY.REGULAR,
-            fontSize: SIZES.font14,
-          }}>
-          Delete
-        </Text>
+        <Text style={styles.deleteText}>Delete</Text>
       </TouchableOpacity>
     );
   };

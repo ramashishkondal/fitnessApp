@@ -20,6 +20,22 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.SECONDARY.LIGHT_GREY,
     backgroundColor: COLORS.SECONDARY.WHITE,
   },
+  deleteCtr: {
+    backgroundColor: COLORS.SECONDARY.RED,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    width: 100,
+    marginHorizontal: 8,
+    marginVertical: 8,
+  },
+  deleteText: {
+    color: COLORS.SECONDARY.WHITE,
+    fontWeight: 'bold',
+    paddingHorizontal: 8,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: SIZES.font14,
+  },
   titleCtr: {},
   titleText: {
     fontSize: SIZES.fontH5,

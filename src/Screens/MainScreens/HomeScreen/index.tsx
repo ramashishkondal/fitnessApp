@@ -203,7 +203,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       {isActivityPermissionsEnabled ? null : (
         <WarningLabel
           text="Activity Recognition Permissions not allowed you are using the app in limited mode."
-          parentStyle={{padding: 16}}
+          parentStyle={styles.warningText}
           onPress={() =>
             Alert.alert(
               'Activity Recognition permissions denied',
@@ -239,7 +239,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
               ? 'Google Fit not configured'
               : 'Health Kit Permissions denied'
           } you are using the app in limited mode.`}
-          parentStyle={{padding: 16}}
+          parentStyle={styles.warningText}
           onPress={
             Platform.OS === 'ios'
               ? () => {

@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY.DARK_GREY,
   },
+  warningText: {
+    padding: 16,
+  },
   titleText: {
     fontSize: SIZES.fontH3,
     fontWeight: SIZES.fontBold1,

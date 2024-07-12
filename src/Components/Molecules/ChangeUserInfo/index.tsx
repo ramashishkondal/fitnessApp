@@ -3,7 +3,7 @@ import {Alert, Platform, View} from 'react-native';
 import {CustomButton, CustomTextInput, HeadingText} from '../../Atoms';
 import {ChangeUserInfoProps} from './types';
 import {styles} from './styles';
-import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
+import {ICONS, SPACING, STRING} from '../../../Constants';
 import Card from '../Card';
 import {User} from '../../../Defs';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
@@ -98,11 +98,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   };
   return (
     <KeyboardAwareScrollView
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
-        borderRadius: 10,
-      }}
+      style={styles.keyboardAwareScroll}
       extraScrollHeight={Platform.OS === 'ios' ? 160 : -275}
       enableOnAndroid={true}>
       <View style={styles.parent}>

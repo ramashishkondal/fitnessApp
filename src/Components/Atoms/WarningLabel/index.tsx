@@ -25,7 +25,7 @@ const WarningLabel: React.FC<WarningLabelProps> = ({
     );
   }
   return (
-    <TouchableOpacity style={{flex: 1}} onPress={onPress}>
+    <TouchableOpacity style={styles.touchableParent} onPress={onPress}>
       <Animated.View
         style={[styles.parent, parentStyle]}
         entering={FadeIn}

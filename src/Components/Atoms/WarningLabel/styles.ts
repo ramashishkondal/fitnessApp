@@ -14,4 +14,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONT_FAMILY.REGULAR,
   },
+  touchableParent: {
+    flex: 1,
+  },
 });

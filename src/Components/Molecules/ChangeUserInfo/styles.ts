@@ -9,6 +9,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 10,
   },
+  keyboardAwareScroll: {
+    flex: 1,
+    backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
+    borderRadius: 10,
+  },
   genderCtr: {
     flexDirection: 'row',
     marginTop: 38,

@@ -12,8 +12,6 @@ import {styles} from './styles';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {User} from '../../../Defs';
 import {Swipeable} from 'react-native-gesture-handler';
-import {COLORS} from '../../../Constants';
-import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 
 const Notification: React.FC<NotificationProps> = ({
@@ -44,26 +42,9 @@ const Notification: React.FC<NotificationProps> = ({
   const rightSwipeActions = () => {
     return (
       <TouchableOpacity
-        style={{
-          backgroundColor: COLORS.SECONDARY.RED,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 16,
-          width: 100,
-          marginHorizontal: 8,
-          marginVertical: 8,
-        }}
+        style={styles.deleteCtr}
         onPress={() => handleDeletePressed()}>
-        <Text
-          style={{
-            color: COLORS.SECONDARY.WHITE,
-            fontWeight: 'bold',
-            paddingHorizontal: 8,
-            fontFamily: FONT_FAMILY.REGULAR,
-            fontSize: SIZES.font14,
-          }}>
-          Delete
-        </Text>
+        <Text style={styles.deleteText}>Delete</Text>
       </TouchableOpacity>
     );
   };
