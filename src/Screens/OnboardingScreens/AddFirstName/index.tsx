@@ -44,6 +44,7 @@ const AddFirstName: React.FC<AddEmailLogInProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={handleChangeText}
         autoFocus
+        textInputProps={{maxLength: 30}}
       />
       <CustomButton
         title={STRING.ADD_FIRST_NAME.BUTTON_TEXT}

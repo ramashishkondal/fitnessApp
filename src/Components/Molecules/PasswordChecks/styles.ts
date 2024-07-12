@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
   },
   square: {
     backgroundColor: '#D6D9E0',
-    width: 17,
-    height: 17,
+    width: 16,
+    height: 16,
     borderRadius: 4,
     marginHorizontal: 8,
   },

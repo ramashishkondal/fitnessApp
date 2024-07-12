@@ -25,7 +25,7 @@ const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
       dispatch(updateUserData({lastName}));
       navigation.push('AddFingerprint');
     } else {
-      Alert.alert('Error', 'First name cant be empty!');
+      Alert.alert('Error', 'Last name cant be empty!');
     }
   };
   const handleChangeText = (text: string) => {
@@ -44,6 +44,7 @@ const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
         textInputStyle={styles.textInput}
         onChangeText={handleChangeText}
         autoFocus
+        textInputProps={{maxLength: 30}}
       />
       <CustomButton
         title={STRING.ADD_LAST_NAME.BUTTON_TEXT}
