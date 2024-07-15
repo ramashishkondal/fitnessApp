@@ -33,6 +33,7 @@ import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
 import {useHealth} from '../../../Hooks/useHealth';
 import {PERMISSIONS, check} from 'react-native-permissions';
+import {updateHealthData} from '../../../Redux/Reducers/health';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -55,6 +56,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   useHealth();
   // effect use
   useEffect(() => {
+    firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(id!)
+      .onSnapshot(snapshot => {
+        if (snapshot.exists) {
+          const waterIntake: number = snapshot.get(
+            `${new Date().setHours(0, 0, 0, 0).toString()}.waterIntake`,
+          );
+          console.log(
+            'water intake is ',
+            waterIntake,
+            new Date().setHours(0, 0, 0, 0).toString(),
+          );
+          if (waterIntake) {
+            dispatch(updateHealthData({waterIntake}));
+          }
+        }
+      });
     if (Platform.OS === 'ios') {
       AppleHealthKit.getAuthStatus(
         {
@@ -122,7 +141,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         ],
       );
     }
-  }, [dispatch, finger, isBiometricEnabled, shouldAskBiometics]);
+  }, [dispatch, finger, id, isBiometricEnabled, shouldAskBiometics]);
 
   useEffect(() => {
     const unsubscribe = firestore()

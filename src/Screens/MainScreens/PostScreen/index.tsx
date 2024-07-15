@@ -169,8 +169,8 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               placeholder="Write a comment..."
               ref={textInputRef}
               onChangeText={setComment}
-              onSubmitEditing={postComment}
               placeholderTextColor={'black'}
+              maxLength={100}
             />
             <Pressable
               style={styles.sendCtr}

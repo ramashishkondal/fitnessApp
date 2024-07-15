@@ -12,8 +12,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headingText: {
-    fontFamily: FONT_FAMILY.MEDIUM,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
     fontSize: SIZES.font13,
+    fontWeight: '400',
     color: 'black',
   },
   switchCtr: {

@@ -36,7 +36,8 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   // state use
   const [storyModalVisible, setStoryModalVisible] = useState(false);
   const [activeModal, setActiveModal] = useState('none');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingStory, setIsLoadingStory] = useState<boolean>(false);
+
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
@@ -116,6 +117,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
             text={STRING.COMMUNITY.TITLE}
             textStyle={styles.titleText}
           />
+
           <TouchableOpacity onPress={setActiveModalPost} style={styles.iconCtr}>
             {ICONS.PostSign(postSignSize)}
           </TouchableOpacity>
@@ -125,7 +127,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
             setModalVisible={() => {
               setStoryModalVisible(true);
             }}
-            isLoading={!!(isLoading && netInfo.isConnected)}
+            isLoading={netInfo.isConnected ? isLoadingStory : false}
           />
 
           <FlatList
@@ -164,8 +166,8 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
         BottomSheetModalStyle={styles.selectCustomPhoto}
         mediaType="mixed"
         onSuccess={(uri, type) => {
-          setIsLoading(true);
           if (netInfo.isConnected) {
+            setIsLoadingStory(true);
             storeStory(
               {
                 storyUrl: uri,
@@ -174,12 +176,13 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
                 storyType: type!,
               },
               id!,
-            );
+            ).finally(() => {
+              setIsLoadingStory(false);
+            });
           } else {
             console.log('storing data in offline mode');
             storeStoryDataInRealmDb(type!, uri);
           }
-          setIsLoading(false);
         }}
       />
     </>

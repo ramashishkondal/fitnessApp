@@ -181,7 +181,6 @@ export const useUserData = () => {
               id,
               userData.notifications.map(handleNotifications),
             );
-            console.log('seconds ', userData);
             dispatch(
               updateUserData({
                 ...userData,

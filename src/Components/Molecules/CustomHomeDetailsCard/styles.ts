@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: SIZES.fontH6,
-    fontWeight: SIZES.fontBold0,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: '800',
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
     color: 'black',
   },
   descriptionText: {

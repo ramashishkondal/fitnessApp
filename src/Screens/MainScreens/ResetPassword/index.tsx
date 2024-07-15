@@ -90,19 +90,21 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>
         <HeadingText text="Reset Password" />
         <CustomTextInput
+          value={password}
           placeHolder="Enter current password"
           parentStyle={[SPACING.mh2, SPACING.mt5]}
           textInputStyle={styles.textInput}
           onChangeText={setPassword}
           autoFocus
-          textInputProps={{secureTextEntry: true}}
+          allowPeeking
         />
         <CustomTextInput
+          value={newPassword}
           placeHolder="Enter new Password"
           parentStyle={[SPACING.mh2, SPACING.mt5]}
           textInputStyle={styles.textInput}
           onChangeText={setNewPassword}
-          textInputProps={{secureTextEntry: true}}
+          allowPeeking
         />
         <CustomButton
           title={STRING.ADD_EMAIL.BUTTON_TEXT}

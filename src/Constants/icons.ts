@@ -39,6 +39,7 @@ import Pencil from '../Assets/Svgs/pencil.svg';
 import FaceId from '../Assets/Svgs/faceId.svg';
 import EyeOpen from '../Assets/Svgs/eyeOpen.svg';
 import EyeClose from '../Assets/Svgs/eyeClose.svg';
+import Search from '../Assets/Svgs/search.svg';
 
 import {
   Fashion,
@@ -72,6 +73,7 @@ type iconProps = {
 
 const DRAWER = {
   Home: (params: iconProps) => Home({...iconStyle({...params})}),
+  Search: (params: iconProps) => Search({...iconStyle({...params})}),
   Settings: (params: iconProps) => Settings({...iconStyle({...params})}),
   Community: (params: iconProps) => Community({...iconStyle({...params})}),
   Notification: (params: iconProps) =>

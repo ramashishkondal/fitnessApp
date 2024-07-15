@@ -11,26 +11,21 @@ export const styles = StyleSheet.create({
   warningText: {
     padding: 16,
   },
-  titleText: {
-    fontSize: SIZES.fontH3,
-    fontWeight: SIZES.fontBold1,
-    marginHorizontal: 36,
-    ...SPACING.mt1,
-  },
   descriptionText: {
     fontSize: SIZES.font12,
     marginRight: RFValue(40),
     marginHorizontal: 36,
-    fontFamily: FONT_FAMILY.MEDIUM,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontWeight: '400',
     ...SPACING.mt2,
     color: 'black',
   },
   detailsText: {
     color: COLORS.PRIMARY.PURPLE,
-    fontWeight: SIZES.fontBold0,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontWeight: '800',
     fontSize: SIZES.font13,
     marginHorizontal: 36,
-    fontFamily: FONT_FAMILY.REGULAR,
     ...SPACING.mt3,
   },
   catageroiesCtr: {

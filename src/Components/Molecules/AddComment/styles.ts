@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 24,
     marginVertical: 32,
-    alignItems: 'center',
+    // alignItems:
   },
   customImageParent: {
     width: 50,
@@ -39,6 +39,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     maxWidth: 240,
     minWidth: 200,
+    alignSelf: 'center',
   },
   footerCtr: {
     position: 'absolute',

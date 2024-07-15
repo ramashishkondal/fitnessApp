@@ -42,6 +42,7 @@
     "react-native-gifted-charts": "^1.4.10",
     "react-native-google-fit": "^0.21.0",
     "react-native-health": "^1.18.0",
+    "react-native-health-connect": "^2.1.0",
     "react-native-image-picker": "^7.1.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",

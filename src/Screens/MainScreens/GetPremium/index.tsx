@@ -117,7 +117,7 @@ const GetPremium = () => {
             }
             Alert.alert(
               'Email Sent',
-              'Confirmation email sent to you email address',
+              'Confirmation email sent to your email address',
             );
           }}
         />

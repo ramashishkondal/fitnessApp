@@ -10,11 +10,11 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: SIZES.fontH3,
-    fontWeight: SIZES.fontBold1,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: '700',
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
     color: 'black',
   },
   editProfileCtr: {
-    marginTop: 40,
+    marginTop: 16,
   },
 });

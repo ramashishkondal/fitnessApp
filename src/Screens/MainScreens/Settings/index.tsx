@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {Alert, Text, View} from 'react-native';
+import {Alert, Platform, Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -12,6 +12,7 @@ import SettingsCard from '../../../Components/Molecules/SettingsCard';
 import {SettingsProps} from '../../../Defs';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {openHealthConnectSettings} from 'react-native-health-connect';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // redux use
@@ -33,6 +34,9 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       },
     ]);
   };
+  const goToHealthSettings = () => {
+    Platform.OS === 'android' ? openHealthConnectSettings() : null;
+  };
 
   return (
     <View style={styles.parent}>
@@ -46,6 +50,10 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         <SettingsCard
           title="Reset Password"
           onPress={() => navigation.navigate('ResetPassword')}
+        />
+        <SettingsCard
+          title="Go to Health Connect Settings"
+          onPress={goToHealthSettings}
         />
         <SettingsCard
           title="Give Feedback"

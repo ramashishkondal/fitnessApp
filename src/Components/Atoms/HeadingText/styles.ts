@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH4,
     textAlign: 'center',
     fontFamily: FONT_FAMILY.EXTRA_BOLD,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#2D3142',
   },
   text2: {

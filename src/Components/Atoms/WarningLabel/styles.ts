@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import {SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,7 +12,7 @@ export const styles = StyleSheet.create({
   warningText: {
     color: '#F57D7D',
     fontWeight: SIZES.fontBold0,
-    fontSize: SIZES.font12,
+    fontSize: DeviceInfo.isTablet() ? RFValue(12.5) : RFValue(13.5),
     textAlign: 'center',
     fontFamily: FONT_FAMILY.REGULAR,
   },

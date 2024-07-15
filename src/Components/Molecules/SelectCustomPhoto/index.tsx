@@ -157,7 +157,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
           <BottomSheetView style={[styles.modalCtr, parentStyle]}>
             <View style={styles.iconsCtr}>
               <TouchableOpacity
-                style={styles.cameraTypeOptionsCtr}
+                style={styles.cameraOptionsCtr}
                 onPress={() =>
                   openCamera({
                     mediaType: 'video',
@@ -165,7 +165,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                     videoQuality: 'low',
                   })
                 }>
-                <Text style={styles.cameraOptionsCtr}>Video</Text>
+                <Text style={styles.cameraTypeOptionsCtr}>Video</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.cameraOptionsCtr}

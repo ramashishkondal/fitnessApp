@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     fontFamily: FONT_FAMILY.REGULAR,
     color: 'black',
+    marginRight: 32,
   },
   descriptionText: {
     fontSize: SIZES.font11,

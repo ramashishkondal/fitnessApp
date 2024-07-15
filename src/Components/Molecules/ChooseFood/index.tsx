@@ -3,7 +3,12 @@ import React, {useRef, useState} from 'react';
 import {TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 
 // custom
-import {CustomButton, DescriptionText, HeadingText} from '../../Atoms';
+import {
+  CustomButton,
+  CustomTextInput,
+  DescriptionText,
+  HeadingText,
+} from '../../Atoms';
 import {ChooseFoodProps} from './types';
 import {ICONS} from '../../../Constants';
 import MealSelector from '../MealSelector';
@@ -15,7 +20,7 @@ import {
 } from '../../../Redux/Reducers/dailyMeal';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {styles} from './styles';
-import {foodData} from '../../../Constants/commonConstants';
+import {foodData as FOOD_DATA} from '../../../Constants/commonConstants';
 import {storeMealData} from '../../../Utils/userUtils';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {useRealm} from '@realm/react';
@@ -39,6 +44,10 @@ export type MealsSelected = {
 const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   // state use
   const [isLoading, setIsLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [foodData, setFoodData] = useState(
+    FOOD_DATA.map(val => ({...val, isSelected: false})),
+  );
 
   // netInfo use
   const netInfo = useNetInfo();
@@ -162,14 +171,25 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
               mealTime={mealsSelected.current.mealTime}
             />
           </View>
+          <CustomTextInput
+            placeHolder="Search Food Items"
+            icon={ICONS.Search({height: 25, width: 25})}
+            parentStyle={styles.customTextInputParent}
+            onChangeText={e => {
+              setSearch(e);
+            }}
+          />
           <View style={styles.foodCtr}>
-            {foodData.map((item, index) => (
-              <FoodSelector
-                foodItem={item}
-                foodData={mealsSelected.current.foodData}
-                key={index}
-              />
-            ))}
+            {foodData
+              .filter(val => val.name.toLowerCase().includes(search))
+              .map((item, index) => (
+                <FoodSelector
+                  foodItem={item}
+                  foodData={mealsSelected.current.foodData}
+                  setFoodData={setFoodData}
+                  key={index}
+                />
+              ))}
           </View>
         </TouchableOpacity>
       </ScrollView>

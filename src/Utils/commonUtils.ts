@@ -132,11 +132,11 @@ export const checkWeek = (
 
   // Check if the date difference is within the desired range
   if (includeCurrentDate) {
-    if (dateDifference >= 0 && dateDifference <= 7) {
+    if (dateDifference >= 0 && dateDifference < 7) {
       return true;
     }
   } else {
-    if (dateDifference > 0 && dateDifference <= 7) {
+    if (dateDifference > 0 && dateDifference < 7) {
       return true;
     }
   }

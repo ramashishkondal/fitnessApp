@@ -2,6 +2,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {View, Text} from 'react-native';
 
+import {firebaseDB} from '../../../Utils/userUtils';
+import firestore from '@react-native-firebase/firestore';
+
 // custom
 import {
   CustomGlass,
@@ -9,19 +12,13 @@ import {
   PerformanceCard,
   WarningLabel,
 } from '../../../Components';
-import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
-import {updateHealthData} from '../../../Redux/Reducers/health';
+import {useAppSelector} from '../../../Redux/Store';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
-import {getHealthData, updateWaterIntake} from '../../../Utils/userUtils';
-import {
-  checkWeek,
-  date,
-  getPercentage,
-  weekday,
-} from '../../../Utils/commonUtils';
-import {Timestamp} from '@react-native-firebase/firestore';
+import {updateWaterIntake} from '../../../Utils/userUtils';
+import {getPercentage, weekday} from '../../../Utils/commonUtils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {HealthData} from '../../../Defs';
 
 const simleySize = {
   width: 21,
@@ -46,77 +43,73 @@ const WaterIntake: React.FC = () => {
     goal: {noOfGlasses},
   } = useAppSelector(state => state.health.value);
   const {id} = useAppSelector(state => state.User.data);
-  const dispatch = useAppDispatch();
-
   const [glassesLength, setGlassesLength] = useState<number>(
     waterIntake > noOfGlasses ? waterIntake : noOfGlasses,
   );
+
+  console.log('ed', id);
+
   // effect use
   useEffect(() => {
-    const today = date.today();
-    getHealthData(id!)
+    firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(id!)
+      .get()
       .then(healthData => {
-        console.log('health Data is', healthData);
-        if (healthData) {
-          const filteredData = healthData.filter(val =>
-            checkWeek(
-              Timestamp.fromMillis(val.currentDate.seconds * 1000).toDate(),
-              today,
-              false,
-            ),
-          );
-          const bestWaterIntakeDay = filteredData.reduce(
-            (acc, val) => {
-              const currentDate = Timestamp.fromMillis(
-                val.currentDate.seconds * 1000,
-              ).toDate();
-              if (
-                Math.ceil(
-                  getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10,
-                ) >= acc.value
-              ) {
-                return {
-                  value: Math.ceil(
-                    getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10,
-                  ),
-                  week: weekday[currentDate.getDay()],
-                };
-              }
-              return acc;
-            },
-            {value: waterIntake, week: 'today'},
-          );
-          const worstWaterIntakeDay = filteredData.reduce(
-            (acc, val) => {
-              const currentDate = Timestamp.fromMillis(
-                val.currentDate.seconds * 1000,
-              ).toDate();
-              console.log(weekday[currentDate.getDay()], currentDate);
-              if (
-                Math.ceil(
-                  getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10,
-                ) <= acc.value
-              ) {
-                return {
-                  value: Math.ceil(
-                    getPercentage(val.waterIntake, val.goal.noOfGlasses) / 10,
-                  ),
-                  week: weekday[currentDate.getDay()],
-                };
-              }
-              return acc;
-            },
-            {
-              value: waterIntake,
-              week: 'today',
-            },
-          );
-          setRating({best: bestWaterIntakeDay, worst: worstWaterIntakeDay});
-        }
-      })
-      .catch(e =>
-        console.log('error encountered in getting user health info', e),
-      );
+        const filteredData: HealthData[] = Object.values(
+          healthData.data() ?? [],
+        );
+
+        console.log('filtered ata ', filteredData, 'ee');
+
+        const bestWaterIntakeDay = filteredData.reduce(
+          (acc, val) => {
+            const currentDate = new Date(val.currentDate);
+            if (
+              Math.ceil(
+                getPercentage(val.waterIntake, val.goal.noOfGlasses, false) /
+                  10,
+              ) >= acc.value
+            ) {
+              return {
+                value: val.waterIntake,
+                week:
+                  currentDate.toDateString() === new Date().toDateString()
+                    ? 'today'
+                    : weekday[currentDate.getDay()],
+              };
+            }
+            return acc;
+          },
+          {value: -Infinity, week: 'No data'},
+        );
+        const worstWaterIntakeDay = filteredData.reduce(
+          (acc, val) => {
+            const currentDate = new Date(val.currentDate);
+            console.log('acc is', acc);
+            if (
+              Math.ceil(
+                getPercentage(val.waterIntake, val.goal.noOfGlasses, false) /
+                  10,
+              ) <= acc.value
+            ) {
+              return {
+                value: val.waterIntake,
+                week:
+                  currentDate.toDateString() === new Date().toDateString()
+                    ? 'today'
+                    : weekday[currentDate.getDay()],
+              };
+            }
+            return acc;
+          },
+          {
+            value: +Infinity,
+            week: 'No data',
+          },
+        );
+        setRating({best: bestWaterIntakeDay, worst: worstWaterIntakeDay});
+      });
   }, [id, waterIntake]);
 
   // memo use
@@ -131,14 +124,10 @@ const WaterIntake: React.FC = () => {
   // functions
   const handleGlassDrank = (i: number) => {
     updateWaterIntake(id!, i + 1);
-    dispatch(updateHealthData({waterIntake: i + 1}));
   };
   const handleGlassEmpty = (i: number) => {
     updateWaterIntake(id!, i + 1);
-
     setGlassesLength(i + 1 <= noOfGlasses ? noOfGlasses : i + 1);
-
-    dispatch(updateHealthData({waterIntake: i + 1}));
   };
 
   return (
@@ -177,7 +166,7 @@ const WaterIntake: React.FC = () => {
           totalInfoName="Daily Goal"
         />
         {waterIntake < noOfGlasses ? (
-          <WarningLabel text="You didn't drink enough water for today" />
+          <WarningLabel text="You didn't drink enough water for today." />
         ) : null}
       </View>
       {rating === undefined ? null : (

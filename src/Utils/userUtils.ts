@@ -333,7 +333,6 @@ export const updateNotificationReadStatus = async (
       .update({
         notifications: newNotificationArray,
       });
-    console.log('notifications read status updated to ', newNotificationArray);
   } catch (e) {
     console.log('error with getting stories ', e);
   }

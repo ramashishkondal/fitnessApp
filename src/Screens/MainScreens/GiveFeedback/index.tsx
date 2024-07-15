@@ -28,15 +28,14 @@ const GiveFeedback: React.FC = () => {
         <HeadingText text="Give Feedback" />
         <CustomTextInput
           value={feedback}
-          placeHolder="Send feedback"
-          // parentStyle={[SPACING.mh2, SPACING.mt5]}
+          placeHolder="Send feedback and let us know what we can change about the app."
           parentStyle={styles.textInput}
           onChangeText={setFeedback}
           textInputProps={{multiline: true, maxLength: 250}}
         />
         <CustomButton
           title={'Submit'}
-          parentStyle={SPACING.mtXLarge}
+          parentStyle={[SPACING.mtXLarge]}
           onPress={handleSubmit}
         />
       </View>

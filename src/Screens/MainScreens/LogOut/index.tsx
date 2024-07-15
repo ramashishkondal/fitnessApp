@@ -12,7 +12,6 @@ import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 // import {resetUserData} from '../../../Redux/Reducers/currentUser';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
-import googleFit from 'react-native-google-fit';
 
 const LogOut = () => {
   // redux use
@@ -23,7 +22,6 @@ const LogOut = () => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
     // dispatch(resetUserData());
     // GoogleSignin.signOut();
-    googleFit.disconnect();
     auth().signOut();
   }, [dispatch, finger]);
 

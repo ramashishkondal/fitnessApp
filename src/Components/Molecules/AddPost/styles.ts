@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     color: 'black',
     maxWidth: 240,
+    // alignSelf: 'center',
   },
   footerCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 24,
     marginVertical: 16,
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   customImageParent: {
     width: 50,
@@ -64,6 +65,7 @@ export const styles = StyleSheet.create({
   },
   textInputCtr: {
     flexGrow: 1,
+    justifyContent: 'center',
   },
   EmojiSelectorCtr: {
     height: 300,

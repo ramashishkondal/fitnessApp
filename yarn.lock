@@ -6526,6 +6526,7 @@ __metadata:
     react-native-gifted-charts: ^1.4.10
     react-native-google-fit: ^0.21.0
     react-native-health: ^1.18.0
+    react-native-health-connect: ^2.1.0
     react-native-image-picker: ^7.1.2
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-linear-gradient: ^2.8.3
@@ -10204,6 +10205,17 @@ __metadata:
   peerDependencies:
     react-native: ">=0.60.0"
   checksum: c04e952662d21319b21593641ddc3bbb9a2258be7378c0d8e1a4f84f5fde6bb4bc4c02297d32a67fb65439982995ab16b4153262ce56ee3d3a800c8021752708
+  languageName: node
+  linkType: hard
+
+"react-native-health-connect@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-native-health-connect@npm:2.1.0"
+  peerDependencies:
+    "@expo/config-plugins": ">= 6.0.2"
+    react: "*"
+    react-native: "*"
+  checksum: 9e72c6a6cbe6facbe14869c79d69c6bb9e9346f5eb6585b125e7c7f051eb81b075a94b4d740b809c049766bda3c6d68afbf89ab62fa5c62bb73978c16b1f13c5
   languageName: node
   linkType: hard
 

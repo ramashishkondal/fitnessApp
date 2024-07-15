@@ -29,7 +29,7 @@ const MealSelector: React.FC<MealSelectorProps> = ({title, mealTime}) => {
   return (
     <View style={styles.parent}>
       <BouncyCheckbox
-        size={25}
+        size={20}
         fillColor={COLORS.PRIMARY.PURPLE}
         unFillColor={COLORS.PRIMARY.GREY}
         innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}
