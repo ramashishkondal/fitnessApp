@@ -5,7 +5,7 @@ import {FONT_FAMILY} from '../../../Constants/commonStyles';
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    // backgroundColor: '#7150C5',
+    backgroundColor: '#7150C5',
     justifyContent: 'center',
     paddingHorizontal: 48,
   },

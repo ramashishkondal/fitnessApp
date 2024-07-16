@@ -71,5 +71,12 @@ export const styles = StyleSheet.create({
     bottom: 100,
     alignItems: 'flex-end',
     marginHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: SIZES.rounding0,
+    elevation: 8,
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: -300},
+    shadowRadius: 300,
   },
 });

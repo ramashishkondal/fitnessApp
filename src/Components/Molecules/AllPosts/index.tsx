@@ -14,7 +14,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
 }) => {
   // state use
   const [postsData, setPostsData] = useState<Post[]>();
-  const [dataLength, setDataLength] = useState<number>(10);
+  const [dataLength, setDataLength] = useState<number>(2);
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
@@ -31,6 +31,7 @@ const AllPosts: React.FC<AllPostsProps> = ({
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
       .orderBy('createdOn', 'desc')
+      .limit(dataLength)
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as Post[];

@@ -45,7 +45,7 @@ const GetPremium = () => {
         autoPlayInterval={5000}
         scrollAnimationDuration={1000}
         width={SIZES.width}
-        height={Platform.OS === 'ios' ? SIZES.height / 3.7 : SIZES.height / 4}
+        height={Platform.OS === 'ios' ? SIZES.height / 3.7 : SIZES.height / 3.8}
         data={carouselItems}
         onSnapToItem={index => setActiveCarousel(index)}
         renderItem={({index, item}) => (
@@ -66,7 +66,10 @@ const GetPremium = () => {
       </View>
       <View style={styles.childCtr}>
         <View style={styles.headingCtr}>
-          <HeadingText text={carouselItems[activeCarousel].heading} />
+          <HeadingText
+            text={carouselItems[activeCarousel].heading}
+            textStyle={styles.headingText}
+          />
           <DescriptionText
             text={carouselItems[activeCarousel].desc}
             textStyle={styles.descriptionText}
@@ -117,7 +120,7 @@ const GetPremium = () => {
             }
             Alert.alert(
               'Email Sent',
-              'Confirmation email sent to your email address',
+              'Confirmation email sent to your email address.',
             );
           }}
         />

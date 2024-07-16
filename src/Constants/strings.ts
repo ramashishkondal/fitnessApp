@@ -51,6 +51,9 @@ export const STRING = {
     TITLE_DESCRIPTION:
       'You can select photo from one of this emoji or add your own photo as profile picture',
     ADD_PHOTO_BUTTON: 'Add Custom Photo',
+    TITLE_DESCRIPTION_2:
+      'Press the close button to select an emoji or change the added custom photo.',
+
     BUTTON_TEXT: 'Continue',
   },
   ADD_PREFERENCES: {

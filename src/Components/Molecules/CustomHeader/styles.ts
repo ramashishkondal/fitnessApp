@@ -4,6 +4,7 @@ import {COLORS} from '../../../Constants/commonStyles';
 export const styles = StyleSheet.create({
   parent: {
     backgroundColor: COLORS.PRIMARY.GREY,
+    zIndex: 0,
   },
   Container: {
     flex: 1,

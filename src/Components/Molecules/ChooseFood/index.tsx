@@ -1,6 +1,6 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {TouchableOpacity, View, ScrollView, Alert} from 'react-native';
+import {TouchableOpacity, View, Alert, Platform} from 'react-native';
 
 // custom
 import {
@@ -26,6 +26,7 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import {useRealm} from '@realm/react';
 import {MealDb} from '../../../DbModels/mealData';
 import {UpdateMode} from 'realm';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const size = {
   width: 50,
@@ -145,8 +146,12 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   };
 
   return (
-    <View style={styles.parent}>
-      <ScrollView style={styles.parent}>
+    <>
+      <KeyboardAwareScrollView
+        style={styles.parent}
+        // extraScrollHeight={400}
+        extraHeight={Platform.OS === 'ios' ? 500 : 400}
+        enableOnAndroid={true}>
         <TouchableOpacity activeOpacity={1}>
           <View style={styles.foodBowlCtr}>{ICONS.FoodBowl(size)}</View>
           <View style={styles.headingCtr}>
@@ -192,14 +197,14 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
               ))}
           </View>
         </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <CustomButton
         title="Add"
         onPress={handleSubmit}
         parentStyle={styles.customButtonParent}
         isLoading={isLoading}
       />
-    </View>
+    </>
   );
 };
 

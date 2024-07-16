@@ -15,6 +15,7 @@ import {AddProfilePictureProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {styles} from './styles';
+import FastImage from 'react-native-fast-image';
 
 const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   // state use
@@ -22,6 +23,7 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   const [avatar, setAvatar] = useState<string>('');
   const [photo, setPhoto] = useState<string>('');
   const [isAvatar, setIsAvatar] = useState<boolean>(true);
+  const [showFullScreen, setShowFullScreen] = useState<boolean>(false);
 
   // redux use
   const dispatch = useAppDispatch();
@@ -43,6 +45,10 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
       <View style={styles.avatarCtr}>
         {isAvatar === false ? (
           <View style={styles.photoCtr}>
+            <TouchableOpacity
+              style={styles.openFullScreenCtr}
+              onPress={() => setShowFullScreen(true)}
+            />
             <Image source={{uri: photo}} style={styles.photo} />
             <TouchableOpacity
               style={styles.closeCtr}
@@ -60,15 +66,32 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
           />
         )}
       </View>
+      {showFullScreen ? (
+        <TouchableOpacity
+          onPress={() => setShowFullScreen(false)}
+          style={styles.fullScreenPhotoCtr}>
+          <FastImage
+            source={{uri: photo}}
+            style={styles.fullScreenImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      ) : null}
       <View style={styles.childCtr}>
         <HeadingText text={STRING.ADD_PROFILE_PICTURE.TITLE} />
         <DescriptionText
-          text={STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION}
+          text={
+            isAvatar
+              ? STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION
+              : STRING.ADD_PROFILE_PICTURE.TITLE_DESCRIPTION_2
+          }
           textStyle={styles.titleDescriptionText}
         />
         <TouchableOpacity onPress={openModal}>
           <Text style={styles.addPhotoText}>
-            {STRING.ADD_PROFILE_PICTURE.ADD_PHOTO_BUTTON}
+            {isAvatar
+              ? STRING.ADD_PROFILE_PICTURE.ADD_PHOTO_BUTTON
+              : 'Change Custom Photo'}
           </Text>
         </TouchableOpacity>
         <CustomButton

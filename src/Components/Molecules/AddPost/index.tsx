@@ -150,7 +150,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
                   placeholder="Add a Caption"
                   style={styles.textInput}
                   multiline
-                  placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
+                  placeholderTextColor={COLORS.SECONDARY.LIGHT_GREY}
                   onPress={() => setIsEmojiShown(false)}
                 />
               </View>

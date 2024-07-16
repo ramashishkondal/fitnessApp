@@ -2,7 +2,7 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {HealthData} from '../../Defs';
 
 export type InitialState = {
-  value: HealthData;
+  value: HealthData & {glassesLength: number};
   goalAchieved: {
     modalShown: boolean;
   };
@@ -20,6 +20,7 @@ const initialState: InitialState = {
       totalSteps: 10000,
     },
     currentDate: new Date().toISOString(),
+    glassesLength: 6,
   },
   goalAchieved: {
     modalShown: false,

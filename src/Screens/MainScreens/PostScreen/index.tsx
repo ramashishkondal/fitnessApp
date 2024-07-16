@@ -189,12 +189,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
             onPress={() => setShowPhoto(false)}
             style={styles.enlargeImageCtr}>
             {postData ? (
-              // <CustomImage
-              //   source={{uri: postData?.photo}}
-              //   imageStyle={{width: '100%', height: '80%'}}
-              //   resizeMode="contain"
-              // />
-
               <FastImage
                 source={{uri: postData?.photo}}
                 style={styles.fullscreenImage}

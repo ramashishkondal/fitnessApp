@@ -34,6 +34,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useHealth} from '../../../Hooks/useHealth';
 import {PERMISSIONS, check} from 'react-native-permissions';
 import {updateHealthData} from '../../../Redux/Reducers/health';
+import {openHealthConnectSettings} from 'react-native-health-connect';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -54,6 +55,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   );
 
   useHealth();
+
   // effect use
   useEffect(() => {
     firestore()
@@ -61,16 +63,18 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       .doc(id!)
       .onSnapshot(snapshot => {
         if (snapshot.exists) {
-          const waterIntake: number = snapshot.get(
+          const waterIntakeFromDb: number = snapshot.get(
             `${new Date().setHours(0, 0, 0, 0).toString()}.waterIntake`,
           );
           console.log(
             'water intake is ',
-            waterIntake,
+            waterIntakeFromDb,
             new Date().setHours(0, 0, 0, 0).toString(),
           );
-          if (waterIntake) {
-            dispatch(updateHealthData({waterIntake}));
+          if (waterIntakeFromDb) {
+            dispatch(updateHealthData({waterIntake: waterIntakeFromDb}));
+          } else {
+            dispatch(updateHealthData({waterIntake: 0}));
           }
         }
       });
@@ -112,6 +116,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION).then(val => {
         if (val !== 'granted') {
           setIsActivityPermissionsEnabled(false);
+        } else {
+          setIsActivityPermissionsEnabled(true);
         }
       });
     }
@@ -141,7 +147,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         ],
       );
     }
-  }, [dispatch, finger, id, isBiometricEnabled, shouldAskBiometics]);
+  }, [
+    dispatch,
+    finger,
+    id,
+    isBiometricEnabled,
+    shouldAskBiometics,
+    hasPermission,
+  ]);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -170,7 +183,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       entering={SlideInLeft.easing(Easing.ease)}>
       <HeadingText
         text={`${STRING.HOME_SCREEN.TITLE} ${
-          date.today().getHours() > 12 ? 'Afternoon' : 'Morning'
+          date.today().getHours() > 12 ? 'afternoon' : 'morning'
         }, ${firstName}`}
         headingTextStyle={2}
         textStyle={styles.headingText}
@@ -219,6 +232,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           markerPercentage={getPercentage(todaysSteps, totalSteps)}
         />
       </View>
+
       {isActivityPermissionsEnabled ? null : (
         <WarningLabel
           text="Activity Recognition Permissions not allowed you are using the app in limited mode."
@@ -251,11 +265,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           }
         />
       )}
+      <View style={styles.spacer} />
       {!hasPermission ? (
         <WarningLabel
           text={`${
             Platform.OS === 'android'
-              ? 'Google Fit not configured'
+              ? 'Health Connect not configured'
               : 'Health Kit Permissions denied'
           } you are using the app in limited mode.`}
           parentStyle={styles.warningText}
@@ -264,7 +279,22 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
               ? () => {
                   Linking.openSettings();
                 }
-              : undefined
+              : () =>
+                  Alert.alert(
+                    'Health Connect permissions denied',
+                    'You have to allow Health Connect steps and total calories permissions from the App settings to use full features of the app',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => {
+                          openHealthConnectSettings();
+                        },
+                      },
+                      {
+                        text: 'Cancel',
+                      },
+                    ],
+                  )
           }
         />
       ) : null}

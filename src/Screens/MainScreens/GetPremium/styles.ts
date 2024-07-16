@@ -1,11 +1,15 @@
 import {Platform, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: COLORS.SECONDARY.WHITE,
+  },
+  headingText: {
+    fontSize: RFValue(21),
   },
   activeCarouselCtr: {
     position: 'absolute',
@@ -28,15 +32,16 @@ export const styles = StyleSheet.create({
   premiumSelectorCtr: {
     marginHorizontal: 16,
   },
-  footerCtr: {marginHorizontal: 48, marginVertical: 24},
+  footerCtr: {marginHorizontal: 48, marginBottom: 24, marginTop: 40},
   recurringText: {
     fontFamily: FONT_FAMILY.BOLD,
     textAlign: 'center',
-    fontSize: SIZES.font9,
+    fontSize: SIZES.font10,
     color: 'black',
   },
   recurringDescriptionText: {
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    fontWeight: '400',
     textAlign: 'center',
     fontSize: SIZES.font9,
     color: 'black',

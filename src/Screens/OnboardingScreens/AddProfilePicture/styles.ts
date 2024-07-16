@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES, SPACING} from '../../../Constants';
-import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
@@ -10,11 +9,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   photo: {
-    height: RFValue(65),
-    width: RFValue(65),
+    height: 90,
+    width: 90,
     borderRadius: 200,
     marginTop: 9,
-    marginBottom: 38,
+    marginBottom: 32,
   },
   titleText: {
     fontSize: SIZES.fontH5,
@@ -48,6 +47,7 @@ export const styles = StyleSheet.create({
   closeCtr: {
     position: 'absolute',
     flex: 1,
+    zIndex: 2,
   },
   closeIconCtr: {
     backgroundColor: 'grey',
@@ -58,5 +58,29 @@ export const styles = StyleSheet.create({
   childCtr: {
     marginTop: 32,
     alignItems: 'center',
+  },
+  fullScreenPhotoCtr: {
+    position: 'absolute',
+    backgroundColor: COLORS.PRIMARY.GREY,
+    width: '100%',
+    height: '100%',
+    padding: 8,
+    alignItems: 'center',
+    zIndex: 2,
+  },
+  openFullScreenCtr: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    position: 'absolute',
+    height: 90,
+    width: 90,
+    borderRadius: 200,
+    marginTop: 9,
+    marginBottom: 32,
+    zIndex: 1,
+  },
+  fullScreenImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
   },
 });

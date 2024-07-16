@@ -55,7 +55,24 @@ export const storeUserData = async (
       ...user,
       createdOn: Timestamp.fromDate(new Date()),
     };
-    await firestore().collection('users').doc(userId).set(userDataToSend);
+    await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .set(userDataToSend);
+    await firestore()
+      .collection(firebaseDB.collections.healthData)
+      .doc(userId)
+      .set({
+        [new Date().setHours(0, 0, 0, 0).toString()]: {
+          currentDate: new Date().toISOString(),
+          waterIntake: 0,
+          goal: {
+            noOfGlasses: 6,
+            totalCalorie: 8000,
+            totalSteps: 10000,
+          },
+        },
+      });
     console.log('User added!');
   } catch (e) {
     console.log('error storing User data - ', e);
@@ -392,18 +409,21 @@ export const storeNewUserHealthData = async (
     console.log('errror storing new health data', e);
   }
 };
+
 export const updateWaterIntake = async (
   userId: string,
   waterIntake: HealthData['waterIntake'],
+  goal: HealthData['goal'],
 ) => {
   try {
-    const updateAt =
-      new Date().setHours(0, 0, 0, 0).toString() + '.waterIntake';
+    const updateAt = new Date().setHours(0, 0, 0, 0).toString();
     await firestore()
       .collection(firebaseDB.collections.healthData)
       .doc(userId)
       .update({
-        [updateAt]: waterIntake,
+        [updateAt + '.waterIntake']: waterIntake,
+        [updateAt + '.goal']: goal,
+        [updateAt + '.currentDate']: new Date().toISOString(),
       });
   } catch (e) {
     console.log('errror storing new health data', e);

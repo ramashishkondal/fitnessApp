@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     color: '#2D3142',
   },
   text2: {
-    fontSize: SIZES.fontH4,
+    fontSize: SIZES.fontH3,
     fontFamily: FONT_FAMILY.BOLD,
     color: 'black',
   },

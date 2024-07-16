@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {View, TouchableOpacity, TextInput} from 'react-native';
+import {View, TouchableOpacity, TextInput, Alert} from 'react-native';
 
 import EmojiSelector from 'react-native-emoji-selector';
 import {Timestamp} from '@react-native-firebase/firestore';
@@ -13,12 +13,14 @@ import {storePostComment} from '../../../Utils/userUtils';
 import {AddCommentProps} from './type';
 import {styles} from './styles';
 import {CustomImage, HeadingText} from '../../Atoms';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   // state use
   const [comment, setComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isEmojiShown, setIsEmojiShown] = useState(false);
+  const netInfo = useNetInfo();
 
   // redux use
   const {id: userId, photo: userPhoto} = useAppSelector(
@@ -28,6 +30,14 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
   // functions
   const handlePost = async () => {
     if (comment.trim() === '') {
+      Alert.alert('Error', 'Empty comment');
+      return;
+    }
+    if (!netInfo.isConnected) {
+      Alert.alert(
+        'Network Error',
+        'You have to be connected to internet to comment on a post',
+      );
       return;
     }
     try {
@@ -86,7 +96,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
             onChangeText={setComment}
             placeholder="Add a Comment"
             style={styles.textInput}
-            placeholderTextColor={COLORS.PRIMARY.DARK_GREY}
+            placeholderTextColor={COLORS.SECONDARY.LIGHT_GREY}
             onPress={() => setIsEmojiShown(false)}
             multiline
           />

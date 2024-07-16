@@ -43,7 +43,11 @@ const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
           </TouchableOpacity>
         ) : null}
         <View style={styles.logoCtr}>
-          {ICONS.Logo({width: 40, height: 40})}
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => props.navigation.navigate('LandingPage')}>
+            {ICONS.Logo({width: 40, height: 40})}
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {Alert, Platform, Text, View} from 'react-native';
+import {Alert, Linking, Platform, Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -35,7 +35,19 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     ]);
   };
   const goToHealthSettings = () => {
-    Platform.OS === 'android' ? openHealthConnectSettings() : null;
+    Platform.OS === 'android'
+      ? openHealthConnectSettings()
+      : Alert.alert(
+          'Open Health Settings',
+          'To change HealthKit settings, please navigate to Settings > Health > Data Access & Devices.',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'Open Settings',
+              onPress: () => Linking.openURL('App-Prefs:root'),
+            },
+          ],
+        );
   };
 
   return (
@@ -52,7 +64,9 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           onPress={() => navigation.navigate('ResetPassword')}
         />
         <SettingsCard
-          title="Go to Health Connect Settings"
+          title={`Go to ${
+            Platform.OS === 'android' ? 'Health Connect' : 'Health kit'
+          } Settings`}
           onPress={goToHealthSettings}
         />
         <SettingsCard

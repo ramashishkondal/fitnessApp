@@ -20,6 +20,8 @@ import {
   requestPermission,
 } from 'react-native-health-connect';
 
+const pollingRateAndroidHealth = 5000;
+
 export const useHealth = () => {
   // redux use
   const dispatch = useAppDispatch();
@@ -106,7 +108,8 @@ export const useHealth = () => {
                           0,
                         ),
                       ),
-                      hasPermission: true,
+                      hasPermission:
+                        grantedPermissions.length !== 0 ? true : false,
                       todaysSteps: stepsRes.reduce(
                         (acc, val) => acc + val.count,
                         0,
@@ -120,31 +123,38 @@ export const useHealth = () => {
         );
       }
       if (isInitialized) {
-        const stepsRes = await readRecords('Steps', {
-          timeRangeFilter: {
-            operator: 'between',
-            startTime: startDate,
-            endTime: date.today().toISOString(),
-          },
-        });
+        setInterval(() => {
+          const getAndroidHealthDataAsync = async () => {
+            const stepsRes = await readRecords('Steps', {
+              timeRangeFilter: {
+                operator: 'between',
+                startTime: startDate,
+                endTime: date.today().toISOString(),
+              },
+            });
 
-        const caloriesRes = await readRecords('TotalCaloriesBurned', {
-          timeRangeFilter: {
-            operator: 'after',
-            startTime: new Date(new Date().setHours(0)).toISOString(),
-          },
-        });
-        dispatch(
-          updateHealthData({
-            nutrition: Math.floor(
-              caloriesRes.reduce(
-                (acc, val) => acc + val.energy.inKilocalories,
-                0,
-              ),
-            ),
-            todaysSteps: stepsRes.reduce((acc, val) => acc + val.count, 0),
-          }),
-        );
+            const caloriesRes = await readRecords('TotalCaloriesBurned', {
+              timeRangeFilter: {
+                operator: 'after',
+                startTime: new Date(new Date().setHours(0)).toISOString(),
+              },
+            });
+            dispatch(
+              updateHealthData({
+                nutrition: Math.floor(
+                  caloriesRes.reduce(
+                    (acc, val) => acc + val.energy.inKilocalories,
+                    0,
+                  ),
+                ),
+                todaysSteps: stepsRes.reduce((acc, val) => acc + val.count, 0),
+              }),
+            );
+          };
+          if (hasPermission) {
+            getAndroidHealthDataAsync();
+          }
+        }, pollingRateAndroidHealth);
       }
     } catch (e) {
       console.log('Error encountered - ', e);

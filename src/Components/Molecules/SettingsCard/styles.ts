@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headingText: {
-    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontFamily: FONT_FAMILY.REGULAR,
     fontSize: SIZES.font13,
     fontWeight: '400',
     color: 'black',

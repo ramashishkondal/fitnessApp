@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     marginBottom: 54,
     alignItems: 'center',
   },
+
   titleText: {
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold0,

@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
   EmojiSelectorCtr: {
     height: 300,
     bottom: 100,
-    position: 'absolute',
+    alignItems: 'flex-end',
     marginHorizontal: 16,
     backgroundColor: 'white',
     borderRadius: SIZES.rounding0,

@@ -31,7 +31,11 @@ export const styles = StyleSheet.create({
   catageroiesCtr: {
     ...SPACING.mt3,
   },
+  spacer: {
+    height: 2,
+  },
   headingText: {
     marginHorizontal: 36,
+    marginTop: 8,
   },
 });

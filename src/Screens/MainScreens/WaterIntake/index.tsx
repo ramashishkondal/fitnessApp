@@ -12,13 +12,14 @@ import {
   PerformanceCard,
   WarningLabel,
 } from '../../../Components';
-import {useAppSelector} from '../../../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
 import {updateWaterIntake} from '../../../Utils/userUtils';
-import {getPercentage, weekday} from '../../../Utils/commonUtils';
+import {weekday} from '../../../Utils/commonUtils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {HealthData} from '../../../Defs';
+import {updateHealthData} from '../../../Redux/Reducers/health';
 
 const simleySize = {
   width: 21,
@@ -40,16 +41,24 @@ const WaterIntake: React.FC = () => {
   // redux use
   const {
     waterIntake,
-    goal: {noOfGlasses},
+    glassesLength,
+    goal: {noOfGlasses, totalCalorie, totalSteps},
   } = useAppSelector(state => state.health.value);
   const {id} = useAppSelector(state => state.User.data);
-  const [glassesLength, setGlassesLength] = useState<number>(
-    waterIntake > noOfGlasses ? waterIntake : noOfGlasses,
-  );
+  const dispatch = useAppDispatch();
+  // const [glassesLength, setGlassesLength] = useState<number>(
+  //   waterIntake > noOfGlasses ? waterIntake : noOfGlasses,
+  // );
 
   console.log('ed', id);
 
   // effect use
+  useEffect(() => {
+    if (waterIntake <= noOfGlasses) {
+      dispatch(updateHealthData({glassesLength: noOfGlasses}));
+    }
+  }, []);
+
   useEffect(() => {
     firestore()
       .collection(firebaseDB.collections.healthData)
@@ -65,12 +74,7 @@ const WaterIntake: React.FC = () => {
         const bestWaterIntakeDay = filteredData.reduce(
           (acc, val) => {
             const currentDate = new Date(val.currentDate);
-            if (
-              Math.ceil(
-                getPercentage(val.waterIntake, val.goal.noOfGlasses, false) /
-                  10,
-              ) >= acc.value
-            ) {
+            if (val.waterIntake >= acc.value) {
               return {
                 value: val.waterIntake,
                 week:
@@ -86,13 +90,13 @@ const WaterIntake: React.FC = () => {
         const worstWaterIntakeDay = filteredData.reduce(
           (acc, val) => {
             const currentDate = new Date(val.currentDate);
-            console.log('acc is', acc);
-            if (
-              Math.ceil(
-                getPercentage(val.waterIntake, val.goal.noOfGlasses, false) /
-                  10,
-              ) <= acc.value
-            ) {
+            console.log(
+              'acc is',
+              acc,
+              currentDate.toDateString(),
+              new Date().toDateString(),
+            );
+            if (val.waterIntake <= acc.value) {
               return {
                 value: val.waterIntake,
                 week:
@@ -110,7 +114,7 @@ const WaterIntake: React.FC = () => {
         );
         setRating({best: bestWaterIntakeDay, worst: worstWaterIntakeDay});
       });
-  }, [id, waterIntake]);
+  }, [dispatch, id, waterIntake]);
 
   // memo use
   const glasses = useMemo(
@@ -123,11 +127,10 @@ const WaterIntake: React.FC = () => {
 
   // functions
   const handleGlassDrank = (i: number) => {
-    updateWaterIntake(id!, i + 1);
+    updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});
   };
   const handleGlassEmpty = (i: number) => {
-    updateWaterIntake(id!, i + 1);
-    setGlassesLength(i + 1 <= noOfGlasses ? noOfGlasses : i + 1);
+    updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});
   };
 
   return (
@@ -149,7 +152,7 @@ const WaterIntake: React.FC = () => {
         })}
         <TouchableOpacity
           onPress={() => {
-            setGlassesLength(glassesLength + 1);
+            dispatch(updateHealthData({glassesLength: glassesLength + 1}));
           }}
           style={styles.plusCtr}
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
@@ -169,7 +172,7 @@ const WaterIntake: React.FC = () => {
           <WarningLabel text="You didn't drink enough water for today." />
         ) : null}
       </View>
-      {rating === undefined ? null : (
+      {rating === undefined || rating.worst.value === +Infinity ? null : (
         <PerformanceCard
           icon={ICONS.SmileyGood(simleySize)}
           performanceText="Best Performance"
@@ -177,7 +180,7 @@ const WaterIntake: React.FC = () => {
           value={rating?.best.value ?? 0}
         />
       )}
-      {rating === undefined ? null : (
+      {rating === undefined || rating.worst.value === +Infinity ? null : (
         <PerformanceCard
           icon={ICONS.SmileyBad(simleySize)}
           performanceText="Worst Performance"

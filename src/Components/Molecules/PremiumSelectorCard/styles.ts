@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   outOfText: {
     fontFamily: FONT_FAMILY.MEDIUM,
-    fontSize: SIZES.font12,
+    fontSize: SIZES.font11,
   },
   pressable: {
     flex: 1,

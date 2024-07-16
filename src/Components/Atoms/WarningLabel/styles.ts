@@ -17,6 +17,6 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
   },
   touchableParent: {
-    flex: 1,
+    // flex: 1,
   },
 });
