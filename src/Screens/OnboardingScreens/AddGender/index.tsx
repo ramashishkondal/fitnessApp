@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import {View} from 'react-native';
 
 // custom
 import {
@@ -14,6 +14,7 @@ import {AddGenderProps, User} from '../../../Defs';
 import {styles} from './styles';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const AddGender: React.FC<AddGenderProps> = ({navigation}) => {
   const [selectedGender, setSelectedGender] = useState<User['gender'] | null>(
@@ -30,7 +31,7 @@ const AddGender: React.FC<AddGenderProps> = ({navigation}) => {
         routes: [{name: 'DetailsCompleted'}],
       });
     } else {
-      Alert.alert('You have to select your gender');
+      ToastError('Error', 'No gender selected');
     }
   };
   return (

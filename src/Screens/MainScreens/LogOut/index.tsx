@@ -10,18 +10,16 @@ import {CustomLoading} from '../../../Components';
 import {COLORS} from '../../../Constants';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
-// import {resetUserData} from '../../../Redux/Reducers/currentUser';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const LogOut = () => {
   // redux use
   const dispatch = useAppDispatch();
   const {finger} = useAppSelector(state => state.User.data);
+
   // effect use
   useEffect(() => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
-    // dispatch(resetUserData());
-    // GoogleSignin.signOut();
     auth().signOut();
   }, [dispatch, finger]);
 

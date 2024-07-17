@@ -2,7 +2,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {View, Text} from 'react-native';
 
-import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
 
 // custom
@@ -15,7 +14,7 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
-import {updateWaterIntake} from '../../../Utils/userUtils';
+import {updateWaterIntake, firebaseDB} from '../../../Utils/userUtils';
 import {weekday} from '../../../Utils/commonUtils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {HealthData} from '../../../Defs';
@@ -56,7 +55,10 @@ const WaterIntake: React.FC = () => {
   useEffect(() => {
     if (waterIntake <= noOfGlasses) {
       dispatch(updateHealthData({glassesLength: noOfGlasses}));
+    } else if (waterIntake > glassesLength) {
+      dispatch(updateHealthData({glassesLength: waterIntake}));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

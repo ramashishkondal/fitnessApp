@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import {SIZES} from '../../../Constants';
+import {COLORS, FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -35,5 +37,12 @@ export const styles = StyleSheet.create({
   customTextInputParent: {
     marginHorizontal: 16,
     marginTop: 24,
+  },
+  noResultText: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: SIZES.font12,
+    color: COLORS.SECONDARY.GREY,
+    marginTop: 16,
+    textAlign: 'center',
   },
 });

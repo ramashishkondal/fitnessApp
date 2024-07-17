@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 
 // 3rd party
-import auth from '@react-native-firebase/auth';
-import {FirestoreError} from '@react-native-firebase/firestore';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 // custom
 import {
@@ -29,6 +28,7 @@ import {STRING, ICONS, SPACING} from '../../../Constants';
 import {styles} from './styles';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {useNetInfo} from '@react-native-community/netinfo';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const SignIn = ({navigation}: SignInProps) => {
   // state use
@@ -54,23 +54,27 @@ const SignIn = ({navigation}: SignInProps) => {
   useEffect(() => {
     const handleBiometricAuth = () => {
       if (Platform.OS === 'android') {
+        const handleErrorAuth = (error: any) => {
+          if (error.code === 'auth/network-request-failed') {
+            ToastError(
+              STRING.COMMON_ERRORS.NETWORK_ERROR.TITLE,
+              STRING.COMMON_ERRORS.NETWORK_ERROR.BODY,
+            );
+          }
+        };
+        const handleErrorBiometric = (error: string) => {
+          if (error === 'Authentication failed') {
+            return;
+          }
+          console.log('error in auth fingerprint', error);
+        };
         NativeModules.FingerPrintModule.authenticateFingerPrint()
-          .then(() =>
+          .then(() => {
             auth()
               .signInWithEmailAndPassword(cachedData.email, cachedData.password)
-              .catch(error => {
-                if (error.code === 'auth/network-request-failed') {
-                  Alert.alert('Network Error', 'Network connection disabled');
-                }
-              }),
-          )
-          .catch((error: string) => {
-            if (error === 'Authentication failed') {
-              return;
-            }
-            console.log('error in auth fingerprint', error);
-            // Alert.alert('Authentication Error', error.message);
-          });
+              .catch(handleErrorAuth);
+          })
+          .catch(handleErrorBiometric);
       } else {
         const handleFaceIDAuthentication = async () => {
           try {
@@ -84,10 +88,10 @@ const SignIn = ({navigation}: SignInProps) => {
               return;
             }
             if (error.code === 'auth/network-request-failed') {
-              Alert.alert('Authentication Error', error.code);
+              ToastError('Authentication Error', error.code);
               return;
             }
-            Alert.alert('Authentication Error', error.message);
+            ToastError('Authentication Error', error.message);
           }
         };
         if (cachedData.isBiometricEnabled) {
@@ -103,15 +107,22 @@ const SignIn = ({navigation}: SignInProps) => {
   // functions
   const handleSignIn = async () => {
     if (!netInfo.isConnected) {
-      Alert.alert('Network Error', 'Internet connection is disabled');
+      Alert.alert(
+        STRING.COMMON_ERRORS.NETWORK_ERROR.TITLE,
+        STRING.COMMON_ERRORS.NETWORK_ERROR.BODY,
+      );
+      return;
+    }
+    if (isValidEmail(email) === false) {
+      ToastError('Error', 'Invalid email address entered.');
       return;
     }
     if (email.trim() === '') {
-      Alert.alert('Error', "Email address can't be empty");
+      ToastError('Error', "Email address can't be empty");
       return;
     }
     if (password === '') {
-      Alert.alert('Error', "Password can't be empty");
+      ToastError('Error', "Password can't be empty");
       return;
     }
     try {
@@ -122,18 +133,14 @@ const SignIn = ({navigation}: SignInProps) => {
       dispatch(updateSettingsCachedData({email, password}));
       dispatch(updateUserData({id: uid}));
     } catch (e) {
-      const error = e as FirestoreError;
+      const error = e as FirebaseAuthTypes.NativeFirebaseAuthError;
       let message = error.message;
-      if (
-        error.message.includes('auth/invalid-email') ||
-        error.message.includes('auth/wrong-password') ||
-        error.message.includes('auth/invalid-credential')
-      ) {
-        message = 'Invalid email or password is entered.';
-      } else if (error.message.includes('auth/user-not-found')) {
-        message = 'Account not registered';
+
+      if (error.code === 'auth/invalid-credential') {
+        message = 'Invalid email or password entered.';
       }
-      Alert.alert(message);
+
+      Alert.alert('Error', message);
       console.log('error with sign in ', error);
     } finally {
       setIsLoading(null);

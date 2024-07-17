@@ -44,7 +44,11 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
             {text: 'Cancel', style: 'cancel'},
             {
               text: 'Open Settings',
-              onPress: () => Linking.openURL('App-Prefs:root'),
+              onPress: () => {
+                Linking.openURL('App-Prefs:root').catch(e => {
+                  Alert.alert('Error', e);
+                });
+              },
             },
           ],
         );

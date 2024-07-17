@@ -20,6 +20,7 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   // state use
@@ -33,11 +34,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
   // functions
   const handleSubmit = async () => {
     if (!netInfo.isConnected) {
-      Alert.alert('Network Error', 'Internet connection is disabled');
+      ToastError('Network Error', 'Internet connection is disabled');
       return;
     }
     if (email.trim() === '') {
-      Alert.alert('Error', "Email address can't be empty");
+      ToastError('Error', "Email address can't be empty");
     }
     if (!isValidEmail(email)) {
       return;
@@ -47,13 +48,20 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({navigation}) => {
       .where('email', '==', email)
       .get();
     if (snapshot.docs.length === 0) {
-      Alert.alert('Error', 'Email address is not registered with Fitness App.');
+      Alert.alert(
+        'Error',
+        'Email address is not registered with Fitness App.',
+        [
+          {text: 'Register', onPress: () => navigation.navigate('LandingPage')},
+          {text: 'Cancel'},
+        ],
+      );
       return;
     }
     setIsLoading(true);
     try {
       await auth().sendPasswordResetEmail(email);
-      Alert.alert('Reset Email sent to mail', email, [
+      Alert.alert('Password reset email sent to mail', email, [
         {text: 'Ok', onPress: () => navigation.navigate('SignIn')},
       ]);
     } catch (e) {

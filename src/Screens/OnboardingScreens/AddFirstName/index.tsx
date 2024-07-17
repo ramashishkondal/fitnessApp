@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import {View} from 'react-native';
 
 // custom
 import {
@@ -8,6 +8,7 @@ import {
   CustomTextInput,
   WithOnboarding,
   HeadingText,
+  CustomErrorText,
 } from '../../../Components';
 import {SPACING, STRING} from '../../../Constants';
 import {AddEmailLogInProps} from '../../../Defs';
@@ -15,37 +16,50 @@ import {isValidName} from '../../../Utils/checkValidity';
 import {styles} from './styles';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const AddFirstName: React.FC<AddEmailLogInProps> = ({navigation}) => {
+  // state use
   const [firstName, setFirstName] = useState<string>('');
+  const [shouldShowError, setShouldShowError] = useState<boolean>(false);
+
+  // redux use
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
-    if (firstName) {
-      dispatch(updateUserData({firstName}));
-      navigation.push('AddLastName');
-    } else {
-      Alert.alert('Error', 'First name cant be empty!');
+    setShouldShowError(true);
+    if (!firstName) {
+      ToastError('Error', 'First name cant be empty!');
+      return;
     }
+
+    if (isValidName(firstName) === false) {
+      ToastError('Error', 'Invalid first name entered.');
+      return;
+    }
+
+    dispatch(updateUserData({firstName}));
+    navigation.push('AddLastName');
   };
+
   const handleChangeText = (text: string) => {
-    if (isValidName(text)) {
-      setFirstName(text);
-    }
+    setFirstName(text);
   };
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
       <HeadingText text={STRING.ADD_FIRST_NAME.TITLE} />
       <CustomTextInput
-        value={firstName}
         placeHolder={STRING.ADD_FIRST_NAME.TEXT_INPUT_PLACE_HOLDER}
         parentStyle={[SPACING.mh2, SPACING.mt5]}
         textInputStyle={styles.textInput}
         onChangeText={handleChangeText}
         autoFocus
-        textInputProps={{maxLength: 30}}
+        textInputProps={{maxLength: 30, onBlur: () => setShouldShowError(true)}}
       />
+      {shouldShowError && firstName && !isValidName(firstName) ? (
+        <CustomErrorText text="Invalid First name entered" />
+      ) : null}
       <CustomButton
         title={STRING.ADD_FIRST_NAME.BUTTON_TEXT}
         parentStyle={SPACING.mtXLarge}

@@ -6,7 +6,7 @@ import {
   NativeModules,
 } from 'react-native';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
-import AppleHealthKit from 'react-native-health';
+import AppleHealthKit, {HealthValue} from 'react-native-health';
 
 import {AppleHealthPermissions} from '../Constants/commonConstants';
 import {updateHealthData} from '../Redux/Reducers/health';
@@ -30,7 +30,6 @@ export const useHealth = () => {
 
   // functions
   const androidHealthSetup = useCallback(async () => {
-    const startDate = date.getStartOfDay(new Date()).toISOString(); // Start of the current day
     const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
     try {
       if (authority === 'denied') {
@@ -70,53 +69,65 @@ export const useHealth = () => {
       }
       const isInitialized = await initialize();
 
+      const handleDataFromHealthConnect = async (permissions?: boolean) => {
+        const stepsRes = await readRecords('Steps', {
+          timeRangeFilter: {
+            operator: 'after',
+            startTime: new Date(new Date().setHours(0)).toISOString(),
+          },
+        });
+        const caloriesRes = await readRecords('TotalCaloriesBurned', {
+          timeRangeFilter: {
+            operator: 'after',
+            startTime: new Date(new Date().setHours(0)).toISOString(),
+          },
+        });
+        const totalCaloriesOfToday = Math.floor(
+          caloriesRes.reduce((acc, val) => acc + val.energy.inKilocalories, 0),
+        );
+        const totalStepsOfToday = stepsRes.reduce(
+          (acc, val) => acc + val.count,
+          0,
+        );
+        if (permissions === undefined) {
+          dispatch(
+            updateHealthData({
+              nutrition: totalCaloriesOfToday,
+              todaysSteps: totalStepsOfToday,
+            }),
+          );
+        } else {
+          dispatch(
+            updateHealthData({
+              nutrition: totalCaloriesOfToday,
+              hasPermission: permissions,
+              todaysSteps: totalStepsOfToday,
+            }),
+          );
+        }
+      };
+
       if (!hasPermission) {
+        const handlePermissions = async () => {
+          const grantedPermissions = await requestPermission([
+            {accessType: 'read', recordType: 'Steps'},
+            {accessType: 'read', recordType: 'TotalCaloriesBurned'},
+          ]);
+          console.log('permissions ', grantedPermissions);
+
+          if (isInitialized) {
+            handleDataFromHealthConnect(grantedPermissions.length > 0);
+          }
+        };
+
         Alert.alert(
           'Health Connect is required',
           'To track your health data we need access to your Health connect data. ',
           [
             {
               text: 'ok',
-              onPress: async () => {
-                const grantedPermissions = await requestPermission([
-                  {accessType: 'read', recordType: 'Steps'},
-                  {accessType: 'read', recordType: 'TotalCaloriesBurned'},
-                ]);
-                console.log('permissions ', grantedPermissions);
-                if (isInitialized) {
-                  const stepsRes = await readRecords('Steps', {
-                    timeRangeFilter: {
-                      operator: 'between',
-                      startTime: new Date(
-                        new Date().setHours(0, 0, 0, 0),
-                      ).toISOString(),
-                      endTime: date.today().toISOString(),
-                    },
-                  });
-                  const caloriesRes = await readRecords('TotalCaloriesBurned', {
-                    timeRangeFilter: {
-                      operator: 'after',
-                      startTime: new Date(new Date().setHours(0)).toISOString(),
-                    },
-                  });
-
-                  dispatch(
-                    updateHealthData({
-                      nutrition: Math.floor(
-                        caloriesRes.reduce(
-                          (acc, val) => acc + val.energy.inKilocalories,
-                          0,
-                        ),
-                      ),
-                      hasPermission:
-                        grantedPermissions.length !== 0 ? true : false,
-                      todaysSteps: stepsRes.reduce(
-                        (acc, val) => acc + val.count,
-                        0,
-                      ),
-                    }),
-                  );
-                }
+              onPress: () => {
+                handlePermissions();
               },
             },
           ],
@@ -124,35 +135,8 @@ export const useHealth = () => {
       }
       if (isInitialized) {
         setInterval(() => {
-          const getAndroidHealthDataAsync = async () => {
-            const stepsRes = await readRecords('Steps', {
-              timeRangeFilter: {
-                operator: 'between',
-                startTime: startDate,
-                endTime: date.today().toISOString(),
-              },
-            });
-
-            const caloriesRes = await readRecords('TotalCaloriesBurned', {
-              timeRangeFilter: {
-                operator: 'after',
-                startTime: new Date(new Date().setHours(0)).toISOString(),
-              },
-            });
-            dispatch(
-              updateHealthData({
-                nutrition: Math.floor(
-                  caloriesRes.reduce(
-                    (acc, val) => acc + val.energy.inKilocalories,
-                    0,
-                  ),
-                ),
-                todaysSteps: stepsRes.reduce((acc, val) => acc + val.count, 0),
-              }),
-            );
-          };
           if (hasPermission) {
-            getAndroidHealthDataAsync();
+            handleDataFromHealthConnect();
           }
         }, pollingRateAndroidHealth);
       }
@@ -175,21 +159,37 @@ export const useHealth = () => {
         dispatch(updateHealthData({hasPermission: false}));
         return;
       }
+      const handleHealthKitStepsData = (error: string, result: HealthValue) => {
+        if (!error) {
+          console.log('steps changed', result);
+          dispatch(updateHealthData({todaysSteps: result.value}));
+          return;
+        }
+        console.log('error encountered while getting steps data - ', error);
+      };
 
       healthKitEventEmitter.addListener('healthKit:StepCount:new', () => {
         AppleHealthKit.getStepCount(
           {includeManuallyAdded: true},
-          (error, result) => {
-            if (!error) {
-              console.log('steps changed', result);
-              dispatch(updateHealthData({todaysSteps: result.value}));
-              return;
-            }
-            console.log('error encountered while getting steps data - ', error);
-          },
+          handleHealthKitStepsData,
         );
       });
 
+      const totalEnergyBurned = (acc: number, val: HealthValue) =>
+        acc + val.value;
+      const handleEnergyBurnedData = (
+        error: string,
+        results: HealthValue[],
+      ) => {
+        if (error || results.length === 0) {
+          return;
+        }
+        dispatch(
+          updateHealthData({
+            nutrition: results.reduce(totalEnergyBurned, 0),
+          }),
+        );
+      };
       healthKitEventEmitter.addListener(
         'healthKit:ActiveEnergyBurned:new',
         () => {
@@ -199,21 +199,15 @@ export const useHealth = () => {
               endDate,
               includeManuallyAdded: true, // optional
             },
-            (e, results) => {
-              if (e || results.length === 0) {
-                return;
-              }
-              dispatch(
-                updateHealthData({
-                  nutrition: results.reduce((acc, val) => acc + val.value, 0),
-                }),
-              );
-            },
+            handleEnergyBurnedData,
           );
         },
       );
 
-      AppleHealthKit.getStepCount({}, (error, result) => {
+      const handleStepsDataUnattached = (
+        error: string,
+        result: HealthValue,
+      ) => {
         if (!error) {
           dispatch(
             updateHealthData({
@@ -225,7 +219,9 @@ export const useHealth = () => {
           return;
         }
         console.log('error encountered while getting steps data -  ', error);
-      });
+      };
+
+      AppleHealthKit.getStepCount({}, handleStepsDataUnattached);
     });
   }, [dispatch]);
 

@@ -11,6 +11,7 @@ import {SingleStoryDb, StoryDb} from './DbModels/story';
 import {PostDb} from './DbModels/post';
 import {UserDb, UserPreferencesAndInterests} from './DbModels/user';
 import {FoodDb, MealDb} from './DbModels/mealData';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <RootNavigator />
+            <Toast />
           </PersistGate>
           <ModalPortal />
         </Provider>

@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Alert, Platform, View} from 'react-native';
 
 // custom
@@ -26,9 +26,9 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   };
   const handleBiometricAdded = () => {
     Alert.alert(
-      `${Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'}`,
+      `${Platform.OS === 'android' ? 'Fingerprint' : 'Face ID'}`,
       `${
-        Platform.OS === 'android' ? 'Fingerprint' : 'FaceId'
+        Platform.OS === 'android' ? 'Fingerprint' : 'Face ID'
       } login on this device enabled`,
       [
         {
@@ -45,6 +45,12 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
     dispatch(updateUserData({finger: false}));
     goToAddProfilePicture();
   };
+  useEffect(() => {
+    return () => {
+      dispatch(updateUserData({finger: false}));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={styles.parent}>

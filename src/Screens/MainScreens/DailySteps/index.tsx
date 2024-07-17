@@ -198,15 +198,6 @@ const DailySteps: React.FC = () => {
             ),
           );
 
-          // if (!GoogleFit.isAuthorized) {
-          //   if (!hasPermission) {
-          //     Alert.alert(
-          //       'Google Fit',
-          //       'To access Steps Data history google fit access is required',
-          //     );
-          //   }
-          // }
-
           setLineData(
             stepsResult.map(val => ({
               value: getPercentage(val.steps, totalSteps),
@@ -295,7 +286,7 @@ const DailySteps: React.FC = () => {
         totalInfoName="Daily Goal"
         parentStyle={SPACING.mtMedium}
       />
-      {hasPermission && lineData && lineData.some(val => val) ? (
+      {hasPermission && lineData?.some(val => val) ? (
         <View style={styles.lineChartCtr}>
           <Text style={styles.lineChartHeadingText}>Statistics</Text>
           {lineData ? (

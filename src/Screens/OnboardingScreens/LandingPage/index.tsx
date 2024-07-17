@@ -24,7 +24,10 @@ const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
     if (netInfo.isConnected) {
       navigation.navigate('AddEmail');
     } else {
-      Alert.alert('Network Error', 'Internet connection is disabled');
+      Alert.alert(
+        STRING.COMMON_ERRORS.NETWORK_ERROR.TITLE,
+        STRING.COMMON_ERRORS.NETWORK_ERROR.BODY,
+      );
     }
   };
 

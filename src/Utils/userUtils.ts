@@ -108,7 +108,7 @@ export const getHealthData = async (uid: string) => {
       .collection(firebaseDB.collections.users)
       .doc(uid)
       .get();
-    return snapshot.get('healthData') as Array<UserHealthDataFirebaseDb>;
+    return snapshot.get('healthData');
   } catch (e) {
     console.log(e);
   }

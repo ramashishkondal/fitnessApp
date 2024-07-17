@@ -1,7 +1,7 @@
 // libs
 import React, {useState} from 'react';
 import {styles} from './styles';
-import {Alert, View} from 'react-native';
+import {View} from 'react-native';
 
 // 3rd party
 import {useAppDispatch} from '../../../Redux/Store';
@@ -18,6 +18,7 @@ import {
 import {SPACING, STRING} from '../../../Constants';
 import {isValidPassword} from '../../../Utils/checkValidity';
 import {AddPasswordProps} from '../../../Defs';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
   // state use
@@ -29,7 +30,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
   // functions
   const handleSubmit = () => {
     if (password === '') {
-      Alert.alert(
+      ToastError(
         STRING.ADD_PASSWORD.ERROR.HEADING,
         STRING.ADD_PASSWORD.ERROR.EMPTY,
       );
@@ -37,7 +38,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
       dispatch(updateUserData({password}));
       navigation.push('AddFirstName');
     } else {
-      Alert.alert(
+      ToastError(
         STRING.ADD_PASSWORD.ERROR.HEADING,
         STRING.ADD_PASSWORD.ERROR.BODY,
       );

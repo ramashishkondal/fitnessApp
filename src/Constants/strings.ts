@@ -1,6 +1,12 @@
 import {Platform} from 'react-native';
 
 export const STRING = {
+  COMMON_ERRORS: {
+    NETWORK_ERROR: {
+      TITLE: 'Network Error',
+      BODY: 'Internet connection is disabled',
+    },
+  },
   LANDING_PAGE: {
     TITLE: 'Welcome to Fitness App',
     TITLE_DESCRIPTION:
@@ -58,7 +64,7 @@ export const STRING = {
   },
   ADD_PREFERENCES: {
     TITLE: 'Let us know how we can help you',
-    TITLE_DESCRIPTION: 'You always can change this later',
+    TITLE_DESCRIPTION: 'You can always change this later',
     BUTTON_TEXT: 'Continue',
   },
   ADD_INTERESTS: {

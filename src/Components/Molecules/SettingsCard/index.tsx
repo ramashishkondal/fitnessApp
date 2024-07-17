@@ -16,7 +16,6 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
 }) => {
   // redux use
   const dispatch = useAppDispatch();
-  // const {allowPushNotifications} = useAppSelector(state => state.settings.data);
 
   // state use
   const [switchActive, setSwitchActive] = useState(false);

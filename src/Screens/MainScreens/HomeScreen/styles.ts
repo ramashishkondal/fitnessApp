@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.EXTRA_BOLD,
     fontWeight: '800',
     fontSize: SIZES.font13,
+    // fontSize: RFPercentage(2),
     marginHorizontal: 36,
     ...SPACING.mt3,
   },

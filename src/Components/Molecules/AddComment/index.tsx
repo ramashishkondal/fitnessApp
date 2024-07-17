@@ -45,7 +45,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
         setIsLoading(true);
 
         if (postId.postId) {
-          if (postId.userId === userId!) {
+          if (postId.userId === userId) {
             await storePostComment(postId.postId, {
               userId,
               comment,

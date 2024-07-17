@@ -5,7 +5,6 @@ import {Alert, TouchableOpacity, View} from 'react-native';
 // 3rd party
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-// import {LoginManager} from 'react-native-fbsdk-next';
 
 // custom
 import {SPACING, ICONS, COLORS} from '../../../Constants';
@@ -31,7 +30,6 @@ const googleSignIn = async () => {
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
   } catch (e) {
-    //TODO handle promise rejection of google sing in.
     console.log('error e ', e);
   }
 };

@@ -1,6 +1,6 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {TouchableOpacity, View, Alert, Platform} from 'react-native';
+import {TouchableOpacity, View, Text, Platform} from 'react-native';
 
 // custom
 import {
@@ -27,6 +27,7 @@ import {useRealm} from '@realm/react';
 import {MealDb} from '../../../DbModels/mealData';
 import {UpdateMode} from 'realm';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import ToastError from '../../Atoms/ToastError';
 
 const size = {
   width: 50,
@@ -74,7 +75,6 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmit = () => {
-    setIsLoading(true);
     const dtArray: DailyMeals = {
       breakfast: [],
       dinner: [],
@@ -98,15 +98,17 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
       dtArray.dinner = mealsSelected.current.foodData;
       ++count;
     }
+
     if (count === 0) {
-      Alert.alert(
-        'Error',
-        'Please select the mealtime you consumed your food on.',
-      );
-      setIsLoading(false);
+      ToastError('Error', 'Please select a mealtime.');
+      return;
+    }
+    if (mealsSelected.current.foodData.length === 0) {
+      ToastError('Error', 'No food to add selected.');
       return;
     }
     if (netInfo.isConnected) {
+      setIsLoading(true);
       storeMealData(id!, {
         breakfast: mealsData.breakfast.concat(dtArray.breakfast),
         dinner: mealsData.dinner.concat(dtArray.dinner),
@@ -195,6 +197,10 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
                   key={index}
                 />
               ))}
+            {foodData.filter(val => val.name.toLowerCase().includes(search))
+              .length === 0 ? (
+              <Text style={styles.noResultText}>No results found</Text>
+            ) : null}
           </View>
         </TouchableOpacity>
       </KeyboardAwareScrollView>

@@ -36,6 +36,7 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   const {data} = useAppSelector(state => state.User);
   const {password, ...user} = data;
   const dispatch = useAppDispatch();
+
   // functions
   const handleSubmit = async () => {
     try {
@@ -54,7 +55,7 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
         dispatch(resetHealthData());
 
         let url = '';
-        if (RegExp('avatar+').test(user.photo)) {
+        if (/avatar+/.test(user.photo)) {
           url = await storage()
             .ref('media/Avatars/' + user.photo + '.jpg')
             .getDownloadURL();

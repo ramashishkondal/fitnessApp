@@ -98,12 +98,13 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
         style={styles.deleteCtr}
         onPress={() => {
           console.log('delete pressed');
+          const filteredItems = item.filter(val => val.name !== name);
           switch (timeOfMeal) {
             case 'Breakfast':
               if (netInfo.isConnected) {
                 storeMealData(id!, {
                   ...mealsData,
-                  breakfast: item.filter(val => val.name !== name),
+                  breakfast: filteredItems,
                 });
               } else {
                 realm.write(() => {
@@ -111,7 +112,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                     MealDb,
                     {
                       ...mealsData,
-                      breakfast: item.filter(val => val.name !== name),
+                      breakfast: filteredItems,
                       uid: id!,
                     },
                     UpdateMode.Modified,
@@ -120,7 +121,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                 dispatch(
                   resetMealDataItems({
                     ...mealsData,
-                    breakfast: item.filter(val => val.name !== name),
+                    breakfast: filteredItems,
                   }),
                 );
               }
@@ -130,7 +131,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
               if (netInfo.isConnected) {
                 storeMealData(id!, {
                   ...mealsData,
-                  snack: item.filter(val => val.name !== name),
+                  snack: filteredItems,
                 });
               } else {
                 realm.write(() => {
@@ -138,7 +139,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                     MealDb,
                     {
                       ...mealsData,
-                      snack: item.filter(val => val.name !== name),
+                      snack: filteredItems,
                       uid: id!,
                     },
                     UpdateMode.Modified,
@@ -147,7 +148,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                 dispatch(
                   resetMealDataItems({
                     ...mealsData,
-                    snack: item.filter(val => val.name !== name),
+                    snack: filteredItems,
                   }),
                 );
               }
@@ -156,7 +157,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
               if (netInfo.isConnected) {
                 storeMealData(id!, {
                   ...mealsData,
-                  lunch: item.filter(val => val.name !== name),
+                  lunch: filteredItems,
                 });
               } else {
                 realm.write(() => {
@@ -164,7 +165,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                     MealDb,
                     {
                       ...mealsData,
-                      lunch: item.filter(val => val.name !== name),
+                      lunch: filteredItems,
                       uid: id!,
                     },
                     UpdateMode.Modified,
@@ -173,7 +174,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                 dispatch(
                   resetMealDataItems({
                     ...mealsData,
-                    lunch: item.filter(val => val.name !== name),
+                    lunch: filteredItems,
                   }),
                 );
               }
@@ -182,7 +183,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
               if (netInfo.isConnected) {
                 storeMealData(id!, {
                   ...mealsData,
-                  dinner: item.filter(val => val.name !== name),
+                  dinner: filteredItems,
                 });
               } else {
                 realm.write(() => {
@@ -190,7 +191,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                     MealDb,
                     {
                       ...mealsData,
-                      dinner: item.filter(val => val.name !== name),
+                      dinner: filteredItems,
                       uid: id!,
                     },
                     UpdateMode.Modified,
@@ -199,7 +200,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                 dispatch(
                   resetMealDataItems({
                     ...mealsData,
-                    dinner: item.filter(val => val.name !== name),
+                    dinner: filteredItems,
                   }),
                 );
               }

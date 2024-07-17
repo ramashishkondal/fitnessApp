@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   firstNameAndLastNameCtr: {
-    flex: 2,
+    flex: 2.1,
   },
   otherCtr: {
     flex: 5,
@@ -93,9 +93,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 8,
     top: 8,
-    // bottom: 8,
-    // alignItems: 'flex-end',
-    // justifyContent: 'flex-end',
     borderRadius: 200,
   },
   cardCtr: {

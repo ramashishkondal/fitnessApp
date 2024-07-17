@@ -101,14 +101,6 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const storyTimer = new Timer(goNext);
-  // const handlePause = () => {
-  //   storyTimer.pause();
-  //   videoRef.current?.pause();
-  // };
-  // const handleResume = () => {
-  //   storyTimer.resume();
-  //   videoRef.current?.resume();
-  // };
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>

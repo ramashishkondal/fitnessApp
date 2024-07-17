@@ -8,6 +8,7 @@ import {View} from 'react-native';
 import {WithModalProps} from './types';
 import {styles} from './styles';
 import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 
 const WithModal: React.FC<WithModalProps> = ({
   modalVisible,
@@ -33,6 +34,7 @@ const WithModal: React.FC<WithModalProps> = ({
         </View>
       ) : null}
       <View style={styles.modalCtr}>{children}</View>
+      <Toast />
     </Modal>
   );
 };

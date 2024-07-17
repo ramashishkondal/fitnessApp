@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useRef, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {View} from 'react-native';
 
 // custom
 import {
@@ -18,6 +18,7 @@ import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
@@ -32,26 +33,34 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
 
   // functions
   const handleSubmit = useCallback(async () => {
+    const currentEmail = emailRef.current;
+
+    if (currentEmail === '') {
+      ToastError('Error', "Email Address can't be empty");
+      return;
+    }
+
+    if (!isValidEmail(currentEmail)) {
+      ToastError(
+        'Invalid email address',
+        'Make sure entered email address is valid',
+      );
+      return;
+    }
+
     const snapshot = await firestore()
       .collection(firebaseDB.collections.users)
       .where('email', '==', email)
       .get();
     if (snapshot.docs.length !== 0) {
-      Alert.alert('Error', 'Email address already exists');
+      ToastError('Error', 'Email address already exists');
       return;
     }
-    const currentEmail = emailRef.current;
-    if (currentEmail === '') {
-      Alert.alert('Email address cant be empty');
-    } else if (currentEmail && isValidEmail(currentEmail)) {
-      dispatch(updateUserData({email: currentEmail.toLowerCase()}));
-      navigation.push('AddPassword');
-    } else {
-      Alert.alert(
-        'Invalid email address',
-        'Make sure entered email address is valid',
-      );
-    }
+
+    dispatch(updateUserData({email: currentEmail.toLowerCase()}));
+    navigation.push('AddPassword');
+
+    return;
   }, [navigation, dispatch, email]);
 
   const handleEmailChange = (text: string) => {

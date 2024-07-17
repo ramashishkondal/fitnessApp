@@ -1,6 +1,6 @@
 //libs
 import React, {useState} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 // custom
 import {
@@ -16,6 +16,7 @@ import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {styles} from './styles';
 import FastImage from 'react-native-fast-image';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   // state use
@@ -36,7 +37,7 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
       dispatch(updateUserData({photo}));
       navigation.push('AddPreferences');
     } else {
-      Alert.alert('You have to select a photo', 'Select one of the avatars');
+      ToastError('No Profile picture selected', 'Select one of the avatars');
     }
   };
 

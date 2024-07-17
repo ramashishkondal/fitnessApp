@@ -1,5 +1,5 @@
 // libs
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   Dimensions,
   TouchableOpacity,
@@ -14,25 +14,42 @@ import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 // types
 import {ICONS} from '../../../Constants/icons';
 import {styles} from './styles';
+import {useAppDispatch} from '../../../Redux/Store';
+import {resetUserData} from '../../../Redux/Reducers/currentUser';
 
 const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
+  //redux use
+  const dispatch = useAppDispatch();
   // callback use
   const goBack = useCallback(() => {
     props.navigation.goBack();
   }, [props.navigation]);
 
+  const headerHeight = useMemo(() => {
+    if (props.route.name === 'AddInterests') {
+      if (Platform.OS === 'ios') {
+        return Dimensions.get('screen').height;
+      } else {
+        return Dimensions.get('screen').height / 12;
+      }
+    } else if (Platform.OS === 'ios') {
+      return Dimensions.get('screen').height / 4.5;
+    } else if (Platform.OS === 'android') {
+      return Dimensions.get('screen').height / 6.0;
+    }
+  }, [props.route.name]);
+
+  // functions
+  const goToLandingPage = () => {
+    props.navigation.navigate('LandingPage');
+    dispatch(resetUserData());
+  };
+
   return (
     <SafeAreaView
       style={[
         {
-          height:
-            props.route.name === 'AddInterests'
-              ? Platform.OS === 'ios'
-                ? Dimensions.get('screen').height / 7
-                : Dimensions.get('screen').height / 12
-              : Platform.OS === 'ios'
-              ? Dimensions.get('screen').height / 4.5
-              : Dimensions.get('screen').height / 6.0,
+          height: headerHeight,
         },
         styles.parent,
       ]}>
@@ -43,9 +60,7 @@ const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
           </TouchableOpacity>
         ) : null}
         <View style={styles.logoCtr}>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => props.navigation.navigate('LandingPage')}>
+          <TouchableOpacity activeOpacity={0.6} onPress={goToLandingPage}>
             {ICONS.Logo({width: 40, height: 40})}
           </TouchableOpacity>
         </View>

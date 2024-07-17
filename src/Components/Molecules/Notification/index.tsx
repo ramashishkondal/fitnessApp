@@ -63,7 +63,7 @@ const Notification: React.FC<NotificationProps> = ({
         </View>
         <View style={styles.textCtr}>
           <Text style={styles.notificationText}>
-            {userData && userData.firstName ? (
+            {userData?.firstName ? (
               <Text style={styles.userNameText}>
                 {userData.firstName + ' ' + userData.lastName + ' '}
               </Text>
