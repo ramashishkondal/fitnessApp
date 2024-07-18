@@ -130,7 +130,7 @@ const SignIn = ({navigation}: SignInProps) => {
       const {
         user: {uid},
       } = await auth().signInWithEmailAndPassword(email, password);
-      dispatch(updateSettingsCachedData({email, password}));
+      dispatch(updateSettingsCachedData({email, password, isSocial: false}));
       dispatch(updateUserData({id: uid}));
     } catch (e) {
       const error = e as FirebaseAuthTypes.NativeFirebaseAuthError;

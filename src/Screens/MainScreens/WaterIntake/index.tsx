@@ -132,6 +132,10 @@ const WaterIntake: React.FC = () => {
     updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});
   };
   const handleGlassEmpty = (i: number) => {
+    if (waterIntake === 1 && i === 0) {
+      updateWaterIntake(id!, 0, {totalCalorie, totalSteps, noOfGlasses});
+      return;
+    }
     updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});
   };
 

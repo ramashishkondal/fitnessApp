@@ -7,8 +7,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.PRIMARY.PURPLE,
-    height: RFValue(42),
-    width: RFValue(245),
+    paddingHorizontal: 104,
+    paddingVertical: 14,
+    minHeight: RFValue(40),
+    minWidth: RFValue(240),
+
     borderRadius: SIZES.rounding3,
   },
   buttonCtr: {},

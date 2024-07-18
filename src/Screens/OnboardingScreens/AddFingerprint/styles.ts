@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
   },
   notNowParent: {
     backgroundColor: '',
+    padding: 4,
   },
   notNowText: {
     color: COLORS.PRIMARY.PURPLE,

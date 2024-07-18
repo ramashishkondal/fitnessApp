@@ -59,7 +59,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const postComment = async () => {
     setIsLoading(true);
     try {
-      if (id !== null && comment.trim() !== '' && postData) {
+      if (id !== null && comment.trim() !== '' && postData?.postId) {
+        if (postData.userId === id) {
+          await storePostComment(postData.postId, {
+            userId: id,
+            comment: comment.trim(),
+            createdOn: Timestamp.fromDate(new Date()),
+          });
+          setIsLoading(false);
+          return;
+        }
+
         setComment('');
         await storePostComment(
           route.params.postId,
@@ -90,6 +100,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
           <ScrollView style={styles.parent}>
             <View style={styles.userPostCtr}>
               <UserPost
+                showDelete={true}
                 userId={postData.userId}
                 postData={{
                   caption: postData.caption,
@@ -97,7 +108,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                   noOfLikes: postData.likedByUsersId.length,
                   noOfComments: postData.comments.length,
                   isLiked: postData.likedByUsersId.includes(id!),
-                  id: id!,
+                  id: postData.postId!,
                   timeSincePostedInMillis: Timestamp.fromMillis(
                     postData.createdOn.seconds * 1000,
                   )

@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native';
 import {NativeStackNavigationProp} from 'react-native-screens/lib/typescript/native-stack/types';
 import {StoryData} from '../Utils/userUtils';
+import {User} from './user';
 
 // app drawer navigator
 export type homeDrawerParamList = {
@@ -115,12 +116,17 @@ export type appStackParamList = {
   ResetPassword: undefined;
   GiveFeedback: undefined;
   AboutUs: undefined;
+  OtherUserScreen: {userData: User};
 };
 export type AppNavigationProps = NativeStackNavigationProp<appStackParamList>;
 
 export type NutritionProps = NativeStackScreenProps<
   appStackParamList,
   'Nutrition'
+>;
+export type OtherUserScreenProps = NativeStackScreenProps<
+  appStackParamList,
+  'OtherUserScreen'
 >;
 export type ResetPasswordProps = NativeStackScreenProps<
   appStackParamList,

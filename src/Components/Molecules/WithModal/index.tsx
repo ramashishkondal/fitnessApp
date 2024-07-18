@@ -17,7 +17,6 @@ const WithModal: React.FC<WithModalProps> = ({
   parentStyle,
   barShown = true,
 }) => {
-  console.log('with modal ere');
   return (
     <Modal
       isVisible={modalVisible}

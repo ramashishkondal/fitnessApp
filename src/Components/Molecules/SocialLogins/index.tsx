@@ -14,6 +14,8 @@ import {styles} from './styles';
 import {INTERESETS, preferencesData} from '../../../Constants/commonConstants';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {SocialLoginProps} from './types';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const iconSize = 17;
 
@@ -41,6 +43,9 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
   // netInfo use
   const netInfo = useNetInfo();
 
+  // redux use
+  const dispatch = useAppDispatch();
+
   // functions
   const handleGoogleSignIn = async () => {
     if (!netInfo.isConnected) {
@@ -50,6 +55,7 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
     setIsLoading(true);
     await GoogleSignin.signOut();
     const userData = await googleSignIn();
+    dispatch(updateSettingsCachedData({isSocial: true}));
     if (userData?.additionalUserInfo?.isNewUser) {
       const {email, displayName, photoURL: photo, uid: id} = userData.user;
       if (email !== null && photo !== null) {

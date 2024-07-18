@@ -17,6 +17,7 @@ import {COLORS, ICONS, SIZES} from '../Constants';
 import {Platform, View} from 'react-native';
 import BackForDrawer from '../Components/Molecules/BackForDrawer';
 import {styles} from './styles';
+import {FONT_FAMILY} from '../Constants/commonStyles';
 
 const iconSize = {
   width: 25,
@@ -61,7 +62,11 @@ const HomeNavigator: React.FC = () => {
         drawerContentContainerStyle: {
           top: '25%',
         },
-        drawerLabelStyle: {color: 'black', fontSize: SIZES.font13},
+        drawerLabelStyle: {
+          color: 'black',
+          fontSize: SIZES.font14,
+          fontFamily: FONT_FAMILY.SEMI_BOLD,
+        },
         drawerActiveTintColor: COLORS.PRIMARY.PURPLE,
         drawerType: 'front',
       }}>
@@ -69,6 +74,7 @@ const HomeNavigator: React.FC = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
+          title: 'Home',
           drawerIcon: drawerIcon(ICONS.Home),
           headerRight,
           headerStyle: {
@@ -103,6 +109,7 @@ const HomeNavigator: React.FC = () => {
         name="GetPremium"
         component={GetPremium}
         options={{
+          title: 'Get Premium',
           drawerIcon: drawerIcon(ICONS.Premium),
           headerTransparent: true,
           headerShown: true,
@@ -113,6 +120,7 @@ const HomeNavigator: React.FC = () => {
         name="LogOut"
         component={LogOut}
         options={{
+          title: 'Logout',
           drawerIcon: drawerIcon(ICONS.LogOut),
           headerShown: false,
         }}

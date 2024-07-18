@@ -4,7 +4,7 @@ import {ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
 
 // 3rd party
 import {useAppSelector} from '../../../Redux/Store';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {Timestamp} from '@react-native-firebase/firestore';
 
 // custom
 import {
@@ -41,7 +41,7 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const [storiesData, setStoriesData] = useState<StoryData[]>([]);
 
   // redux use
-  const {firstName, lastName, photo, id} = useAppSelector(
+  const {firstName, lastName, photo, id, storiesWatched} = useAppSelector(
     state => state.User.data,
   );
 
@@ -65,11 +65,35 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as StoryData[];
-        console.log('stories data is ', x);
-        setStoriesData(x);
+
+        // setting storise data based on if the story is watched by user or not.
+        setStoriesData(
+          x
+            .filter(
+              val =>
+                !storiesWatched.includes(
+                  val.storyByUserId +
+                    ' ' +
+                    Timestamp.fromMillis(val.latestStoryOn.seconds * 1000)
+                      .toDate()
+                      .toISOString(),
+                ),
+            )
+            .concat(
+              x.filter(val =>
+                storiesWatched.includes(
+                  val.storyByUserId +
+                    ' ' +
+                    Timestamp.fromMillis(val.latestStoryOn.seconds * 1000)
+                      .toDate()
+                      .toISOString(),
+                ),
+              ),
+            ),
+        );
       });
     return () => unsubscribe();
-  }, []);
+  }, [storiesWatched]);
 
   // functions
   const goToPostScreen = useCallback(
@@ -108,6 +132,22 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const setActiveModalPost = useCallback(() => setActiveModal('story'), []);
   const setActiveModalFalse = useCallback(() => setActiveModal('none'), []);
   const showCommentModal = useCallback(() => setActiveModal('comment'), []);
+
+  console.log(
+    'some llm',
+
+    storiesWatched.includes(
+      'iPqunUl4vcSnroFyBeJP6fEvSO13 2024-07-10T06:53:16.000Z',
+    ),
+    storiesData,
+    // storiesWatched.includes(
+    //   storiesData[index].storyByUserId +
+    //     ' ' +
+    //     Timestamp.fromMillis(storiesData[index].latestStoryOn.seconds * 1000)
+    //       .toDate()
+    //       .toISOString(),
+    // ),
+  );
 
   return (
     <>

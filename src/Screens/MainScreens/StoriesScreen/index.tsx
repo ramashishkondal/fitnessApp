@@ -12,10 +12,15 @@ import {CustomImage} from '../../../Components';
 import {Timer} from '../../../Utils/commonUtils';
 import {StoriesScreenProps} from '../../../Defs';
 import {styles} from './styles';
-import {updateStoriesWatchedArray} from '../../../Utils/userUtils';
+import {
+  deleteStoryByUpdatingArray,
+  updateStoriesWatchedArray,
+} from '../../../Utils/userUtils';
 import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {COLORS, ICONS} from '../../../Constants';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -99,6 +104,15 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
       setUserIndex(userIndex - 1);
     }
   };
+  const handleStoryDelete = () => {
+    deleteStoryByUpdatingArray(
+      userId!,
+      allStoryData[userIndex].stories.filter(
+        val => val.storyUrl !== stories[index].storyUrl,
+      ),
+    );
+    navigation.goBack();
+  };
 
   const storyTimer = new Timer(goNext);
 
@@ -128,6 +142,15 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
               {allStoryData[userIndex].userName}
             </Text>
           </View>
+          <TouchableOpacity onPress={handleStoryDelete}>
+            {userId === allStoryData[userIndex].storyByUserId
+              ? ICONS.GarbageCan({
+                  width: 25,
+                  height: 25,
+                  color: COLORS.PRIMARY.GREY,
+                })
+              : null}
+          </TouchableOpacity>
         </View>
       </View>
       <GestureRecognizer

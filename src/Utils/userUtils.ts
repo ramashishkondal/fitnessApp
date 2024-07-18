@@ -143,6 +143,18 @@ export const storePost = async (post: Post) => {
   }
 };
 
+export const deletePost = async (postId: Post['postId']) => {
+  console.log('post id ', postId);
+  try {
+    await firestore()
+      .collection(firebaseDB.collections.posts)
+      .doc(postId)
+      .delete();
+  } catch (error) {
+    console.log('error with deleting post', error);
+  }
+};
+
 export const storePostComment = async (
   postId: string,
   comment: Comment,
@@ -223,7 +235,7 @@ export const addLikes = async (
 // story
 
 export type StoryData = {
-  stories: {storyUrl: string; storyType: string}[];
+  stories: {storyUrl: string; storyType: string; storyCreatedOn: string}[];
   userName: string;
   userPhoto: string;
   storyByUserId: string;
@@ -261,6 +273,7 @@ export const storeStory = async (
           stories: userStoryData.stories.concat({
             storyType: story.storyType,
             storyUrl: url,
+            storyCreatedOn: new Date().toISOString(),
           }),
           userName: story.userName,
           userPhoto: story.userPhoto,
@@ -297,6 +310,46 @@ export const storeStory = async (
       });
   } catch (e) {
     console.log('error posting story', e);
+  }
+};
+
+export const storeBiometricData = async (
+  biometric: boolean,
+  userId: string,
+) => {
+  try {
+    console.log('awdawdaw', biometric, userId);
+    await firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(userId)
+      .update({
+        finger: biometric,
+      });
+  } catch (e) {
+    console.log('error with adding biometric data', e);
+  }
+};
+
+export const deleteStoryByUpdatingArray = async (
+  storyByUserId: string,
+  storiesArray: StoryData['stories'],
+) => {
+  try {
+    if (storiesArray.length === 0) {
+      await firestore()
+        .collection(firebaseDB.collections.stories)
+        .doc(storyByUserId)
+        .delete();
+      return;
+    }
+    await firestore()
+      .collection(firebaseDB.collections.stories)
+      .doc(storyByUserId)
+      .update({
+        stories: storiesArray,
+      });
+  } catch (e) {
+    console.log('error with deleting story', e);
   }
 };
 
@@ -375,10 +428,11 @@ export const updateStoriesWatchedArray = async (
 };
 
 export const storeMealData = async (userId: string, dailyMeals: DailyMeals) => {
+  const updateAt = new Date().setHours(0, 0, 0, 0).toString();
   await firestore()
     .collection(firebaseDB.collections.dailyMeals)
     .doc(userId)
-    .set(dailyMeals);
+    .set({[updateAt]: dailyMeals});
 };
 
 export const getMealData = async (userId: string) => {

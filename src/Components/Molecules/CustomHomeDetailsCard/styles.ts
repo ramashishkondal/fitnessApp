@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, SIZES, SPACING} from '../../../Constants';
+import {COLORS, SIZES} from '../../../Constants';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
@@ -44,7 +44,8 @@ export const styles = StyleSheet.create({
   },
   buttonCtr: {},
   lineCtr: {
-    ...SPACING.mt2,
+    marginTop: 16,
+    marginBottom: 8,
   },
   titleText: {
     fontSize: SIZES.fontH6,

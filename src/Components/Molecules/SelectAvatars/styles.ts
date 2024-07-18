@@ -3,8 +3,8 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   flatListSyle: {
-    maxHeight: RFValue(100),
-    paddingTop: 9,
+    maxHeight: RFValue(110),
+    paddingTop: 10,
   },
   flatListCtr: {
     alignItems: 'center',

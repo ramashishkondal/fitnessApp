@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 
 // custom
 import {COLORS, ICONS, SIZES} from '../../../Constants';
@@ -30,6 +30,19 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
 
   // functions
   const handleClose = () => {
+    Alert.alert('Warning', 'Are you sure you want to delete daily meal data?', [
+      {
+        text: 'yes',
+        onPress: () => {
+          handleDataDelete();
+        },
+      },
+      {
+        text: 'close',
+      },
+    ]);
+  };
+  const handleDataDelete = () => {
     switch (timeOfMeal) {
       case 'Breakfast':
         if (netInfo.isConnected) {
@@ -255,7 +268,16 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
               </View>
               <View>
                 <Text style={styles.caloriesText}>
-                  {val.data.calories * val.freq}
+                  {val.data.fat * 9 +
+                    val.data.carbs * 4 +
+                    val.data.protein * 4 >
+                  val.data.calories
+                    ? (val.data.fat * 9 +
+                        val.data.carbs * 4 +
+                        val.data.protein * 4) *
+                      val.freq
+                    : val.data.calories * val.freq}{' '}
+                  cals
                 </Text>
               </View>
             </View>

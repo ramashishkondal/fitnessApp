@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, Linking, Platform, Text, View} from 'react-native';
 
 // 3rd party
@@ -11,13 +11,26 @@ import {STRING} from '../../../Constants';
 import SettingsCard from '../../../Components/Molecules/SettingsCard';
 import {SettingsProps} from '../../../Defs';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
-import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {
+  updateSettingPushNotification,
+  updateSettingsCachedData,
+} from '../../../Redux/Reducers/userSettings';
 import {openHealthConnectSettings} from 'react-native-health-connect';
+import {check, PERMISSIONS, request} from 'react-native-permissions';
+import RNRestart from 'react-native-restart';
+import {storeBiometricData} from '../../../Utils/userUtils';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
+  // state use
+  const [switchActiveNotifications, setSwitchActiveNotifications] =
+    useState(false);
+
   // redux use
   const dispatch = useAppDispatch();
-  const {finger} = useAppSelector(state => state.User.data);
+  const {finger, id} = useAppSelector(state => state.User.data);
+  const {isSocial} = useAppSelector(state => state.settings.data.cachedData);
+
+  const [switchActiveFinger, setSwitchActiveFinger] = useState(finger);
 
   // functions
   const logOut = () => {
@@ -53,6 +66,61 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           ],
         );
   };
+  const handlePushNotificationValueChange = async (val: boolean) => {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const notificationPerm = await check(
+        PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+      );
+      if (notificationPerm === 'granted' || val === false) {
+        setSwitchActiveNotifications(val);
+        dispatch(updateSettingPushNotification(val));
+      }
+      if (val && notificationPerm !== 'granted') {
+        const notificationAuth = await request(
+          PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+        );
+        if (notificationAuth === 'granted') {
+          setSwitchActiveNotifications(val);
+          dispatch(updateSettingPushNotification(val));
+        }
+        if (notificationAuth === 'blocked') {
+          Alert.alert(
+            'Notifications permissions denied',
+            'You have to allow Notification permissions from the App settings to use notification feature of the app',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  Alert.alert(
+                    'Restart App',
+                    'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
+                    [
+                      {text: 'OK', onPress: RNRestart.restart},
+                      {text: 'Cancel'},
+                    ],
+                  );
+
+                  Linking.openSettings();
+                },
+              },
+              {
+                text: 'Cancel',
+              },
+            ],
+          );
+        }
+      }
+    } else {
+      setSwitchActiveNotifications(val);
+      dispatch(updateSettingPushNotification(val));
+    }
+  };
+
+  const handleFingerPrint = async () => {
+    setSwitchActiveFinger(!switchActiveFinger);
+    // dispatch(updateSettingsCachedData({email,password:}))
+    await storeBiometricData(!switchActiveFinger, id!);
+  };
 
   return (
     <View style={styles.parent}>
@@ -62,7 +130,20 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Edit Profile"
           onPress={() => navigation.push('EditProfile', {from: 'Settings'})}
         />
-        <SettingsCard title="Push Notification" hasSwitch />
+        {!isSocial ? (
+          <SettingsCard
+            title="Enable fingerprint"
+            hasSwitch
+            switchActive={switchActiveFinger}
+            onSwitchValueChange={handleFingerPrint}
+          />
+        ) : null}
+        <SettingsCard
+          title="Push Notification"
+          hasSwitch
+          onSwitchValueChange={handlePushNotificationValueChange}
+          switchActive={switchActiveNotifications}
+        />
         <SettingsCard
           title="Reset Password"
           onPress={() => navigation.navigate('ResetPassword')}

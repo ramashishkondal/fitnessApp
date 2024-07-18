@@ -1,5 +1,5 @@
 // libs
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 
 // 3rd party
@@ -31,52 +31,77 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
   const {data: dailyMeals} = useAppSelector(state => state.dailyMeals);
 
-  const statsData = Object.values(dailyMeals)
-    .flat()
-    .reduce(
-      (acc, val) => ({
-        calories: Math.ceil(val.calories + acc.calories),
-        carbs: Math.ceil(val.carbs + acc.carbs),
-        fat: Math.ceil(val.fat + acc.fat),
-        protein: Math.ceil(val.protein + acc.protein),
-      }),
-      {
-        calories: 0,
-        carbs: 0,
-        fat: 0,
-        protein: 0,
-      },
-    );
+  const statsData = useMemo(
+    () =>
+      Object.values(dailyMeals)
+        .flat()
+        .reduce(
+          (acc, val) => ({
+            calories: parseFloat(
+              (val.carbs * 4 + val.fat * 9 + val.protein * 4 > val.calories
+                ? val.carbs * 4 + val.fat * 9 + val.protein * 4 + acc.calories
+                : val.calories + acc.calories
+              ).toFixed(1),
+            ),
+            carbs: parseFloat((val.carbs + acc.carbs).toFixed(1)),
+            fat: parseFloat((val.fat + acc.fat).toFixed(1)),
+            protein: parseFloat((val.protein + acc.protein).toFixed(1)),
+          }),
+          {
+            calories: 0,
+            carbs: 0,
+            fat: 0,
+            protein: 0,
+          },
+        ),
+    [dailyMeals],
+  );
 
   const proteinData = [
     {
-      value: Math.ceil(getPercentage(statsData.protein, statsData.calories)),
+      value: parseFloat(
+        getPercentage(statsData.protein * 4, statsData.calories).toFixed(1),
+      ),
       color: COLORS.SECONDARY.CYAN,
     },
     {
       value:
-        100 - Math.ceil(getPercentage(statsData.protein, statsData.calories)),
+        100 -
+        parseFloat(
+          getPercentage(statsData.protein * 4, statsData.calories).toFixed(1),
+        ),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
   const carbsData = [
     {
-      value: Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
+      value: parseFloat(
+        getPercentage(statsData.carbs * 4, statsData.calories).toFixed(1),
+      ),
       color: COLORS.PRIMARY.PURPLE,
     },
     {
       value:
-        100 - Math.ceil(getPercentage(statsData.carbs, statsData.calories)),
+        100 -
+        parseFloat(
+          getPercentage(statsData.carbs * 4, statsData.calories).toFixed(1),
+        ),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];
   const fatData = [
     {
-      value: Math.ceil(getPercentage(statsData.fat, statsData.calories)),
+      value: parseFloat(
+        getPercentage(statsData.fat * 9, statsData.calories).toFixed(1),
+      ),
       color: COLORS.SECONDARY.ORANGE,
     },
     {
-      value: 100 - Math.ceil(getPercentage(statsData.fat, statsData.calories)),
+      value:
+        100 -
+        parseFloat(
+          getPercentage(statsData.fat * 9, statsData.calories).toFixed(1),
+        ),
       color: COLORS.PRIMARY.LIGHT_PURPLE,
     },
   ];

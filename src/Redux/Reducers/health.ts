@@ -17,7 +17,7 @@ const initialState: InitialState = {
     goal: {
       totalCalorie: 8000,
       noOfGlasses: 6,
-      totalSteps: 10000,
+      totalSteps: 500,
     },
     currentDate: new Date().toISOString(),
     glassesLength: 6,

@@ -27,7 +27,7 @@ const Avatar: React.FC<AvatarProps> = ({
   }));
   const handleOnPress = () => {
     scale.value = withSequence(
-      withSpring(ANIMATIONS.sizeIncrease3),
+      withSpring(ANIMATIONS.sizeIncrease2),
       withSpring(ANIMATIONS.sizeNormal),
     );
     setSelectedItem(item.name);

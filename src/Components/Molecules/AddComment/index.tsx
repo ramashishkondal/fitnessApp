@@ -48,7 +48,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
           if (postId.userId === userId) {
             await storePostComment(postId.postId, {
               userId,
-              comment,
+              comment: comment.trim(),
               createdOn: Timestamp.fromDate(new Date()),
             });
           } else {
@@ -56,7 +56,7 @@ const AddComment: React.FC<AddCommentProps> = ({setModalFalse, postId}) => {
               postId.postId,
               {
                 userId,
-                comment,
+                comment: comment.trim(),
                 createdOn: Timestamp.fromDate(new Date()),
               },
               {

@@ -28,6 +28,7 @@ import ResetPassword from '../Screens/MainScreens/ResetPassword';
 import GiveFeedback from '../Screens/MainScreens/GiveFeedback';
 import AboutUs from '../Screens/MainScreens/AboutUs';
 import {useUserData} from '../Hooks/useOffline';
+import OtherUserScreen from '../Screens/MainScreens/OtherUserScreen';
 
 const Stack = createNativeStackNavigator<appStackParamList>();
 
@@ -99,6 +100,7 @@ const AppNavigator = () => {
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="GiveFeedback" component={GiveFeedback} />
       <Stack.Screen name="AboutUs" component={AboutUs} />
+      <Stack.Screen name="OtherUserScreen" component={OtherUserScreen} />
     </Stack.Navigator>
   );
 };

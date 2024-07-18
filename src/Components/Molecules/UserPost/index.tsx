@@ -1,6 +1,6 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Pressable, Alert} from 'react-native';
 
 // 3rd party
 import firestore from '@react-native-firebase/firestore';
@@ -11,8 +11,12 @@ import {UserPostProps} from './types';
 import {COLORS, ICONS, SIZES} from '../../../Constants';
 import {CustomImage, DescriptionText} from '../../Atoms';
 import {getTimePassed} from '../../../Utils/commonUtils';
-import {User} from '../../../Defs';
-import {firebaseDB} from '../../../Utils/userUtils';
+import {appStackParamList, User} from '../../../Defs';
+import {deletePost, firebaseDB} from '../../../Utils/userUtils';
+import {useAppSelector} from '../../../Redux/Store';
+import ToastError from '../../Atoms/ToastError';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const icon = {
   width: 16,
@@ -28,15 +32,23 @@ const UserPost: React.FC<UserPostProps> = ({
     timeSincePostedInMillis,
     isLiked,
     photo,
+    id: postId,
   },
   userId,
   handleCommentsPress,
   handleLikesPress,
   handlePhotoPress,
+  showDelete = false,
 }) => {
   // state use
   const [userData, setUserData] = useState<User>();
-  console.log('user post ender');
+
+  // navigation use
+  const navigator =
+    useNavigation<NativeStackNavigationProp<appStackParamList>>();
+
+  // redux use
+  const {id} = useAppSelector(state => state.User.data);
 
   // effect use
   useEffect(() => {
@@ -52,26 +64,69 @@ const UserPost: React.FC<UserPostProps> = ({
     return () => unsubscribe();
   }, [userId]);
 
+  // functions
+  const handleDeletePost = () => {
+    Alert.alert('Warning', 'Are you sure you want to delete the post?', [
+      {
+        text: 'yes',
+        onPress: () => {
+          navigator.goBack();
+          deletePost(postId).catch(() =>
+            ToastError('Error', 'Something went wrong!'),
+          );
+        },
+      },
+      {text: 'cancel'},
+    ]);
+  };
+
   return (
     <View style={styles.parent}>
-      <View style={styles.userInfoCtr}>
-        {userData ? (
-          <CustomImage
-            source={{uri: userData?.photo}}
-            imageStyle={styles.userPhoto}
-          />
-        ) : null}
-        <View style={styles.userTextCtr}>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 10,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <TouchableOpacity
+          style={styles.userInfoCtr}
+          disabled={!userData}
+          onPress={() => {
+            if (userData) {
+              navigator.navigate('OtherUserScreen', {userData});
+            }
+          }}>
           {userData ? (
-            <Text style={styles.userNameText}>
-              {userData.firstName + ' ' + userData.lastName}
-            </Text>
+            <CustomImage
+              source={{uri: userData?.photo}}
+              imageStyle={styles.userPhoto}
+            />
           ) : null}
-          <DescriptionText
-            text={getTimePassed(timeSincePostedInMillis)}
-            textStyle={styles.descriptionText}
-          />
-        </View>
+          <View style={styles.userTextCtr}>
+            {userData ? (
+              <Text style={styles.userNameText}>
+                {userData.firstName + ' ' + userData.lastName}
+              </Text>
+            ) : null}
+            <DescriptionText
+              text={getTimePassed(timeSincePostedInMillis)}
+              textStyle={styles.descriptionText}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showDelete && userId === id ? (
+          <Pressable
+            onPress={handleDeletePost}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            {ICONS.GarbageCan({
+              width: 25,
+              height: 25,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </Pressable>
+        ) : null}
       </View>
       {caption ? (
         <Text style={styles.captionText}>{caption}</Text>

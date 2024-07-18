@@ -100,7 +100,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
     }
 
     if (count === 0) {
-      ToastError('Error', 'Please select a mealtime.');
+      ToastError('Error', 'Please select a Meal category.');
       return;
     }
     if (mealsSelected.current.foodData.length === 0) {
@@ -166,15 +166,15 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
               mealTime={mealsSelected.current.mealTime}
             />
             <MealSelector
+              title="Breakfast"
+              mealTime={mealsSelected.current.mealTime}
+            />
+            <MealSelector
               title="Lunch"
               mealTime={mealsSelected.current.mealTime}
             />
             <MealSelector
               title="Dinner"
-              mealTime={mealsSelected.current.mealTime}
-            />
-            <MealSelector
-              title="Breakfast"
               mealTime={mealsSelected.current.mealTime}
             />
           </View>

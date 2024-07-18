@@ -34,15 +34,38 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         STRING.ADD_PASSWORD.ERROR.HEADING,
         STRING.ADD_PASSWORD.ERROR.EMPTY,
       );
-    } else if (isValidPassword.checkAllValidations(password)) {
-      dispatch(updateUserData({password}));
-      navigation.push('AddFirstName');
-    } else {
+      return;
+    }
+    if (!isValidPassword.lengthCheck(password)) {
       ToastError(
         STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.BODY,
+        STRING.ADD_PASSWORD.ERROR.BODY_LENGTH,
       );
+      return;
     }
+    if (!isValidPassword.caseCheck(password)) {
+      ToastError(
+        STRING.ADD_PASSWORD.ERROR.HEADING,
+        STRING.ADD_PASSWORD.ERROR.BODY_UPPERCASE,
+      );
+      return;
+    }
+    if (!isValidPassword.numberCheck(password)) {
+      ToastError(
+        STRING.ADD_PASSWORD.ERROR.HEADING,
+        STRING.ADD_PASSWORD.ERROR.BODY_NUMBER,
+      );
+      return;
+    }
+    if (!isValidPassword.specialCharacterCheck(password)) {
+      ToastError(
+        STRING.ADD_PASSWORD.ERROR.HEADING,
+        STRING.ADD_PASSWORD.ERROR.BODY_SPECIAL_CHARACTER,
+      );
+      return;
+    }
+    dispatch(updateUserData({password}));
+    navigation.push('AddFirstName');
   };
 
   return (
@@ -55,6 +78,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         onChangeText={setPassword}
         autoFocus
         allowPeeking
+        textInputProps={{maxLength: 30}}
       />
       <PasswordChecks
         lengthCheck={isValidPassword.lengthCheck(password)}

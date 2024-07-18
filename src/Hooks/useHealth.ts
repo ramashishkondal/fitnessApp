@@ -20,7 +20,7 @@ import {
   requestPermission,
 } from 'react-native-health-connect';
 
-const pollingRateAndroidHealth = 5000;
+const pollingRateAndroidHealth = 300000;
 
 export const useHealth = () => {
   // redux use
@@ -136,7 +136,9 @@ export const useHealth = () => {
       if (isInitialized) {
         setInterval(() => {
           if (hasPermission) {
-            handleDataFromHealthConnect();
+            handleDataFromHealthConnect().catch(e => {
+              console.log('error in health connect ', e);
+            });
           }
         }, pollingRateAndroidHealth);
       }

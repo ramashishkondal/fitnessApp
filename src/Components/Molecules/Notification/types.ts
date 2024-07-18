@@ -4,4 +4,5 @@ export type NotificationProps = {
   timeAgo: string;
   isUnread: boolean;
   handleDeletePressed: () => void;
+  handleUnreadSingleNotification: () => void;
 };

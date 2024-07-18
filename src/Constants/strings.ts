@@ -13,7 +13,7 @@ export const STRING = {
       'The best UI Kit for your next health and fitness project',
     BUTTON_TEXT: 'Get Started',
     SIGNIN_1: 'Already have an account?',
-    SIGNIN_2: 'Sign In',
+    SIGNIN_2: 'Sign in',
   },
   SIGNIN: {
     EMAIL: 'Email Address',
@@ -33,14 +33,17 @@ export const STRING = {
     TEXT_INPUT_PLACEHOLDER: 'Enter your password',
     BUTTON_TEXT: 'Continue',
     CHECKS: {
-      LENGTH: '8+ characters',
+      LENGTH: 'Minimum 8 characters',
       CASE: 'At least 1 uppercase',
       NUMBER: 'At least 1 number',
       SPECIAL_CHAR: 'At least 1 special character',
     },
     ERROR: {
       HEADING: 'Invalid Password',
-      BODY: 'Make sure your password is 8+ characters long, contains at least 1 uppercase character , 1 number and 1 special character.',
+      BODY_LENGTH: 'Password should have minimum 8 characters.',
+      BODY_UPPERCASE: '1 uppercase character missing from password.',
+      BODY_NUMBER: '1 number missing from password.',
+      BODY_SPECIAL_CHARACTER: '1 special character missing from password.',
       EMPTY: "Password can't be empty",
     },
   },

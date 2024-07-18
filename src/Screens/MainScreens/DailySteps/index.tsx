@@ -19,6 +19,7 @@ import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import InsidePieChart from '../../../Components/Molecules/InsidePieChart';
 import {date, getPercentage, weekday} from '../../../Utils/commonUtils';
 import {styles} from './styles';
+import LineGraphLabel from '../../../Components/Molecules/LineGraphLabel';
 
 const DailySteps: React.FC = () => {
   // constants
@@ -72,18 +73,16 @@ const DailySteps: React.FC = () => {
               result.map(val => {
                 console.log('val', val);
                 return {
-                  value: getPercentage(val.value, totalSteps),
+                  value: val.value,
+                  week: weekday[new Date(val.startDate).getDay()],
                 };
               }),
             );
             const bestStepsDay = result.reduce(
               (acc, val) => {
-                if (
-                  Math.ceil(getPercentage(val.value, totalSteps) / 10) >=
-                  acc.value
-                ) {
+                if (val.value >= acc.value) {
                   return {
-                    value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                    value: val.value,
                     week: weekday[new Date(val.startDate).getDay()],
                   };
                 }
@@ -94,12 +93,9 @@ const DailySteps: React.FC = () => {
             const worstStepsDay = result.reduce(
               (acc, val) => {
                 console.log('acc', acc, val);
-                if (
-                  Math.ceil(getPercentage(val.value, totalSteps) / 10) <=
-                  acc.value
-                ) {
+                if (val.value <= acc.value) {
                   return {
-                    value: Math.ceil(getPercentage(val.value, totalSteps) / 10),
+                    value: val.value,
                     week: weekday[new Date(val.startDate).getDay()],
                   };
                 }
@@ -200,18 +196,16 @@ const DailySteps: React.FC = () => {
 
           setLineData(
             stepsResult.map(val => ({
-              value: getPercentage(val.steps, totalSteps),
+              value: val.steps,
+              week: weekday[new Date(val.startTime).getDay()],
             })),
           );
 
           const bestStepsDay = stepsResult.reduce(
             (acc, val) => {
-              if (
-                Math.ceil(getPercentage(val.steps, totalSteps) / 10) >=
-                acc.value
-              ) {
+              if (val.steps >= acc.value) {
                 return {
-                  value: Math.ceil(getPercentage(val.steps, totalSteps) / 10),
+                  value: val.steps,
                   week: weekday[new Date(val.startTime).getDay()],
                 };
               }
@@ -222,12 +216,9 @@ const DailySteps: React.FC = () => {
 
           const worstStepsDay = stepsResult.reduce(
             (acc, val) => {
-              if (
-                Math.ceil(getPercentage(val.steps, totalSteps) / 10) <=
-                acc.value
-              ) {
+              if (val.steps <= acc.value) {
                 return {
-                  value: Math.ceil(getPercentage(val.steps, totalSteps) / 10),
+                  value: val.steps,
                   week: weekday[new Date(val.startTime).getDay()],
                 };
               }
@@ -295,8 +286,8 @@ const DailySteps: React.FC = () => {
               adjustToWidth
               curved
               // yAxisOffset={-15.5}
-              initialSpacing={0}
-              data={lineData}
+              // initialSpacing={0}
+              data={lineData.slice().reverse()}
               hideOrigin
               areaChart
               startFillColor="#F8B631"
@@ -310,6 +301,24 @@ const DailySteps: React.FC = () => {
               color="#F7A608"
               disableScroll
               onlyPositive
+              pointerConfig={{
+                stripOverPointer: true,
+                pointerStripHeight: 190,
+                pointerStripColor: 'lightgray',
+                pointerStripWidth: 2,
+                pointerColor: 'lightgray',
+                pointerLabelWidth: 100,
+                activatePointersOnLongPress: true,
+                autoAdjustPointerLabelPosition: true,
+                pointerLabelComponent: (
+                  items: {value: number; week: string}[],
+                ) => {
+                  return LineGraphLabel({
+                    day: items[0].week,
+                    steps: items[0].value,
+                  });
+                },
+              }}
             />
           ) : null}
         </View>

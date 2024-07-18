@@ -4,19 +4,22 @@ import {FONT_FAMILY} from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
-  parent: {flex: 1},
+  parent: {
+    flex: 1,
+  },
   headingCtr: {
-    marginVertical: 32,
+    marginTop: 24,
+    marginBottom: 48,
   },
   childCtrTop: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.PURPLE,
-    borderRadius: 10,
   },
   closeCtr: {
     position: 'absolute',
     alignSelf: 'flex-end',
     top: 8,
+    right: 8,
     zIndex: 9,
   },
   userInfoCtr: {
@@ -24,7 +27,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userNameText: {
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.MEDIUM,
+    fontWeight: '400',
     marginLeft: 8,
     fontSize: RFValue(11.7),
     color: 'black',
@@ -74,6 +78,8 @@ export const styles = StyleSheet.create({
   },
   dataCtr: {
     alignItems: 'center',
-    paddingVertical: 40,
+    // paddingVertical: 40,
+    paddingTop: 16,
+    paddingBottom: 44,
   },
 });

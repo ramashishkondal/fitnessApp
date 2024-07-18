@@ -14,8 +14,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH5,
     fontWeight: SIZES.fontBold1,
   },
-  textInput: {
-    textAlign: 'center',
+  textInputParent: {
     height: SIZES.height / 8,
     alignItems: 'flex-start',
     ...SPACING.mh2,

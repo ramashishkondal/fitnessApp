@@ -15,5 +15,5 @@ export const isValidPassword = {
     RegExp(/[^a-zA-Z0-9_]/).test(password),
 };
 
-const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]*(?:[-' ][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
+const nameRegex = /^[a-zA-Z]*$/;
 export const isValidName = (name: string) => RegExp(nameRegex).test(name);

@@ -12,4 +12,5 @@ export type UserPostProps = {
   handleCommentsPress: () => void;
   handleLikesPress: () => void;
   handlePhotoPress?: () => void;
+  showDelete?: boolean;
 };

@@ -1,6 +1,13 @@
 // libs
 import React, {useEffect, useState} from 'react';
-import {View, Pressable, Text, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Pressable,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 
 // 3rd party
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
@@ -25,7 +32,7 @@ const Notifications: React.FC = () => {
 
   // redux use
   const {id: userId} = useAppSelector(state => state.User.data);
-
+  console.log(userId);
   // effect use
   useEffect(() => {
     const unsubscribe = firestore()
@@ -59,9 +66,37 @@ const Notifications: React.FC = () => {
     setShowMenu(false);
   };
 
+  const markNotificationAsRead = (createdOn: Timestamp) => {
+    if (notificationsData) {
+      updateNotificationReadStatus(
+        userId!,
+        notificationsData.map(val => {
+          if (createdOn.seconds * 1000 === val.createdOn.seconds * 1000) {
+            return {...val, isUnread: false};
+          }
+          return val;
+        }),
+      );
+    }
+  };
+
   const clearAllNotifications = () => {
-    updateNotificationReadStatus(userId!, []);
-    setShowMenu(false);
+    Alert.alert(
+      'Warning',
+      'Are you sure you want to delete all notifications?',
+      [
+        {
+          text: 'yes',
+          onPress: () => {
+            updateNotificationReadStatus(userId!, []);
+            setShowMenu(false);
+          },
+        },
+        {
+          text: 'cancel',
+        },
+      ],
+    );
   };
 
   const handleDeleteNotification = (createdOn: Timestamp) => {
@@ -131,6 +166,9 @@ const Notifications: React.FC = () => {
                   userId={item.userId}
                   handleDeletePressed={() =>
                     handleDeleteNotification(item.createdOn)
+                  }
+                  handleUnreadSingleNotification={() =>
+                    markNotificationAsRead(item.createdOn)
                   }
                 />
               )}

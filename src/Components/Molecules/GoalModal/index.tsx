@@ -23,7 +23,6 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
 
   // functions
   const handleModalFalse = useCallback(() => setModalVisible(false), []);
-
   if (todaysSteps / totalSteps >= 1 && modalShown === false) {
     setModalVisible(true);
     dispatch(setModalShown(true));

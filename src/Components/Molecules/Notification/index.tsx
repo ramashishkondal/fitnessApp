@@ -20,6 +20,7 @@ const Notification: React.FC<NotificationProps> = ({
   timeAgo,
   isUnread,
   handleDeletePressed,
+  handleUnreadSingleNotification,
 }) => {
   // state use
   const [userData, setUserData] = useState<User>();
@@ -51,7 +52,9 @@ const Notification: React.FC<NotificationProps> = ({
 
   return (
     <Swipeable renderRightActions={rightSwipeActions}>
-      <View style={styles.parent}>
+      <TouchableOpacity
+        style={styles.parent}
+        onPress={handleUnreadSingleNotification}>
         <View style={styles.CustomImageCtr}>
           {userData ? (
             <CustomImage
@@ -75,7 +78,7 @@ const Notification: React.FC<NotificationProps> = ({
         <View style={styles.isUnreadCtr}>
           {isUnread ? <View style={styles.isUnreadDot} /> : null}
         </View>
-      </View>
+      </TouchableOpacity>
     </Swipeable>
   );
 };

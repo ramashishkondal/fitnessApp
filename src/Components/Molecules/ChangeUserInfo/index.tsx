@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
-import {Alert, Platform, View} from 'react-native';
-import {CustomButton, CustomTextInput, HeadingText} from '../../Atoms';
+import {Platform, View} from 'react-native';
+import {
+  CustomButton,
+  CustomErrorText,
+  CustomTextInput,
+  HeadingText,
+} from '../../Atoms';
 import {ChangeUserInfoProps} from './types';
 import {styles} from './styles';
 import {ICONS, SPACING, STRING} from '../../../Constants';
@@ -16,6 +21,7 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {UpdateMode} from 'realm';
 import {isValidName} from '../../../Utils/checkValidity';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import ToastError from '../../Atoms/ToastError';
 
 const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
   // redux use
@@ -49,24 +55,33 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmitChange = async () => {
-    if (firstName === '' || lastName === '') {
-      Alert.alert('Error', "First name and Last name fields can't be empty");
+    if (firstName === '') {
+      ToastError('Error', "First name  can't be empty");
       return;
+    }
+    if (lastName === '') {
+      ToastError('Error', "Last name can't be empty");
+      return;
+    }
+    if (!isValidName(firstName)) {
+      ToastError('Error', 'Invalid first name entered');
+      return;
+    }
+    if (!isValidName(lastName)) {
+      ToastError('Error', 'Invalid last name entered');
     }
 
     if (netInfo.isConnected) {
-      if (firstName !== '' && lastName !== '') {
-        setIsLoading(true);
-        await firestore()
-          .collection(firebaseDB.collections.users)
-          .doc(id!)
-          .update({
-            firstName,
-            lastName,
-            gender: selectedGender,
-          })
-          .finally(() => setIsLoading(false));
-      }
+      setIsLoading(true);
+      await firestore()
+        .collection(firebaseDB.collections.users)
+        .doc(id!)
+        .update({
+          firstName,
+          lastName,
+          gender: selectedGender,
+        })
+        .finally(() => setIsLoading(false));
     } else {
       realm.write(() => {
         realm.create(
@@ -87,14 +102,10 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
     setModalFalse();
   };
   const handleChangeFirstName = (text: string) => {
-    if (isValidName(text)) {
-      setFirstName(text);
-    }
+    setFirstName(text);
   };
   const handleChangeLastName = (text: string) => {
-    if (isValidName(text)) {
-      setLastName(text);
-    }
+    setLastName(text);
   };
   return (
     <KeyboardAwareScrollView
@@ -109,14 +120,22 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
           parentStyle={[SPACING.mh1, SPACING.mt5]}
           textInputStyle={styles.customTextInputStyle}
           onChangeText={handleChangeFirstName}
+          textInputProps={{maxLength: 30}}
         />
+        {firstName && !isValidName(firstName) ? (
+          <CustomErrorText text="Invalid first name entered" />
+        ) : null}
         <CustomTextInput
           value={lastName}
           placeHolder="Last Name"
           parentStyle={[SPACING.mh1, SPACING.mt5]}
           textInputStyle={styles.customTextInputStyle}
           onChangeText={handleChangeLastName}
+          textInputProps={{maxLength: 30}}
         />
+        {lastName && !isValidName(lastName) ? (
+          <CustomErrorText text="Invalid last name entered" />
+        ) : null}
         <View style={styles.genderCtr}>
           <View style={styles.genderCardsCtr}>
             <Card

@@ -162,7 +162,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       .doc(id!)
       .onSnapshot(snapshot => {
         if (snapshot.exists) {
-          const x = snapshot.data() as DailyMeals;
+          const x = snapshot.get(
+            new Date().setHours(0, 0, 0, 0).toString(),
+          ) as DailyMeals;
           if (x) {
             console.log('daily meal data is ', x);
             dispatch(resetMealDataItems(x));
