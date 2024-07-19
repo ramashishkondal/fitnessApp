@@ -35,7 +35,11 @@ export const healthSlice = createSlice({
       state,
       action: PayloadAction<Partial<InitialState['value']>>,
     ) => {
-      state.value = {...state.value, ...action.payload};
+      state.value = {
+        ...state.value,
+        currentDate: new Date().toISOString(),
+        ...action.payload,
+      };
     },
     resetHealthData: state => {
       state.value = {

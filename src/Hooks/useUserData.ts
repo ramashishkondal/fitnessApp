@@ -180,31 +180,34 @@ export const useUserData = () => {
             updateNotificationReadStatus(
               id,
               userData.notifications.map(handleNotifications),
-            );
-            dispatch(
-              updateUserData({
-                ...userData,
-                createdOn: Timestamp.fromMillis(
-                  userData.createdOn.seconds * 1000,
-                )
-                  .toDate()
-                  .toISOString(),
-                healthData: userData.healthData.map(val => ({
-                  ...val,
-                  currentDate: Timestamp.fromMillis(
-                    val.currentDate.seconds * 1000,
+            ).then(() => {
+              dispatch(
+                updateUserData({
+                  ...userData,
+                  createdOn: Timestamp.fromMillis(
+                    userData.createdOn.seconds * 1000,
                   )
                     .toDate()
                     .toISOString(),
-                })),
-                notifications: userData.notifications.map(val => ({
-                  ...val,
-                  createdOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
-                    .toDate()
-                    .toISOString(),
-                })),
-              }),
-            );
+                  healthData: userData.healthData.map(val => ({
+                    ...val,
+                    currentDate: Timestamp.fromMillis(
+                      val.currentDate.seconds * 1000,
+                    )
+                      .toDate()
+                      .toISOString(),
+                  })),
+                  notifications: userData.notifications.map(val => ({
+                    ...val,
+                    createdOn: Timestamp.fromMillis(
+                      val.createdOn.seconds * 1000,
+                    )
+                      .toDate()
+                      .toISOString(),
+                  })),
+                }),
+              );
+            });
           }
         });
       return () => unsubscribe();

@@ -1,5 +1,6 @@
 export const IMAGES = {
   LANDING_PAGE: require('../Assets/Images/landingPageImage.jpeg'),
+  DETIALS_COMPLETED: require('../Assets/Images/background.png'),
   GET_PREMIUM: {
     1: require('../Assets/Images/prem_1.jpg'),
     2: require('../Assets/Images/prem_2.jpg'),

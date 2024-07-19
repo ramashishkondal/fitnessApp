@@ -88,7 +88,7 @@ const DailySteps: React.FC = () => {
                 }
                 return acc;
               },
-              {value: -Infinity, week: ''},
+              {value: todaysSteps, week: 'today'},
             );
             const worstStepsDay = result.reduce(
               (acc, val) => {
@@ -101,7 +101,7 @@ const DailySteps: React.FC = () => {
                 }
                 return acc;
               },
-              {value: +Infinity, week: ''},
+              {value: todaysSteps, week: 'today'},
             );
             setRating({
               best: bestStepsDay,
@@ -211,7 +211,7 @@ const DailySteps: React.FC = () => {
               }
               return acc;
             },
-            {value: -Infinity, week: ''},
+            {value: todaysSteps, week: 'today'},
           );
 
           const worstStepsDay = stepsResult.reduce(
@@ -224,7 +224,7 @@ const DailySteps: React.FC = () => {
               }
               return acc;
             },
-            {value: +Infinity, week: ''},
+            {value: todaysSteps, week: 'today'},
           );
 
           setRating({
@@ -239,7 +239,7 @@ const DailySteps: React.FC = () => {
         androidHealthSetup();
       }
     }
-  }, [dispatch, totalSteps, hasPermission]);
+  }, [dispatch, totalSteps, hasPermission, todaysSteps]);
 
   // callback use
   const centerLabelComponent = useCallback(() => {
@@ -277,7 +277,7 @@ const DailySteps: React.FC = () => {
         totalInfoName="Daily Goal"
         parentStyle={SPACING.mtMedium}
       />
-      {hasPermission && lineData?.some(val => val) ? (
+      {hasPermission && lineData?.some(val => val) && lineData.length > 1 ? (
         <View style={styles.lineChartCtr}>
           <Text style={styles.lineChartHeadingText}>Statistics</Text>
           {lineData ? (
@@ -285,15 +285,15 @@ const DailySteps: React.FC = () => {
               isAnimated
               adjustToWidth
               curved
-              // yAxisOffset={-15.5}
+              yAxisOffset={-19}
               // initialSpacing={0}
               data={lineData.slice().reverse()}
-              hideOrigin
               areaChart
               startFillColor="#F8B631"
               endFillColor1="#FBDA95"
               hideDataPoints
               hideRules
+              overflowBottom={-1}
               thickness={4}
               yAxisTextStyle={{color: COLORS.SECONDARY.GREY}}
               yAxisColor="#ffff"
@@ -307,7 +307,7 @@ const DailySteps: React.FC = () => {
                 pointerStripColor: 'lightgray',
                 pointerStripWidth: 2,
                 pointerColor: 'lightgray',
-                pointerLabelWidth: 100,
+                pointerLabelWidth: 120,
                 activatePointersOnLongPress: true,
                 autoAdjustPointerLabelPosition: true,
                 pointerLabelComponent: (

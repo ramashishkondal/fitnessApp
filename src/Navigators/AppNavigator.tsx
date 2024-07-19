@@ -27,7 +27,7 @@ import BackNavigator from '../Components/Molecules/BackNavigator';
 import ResetPassword from '../Screens/MainScreens/ResetPassword';
 import GiveFeedback from '../Screens/MainScreens/GiveFeedback';
 import AboutUs from '../Screens/MainScreens/AboutUs';
-import {useUserData} from '../Hooks/useOffline';
+import {useUserData} from '../Hooks/useUserData';
 import OtherUserScreen from '../Screens/MainScreens/OtherUserScreen';
 
 const Stack = createNativeStackNavigator<appStackParamList>();

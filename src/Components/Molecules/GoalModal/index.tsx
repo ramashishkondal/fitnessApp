@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Modal} from 'react-native';
 import {GoalModalProps} from './types';
-import WithModal from '../WithModal';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {setModalShown} from '../../../Redux/Reducers/health';
 import GoalAchieved from '../GoalAchieved';
 import {styles} from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const GoalModal: React.FC<GoalModalProps> = ({children}) => {
   // state use
@@ -23,24 +23,22 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
 
   // functions
   const handleModalFalse = useCallback(() => setModalVisible(false), []);
-  if (todaysSteps / totalSteps >= 1 && modalShown === false) {
-    setModalVisible(true);
-    dispatch(setModalShown(true));
-  }
+  useEffect(() => {
+    if (todaysSteps / totalSteps >= 1 && modalShown === false) {
+      setModalVisible(true);
+      dispatch(setModalShown(true));
+    }
+  }, [dispatch, modalShown, todaysSteps, totalSteps]);
 
   return (
-    <View style={styles.parent}>
+    <SafeAreaView style={styles.parent}>
       {children}
-      {modalShown ? (
-        <WithModal
-          modalVisible={modalVisible}
-          setModalFalse={handleModalFalse}
-          parentStyle={styles.withModalParent}
-          barShown={false}>
+      {modalVisible ? (
+        <Modal animationType="slide" visible={modalVisible} transparent>
           <GoalAchieved setModalFalse={handleModalFalse} />
-        </WithModal>
+        </Modal>
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -12,23 +12,31 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRightWidth: 1,
     borderColor: COLORS.SECONDARY.GREY,
-    paddingLeft: '10%',
+    alignItems: 'flex-start',
   },
   rightCtr: {
     flex: 1,
-    paddingRight: '10%',
     alignItems: 'flex-end',
+  },
+  textCtrLeft: {
+    marginLeft: 32,
+  },
+  textCtrRight: {
+    marginRight: 32,
   },
   mainInfoText: {
     fontSize: SIZES.font17,
     fontWeight: SIZES.fontBold2,
     fontFamily: FONT_FAMILY.MEDIUM,
     color: 'black',
+    // borderWidth: 1,
+    textAlign: 'center',
   },
   descriptionText: {
     color: COLORS.SECONDARY.GREY,
     fontWeight: SIZES.fontBold2,
     fontSize: RFValue(11.5),
     fontFamily: FONT_FAMILY.MEDIUM,
+    textAlign: 'center',
   },
 });

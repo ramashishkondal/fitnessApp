@@ -136,12 +136,12 @@ export const STRING = {
   },
   ADD_FIRST_NAME: {
     TITLE: 'What is your First Name ?',
-    BUTTON_TEXT: 'CONTINUE',
+    BUTTON_TEXT: 'Continue',
     TEXT_INPUT_PLACE_HOLDER: 'First Name',
   },
   ADD_LAST_NAME: {
     TITLE: 'What is your Last Name ?',
-    BUTTON_TEXT: 'CONTINUE',
+    BUTTON_TEXT: 'Continue',
     TEXT_INPUT_PLACE_HOLDER: 'Last Name',
   },
   NUTRITION: {

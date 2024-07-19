@@ -113,7 +113,9 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
           </View>
           <View style={styles.firstNameAndLastNameCtr}>
             <Text style={styles.infoText}>
-              {`${firstName} ${lastName ?? ''}`}
+              {`${firstName.slice(0, 8)}${
+                firstName.length > 8 ? '...' : ''
+              } ${lastName.slice(0, 8)}${lastName.length > 8 ? '...' : ''}`}
             </Text>
             <Text style={styles.infoText}>{`${email.slice(0, 14)}${
               email.length > 14 ? '...' : ''

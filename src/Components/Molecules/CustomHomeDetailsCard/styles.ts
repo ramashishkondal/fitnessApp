@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
-import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
@@ -8,16 +7,17 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderWidth: 1,
     borderColor: COLORS.PRIMARY.DARK_GREY,
-    minHeight: RFValue(100),
-    paddingHorizontal: 15,
+    flexGrow: 1,
+    paddingHorizontal: 16,
     justifyContent: 'center',
+    paddingVertical: 16,
   },
   allDetailsCtr: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconCtr: {flex: 1},
+  iconCtr: {flex: 0.8},
   childCtr: {
     flexDirection: 'column',
     paddingHorizontal: 20,

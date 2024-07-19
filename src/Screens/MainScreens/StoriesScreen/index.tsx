@@ -33,7 +33,13 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
   const [index, setIndex] = useState(0);
-  const stories = allStoryData[userIndex].stories;
+  const stories = allStoryData[userIndex].stories.filter(val => {
+    const dd = new Date(val.storyCreatedOn);
+    if (dd.getDate() !== new Date().getDate()) {
+      return false;
+    }
+    return true;
+  });
 
   // ref use
   const videoRef = useRef<VideoRef>(null);
@@ -120,7 +126,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
     <View style={styles.parent} key={`${userIndex}-${index}`}>
       <View style={[styles.topInfoCtr, {top: insets.top}]}>
         <View style={styles.topCurrentStoryLineCtr}>
-          {Array(allStoryData[userIndex].stories.length)
+          {Array(stories.length)
             .fill(0)
             .map((_val, i) => (
               <View

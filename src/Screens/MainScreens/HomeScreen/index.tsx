@@ -27,6 +27,7 @@ import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import RNRestart from 'react-native-restart';
 import {
   DailyMeals,
+  resetMealData,
   resetMealDataItems,
 } from '../../../Redux/Reducers/dailyMeal';
 import {firebaseDB} from '../../../Utils/userUtils';
@@ -168,6 +169,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           if (x) {
             console.log('daily meal data is ', x);
             dispatch(resetMealDataItems(x));
+          } else {
+            dispatch(resetMealData());
           }
         }
       });
@@ -180,7 +183,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const goToDailySteps = (): void => navigation.push('DailySteps');
 
   return (
-    <Animated.View
+    <Animated.ScrollView
       style={styles.parent}
       entering={SlideInLeft.easing(Easing.ease)}>
       <HeadingText
@@ -300,7 +303,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           }
         />
       ) : null}
-    </Animated.View>
+    </Animated.ScrollView>
   );
 };
 

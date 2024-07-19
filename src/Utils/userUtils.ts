@@ -289,6 +289,7 @@ export const storeStory = async (
             {
               storyType: story.storyType,
               storyUrl: url,
+              storyCreatedOn: new Date().toISOString(),
             },
           ],
           userName: story.userName,

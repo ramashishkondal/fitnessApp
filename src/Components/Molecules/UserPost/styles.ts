@@ -92,6 +92,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.BOLD,
     fontSize: SIZES.font13,
     color: 'black',
+    maxWidth: 250,
   },
   likeCtr: {
     flex: 1,

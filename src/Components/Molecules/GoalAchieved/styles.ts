@@ -1,19 +1,32 @@
+import {SIZES} from './../../../Constants/commonStyles';
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: '#1118',
+    zIndex: -1,
+  },
   parent: {
     flex: 1,
+    // marginHorizontal: 16,
+    marginTop: 40,
+    marginBottom: 24,
+    marginHorizontal: 16,
+    borderRadius: 10,
   },
   headingCtr: {
-    marginTop: 24,
-    marginBottom: 48,
+    marginTop: RFValue(24),
+    marginBottom: SIZES.height / 24,
   },
   childCtrTop: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.PURPLE,
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
   },
   closeCtr: {
     position: 'absolute',
@@ -43,7 +56,8 @@ export const styles = StyleSheet.create({
   childCtrBottom: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY.LIGHT_GREY,
-    borderRadius: 10,
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
   },
   cardCtr: {
     position: 'absolute',

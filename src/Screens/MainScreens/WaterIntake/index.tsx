@@ -92,12 +92,9 @@ const WaterIntake: React.FC = () => {
         const worstWaterIntakeDay = filteredData.reduce(
           (acc, val) => {
             const currentDate = new Date(val.currentDate);
-            console.log(
-              'acc is',
-              acc,
-              currentDate.toDateString(),
-              new Date().toDateString(),
-            );
+            if (acc.week === bestWaterIntakeDay.week) {
+              return acc;
+            }
             if (val.waterIntake <= acc.value) {
               return {
                 value: val.waterIntake,
@@ -186,7 +183,9 @@ const WaterIntake: React.FC = () => {
           value={rating?.best.value ?? 0}
         />
       )}
-      {rating === undefined || rating.worst.value === +Infinity ? null : (
+      {rating === undefined ||
+      rating.worst.value === +Infinity ||
+      rating.worst.week === rating.best.week ? null : (
         <PerformanceCard
           icon={ICONS.SmileyBad(simleySize)}
           performanceText="Worst Performance"

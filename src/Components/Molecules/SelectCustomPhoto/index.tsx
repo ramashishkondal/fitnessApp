@@ -114,7 +114,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                   : () =>
                       openCamera({
                         mediaType,
-                        quality: 0.5,
+                        quality: 0.1,
                         videoQuality: 'low',
                       })
               }>
@@ -129,7 +129,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
               onPress={() =>
                 openGallery({
                   mediaType,
-                  quality: 0.5,
+                  quality: 0.1,
                   videoQuality: 'low',
                 })
               }>
@@ -161,7 +161,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                 onPress={() =>
                   openCamera({
                     mediaType: 'video',
-                    quality: 0.5,
+                    quality: 0.1,
                     videoQuality: 'low',
                   })
                 }>
@@ -172,7 +172,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                 onPress={() =>
                   openCamera({
                     mediaType: 'photo',
-                    quality: 0.5,
+                    quality: 0.1,
                     videoQuality: 'low',
                   })
                 }>

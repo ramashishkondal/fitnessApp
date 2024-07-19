@@ -21,15 +21,18 @@ import RNRestart from 'react-native-restart';
 import {storeBiometricData} from '../../../Utils/userUtils';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
-  // state use
-  const [switchActiveNotifications, setSwitchActiveNotifications] =
-    useState(false);
-
   // redux use
   const dispatch = useAppDispatch();
   const {finger, id} = useAppSelector(state => state.User.data);
-  const {isSocial} = useAppSelector(state => state.settings.data.cachedData);
+  const {
+    cachedData: {isSocial},
+    allowPushNotifications,
+  } = useAppSelector(state => state.settings.data);
 
+  // state use
+  const [switchActiveNotifications, setSwitchActiveNotifications] = useState(
+    allowPushNotifications,
+  );
   const [switchActiveFinger, setSwitchActiveFinger] = useState(finger);
 
   // functions
@@ -132,7 +135,9 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         />
         {!isSocial ? (
           <SettingsCard
-            title="Enable fingerprint"
+            title={`Enable ${
+              Platform.OS === 'ios' ? 'face ID' : 'fingerprint'
+            }`}
             hasSwitch
             switchActive={switchActiveFinger}
             onSwitchValueChange={handleFingerPrint}

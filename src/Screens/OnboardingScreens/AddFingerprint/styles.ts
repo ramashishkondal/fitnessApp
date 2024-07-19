@@ -28,10 +28,9 @@ export const styles = StyleSheet.create({
   },
   notNowParent: {
     backgroundColor: '',
-    padding: 4,
+    ...SPACING.mt3,
   },
   notNowText: {
     color: COLORS.PRIMARY.PURPLE,
-    ...SPACING.mt4,
   },
 });

@@ -18,16 +18,20 @@ const DataInfoCompare = ({
   return (
     <View style={[styles.parent, parentStyle]}>
       <View style={styles.leftCtr}>
-        <Text style={styles.mainInfoText}>
-          {doneItems} {doneItemsSuffix}
-        </Text>
-        <Text style={styles.descriptionText}>{doneItemsInfoName}</Text>
+        <View style={styles.textCtrLeft}>
+          <Text style={styles.mainInfoText}>
+            {doneItems} {doneItemsSuffix}
+          </Text>
+          <Text style={styles.descriptionText}>{doneItemsInfoName}</Text>
+        </View>
       </View>
       <View style={styles.rightCtr}>
-        <Text style={styles.mainInfoText}>
-          {total} {totalSuffix}
-        </Text>
-        <Text style={styles.descriptionText}>{totalInfoName}</Text>
+        <View style={styles.textCtrRight}>
+          <Text style={styles.mainInfoText}>
+            {total} {totalSuffix}
+          </Text>
+          <Text style={styles.descriptionText}>{totalInfoName}</Text>
+        </View>
       </View>
     </View>
   );

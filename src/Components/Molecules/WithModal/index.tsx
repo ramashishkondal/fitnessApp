@@ -23,7 +23,9 @@ const WithModal: React.FC<WithModalProps> = ({
       onBackdropPress={setModalFalse}
       swipeDirection={'down'}
       avoidKeyboard={false}
+      backdropTransitionOutTiming={1}
       // statusBarTranslucent={true}
+      useNativeDriverForBackdrop
       renderToHardwareTextureAndroid
       style={[styles.parent, parentStyle]}
       propagateSwipe={true}>

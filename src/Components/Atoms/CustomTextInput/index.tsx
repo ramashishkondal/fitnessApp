@@ -56,6 +56,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
           autoFocus={autoFocus}
           value={value}
           secureTextEntry={isTextSecure}
+          multiline={allowPeeking ? false : true}
+          numberOfLines={1}
           {...textInputProps}
         />
         {allowPeeking ? (

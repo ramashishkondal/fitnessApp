@@ -134,6 +134,11 @@ export const useHealth = () => {
         );
       }
       if (isInitialized) {
+        if (hasPermission) {
+          handleDataFromHealthConnect().catch(e => {
+            console.log('error in health connect ', e);
+          });
+        }
         setInterval(() => {
           if (hasPermission) {
             handleDataFromHealthConnect().catch(e => {

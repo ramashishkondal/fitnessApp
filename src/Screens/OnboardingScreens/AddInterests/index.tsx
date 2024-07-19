@@ -9,6 +9,7 @@ import {styles} from './styles';
 import {AddInterestsProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const iconSizeInterests = {
   width: 35,
@@ -77,13 +78,14 @@ const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
     selected: boolean;
   }> = ({item}) => <InterestItem item={item} />;
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <HeadingText text={STRING.ADD_INTERESTS.TITLE} textStyle={SPACING.mh2} />
       <FlatList
         data={interestsData.current}
         renderItem={renderItem}
         numColumns={3}
         style={styles.flatListStyle}
+        scrollEnabled={false}
       />
       <View style={styles.buttonStyle}>
         <CustomButton
@@ -91,7 +93,7 @@ const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
           onPress={goToAddGender}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

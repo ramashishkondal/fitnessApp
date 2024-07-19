@@ -43,7 +43,11 @@ const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
           </View>
           <View style={styles.firstNameAndLastNameCtr}>
             <Text style={styles.infoText}>
-              {`${userData.firstName} ${userData.lastName ?? ''}`}
+              {`${userData.firstName.slice(0, 8)}${
+                userData.firstName.length > 8 ? '...' : ''
+              } ${userData.lastName.slice(0, 8)}${
+                userData.lastName.length > 8 ? '...' : ''
+              }`}
             </Text>
             <Text style={styles.infoText}>{`${userData.email.slice(0, 14)}${
               userData.email.length > 14 ? '...' : ''

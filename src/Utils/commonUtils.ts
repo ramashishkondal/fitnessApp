@@ -77,7 +77,13 @@ export const date = {
   getStartOfDay: (someDate: Date) =>
     new Date(someDate.getFullYear(), someDate.getMonth(), someDate.getDate()),
   getPreviousDayDate: (today: Date) =>
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1),
+    new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 1,
+      today.getHours(),
+      today.getMinutes(),
+    ),
 };
 
 export type TimerId = string | number | NodeJS.Timeout | undefined;

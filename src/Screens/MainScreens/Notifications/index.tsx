@@ -67,6 +67,7 @@ const Notifications: React.FC = () => {
   };
 
   const markNotificationAsRead = (createdOn: Timestamp) => {
+    setShowMenu(false);
     if (notificationsData) {
       updateNotificationReadStatus(
         userId!,

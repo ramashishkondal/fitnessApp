@@ -2805,6 +2805,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-twitter-signin/twitter-signin@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@react-native-twitter-signin/twitter-signin@npm:1.2.0"
+  checksum: 01fd71f852cefe676d587818c471a4b9115656a864263eaf925efc8468186319398d489fa7cde3fa35d923e3cd09ce2d1982fb53135291251703f57c0c626c51
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.74.83":
   version: 0.74.83
   resolution: "@react-native/assets-registry@npm:0.74.83"
@@ -6493,6 +6500,7 @@ __metadata:
     "@react-native-firebase/messaging": ^20.1.0
     "@react-native-firebase/storage": ^20.1.0
     "@react-native-google-signin/google-signin": ^12.1.0
+    "@react-native-twitter-signin/twitter-signin": ^1.2.0
     "@react-native/babel-preset": 0.74.83
     "@react-native/eslint-config": 0.74.83
     "@react-native/metro-config": 0.74.83

@@ -36,6 +36,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   // constants
   const options: CameraOptions = {
     mediaType: 'photo',
+    quality: 0.1,
   };
   // state use
   const [photo, setPhoto] = useState('');
@@ -107,8 +108,10 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
             likedByUsersId: [],
             userName: firstName && lastName ? firstName + ' ' + lastName : '',
             userPhoto,
+          }).finally(() => {
+            setModalFalse();
+            setIsLoading(false);
           });
-          setModalFalse();
         }
       } else {
         storeDataInRealmDb(photo, caption);
@@ -116,8 +119,6 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
       }
     } catch (e) {
       console.log('error', e);
-    } finally {
-      setIsLoading(false);
     }
   };
 

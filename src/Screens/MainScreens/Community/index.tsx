@@ -111,7 +111,11 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
     console.log('adding this ', storyType, storyUrl);
     realm.write(() => {
       if (storyDataFromOffline) {
-        storyDataFromOffline?.stories.push({storyType, storyUrl});
+        storyDataFromOffline?.stories.push({
+          storyType,
+          storyUrl,
+          storyCreatedOn: new Date().toISOString(),
+        });
         return;
       }
       realm.create(
@@ -121,7 +125,9 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
           userName: firstName + ' ' + lastName,
           storyByUserId: id!,
           userPhoto: photo,
-          stories: [{storyType, storyUrl}],
+          stories: [
+            {storyType, storyUrl, storyCreatedOn: new Date().toISOString()},
+          ],
         },
         UpdateMode.Modified,
       );

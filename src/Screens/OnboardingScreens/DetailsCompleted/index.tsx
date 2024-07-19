@@ -1,6 +1,12 @@
 // libs
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  ImageBackground,
+} from 'react-native';
 
 // 3rd party
 import storage from '@react-native-firebase/storage';
@@ -13,7 +19,7 @@ import {
   createUser,
   sendNotification,
 } from '../../../Utils/userUtils';
-import {COLORS, ICONS, STRING} from '../../../Constants';
+import {COLORS, ICONS, IMAGES, STRING} from '../../../Constants';
 import {styles} from './style';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {resetHealthData} from '../../../Redux/Reducers/health';
@@ -25,8 +31,8 @@ const logoSize = {
   height: 40,
 };
 const arrowSize = {
-  width: 30,
-  height: 30,
+  width: 20,
+  height: 20,
 };
 const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   // state use
@@ -104,22 +110,24 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.parent}>
-      <View style={styles.childCtr}>
-        <View style={styles.logoCtr}>{ICONS.Logo(logoSize)}</View>
-        <Text style={styles.titleText}>{STRING.DETAILS_COMPLETED.TITLE}</Text>
-        <Text style={styles.titleDescriptionText}>
-          {STRING.DETAILS_COMPLETED.TITLE_DESCRIPTION}
-        </Text>
-        <TouchableOpacity style={styles.arrowCtr} onPress={handleSubmit}>
-          {isLoading ? (
-            <CustomLoading color={COLORS.SECONDARY.WHITE} />
-          ) : (
-            ICONS.DoubleArrow({color: COLORS.SECONDARY.WHITE, ...arrowSize})
-          )}
-        </TouchableOpacity>
+    <ImageBackground source={IMAGES.DETIALS_COMPLETED} style={{flex: 1}}>
+      <View style={styles.parent}>
+        <View style={styles.childCtr}>
+          <View style={styles.logoCtr}>{ICONS.Logo(logoSize)}</View>
+          <Text style={styles.titleText}>{STRING.DETAILS_COMPLETED.TITLE}</Text>
+          <Text style={styles.titleDescriptionText}>
+            {STRING.DETAILS_COMPLETED.TITLE_DESCRIPTION}
+          </Text>
+          <TouchableOpacity style={styles.arrowCtr} onPress={handleSubmit}>
+            {isLoading ? (
+              <CustomLoading color={COLORS.SECONDARY.WHITE} />
+            ) : (
+              ICONS.DoubleArrow({color: COLORS.SECONDARY.WHITE, ...arrowSize})
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 

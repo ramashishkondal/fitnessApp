@@ -28,7 +28,7 @@ const CustomHeader: React.FC<NativeStackHeaderProps> = props => {
   const headerHeight = useMemo(() => {
     if (props.route.name === 'AddInterests') {
       if (Platform.OS === 'ios') {
-        return Dimensions.get('screen').height;
+        return Dimensions.get('screen').height / 9.5;
       } else {
         return Dimensions.get('screen').height / 12;
       }

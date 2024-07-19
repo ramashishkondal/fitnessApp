@@ -11,6 +11,8 @@ const LineGraphLabel: React.FC<LineGraphLabelProps> = ({day, steps}) => {
         backgroundColor: COLORS.PRIMARY.PURPLE,
         justifyContent: 'center',
         padding: 4,
+        // paddingHorizontal: 24,
+        marginHorizontal: 16,
         borderRadius: SIZES.rounding0,
       }}>
       <Text style={{color: 'white', fontFamily: FONT_FAMILY.MEDIUM}}>

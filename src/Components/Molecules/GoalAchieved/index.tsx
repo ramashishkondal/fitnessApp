@@ -4,7 +4,7 @@ import {GoalAchievedProps} from './types';
 import {styles} from './styles';
 import {useAppSelector} from '../../../Redux/Store';
 import {CustomButton, CustomImage, HeadingText} from '../../Atoms';
-import {COLORS, ICONS, SPACING} from '../../../Constants';
+import {COLORS, ICONS, SIZES, SPACING} from '../../../Constants';
 import {getPercentage} from '../../../Utils/commonUtils';
 import InsidePieChart from '../InsidePieChart';
 import {PieChart} from 'react-native-gifted-charts';
@@ -34,68 +34,73 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
   }, [todaysSteps]);
 
   return (
-    <View style={styles.parent}>
-      <TouchableOpacity style={styles.closeCtr} onPress={setModalFalse}>
-        {ICONS.Close({width: 36, height: 36})}
-      </TouchableOpacity>
-      <View style={styles.childCtrTop} />
-      <View style={styles.childCtrBottom} />
-      <View style={styles.cardCtr}>
-        <View style={styles.headingCtr}>
-          <HeadingText
-            text="Goal Achieved!"
-            textStyle={{color: COLORS.SECONDARY.WHITE}}
-          />
-          <HeadingText
-            text="Share with friends!"
-            textStyle={{color: COLORS.SECONDARY.WHITE}}
-          />
-        </View>
-        <View style={styles.card}>
-          <View style={styles.userInfo}>
-            <View style={styles.userInfoCtr}>
-              <CustomImage
-                source={{uri: photo}}
-                parentStyle={styles.customImageParent}
-                imageStyle={styles.customImage}
-              />
-              <Text style={styles.userNameText}>
-                {firstName + ' ' + lastName}
-              </Text>
+    <TouchableOpacity
+      style={styles.backdrop}
+      activeOpacity={1}
+      onPress={setModalFalse}>
+      <TouchableOpacity style={styles.parent} activeOpacity={1}>
+        <TouchableOpacity style={styles.closeCtr} onPress={setModalFalse}>
+          {ICONS.Close({width: 36, height: 36})}
+        </TouchableOpacity>
+        <View style={styles.childCtrTop} />
+        <View style={styles.childCtrBottom} />
+        <View style={styles.cardCtr}>
+          <View style={styles.headingCtr}>
+            <HeadingText
+              text="Goal Achieved!"
+              textStyle={{color: COLORS.SECONDARY.WHITE}}
+            />
+            <HeadingText
+              text="Share with friends!"
+              textStyle={{color: COLORS.SECONDARY.WHITE}}
+            />
+          </View>
+          <View style={styles.card}>
+            <View style={styles.userInfo}>
+              <View style={styles.userInfoCtr}>
+                <CustomImage
+                  source={{uri: photo}}
+                  parentStyle={styles.customImageParent}
+                  imageStyle={styles.customImage}
+                />
+                <Text style={styles.userNameText}>
+                  {firstName + ' ' + lastName}
+                </Text>
+              </View>
+              {ICONS.Logo({width: 28, height: 28})}
             </View>
-            {ICONS.Logo({width: 28, height: 28})}
+            <View style={styles.dataCtr}>
+              <PieChart
+                donut
+                isAnimated
+                radius={SIZES.height / 8}
+                innerRadius={SIZES.height / 8 - 8}
+                innerCircleColor={COLORS.SECONDARY.WHITE}
+                data={pieData}
+                centerLabelComponent={centerLabelComponent}
+              />
+              <DataInfoCompare
+                doneItems={nutrition}
+                total={totalSteps}
+                doneItemsInfoName="Cal Burned"
+                totalInfoName="Daily Goal"
+                parentStyle={SPACING.mt3}
+              />
+            </View>
           </View>
-          <View style={styles.dataCtr}>
-            <PieChart
-              donut
-              isAnimated
-              radius={100}
-              innerRadius={92}
-              innerCircleColor={COLORS.SECONDARY.WHITE}
-              data={pieData}
-              centerLabelComponent={centerLabelComponent}
-            />
-            <DataInfoCompare
-              doneItems={nutrition}
-              total={totalSteps}
-              doneItemsInfoName="Cal Burned"
-              totalInfoName="Daily Goal"
-              parentStyle={SPACING.mt3}
-            />
-          </View>
+          <CustomButton
+            title="Share to friend"
+            parentStyle={styles.customButtonParent}
+          />
+          <CustomButton
+            title="Not now"
+            parentStyle={styles.customButtonNotNowParent}
+            textStyle={{color: COLORS.PRIMARY.PURPLE}}
+            onPress={setModalFalse}
+          />
         </View>
-        <CustomButton
-          title="Share to friend"
-          parentStyle={styles.customButtonParent}
-        />
-        <CustomButton
-          title="Not now"
-          parentStyle={styles.customButtonNotNowParent}
-          textStyle={{color: COLORS.PRIMARY.PURPLE}}
-          onPress={setModalFalse}
-        />
-      </View>
-    </View>
+      </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 

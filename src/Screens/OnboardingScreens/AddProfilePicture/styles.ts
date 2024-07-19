@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     ...SPACING.mh2,
   },
   avatarCtr: {
-    height: SIZES.height / 7,
+    flex: 0.4,
     alignItems: 'center',
   },
   photoCtr: {

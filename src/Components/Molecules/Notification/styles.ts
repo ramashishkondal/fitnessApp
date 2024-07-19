@@ -54,6 +54,7 @@ export const styles = StyleSheet.create({
   },
   userNameText: {
     fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: '900',
     fontSize: RFValue(13.5),
   },
   descriptionText: {
