@@ -51,7 +51,6 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   // realm use
   const realm = useRealm();
   const storyDataFromOffline = useObject(StoryDb, id ?? '');
-  console.log('story data is ', storyDataFromOffline?.stories);
 
   // ref use
   const postIdRef = useRef<Post>();
@@ -77,17 +76,52 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
                     Timestamp.fromMillis(val.latestStoryOn.seconds * 1000)
                       .toDate()
                       .toISOString(),
-                ),
+                ) &&
+                val.stories.filter(z => {
+                  const dd = new Date(z.storyCreatedOn);
+                  const now = new Date();
+
+                  // Calculate the difference in milliseconds between now and dd
+                  const timeDiff = now.getTime() - dd.getTime();
+
+                  // Convert 24 hours to milliseconds
+                  const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+                  // Check if the time difference is greater than or equal to 24 hours
+                  if (timeDiff >= twentyFourHoursInMs) {
+                    return false;
+                  }
+
+                  return true;
+                }).length,
             )
             .concat(
-              x.filter(val =>
-                storiesWatched.includes(
-                  val.storyByUserId +
-                    ' ' +
-                    Timestamp.fromMillis(val.latestStoryOn.seconds * 1000)
-                      .toDate()
-                      .toISOString(),
-                ),
+              x.filter(
+                val =>
+                  storiesWatched.includes(
+                    val.storyByUserId +
+                      ' ' +
+                      Timestamp.fromMillis(val.latestStoryOn.seconds * 1000)
+                        .toDate()
+                        .toISOString(),
+                  ) &&
+                  val.stories.filter(z => {
+                    const dd = new Date(z.storyCreatedOn);
+                    const now = new Date();
+
+                    // Calculate the difference in milliseconds between now and dd
+                    const timeDiff = now.getTime() - dd.getTime();
+
+                    // Convert 24 hours to milliseconds
+                    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+                    // Check if the time difference is greater than or equal to 24 hours
+                    if (timeDiff >= twentyFourHoursInMs) {
+                      return false;
+                    }
+
+                    return true;
+                  }).length,
               ),
             ),
         );
@@ -138,22 +172,6 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const setActiveModalPost = useCallback(() => setActiveModal('story'), []);
   const setActiveModalFalse = useCallback(() => setActiveModal('none'), []);
   const showCommentModal = useCallback(() => setActiveModal('comment'), []);
-
-  console.log(
-    'some llm',
-
-    storiesWatched.includes(
-      'iPqunUl4vcSnroFyBeJP6fEvSO13 2024-07-10T06:53:16.000Z',
-    ),
-    storiesData,
-    // storiesWatched.includes(
-    //   storiesData[index].storyByUserId +
-    //     ' ' +
-    //     Timestamp.fromMillis(storiesData[index].latestStoryOn.seconds * 1000)
-    //       .toDate()
-    //       .toISOString(),
-    // ),
-  );
 
   return (
     <>

@@ -33,13 +33,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
   const [index, setIndex] = useState(0);
-  const stories = allStoryData[userIndex].stories.filter(val => {
-    const dd = new Date(val.storyCreatedOn);
-    if (dd.getDate() !== new Date().getDate()) {
-      return false;
-    }
-    return true;
-  });
+  const stories = allStoryData[userIndex].stories;
 
   // ref use
   const videoRef = useRef<VideoRef>(null);

@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   infoText: {
     marginBottom: 3,
-    color: COLORS.PRIMARY.PURPLE,
+    color: COLORS.SECONDARY.GREY,
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
     fontSize: SIZES.font12,

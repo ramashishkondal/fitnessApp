@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Alert, TouchableOpacity, View} from 'react-native';
 
 // 3rd party
@@ -16,7 +16,6 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import {SocialLoginProps} from './types';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
-import RNTwitterSignIn from '@react-native-twitter-signin/twitter-signin';
 
 const iconSize = 17;
 
@@ -102,67 +101,64 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
   //   await LoginManager.logInWithPermissions(['public_profile', 'email']);
   //   setIsLoading(null);
   // };
-  const TWITTER_CONSTS = {
-    API_KEY: 'CCFoN3B1il5hGF1bZLlEElT7L',
-    API_KEY_SECRET: '4IRDzyhUtyV22JlznTodwMajLZgNErs57U1TORaENQ2gU8B5FN',
-  };
-
-  useEffect(() => {}, []);
-  const handleTwitterLogIn = async () => {
-    RNTwitterSignIn.init(TWITTER_CONSTS.API_KEY, TWITTER_CONSTS.API_KEY_SECRET);
-    RNTwitterSignIn.logIn()
-      .then(loginData => {
-        console.log(loginData);
-        const {authToken, email, userName} = loginData;
-        if (authToken && email) {
-          storeUserData(
-            {
-              email,
-              firstName: userName?.split(' ')[0] ?? '',
-              lastName: userName?.split(' ')[1] ?? '',
-              photo:
-                'https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FAvatars%2Favatar_1.jpg?alt=media&token=2272128b-8507-46cc-aca7-83517cedce92',
-              id: authToken,
-              finger: false,
-              gender: null,
-              interests: INTERESETS.map(item => {
-                const {title, selected} = item;
-                return {title, selected};
-              }),
-              preferences: preferencesData,
-              healthData: [],
-              notifications: [],
-              storiesWatched: [],
-            },
-            authToken,
-          );
-          sendNotification(
-            {
-              isShownViaPushNotification: false,
-              isUnread: true,
-              message: 'You have successfully registered on FitnessApp !',
-              userId: 'App',
-            },
-            authToken!,
-          );
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  // const TWITTER_CONSTS = {
+  //   API_KEY: 'CCFoN3B1il5hGF1bZLlEElT7L',
+  //   API_KEY_SECRET: '4IRDzyhUtyV22JlznTodwMajLZgNErs57U1TORaENQ2gU8B5FN',
+  // };
+  // const handleTwitterLogIn = async () => {
+  //   RNTwitterSignIn.init(TWITTER_CONSTS.API_KEY, TWITTER_CONSTS.API_KEY_SECRET);
+  //   RNTwitterSignIn.logIn()
+  //     .then(loginData => {
+  //       console.log(loginData);
+  //       const {authToken, email, userName} = loginData;
+  //       if (authToken && email) {
+  //         storeUserData(
+  //           {
+  //             email,
+  //             firstName: userName?.split(' ')[0] ?? '',
+  //             lastName: userName?.split(' ')[1] ?? '',
+  //             photo:
+  //               'https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FAvatars%2Favatar_1.jpg?alt=media&token=2272128b-8507-46cc-aca7-83517cedce92',
+  //             id: authToken,
+  //             finger: false,
+  //             gender: null,
+  //             interests: INTERESETS.map(item => {
+  //               const {title, selected} = item;
+  //               return {title, selected};
+  //             }),
+  //             preferences: preferencesData,
+  //             healthData: [],
+  //             notifications: [],
+  //             storiesWatched: [],
+  //           },
+  //           authToken,
+  //         );
+  //         sendNotification(
+  //           {
+  //             isShownViaPushNotification: false,
+  //             isUnread: true,
+  //             message: 'You have successfully registered on FitnessApp !',
+  //             userId: 'App',
+  //           },
+  //           authToken!,
+  //         );
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <View style={[styles.logoCtr, SPACING.mt3]}>
-      {
-        <TouchableOpacity style={styles.logos} onPress={handleTwitterLogIn}>
-          {isLoading ? (
-            <CustomLoading color={COLORS.PRIMARY.PURPLE} />
-          ) : (
-            ICONS.TwitterLogo({width: iconSize, height: iconSize})
-          )}
-        </TouchableOpacity>
-      }
+      {/* <TouchableOpacity style={styles.logos} onPress={handleTwitterLogIn}>
+        {isLoading ? (
+          <CustomLoading color={COLORS.PRIMARY.PURPLE} />
+        ) : (
+          ICONS.TwitterLogo({width: iconSize, height: iconSize})
+        )}
+      </TouchableOpacity> */}
+
       {/* <TouchableOpacity style={styles.logos} onPress={handleFacebookSignIn}>
         {isLoading === 'facebook' ? (
           <CustomLoading color={COLORS.PRIMARY.PURPLE} />
