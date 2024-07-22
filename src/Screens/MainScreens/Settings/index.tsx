@@ -15,10 +15,15 @@ import {
   updateSettingPushNotification,
   updateSettingsCachedData,
 } from '../../../Redux/Reducers/userSettings';
-import {openHealthConnectSettings} from 'react-native-health-connect';
+import {
+  getSdkStatus,
+  openHealthConnectSettings,
+  SdkAvailabilityStatus,
+} from 'react-native-health-connect';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
 import RNRestart from 'react-native-restart';
 import {storeBiometricData} from '../../../Utils/userUtils';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // redux use
@@ -51,8 +56,25 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     ]);
   };
   const goToHealthSettings = () => {
+    const checkAvailabilityAndroid = async () => {
+      const status = await getSdkStatus();
+      if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
+        openHealthConnectSettings();
+      }
+
+      if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
+        ToastError('Error', 'Health Connect unavailable');
+      }
+
+      if (
+        status ===
+        SdkAvailabilityStatus.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
+      ) {
+        ToastError('Error', 'Health Connect update required');
+      }
+    };
     Platform.OS === 'android'
-      ? openHealthConnectSettings()
+      ? checkAvailabilityAndroid()
       : Alert.alert(
           'Open Health Settings',
           'To change HealthKit settings, please navigate to Settings > Health > Data Access & Devices.',

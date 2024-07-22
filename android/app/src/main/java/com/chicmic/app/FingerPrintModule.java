@@ -38,7 +38,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
     @RequiresApi(api = Build.VERSION_CODES.P)
     @ReactMethod
     public void authenticateFingerPrint(Promise promise) {
-        Log.d("do something ran", "asd");
+        Log.d("FingerPrintModule", "authenticateFingerPrint called");
 
         final ReactApplicationContext reactContext = getReactApplicationContext();
         executor = ContextCompat.getMainExecutor(reactContext);
@@ -46,6 +46,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
         FragmentActivity activity = (FragmentActivity) getCurrentActivity();
         if (activity == null) {
             Log.e("FingerPrintModule", "Activity is null");
+            promise.reject("activity_null", "Current activity is null.");
             return;
         }
 
@@ -59,7 +60,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationError(errorCode, errString);
                         Toast.makeText(reactContext,
                                 "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
-                        promise.reject("auth error","error");
+                        promise.reject("auth_error", "Authentication error: " + errString);
                     }
 
                     @Override
@@ -67,7 +68,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationSucceeded(result);
                         Toast.makeText(reactContext,
                                 "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                        promise.resolve("");
+                        promise.resolve("Authentication succeeded!");
                     }
 
                     @Override
@@ -75,7 +76,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationFailed();
                         Toast.makeText(reactContext, "Authentication failed",
                                 Toast.LENGTH_SHORT).show();
-                        promise.reject("auth failed","rejected");
+                        promise.reject("auth_failed", "Authentication failed");
                     }
                 });
 

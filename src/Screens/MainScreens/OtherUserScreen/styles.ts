@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   infoText: {
     marginBottom: 3,
-    color: COLORS.PRIMARY.PURPLE,
+    color: COLORS.SECONDARY.GREY,
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
     fontSize: SIZES.font12,
@@ -39,13 +39,12 @@ export const styles = StyleSheet.create({
     color: COLORS.SECONDARY.GREY,
     fontFamily: FONT_FAMILY.MEDIUM,
     fontSize: SIZES.fontH7,
-    // fontSize: RFValue(12),
   },
   nameAndGenderCtr: {
     flex: 1,
   },
   firstNameAndLastNameCtr: {
-    flex: 2.1,
+    flex: 3,
   },
   otherCtr: {
     flex: 5,

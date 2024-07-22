@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font13,
     fontWeight: SIZES.fontBold0,
     fontFamily: FONT_FAMILY.REGULAR,
-    marginRight: 32,
+    marginRight: 40,
     color: 'black',
   },
   commentText: {

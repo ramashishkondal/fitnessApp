@@ -341,7 +341,9 @@ const DailySteps: React.FC = () => {
             performanceText="Best Performance"
           />
         )}
-        {rating?.worst.value === Infinity || rating === undefined ? null : (
+        {rating?.worst.value === Infinity ||
+        rating === undefined ||
+        rating.best.week === rating.worst.week ? null : (
           <PerformanceCard
             icon={ICONS.SmileyBad({width: 20, height: 20})}
             onDay={rating?.worst.week}

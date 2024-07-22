@@ -36,22 +36,12 @@ const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
         <View style={styles.genderCtr}>
           <View style={styles.nameAndGenderCtr}>
             <Text style={styles.infoTextHeading}>Name :</Text>
-            <Text style={styles.infoTextHeading}>Email :</Text>
-            {userData.gender ? (
-              <Text style={styles.infoTextHeading}>Gender :</Text>
-            ) : null}
+            <Text style={styles.infoTextHeading}>Gender :</Text>
           </View>
           <View style={styles.firstNameAndLastNameCtr}>
-            <Text style={styles.infoText}>
-              {`${userData.firstName.slice(0, 8)}${
-                userData.firstName.length > 8 ? '...' : ''
-              } ${userData.lastName.slice(0, 8)}${
-                userData.lastName.length > 8 ? '...' : ''
-              }`}
+            <Text style={styles.infoText} numberOfLines={1}>
+              {userData.firstName + ' ' + userData.lastName}
             </Text>
-            <Text style={styles.infoText}>{`${userData.email.slice(0, 14)}${
-              userData.email.length > 14 ? '...' : ''
-            }`}</Text>
             {userData.gender ? (
               <Text style={styles.infoText}>{userData.gender}</Text>
             ) : null}

@@ -92,9 +92,6 @@ const WaterIntake: React.FC = () => {
         const worstWaterIntakeDay = filteredData.reduce(
           (acc, val) => {
             const currentDate = new Date(val.currentDate);
-            if (acc.week === bestWaterIntakeDay.week) {
-              return acc;
-            }
             if (val.waterIntake <= acc.value) {
               return {
                 value: val.waterIntake,

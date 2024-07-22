@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   NativeModules,
   Platform,
+  Image,
 } from 'react-native';
 
 // 3rd party
@@ -24,7 +25,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {SignInProps} from '../../../Defs';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
-import {STRING, ICONS, SPACING} from '../../../Constants';
+import {STRING, SPACING, IMAGES} from '../../../Constants';
 import {styles} from './styles';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {useNetInfo} from '@react-native-community/netinfo';
@@ -156,7 +157,7 @@ const SignIn = ({navigation}: SignInProps) => {
       <CustomTextInput
         value={email}
         placeHolder={STRING.SIGNIN.EMAIL}
-        icon={ICONS.User({width: 18, height: 18})}
+        icon={<Image source={IMAGES.USER} style={{width: 18, height: 18}} />}
         parentStyle={[SPACING.mt5, styles.textInput]}
         onChangeText={setEmail}
         textInputProps={{
@@ -169,7 +170,7 @@ const SignIn = ({navigation}: SignInProps) => {
       ) : null}
       <CustomTextInput
         placeHolder={STRING.SIGNIN.PASSWORD}
-        icon={ICONS.Lock({width: 18, height: 18})}
+        icon={<Image source={IMAGES.LOCK} style={{width: 32, height: 32}} />}
         parentStyle={[SPACING.mt3, styles.textInput]}
         onChangeText={setPassword}
         allowPeeking

@@ -1,6 +1,11 @@
 export const IMAGES = {
   LANDING_PAGE: require('../Assets/Images/landingPageImage.jpeg'),
   DETIALS_COMPLETED: require('../Assets/Images/background.png'),
+  USER: require('../Assets/Images/User.png'),
+  LOCK: require('../Assets/Images/lock.png'),
+  NUTRITION: require('../Assets/Images/food.png'),
+  WATER: require('../Assets/Images/water.png'),
+  GUY: require('../Assets/Images/guy.png'),
   GET_PREMIUM: {
     1: require('../Assets/Images/prem_1.jpg'),
     2: require('../Assets/Images/prem_2.jpg'),

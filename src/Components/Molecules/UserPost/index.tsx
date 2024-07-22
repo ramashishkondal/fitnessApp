@@ -105,7 +105,7 @@ const UserPost: React.FC<UserPostProps> = ({
           ) : null}
           <View style={styles.userTextCtr}>
             {userData ? (
-              <Text style={styles.userNameText}>
+              <Text style={styles.userNameText} numberOfLines={1}>
                 {userData.firstName + ' ' + userData.lastName}
               </Text>
             ) : null}

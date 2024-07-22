@@ -18,7 +18,7 @@ import {
   HeadingText,
   WarningLabel,
 } from '../../../Components';
-import {ICONS, STRING} from '../../../Constants';
+import {IMAGES, STRING} from '../../../Constants';
 import {HomeScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
@@ -35,7 +35,12 @@ import firestore from '@react-native-firebase/firestore';
 import {useHealth} from '../../../Hooks/useHealth';
 import {PERMISSIONS, check} from 'react-native-permissions';
 import {updateHealthData} from '../../../Redux/Reducers/health';
-import {openHealthConnectSettings} from 'react-native-health-connect';
+import {
+  openHealthConnectSettings,
+  getSdkStatus,
+  SdkAvailabilityStatus,
+} from 'react-native-health-connect';
+import ToastError from '../../../Components/Atoms/ToastError';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -206,7 +211,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.NUTRITION}
           handleOnPress={goToNutrition}
-          icon={ICONS.Nutrition}
+          source={IMAGES.NUTRITION}
           status={STRING.HOME_SCREEN.detailsString(
             nutrition,
             totalCalorie,
@@ -217,7 +222,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.WATER}
           handleOnPress={goToWaterIntake}
-          icon={ICONS.Water}
+          source={IMAGES.WATER}
           status={STRING.HOME_SCREEN.detailsString(
             waterIntake,
             noOfGlasses,
@@ -228,7 +233,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <CustomHomeDetailsCard
           title={STRING.HOME_SCREEN.DAILY_STEPS}
           handleOnPress={goToDailySteps}
-          icon={ICONS.ManWalking}
+          source={IMAGES.GUY}
           status={STRING.HOME_SCREEN.detailsString(
             todaysSteps,
             totalSteps,
@@ -292,7 +297,31 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
                       {
                         text: 'Ok',
                         onPress: () => {
-                          openHealthConnectSettings();
+                          const checkAvailability = async () => {
+                            const status = await getSdkStatus();
+                            if (
+                              status === SdkAvailabilityStatus.SDK_AVAILABLE
+                            ) {
+                              openHealthConnectSettings();
+                            }
+
+                            if (
+                              status === SdkAvailabilityStatus.SDK_UNAVAILABLE
+                            ) {
+                              ToastError('Error', 'Health Connect unavailable');
+                            }
+
+                            if (
+                              status ===
+                              SdkAvailabilityStatus.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
+                            ) {
+                              ToastError(
+                                'Error',
+                                'Health Connect update required',
+                              );
+                            }
+                          };
+                          checkAvailability();
                         },
                       },
                       {

@@ -47,7 +47,7 @@ const Comment: React.FC<CommentProps> = ({
         </View>
         <View style={styles.userTextCtr}>
           {userData ? (
-            <Text style={styles.userNameText}>
+            <Text style={styles.userNameText} numberOfLines={1}>
               {userData.firstName + ' ' + userData.lastName}
             </Text>
           ) : null}
