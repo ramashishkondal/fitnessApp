@@ -15,7 +15,7 @@ const initialState: InitialState = {
     waterIntake: 0,
     hasPermission: false,
     goal: {
-      totalCalorie: 8000,
+      totalCalorie: 2500,
       noOfGlasses: 6,
       totalSteps: 500,
     },

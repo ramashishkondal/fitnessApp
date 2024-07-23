@@ -11,7 +11,7 @@ export const COLORS = {
     LIGHT_GREY: '#F4F6FA',
   },
   SECONDARY: {
-    GREY: '#B0B1C8',
+    GREY: '#8e8e99',
     WHITE: '#FFFFFF',
     RED: '#ff0033',
     ORANGE: '#F7A56D',

@@ -53,7 +53,10 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
             <Image source={{uri: photo}} style={styles.photo} />
             <TouchableOpacity
               style={styles.closeCtr}
-              onPress={() => setIsAvatar(true)}>
+              onPress={() => {
+                setIsAvatar(true);
+                setPhoto(avatar);
+              }}>
               <View style={styles.closeIconCtr}>
                 {ICONS.Close({height: 20, width: 20})}
               </View>

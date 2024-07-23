@@ -1,6 +1,6 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Alert, Pressable, Text, View} from 'react-native';
 
 // 3rd party
 import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
@@ -33,7 +33,23 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
   const [index, setIndex] = useState(0);
-  const stories = allStoryData[userIndex].stories;
+  const stories = allStoryData[userIndex].stories.filter(z => {
+    const dd = new Date(z.storyCreatedOn);
+    const now = new Date();
+
+    // Calculate the difference in milliseconds between now and dd
+    const timeDiff = now.getTime() - dd.getTime();
+
+    // Convert 24 hours to milliseconds
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+    // Check if the time difference is greater than or equal to 24 hours
+    if (timeDiff >= twentyFourHoursInMs) {
+      return false;
+    }
+
+    return true;
+  });
 
   // ref use
   const videoRef = useRef<VideoRef>(null);
@@ -105,13 +121,23 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
     }
   };
   const handleStoryDelete = () => {
-    deleteStoryByUpdatingArray(
-      userId!,
-      allStoryData[userIndex].stories.filter(
-        val => val.storyUrl !== stories[index].storyUrl,
-      ),
-    );
-    navigation.goBack();
+    Alert.alert('Warning', 'Are you sure you want to delete the story?', [
+      {
+        text: 'YES',
+        onPress: () => {
+          deleteStoryByUpdatingArray(
+            userId!,
+            allStoryData[userIndex].stories.filter(
+              val => val.storyUrl !== stories[index].storyUrl,
+            ),
+          );
+          navigation.goBack();
+        },
+      },
+      {
+        text: 'NO',
+      },
+    ]);
   };
 
   const storyTimer = new Timer(goNext);

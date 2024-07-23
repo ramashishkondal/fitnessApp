@@ -6,7 +6,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <React/RCTBundleURLProvider.h>
 #import <GoogleSignIn/GoogleSignIn.h>
-#import <TwitterKit/TWTRKit.h>
 #import "RNBootSplash.h"
 
 @implementation AppDelegate
@@ -55,11 +54,6 @@
     // Handle Google Sign-In SDK
     if (!handled) {
         handled = [GIDSignIn.sharedInstance handleURL:url];
-    }
-    
-    // Handle Twitter SDK
-    if (!handled) {
-        handled = [[TWTRTwitter sharedInstance] application:application openURL:url options:options];
     }
     
     return handled;

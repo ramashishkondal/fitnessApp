@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, {useCallback} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // custom
@@ -14,10 +14,11 @@ import {
 } from '../Screens/MainScreens';
 import {homeDrawerParamList} from '../Defs';
 import {COLORS, ICONS, SIZES} from '../Constants';
-import {Platform, View} from 'react-native';
+import {Platform, Text, View} from 'react-native';
 import BackForDrawer from '../Components/Molecules/BackForDrawer';
 import {styles} from './styles';
 import {FONT_FAMILY} from '../Constants/commonStyles';
+import {useAppSelector} from '../Redux/Store';
 
 const iconSize = {
   width: 25,
@@ -34,8 +35,53 @@ const drawerIcon = (
     return <View style={styles.drawerIcon}>{icon(iconSize)}</View>;
   };
 };
+const drawerIconNotification = (
+  icon: (size: {
+    width: number;
+    height: number;
+    color?: string;
+  }) => React.ReactNode,
+  noOfNotification: number,
+) => {
+  return () => {
+    return (
+      <View style={styles.drawerIcon}>
+        {icon(iconSize)}
+        <View
+          style={{
+            position: 'absolute',
+            bottom: -1,
+            right: -2,
+            width: '60%',
+            height: '60%',
+            backgroundColor: COLORS.PRIMARY.PURPLE,
+            borderRadius: 200,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              color: COLORS.SECONDARY.WHITE,
+              fontFamily: FONT_FAMILY.BOLD,
+            }}>
+            {noOfNotification}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+};
+
 const Drawer = createDrawerNavigator<homeDrawerParamList>();
+
 const HomeNavigator: React.FC = () => {
+  // redux use
+  const {notifications} = useAppSelector(state => state.User.data);
+  const unreadNotifications = useCallback(
+    () => notifications.filter(val => val.isUnread).length,
+    [notifications],
+  );
+
   const headerLeft = () => {
     return <CustomDrawerButton />;
   };
@@ -95,7 +141,10 @@ const HomeNavigator: React.FC = () => {
         name="Notifications"
         component={Notifications}
         options={{
-          drawerIcon: drawerIcon(ICONS.Notification),
+          drawerIcon: drawerIconNotification(
+            ICONS.Notification,
+            unreadNotifications(),
+          ),
         }}
       />
       <Drawer.Screen

@@ -1,6 +1,6 @@
 // libs
-import React, {useCallback} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
@@ -20,13 +20,6 @@ const CustomDrawerRight: React.FC = () => {
 
   // net info
   const {isConnected} = useNetInfo();
-
-  // redux use
-  const {notifications} = useAppSelector(state => state.User.data);
-  const unreadNotifications = useCallback(
-    () => notifications.filter(val => val.isUnread).length,
-    [notifications],
-  );
 
   // navigation use
   const navigation =
@@ -50,11 +43,6 @@ const CustomDrawerRight: React.FC = () => {
           !isConnected ? styles.onlineStatusNoInternet : null,
         ]}
       />
-      {unreadNotifications() ? (
-        <View style={styles.notificationCtr}>
-          <Text style={styles.notificationText}>{unreadNotifications()}</Text>
-        </View>
-      ) : null}
     </TouchableOpacity>
   );
 };
