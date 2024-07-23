@@ -154,7 +154,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
         </View>
         <CustomButton
           title="Submit"
-          parentStyle={SPACING.mtXLarge}
+          parentStyle={{marginTop: 128, marginBottom: 40}}
           onPress={handleSubmitChange}
           isLoading={isLoading}
         />

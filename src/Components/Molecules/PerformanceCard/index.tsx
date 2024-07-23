@@ -13,15 +13,13 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
   value,
 }) => {
   return (
-    <View style={styles.parent}>
-      <View style={styles.performanceCtr}>
-        <View style={styles.iconCtr}>{icon}</View>
-        <View style={styles.titleAndDescContainer}>
-          <Text style={styles.descTitleText}>{performanceText}</Text>
-          <Text style={styles.descText}>{onDay}</Text>
-        </View>
-        <Text style={styles.valueText}>{value}</Text>
+    <View style={styles.performanceCtr}>
+      <View style={styles.iconCtr}>{icon}</View>
+      <View style={styles.titleAndDescContainer}>
+        <Text style={styles.descTitleText}>{performanceText}</Text>
+        <Text style={styles.descText}>{onDay}</Text>
       </View>
+      <Text style={styles.valueText}>{value}</Text>
     </View>
   );
 };

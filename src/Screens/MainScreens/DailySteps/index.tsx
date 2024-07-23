@@ -285,7 +285,7 @@ const DailySteps: React.FC = () => {
               isAnimated
               adjustToWidth
               curved
-              yAxisOffset={-19}
+              // yAxisOffset={-19}
               // initialSpacing={0}
               data={lineData.slice().reverse()}
               areaChart

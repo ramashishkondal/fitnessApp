@@ -36,7 +36,7 @@ const AboutUs = () => {
       <Text style={styles.sectionTitle}>Contact Us</Text>
       <Text style={styles.text}>
         Have questions or feedback? We’d love to hear from you! Contact us at
-        support@fitnessapp.com or follow us on social media.
+        support@fitnessapp.com.
       </Text>
     </ScrollView>
   );

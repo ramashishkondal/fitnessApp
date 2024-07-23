@@ -32,13 +32,13 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
   const handleClose = () => {
     Alert.alert('Warning', 'Are you sure you want to delete daily meal data?', [
       {
-        text: 'yes',
+        text: 'YES',
         onPress: () => {
           handleDataDelete();
         },
       },
       {
-        text: 'close',
+        text: 'NO',
       },
     ]);
   };
@@ -272,11 +272,13 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                     val.data.carbs * 4 +
                     val.data.protein * 4 >
                   val.data.calories
-                    ? (val.data.fat * 9 +
-                        val.data.carbs * 4 +
-                        val.data.protein * 4) *
-                      val.freq
-                    : val.data.calories * val.freq}{' '}
+                    ? (
+                        (val.data.fat * 9 +
+                          val.data.carbs * 4 +
+                          val.data.protein * 4) *
+                        val.freq
+                      ).toFixed(1)
+                    : (val.data.calories * val.freq).toFixed(1)}{' '}
                   cals
                 </Text>
               </View>

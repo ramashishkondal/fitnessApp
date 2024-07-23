@@ -4,9 +4,9 @@ import {User} from '../../Defs';
 const initialState: {data: User & {password: string | null}} = {
   data: {
     id: null,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'johnDoe@gmail.com',
+    firstName: '',
+    lastName: '',
+    email: '',
     finger: false,
     gender: null,
     interests: [],
