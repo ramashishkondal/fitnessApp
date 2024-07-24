@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   avatarCtr: {
     borderColor: COLORS.PRIMARY.GREY,
     borderWidth: 5,
-    marginHorizontal: 16,
+    marginHorizontal: 10,
     borderRadius: 200,
   },
   avatarSelected: {

@@ -79,9 +79,34 @@ export const useHealth = () => {
         const caloriesRes = await readRecords('TotalCaloriesBurned', {
           timeRangeFilter: {
             operator: 'after',
-            startTime: new Date(new Date().setHours(0)).toISOString(),
+            startTime: new Date(new Date().setHours(0, 0, 0)).toISOString(),
           },
         });
+        const bmrRes = await readRecords('BasalMetabolicRate', {
+          timeRangeFilter: {
+            operator: 'after',
+            startTime: '2024-07-22T18:30:00.000Z',
+          },
+        });
+        console.log('====================================');
+        console.log(
+          'bmr',
+          bmrRes[1].basalMetabolicRate.inKilocaloriesPerDay,
+          new Date().getHours(),
+        );
+        console.log('====================================');
+        let bmrPer30mins = 0;
+        if (bmrRes.length) {
+          bmrPer30mins =
+            (bmrRes[1].basalMetabolicRate.inKilocaloriesPerDay / 1440) *
+            30 *
+            new Date().getHours() *
+            2;
+          if (new Date().getMinutes() >= 30) {
+            bmrPer30mins +=
+              (bmrRes[1].basalMetabolicRate.inKilocaloriesPerDay / 1440) * 30;
+          }
+        }
         const totalCaloriesOfToday = Math.floor(
           caloriesRes.reduce((acc, val) => acc + val.energy.inKilocalories, 0),
         );
@@ -89,17 +114,21 @@ export const useHealth = () => {
           (acc, val) => acc + val.count,
           0,
         );
+        console.log('====================================');
+        console.log(totalCaloriesOfToday);
+        console.log('====================================');
+
         if (permissions === undefined) {
           dispatch(
             updateHealthData({
-              nutrition: totalCaloriesOfToday,
+              nutrition: Math.round(totalCaloriesOfToday + bmrPer30mins),
               todaysSteps: totalStepsOfToday,
             }),
           );
         } else {
           dispatch(
             updateHealthData({
-              nutrition: totalCaloriesOfToday,
+              nutrition: Math.round(totalCaloriesOfToday + bmrPer30mins),
               hasPermission: permissions,
               todaysSteps: totalStepsOfToday,
             }),
@@ -112,6 +141,7 @@ export const useHealth = () => {
           const grantedPermissions = await requestPermission([
             {accessType: 'read', recordType: 'Steps'},
             {accessType: 'read', recordType: 'TotalCaloriesBurned'},
+            {accessType: 'read', recordType: 'BasalMetabolicRate'},
           ]);
           console.log('permissions ', grantedPermissions);
 

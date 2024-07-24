@@ -5,7 +5,7 @@ import {PostDb} from '../DbModels/post';
 import {StoryDb} from '../DbModels/story';
 import {UserDb} from '../DbModels/user';
 import {updateUserData} from '../Redux/Reducers/currentUser';
-import {onDisplayNotification} from '../Utils/commonUtils';
+// import {onDisplayNotification} from '../Utils/commonUtils';
 import firestore, {Timestamp} from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {
@@ -13,10 +13,10 @@ import {
   firebaseDB,
   storeStory,
   storePost,
-  NotificationDataFirebaseDB,
-  getUserData,
+  // NotificationDataFirebaseDB,
+  // getUserData,
   UserFromFirebaseDb,
-  updateNotificationReadStatus,
+  // updateNotificationReadStatus,
 } from '../Utils/userUtils';
 import {useAppSelector, useAppDispatch} from '../Redux/Store';
 import {useNetInfo} from '@react-native-community/netinfo';
@@ -28,7 +28,7 @@ export const useUserData = () => {
   const {id, firstName, lastName, photo} = useAppSelector(
     state => state.User.data,
   );
-  const {allowPushNotifications} = useAppSelector(state => state.settings.data);
+  // const {allowPushNotifications} = useAppSelector(state => state.settings.data);
   const dispatch = useAppDispatch();
 
   // realm use
@@ -149,26 +149,26 @@ export const useUserData = () => {
 
   const handleGetUserData = useCallback(async () => {
     if (id) {
-      const handleNotifications = (val: NotificationDataFirebaseDB) => {
-        if (val.isShownViaPushNotification === false) {
-          if (allowPushNotifications) {
-            getUserData(val.userId).then(uD => {
-              setTimeout(
-                onDisplayNotification,
-                500,
-                uD.firstName + ' ' + uD.lastName + ' ' + val.message,
-              );
-            });
-          }
-          return {
-            ...val,
-            isShownViaPushNotification: true,
-          };
-        }
-        return {
-          ...val,
-        };
-      };
+      // const handleNotifications = (val: NotificationDataFirebaseDB) => {
+      //   if (val.isShownViaPushNotification === false) {
+      //     if (allowPushNotifications) {
+      //       getUserData(val.userId).then(uD => {
+      //         setTimeout(
+      //           onDisplayNotification,
+      //           500,
+      //           uD.firstName + ' ' + uD.lastName + ' ' + val.message,
+      //         );
+      //       });
+      //     }
+      //     return {
+      //       ...val,
+      //       isShownViaPushNotification: true,
+      //     };
+      //   }
+      //   return {
+      //     ...val,
+      //   };
+      // };
 
       const unsubscribe = firestore()
         .collection(firebaseDB.collections.users)
@@ -177,42 +177,43 @@ export const useUserData = () => {
           const userData = snapshot.data() as UserFromFirebaseDb;
           if (userData) {
             // notifications
-            updateNotificationReadStatus(
-              id,
-              userData.notifications.map(handleNotifications),
-            ).then(() => {
-              dispatch(
-                updateUserData({
-                  ...userData,
-                  createdOn: Timestamp.fromMillis(
-                    userData.createdOn.seconds * 1000,
+            // updateNotificationReadStatus(
+            //   id,
+            //   userData.notifications.map(handleNotifications),
+            // ).then(() => {
+            console.log('====================================');
+            console.log('seraerwer', id);
+            console.log('====================================');
+            dispatch(
+              updateUserData({
+                ...userData,
+                createdOn: Timestamp.fromMillis(
+                  userData.createdOn.seconds * 1000,
+                )
+                  .toDate()
+                  .toISOString(),
+                healthData: userData.healthData.map(val => ({
+                  ...val,
+                  currentDate: Timestamp.fromMillis(
+                    val.currentDate.seconds * 1000,
                   )
                     .toDate()
                     .toISOString(),
-                  healthData: userData.healthData.map(val => ({
-                    ...val,
-                    currentDate: Timestamp.fromMillis(
-                      val.currentDate.seconds * 1000,
-                    )
-                      .toDate()
-                      .toISOString(),
-                  })),
-                  notifications: userData.notifications.map(val => ({
-                    ...val,
-                    createdOn: Timestamp.fromMillis(
-                      val.createdOn.seconds * 1000,
-                    )
-                      .toDate()
-                      .toISOString(),
-                  })),
-                }),
-              );
-            });
+                })),
+                notifications: userData.notifications.map(val => ({
+                  ...val,
+                  createdOn: Timestamp.fromMillis(val.createdOn.seconds * 1000)
+                    .toDate()
+                    .toISOString(),
+                })),
+              }),
+            );
+            // });
           }
         });
       return () => unsubscribe();
     }
-  }, [allowPushNotifications, dispatch, id]);
+  }, [dispatch, id]);
 
   // effect use
   useEffect(() => {

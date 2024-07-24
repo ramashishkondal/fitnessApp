@@ -22,9 +22,8 @@ import {IMAGES, STRING} from '../../../Constants';
 import {HomeScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
-import {date, getPercentage} from '../../../Utils/commonUtils';
-// import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
-import RNRestart from 'react-native-restart';
+import {getPercentage} from '../../../Utils/commonUtils';
+// import { updateSettingsCachedData } from '../../../Redux/Reducers/userSettings';
 import {
   DailyMeals,
   resetMealData,
@@ -33,7 +32,6 @@ import {
 import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
 import {useHealth} from '../../../Hooks/useHealth';
-import {PERMISSIONS, check} from 'react-native-permissions';
 import {updateHealthData} from '../../../Redux/Reducers/health';
 import {
   openHealthConnectSettings,
@@ -45,8 +43,9 @@ import ToastError from '../../../Components/Atoms/ToastError';
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
-  const [isActivityPermissionsEnabled, setIsActivityPermissionsEnabled] =
-    useState(true);
+  // const [isActivityPermissionsEnabled, setIsActivityPermissionsEnabled] =
+  //   useState(true);
+  const [greeting, setGreeting] = useState('');
 
   const {
     todaysSteps,
@@ -59,6 +58,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
 
   // getting health data
   useHealth();
+
+  // Update greeting based on time
+  const updateGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting('morning');
+    } else if (currentHour < 18) {
+      setGreeting('afternoon');
+    } else {
+      setGreeting('evening');
+    }
+  };
+
+  useEffect(() => {
+    updateGreeting();
+    const interval = setInterval(updateGreeting, 60000); // Check every minute
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, []);
 
   // effect use
   useEffect(() => {
@@ -116,14 +133,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           console.log('error', err);
         },
       );
-    } else {
-      check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION).then(val => {
-        if (val !== 'granted') {
-          setIsActivityPermissionsEnabled(false);
-        } else {
-          setIsActivityPermissionsEnabled(true);
-        }
-      });
     }
     // if (finger && isBiometricEnabled === false && shouldAskBiometics) {
     //   Alert.alert(
@@ -141,11 +150,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     //           );
     //         },
     //       },
-    //       {text: 'Cancel'},
+    //       { text: 'Cancel' },
     //       {
     //         text: "Don't ask again",
     //         onPress: () => {
-    //           dispatch(updateSettingsCachedData({shouldAskBiometics: false}));
+    //           dispatch(updateSettingsCachedData({ shouldAskBiometics: false }));
     //         },
     //       },
     //     ],
@@ -183,9 +192,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       style={styles.parent}
       entering={SlideInLeft.easing(Easing.ease)}>
       <HeadingText
-        text={`${STRING.HOME_SCREEN.TITLE} ${
-          date.today().getHours() > 12 ? 'afternoon' : 'morning'
-        }, ${firstName}`}
+        text={`${STRING.HOME_SCREEN.TITLE} ${greeting}, ${firstName}`}
         headingTextStyle={2}
         textStyle={styles.headingText}
       />
@@ -233,39 +240,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           markerPercentage={getPercentage(todaysSteps, totalSteps)}
         />
       </View>
-
-      {isActivityPermissionsEnabled ? null : (
-        <WarningLabel
-          text="Activity Recognition Permissions not allowed you are using the app in limited mode."
-          parentStyle={styles.warningText}
-          onPress={() =>
-            Alert.alert(
-              'Activity Recognition permissions denied',
-              'You have to allow Activity recognition from the App settings to use full features of the app',
-              [
-                {
-                  text: 'Ok',
-                  onPress: () => {
-                    Alert.alert(
-                      'Restart App',
-                      'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
-                      [
-                        {text: 'OK', onPress: RNRestart.restart},
-                        {text: 'Cancel'},
-                      ],
-                    );
-
-                    Linking.openSettings();
-                  },
-                },
-                {
-                  text: 'Cancel',
-                },
-              ],
-            )
-          }
-        />
-      )}
       <View style={styles.spacer} />
       {!hasPermission ? (
         <WarningLabel

@@ -103,15 +103,26 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
             </TouchableOpacity>
           ) : null}
         </View>
-        <View style={styles.genderCtr}>
-          <View style={styles.nameAndGenderCtr}>
-            <Text style={styles.infoTextHeading}>Name :</Text>
-            <Text style={styles.infoTextHeading}>Email :</Text>
-            {gender ? (
-              <Text style={styles.infoTextHeading}>Gender :</Text>
-            ) : null}
-          </View>
-          <View style={styles.firstNameAndLastNameCtr}>
+        <View style={styles.nameAndGenderCtr}>
+          <Text style={styles.infoTextHeading}>
+            Name :{' '}
+            <Text style={styles.infoText} numberOfLines={1}>
+              {firstName + ' ' + lastName}
+            </Text>
+          </Text>
+          <Text style={styles.infoTextHeading}>
+            Email :{' '}
+            <Text style={styles.infoText} numberOfLines={1}>
+              {email}
+            </Text>
+          </Text>
+          {gender ? (
+            <Text style={styles.infoTextHeading}>
+              Gender : <Text style={styles.infoText}>{gender}</Text>{' '}
+            </Text>
+          ) : null}
+        </View>
+        {/* <View style={styles.firstNameAndLastNameCtr}>
             <Text style={styles.infoText} numberOfLines={1}>
               {firstName + ' ' + lastName}
             </Text>
@@ -119,8 +130,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
               {email}
             </Text>
             {gender ? <Text style={styles.infoText}>{gender}</Text> : null}
-          </View>
-        </View>
+          </View> */}
       </View>
       {isEditable || route.params.from === 'Settings' ? (
         <TouchableOpacity

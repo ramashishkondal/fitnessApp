@@ -44,14 +44,14 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
     if (newPassword === password) {
       Alert.alert(
         'Error',
-        'Entered new password is the same as the current password',
+        'The new password you entered is the same as the current password.',
       );
       return;
     }
     if (!isValidPassword.checkAllValidations(newPassword)) {
       Alert.alert(
-        'Error',
-        'Invalid new password entered make sure entered password contains at least 1 Capital character ,1 Special character, 1 digit and have minimum 8 characters',
+        'Invalid new password entered',
+        'Make sure entered password contains at least 1 Capital character ,1 Special character, 1 digit and have minimum 8 characters',
       );
       return;
     }
@@ -78,7 +78,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
         .catch(error => {
           // An error happened.
           console.log('error', error);
-          Alert.alert('Error', 'Wrong password entered');
+          Alert.alert('Error', 'The current password provided does not match.');
         });
     }
 

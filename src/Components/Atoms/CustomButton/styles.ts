@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY.PURPLE,
     // paddingHorizontal: 104,
     // paddingVertical: 14,
-    height: RFValue(40),
-    width: RFValue(240),
+    height: RFValue(44),
+    width: RFValue(260),
 
     borderRadius: SIZES.rounding3,
   },

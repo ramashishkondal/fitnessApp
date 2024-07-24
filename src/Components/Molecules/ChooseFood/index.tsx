@@ -1,6 +1,6 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {TouchableOpacity, View, Text, Platform} from 'react-native';
+import {View, Text, Platform} from 'react-native';
 
 // custom
 import {
@@ -50,6 +50,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   const [foodData, setFoodData] = useState(
     FOOD_DATA.map(val => ({...val, isSelected: false})),
   );
+  const [isKeyboardShowing, setIsKeyboardShowing] = useState(false);
 
   // netInfo use
   const netInfo = useNetInfo();
@@ -150,11 +151,21 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
   return (
     <>
       <KeyboardAwareScrollView
+        scrollsToTop={false}
         style={styles.parent}
+        keyboardShouldPersistTaps="handled"
+        // resetScrollToCoords={{x: 1, y: 2}}
         // extraScrollHeight={400}
         extraHeight={Platform.OS === 'ios' ? 500 : 400}
+        onKeyboardDidShow={() => {
+          setIsKeyboardShowing(true);
+        }}
+        onKeyboardDidHide={() => {
+          setIsKeyboardShowing(false);
+        }}
+        keyboardDismissMode="none"
         enableOnAndroid={true}>
-        <TouchableOpacity activeOpacity={1}>
+        <View style={[isKeyboardShowing ? {marginBottom: -240} : null]}>
           <View style={styles.foodBowlCtr}>{ICONS.FoodBowl(size)}</View>
           <View style={styles.headingCtr}>
             <HeadingText text="Choose Food" textStyle={styles.headingText} />
@@ -202,7 +213,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
               <Text style={styles.noResultText}>No results found</Text>
             ) : null}
           </View>
-        </TouchableOpacity>
+        </View>
       </KeyboardAwareScrollView>
       <CustomButton
         title="Add"

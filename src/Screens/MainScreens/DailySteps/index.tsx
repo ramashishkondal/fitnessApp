@@ -73,7 +73,7 @@ const DailySteps: React.FC = () => {
               result.map(val => {
                 console.log('val', val);
                 return {
-                  value: val.value,
+                  value: Math.round(val.value),
                   week: weekday[new Date(val.startDate).getDay()],
                 };
               }),
@@ -196,7 +196,7 @@ const DailySteps: React.FC = () => {
 
           setLineData(
             stepsResult.map(val => ({
-              value: val.steps,
+              value: Math.round(val.steps),
               week: weekday[new Date(val.startTime).getDay()],
             })),
           );
@@ -284,6 +284,7 @@ const DailySteps: React.FC = () => {
             <LineChart
               isAnimated
               adjustToWidth
+              yAxisExtraHeight={10}
               curved
               // yAxisOffset={-19}
               // initialSpacing={0}
@@ -310,6 +311,8 @@ const DailySteps: React.FC = () => {
                 pointerLabelWidth: 120,
                 activatePointersOnLongPress: true,
                 autoAdjustPointerLabelPosition: true,
+                shiftPointerLabelX: 200,
+                stripBehindBars: true,
                 pointerLabelComponent: (
                   items: {value: number; week: string}[],
                 ) => {

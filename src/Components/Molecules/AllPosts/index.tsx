@@ -14,8 +14,6 @@ const AllPosts: React.FC<AllPostsProps> = ({
 }) => {
   // state use
   const [postsData, setPostsData] = useState<Post[]>();
-  const [dataLength, setDataLength] = useState<number>(2);
-  const [isLoading, setIsLoading] = useState(false);
 
   // redux use
   const {
@@ -27,28 +25,21 @@ const AllPosts: React.FC<AllPostsProps> = ({
 
   // effect use
   useEffect(() => {
-    setIsLoading(true);
     const unsubscribe = firestore()
       .collection(firebaseDB.collections.posts)
       .orderBy('createdOn', 'desc')
-      .limit(dataLength)
+
       .onSnapshot(snapshot => {
         const data = snapshot.docs;
         const x = data.map(val => val.data()) as Post[];
         setPostsData(x);
       });
-    setIsLoading(false);
+
     return () => unsubscribe();
-  }, [dataLength]);
+  }, []);
 
   // functions
-  const handleEndReached = () => {
-    console.log('end reached');
-    if (!isLoading) {
-      console.log(dataLength);
-      setDataLength(dataLength + 5);
-    }
-  };
+
   const getHandleCommentPress = (post: Post) => {
     return () => {
       postIdRef.current = post;
@@ -109,7 +100,6 @@ const AllPosts: React.FC<AllPostsProps> = ({
           data={postsData}
           renderItem={renderItem}
           onEndReachedThreshold={1}
-          onEndReached={handleEndReached}
         />
       ) : null}
     </View>

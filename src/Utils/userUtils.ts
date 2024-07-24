@@ -5,7 +5,7 @@ import storage from '@react-native-firebase/storage';
 import {v4 as uuidv4} from 'uuid';
 import {HealthData, User, Post, Comment} from '../Defs';
 import {NotificationData} from '../Defs/user';
-import {debounce} from './commonUtils';
+// import {debounce} from './commonUtils';
 import {DailyMeals} from '../Redux/Reducers/dailyMeal';
 
 export const firebaseDB = {
@@ -211,16 +211,17 @@ export const addLikes = async (
     userPhoto: string;
   },
 ) => {
+  console.log(notification);
   await firestore()
     .collection(firebaseDB.collections.posts)
     .doc(postId)
     .update({
       likedByUsersId: likedByUsersId,
     });
-  console.log(notification);
+
   if (notification && userId !== notification.sendNotificationToUserId) {
     console.log('this ran');
-    debouncedNotification(
+    sendNotification(
       {
         message: 'liked your post.',
         userId,
@@ -391,7 +392,7 @@ export const sendNotification = async (
     console.log('error with sending notifications ', e);
   }
 };
-const debouncedNotification = debounce(sendNotification, 100);
+// const debouncedNotification = debounce(sendNotification, 100);
 
 export const updateNotificationReadStatus = async (
   userId: string,

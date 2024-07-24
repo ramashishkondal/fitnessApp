@@ -1,6 +1,6 @@
 // libs
 import React, {useState} from 'react';
-import {Alert, Linking, Platform, Text, View} from 'react-native';
+import {Alert, Linking, Platform, Share, Text, View} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -16,7 +16,11 @@ import {
   updateSettingsCachedData,
   // updateSettingsCachedData,
 } from '../../../Redux/Reducers/userSettings';
-import {getSdkStatus, SdkAvailabilityStatus} from 'react-native-health-connect';
+import {
+  getSdkStatus,
+  openHealthConnectSettings,
+  SdkAvailabilityStatus,
+} from 'react-native-health-connect';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
 import RNRestart from 'react-native-restart';
 // import {storeBiometricData} from '../../../Utils/userUtils';
@@ -60,7 +64,8 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     const checkAvailabilityAndroid = async () => {
       const status = await getSdkStatus();
       if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
-        Linking.openSettings();
+        // Linking.openSettings();
+        openHealthConnectSettings();
       }
 
       if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
@@ -93,15 +98,18 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         );
   };
   const handlePushNotificationValueChange = async (val: boolean) => {
+    // if (val === false) {
+    //   setSwitchActiveNotifications(val);
+    //   dispatch(updateSettingPushNotification(val));
+    // }
     if (Platform.OS === 'android' && Platform.Version >= 33) {
-      const notificationPerm = await check(
-        PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
-      );
-      if (notificationPerm === 'granted' || val === false) {
-        setSwitchActiveNotifications(val);
-        dispatch(updateSettingPushNotification(val));
-      }
-      if (val && notificationPerm !== 'granted') {
+      // if (notificationPerm === 'granted' || val === false) {
+      // setSwitchActiveNotifications(val);
+      //   dispatch(updateSettingPushNotification(val));
+      // }
+      setSwitchActiveNotifications(val);
+      dispatch(updateSettingPushNotification(val));
+      if (val) {
         const notificationAuth = await request(
           PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
         );
@@ -135,13 +143,38 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
             ],
           );
         }
+        const notificationPerm = await check(
+          PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+        );
+        if (notificationPerm !== 'granted') {
+          setSwitchActiveNotifications(false);
+          dispatch(updateSettingPushNotification(false));
+        }
       }
     } else {
       setSwitchActiveNotifications(val);
       dispatch(updateSettingPushNotification(val));
     }
   };
-
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'I just completed my daily goal in Fitness App',
+        title: 'Daily Achievement',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
   const handleFingerPrint = async () => {
     // dispatch(updateSettingsCachedData({email,password:}))
     // await storeBiometricData(!switchActiveFinger, id!);
@@ -188,6 +221,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Give Feedback"
           onPress={() => navigation.push('GiveFeedback')}
         />
+        <SettingsCard title="Invite Friend" onPress={onShare} />
         <SettingsCard
           title="About Us"
           onPress={() => navigation.navigate('AboutUs')}

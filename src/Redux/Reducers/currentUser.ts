@@ -28,10 +28,26 @@ export const currentUserSlice = createSlice({
       state,
       action: PayloadAction<Partial<User & {password: string | null}>>,
     ) => {
+      console.log('updating user', action.payload);
       state.data = {...state.data, ...action.payload};
     },
     resetUserData: state => {
-      state.data = initialState.data;
+      state.data = {
+        id: null,
+        firstName: '',
+        lastName: '',
+        email: '',
+        finger: false,
+        gender: null,
+        interests: [],
+        photo: '',
+        preferences: [],
+        password: null,
+        healthData: [],
+        notifications: [],
+        storiesWatched: [],
+        createdOn: '',
+      };
     },
   },
 });

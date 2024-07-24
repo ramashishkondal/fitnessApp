@@ -99,7 +99,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
       });
       dispatch(updateUserData({firstName, lastName, gender: selectedGender}));
     }
-    setModalFalse();
+    setTimeout(setModalFalse, 100);
   };
   const handleChangeFirstName = (text: string) => {
     setFirstName(text);

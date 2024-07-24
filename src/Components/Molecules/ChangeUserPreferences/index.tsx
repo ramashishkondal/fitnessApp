@@ -65,7 +65,7 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
       });
       dispatch(updateUserData({preferences: preferencedData.current}));
     }
-    setModalFalse();
+    setTimeout(setModalFalse, 100);
   };
 
   return (

@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import {
   createDrawerNavigator,
@@ -26,6 +27,13 @@ import {styles} from './styles';
 import {FONT_FAMILY} from '../Constants/commonStyles';
 import {useAppDispatch, useAppSelector} from '../Redux/Store';
 import {resetUserData} from '../Redux/Reducers/currentUser';
+import {onDisplayNotification} from '../Utils/commonUtils';
+import {
+  NotificationDataFirebaseDB,
+  getUserData,
+  firebaseDB,
+  updateNotificationReadStatus,
+} from '../Utils/userUtils';
 
 const iconSize = {
   width: 25,
@@ -50,6 +58,8 @@ const drawerIconNotification = (
   }) => React.ReactNode,
   noOfNotification: number,
 ) => {
+  [];
+
   return () => {
     return (
       <View style={styles.drawerIcon}>
@@ -70,6 +80,7 @@ const drawerIconNotification = (
             style={{
               color: COLORS.SECONDARY.WHITE,
               fontFamily: FONT_FAMILY.BOLD,
+              fontSize: SIZES.font10,
             }}>
             {noOfNotification}
           </Text>
@@ -82,6 +93,9 @@ const drawerIconNotification = (
 const Drawer = createDrawerNavigator<homeDrawerParamList>();
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+  const {id} = useAppSelector(state => state.User.data);
+  const {allowPushNotifications} = useAppSelector(state => state.settings.data);
+
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to log out?', [
@@ -100,6 +114,55 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       },
     ]);
   };
+  // useEffect(() => {
+  //   let isMounted = true;
+
+  //   const handleNotifications = async (val: NotificationDataFirebaseDB) => {
+  //     if (val.isShownViaPushNotification === false && allowPushNotifications) {
+  //       const uD = await getUserData(val.userId);
+  //       if (isMounted) {
+  //         setTimeout(
+  //           onDisplayNotification,
+  //           500,
+  //           `${uD.firstName} ${uD.lastName} ${val.message}`,
+  //         );
+  //       }
+  //       return {
+  //         ...val,
+  //         isShownViaPushNotification: true,
+  //       };
+  //     }
+  //     return val;
+  //   };
+
+  //   const processNotifications = async (
+  //     notifications: NotificationDataFirebaseDB[],
+  //   ) => {
+  //     const updatedNotifications = await Promise.all(
+  //       notifications.map(handleNotifications),
+  //     );
+  //     if (isMounted) {
+  //       updateNotificationReadStatus(id!, updatedNotifications);
+  //     }
+  //   };
+
+  //   const unsubscribe = firestore()
+  //     .collection(firebaseDB.collections.users)
+  //     .doc(id!)
+  //     .onSnapshot(async snapshot => {
+  //       if (snapshot.exists) {
+  //         const notifications = snapshot.get(
+  //           'notifications',
+  //         ) as NotificationDataFirebaseDB[];
+  //         await processNotifications(notifications);
+  //       }
+  //     });
+
+  //   return () => {
+  //     isMounted = false;
+  //     unsubscribe();
+  //   };
+  // }, [allowPushNotifications, id]);
 
   return (
     <DrawerContentScrollView
@@ -170,7 +233,7 @@ const HomeNavigator: React.FC = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          title: 'Home',
+          title: 'Homescreen',
           drawerIcon: drawerIcon(ICONS.Home),
           headerRight,
           headerStyle: {
