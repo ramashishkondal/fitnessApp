@@ -55,7 +55,9 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
     setIsLoading(true);
     await GoogleSignin.signOut();
     const userData = await googleSignIn();
-    dispatch(updateSettingsCachedData({isSocial: true}));
+    dispatch(
+      updateSettingsCachedData({isSocial: true, isBiometricEnabled: false}),
+    );
     if (userData?.additionalUserInfo?.isNewUser) {
       const {email, displayName, photoURL: photo, uid: id} = userData.user;
       if (email !== null && photo !== null) {

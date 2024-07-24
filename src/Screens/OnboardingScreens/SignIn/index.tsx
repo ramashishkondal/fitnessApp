@@ -24,7 +24,6 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {SignInProps} from '../../../Defs';
-import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {STRING, SPACING, IMAGES} from '../../../Constants';
 import {styles} from './styles';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
@@ -128,11 +127,15 @@ const SignIn = ({navigation}: SignInProps) => {
     }
     try {
       setIsLoading('continue');
-      const {
-        user: {uid},
-      } = await auth().signInWithEmailAndPassword(email, password);
-      dispatch(updateSettingsCachedData({email, password, isSocial: false}));
-      dispatch(updateUserData({id: uid}));
+      await auth().signInWithEmailAndPassword(email, password);
+      dispatch(
+        updateSettingsCachedData({
+          email,
+          password,
+          isSocial: false,
+          isBiometricEnabled: false,
+        }),
+      );
     } catch (e) {
       const error = e as FirebaseAuthTypes.NativeFirebaseAuthError;
       let message = error.message;

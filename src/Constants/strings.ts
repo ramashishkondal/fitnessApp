@@ -89,7 +89,7 @@ export const STRING = {
   HOME_SCREEN: {
     TITLE: 'Good',
     DESCRIPTION:
-      'Eat the right amount of food and stay hydrated through the day',
+      'Eat the right amount of food and stay hydrated throughout the day.',
     MORE_DETAILS: 'More details -',
     NUTRITION: 'Nutrition',
     WATER: 'Water',

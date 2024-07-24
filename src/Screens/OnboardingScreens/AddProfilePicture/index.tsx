@@ -17,6 +17,7 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {styles} from './styles';
 import FastImage from 'react-native-fast-image';
 import ToastError from '../../../Components/Atoms/ToastError';
+import Toast from 'react-native-toast-message';
 
 const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   // state use
@@ -30,7 +31,10 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   // functions
-  const openModal = () => setModalVisible(true);
+  const openModal = () => {
+    Toast.hide();
+    setModalVisible(true);
+  };
   const handleSubmit = () => {
     if (photo !== '') {
       console.log('photo is ', photo);
@@ -55,7 +59,8 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
               style={styles.closeCtr}
               onPress={() => {
                 setIsAvatar(true);
-                setPhoto(avatar);
+                setPhoto('');
+                setAvatar('');
               }}>
               <View style={styles.closeIconCtr}>
                 {ICONS.Close({height: 20, width: 20})}

@@ -13,6 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {LogOutProps} from '../../../Defs';
 import {useFocusEffect} from '@react-navigation/native';
+import {resetUserData} from '../../../Redux/Reducers/currentUser';
 
 const LogOut: React.FC<LogOutProps> = ({navigation}) => {
   // redux use
@@ -26,11 +27,12 @@ const LogOut: React.FC<LogOutProps> = ({navigation}) => {
         text: 'yes',
         onPress: () => {
           dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
+          dispatch(resetUserData());
           auth().signOut();
         },
       },
       {
-        text: 'cancel',
+        text: 'no',
         onPress: () => {
           navigation.goBack();
         },

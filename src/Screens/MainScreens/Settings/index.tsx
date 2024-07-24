@@ -14,21 +14,21 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {
   updateSettingPushNotification,
   updateSettingsCachedData,
+  // updateSettingsCachedData,
 } from '../../../Redux/Reducers/userSettings';
-import {
-  getSdkStatus,
-  openHealthConnectSettings,
-  SdkAvailabilityStatus,
-} from 'react-native-health-connect';
+import {getSdkStatus, SdkAvailabilityStatus} from 'react-native-health-connect';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
 import RNRestart from 'react-native-restart';
-import {storeBiometricData} from '../../../Utils/userUtils';
+// import {storeBiometricData} from '../../../Utils/userUtils';
 import ToastError from '../../../Components/Atoms/ToastError';
+import {resetUserData} from '../../../Redux/Reducers/currentUser';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
-  const {finger, id} = useAppSelector(state => state.User.data);
+  const {isBiometricEnabled} = useAppSelector(
+    state => state.settings.data.cachedData,
+  );
   const {
     cachedData: {isSocial},
     allowPushNotifications,
@@ -38,7 +38,8 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const [switchActiveNotifications, setSwitchActiveNotifications] = useState(
     allowPushNotifications,
   );
-  const [switchActiveFinger, setSwitchActiveFinger] = useState(finger);
+  // const [switchActiveFinger, setSwitchActiveFinger] =
+  //   useState(isBiometricEnabled);
 
   // functions
   const logOut = () => {
@@ -46,7 +47,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       {
         text: 'Ok',
         onPress: () => {
-          dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
+          dispatch(resetUserData());
           auth().signOut();
         },
       },
@@ -59,7 +60,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     const checkAvailabilityAndroid = async () => {
       const status = await getSdkStatus();
       if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
-        openHealthConnectSettings();
+        Linking.openSettings();
       }
 
       if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
@@ -142,9 +143,11 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   };
 
   const handleFingerPrint = async () => {
-    setSwitchActiveFinger(!switchActiveFinger);
     // dispatch(updateSettingsCachedData({email,password:}))
-    await storeBiometricData(!switchActiveFinger, id!);
+    // await storeBiometricData(!switchActiveFinger, id!);
+    dispatch(
+      updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
+    );
   };
 
   return (
@@ -161,7 +164,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
               Platform.OS === 'ios' ? 'face ID' : 'fingerprint'
             }`}
             hasSwitch
-            switchActive={switchActiveFinger}
+            switchActive={isBiometricEnabled}
             onSwitchValueChange={handleFingerPrint}
           />
         ) : null}

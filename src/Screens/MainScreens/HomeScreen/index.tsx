@@ -23,7 +23,7 @@ import {HomeScreenProps} from '../../../Defs';
 import {styles} from './styles';
 import Animated, {SlideInLeft, Easing} from 'react-native-reanimated';
 import {date, getPercentage} from '../../../Utils/commonUtils';
-import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+// import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import RNRestart from 'react-native-restart';
 import {
   DailyMeals,
@@ -55,11 +55,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     hasPermission,
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
-  const {firstName, finger, id} = useAppSelector(state => state.User.data);
-  const {isBiometricEnabled, shouldAskBiometics} = useAppSelector(
-    state => state.settings.data.cachedData,
-  );
+  const {firstName, id} = useAppSelector(state => state.User.data);
 
+  // getting health data
   useHealth();
 
   // effect use
@@ -127,40 +125,33 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         }
       });
     }
-    if (finger && isBiometricEnabled === false && shouldAskBiometics) {
-      Alert.alert(
-        'Biometric: Sign in from new device detected',
-        'You have enabled biometric for SignIn in this account would you like to enable it on this device?',
-        [
-          {
-            text: 'Confirm',
-            onPress: () => {
-              dispatch(
-                updateSettingsCachedData({
-                  isBiometricEnabled: true,
-                  shouldAskBiometics: false,
-                }),
-              );
-            },
-          },
-          {text: 'Cancel'},
-          {
-            text: "Don't ask again",
-            onPress: () => {
-              dispatch(updateSettingsCachedData({shouldAskBiometics: false}));
-            },
-          },
-        ],
-      );
-    }
-  }, [
-    dispatch,
-    finger,
-    id,
-    isBiometricEnabled,
-    shouldAskBiometics,
-    hasPermission,
-  ]);
+    // if (finger && isBiometricEnabled === false && shouldAskBiometics) {
+    //   Alert.alert(
+    //     'Biometric: Sign in from new device detected',
+    //     'You have enabled biometric for SignIn in this account would you like to enable it on this device?',
+    //     [
+    //       {
+    //         text: 'Confirm',
+    //         onPress: () => {
+    //           dispatch(
+    //             updateSettingsCachedData({
+    //               isBiometricEnabled: true,
+    //               shouldAskBiometics: false,
+    //             }),
+    //           );
+    //         },
+    //       },
+    //       {text: 'Cancel'},
+    //       {
+    //         text: "Don't ask again",
+    //         onPress: () => {
+    //           dispatch(updateSettingsCachedData({shouldAskBiometics: false}));
+    //         },
+    //       },
+    //     ],
+    //   );
+    // }
+  }, [dispatch, id]);
 
   useEffect(() => {
     const unsubscribe = firestore()

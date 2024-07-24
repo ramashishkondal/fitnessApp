@@ -3,20 +3,18 @@ import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
-  parent: {
-    paddingHorizontal: 10,
-    backgroundColor: COLORS.SECONDARY.WHITE,
-  },
   performanceCtr: {
-    padding: 20,
+    paddingHorizontal: 24,
+    backgroundColor: COLORS.SECONDARY.WHITE,
+    paddingVertical: 20,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     borderBottomWidth: 1,
     borderColor: COLORS.SECONDARY.LIGHT_GREY,
   },
-  iconCtr: {justifyContent: 'center', flex: 1},
+  iconCtr: {justifyContent: 'center', paddingRight: 24},
   titleAndDescContainer: {
-    flex: 6,
+    flex: 0.7,
   },
   descTitleText: {
     fontSize: SIZES.font15,
@@ -33,7 +31,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font15,
     fontFamily: FONT_FAMILY.REGULAR,
     color: 'black',
-    flex: 1,
+    flex: 0.3,
     textAlign: 'right',
   },
 });

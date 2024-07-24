@@ -1,24 +1,31 @@
-// libs
 import React, {useCallback} from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 
-// custom
+// 3rd party
+import auth from '@react-native-firebase/auth';
+
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
+import {Alert, Platform, Text, View} from 'react-native';
 import {CustomDrawerButton, CustomDrawerRight} from '../Components';
 import {
   Community,
   GetPremium,
   HomeScreen,
-  LogOut,
   Notifications,
   Settings,
 } from '../Screens/MainScreens';
 import {homeDrawerParamList} from '../Defs';
 import {COLORS, ICONS, SIZES} from '../Constants';
-import {Platform, Text, View} from 'react-native';
 import BackForDrawer from '../Components/Molecules/BackForDrawer';
 import {styles} from './styles';
 import {FONT_FAMILY} from '../Constants/commonStyles';
-import {useAppSelector} from '../Redux/Store';
+import {useAppDispatch, useAppSelector} from '../Redux/Store';
+import {resetUserData} from '../Redux/Reducers/currentUser';
 
 const iconSize = {
   width: 25,
@@ -74,6 +81,48 @@ const drawerIconNotification = (
 
 const Drawer = createDrawerNavigator<homeDrawerParamList>();
 
+const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to log out?', [
+      {
+        text: 'YES',
+        onPress: () => {
+          dispatch(resetUserData());
+          auth().signOut();
+        },
+      },
+      {
+        text: 'NO',
+        onPress: () => {
+          console.log('OK Pressed');
+        },
+      },
+    ]);
+  };
+
+  return (
+    <DrawerContentScrollView
+      {...props}
+      contentContainerStyle={{
+        top: '25%',
+      }}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Logout"
+        icon={drawerIcon(ICONS.LogOut)}
+        onPress={handleLogout}
+        labelStyle={{
+          color: 'black',
+          fontSize: SIZES.font14,
+          fontFamily: FONT_FAMILY.SEMI_BOLD,
+        }}
+        activeTintColor={COLORS.PRIMARY.PURPLE}
+      />
+    </DrawerContentScrollView>
+  );
+};
+
 const HomeNavigator: React.FC = () => {
   // redux use
   const {notifications} = useAppSelector(state => state.User.data);
@@ -115,7 +164,8 @@ const HomeNavigator: React.FC = () => {
         },
         drawerActiveTintColor: COLORS.PRIMARY.PURPLE,
         drawerType: 'front',
-      }}>
+      }}
+      drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -163,15 +213,6 @@ const HomeNavigator: React.FC = () => {
           headerTransparent: true,
           headerShown: true,
           headerLeft: BackForDrawer,
-        }}
-      />
-      <Drawer.Screen
-        name="LogOut"
-        component={LogOut}
-        options={{
-          title: 'Logout',
-          drawerIcon: drawerIcon(ICONS.LogOut),
-          headerShown: false,
         }}
       />
     </Drawer.Navigator>

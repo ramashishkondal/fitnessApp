@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Alert, Share} from 'react-native';
 import {GoalAchievedProps} from './types';
 import {styles} from './styles';
 import {useAppSelector} from '../../../Redux/Store';
@@ -32,7 +32,25 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
   const centerLabelComponent = useCallback(() => {
     return <InsidePieChart value={todaysSteps} text="steps today" />;
   }, [todaysSteps]);
-
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'I just completed my daily goal in Fitness App',
+        title: 'Daily Achievement',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
   return (
     <TouchableOpacity
       style={styles.backdrop}
@@ -91,6 +109,7 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
           <CustomButton
             title="Share to friend"
             parentStyle={styles.customButtonParent}
+            onPress={onShare}
           />
           <CustomButton
             title="Not now"
