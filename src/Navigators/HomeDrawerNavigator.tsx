@@ -114,55 +114,55 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       },
     ]);
   };
-  // useEffect(() => {
-  //   let isMounted = true;
+  useEffect(() => {
+    let isMounted = true;
 
-  //   const handleNotifications = async (val: NotificationDataFirebaseDB) => {
-  //     if (val.isShownViaPushNotification === false && allowPushNotifications) {
-  //       const uD = await getUserData(val.userId);
-  //       if (isMounted) {
-  //         setTimeout(
-  //           onDisplayNotification,
-  //           500,
-  //           `${uD.firstName} ${uD.lastName} ${val.message}`,
-  //         );
-  //       }
-  //       return {
-  //         ...val,
-  //         isShownViaPushNotification: true,
-  //       };
-  //     }
-  //     return val;
-  //   };
+    const handleNotifications = async (val: NotificationDataFirebaseDB) => {
+      if (val.isShownViaPushNotification === false && allowPushNotifications) {
+        const uD = await getUserData(val.userId);
+        if (isMounted) {
+          setTimeout(
+            onDisplayNotification,
+            500,
+            `${uD.firstName} ${uD.lastName} ${val.message}`,
+          );
+        }
+        return {
+          ...val,
+          isShownViaPushNotification: true,
+        };
+      }
+      return val;
+    };
 
-  //   const processNotifications = async (
-  //     notifications: NotificationDataFirebaseDB[],
-  //   ) => {
-  //     const updatedNotifications = await Promise.all(
-  //       notifications.map(handleNotifications),
-  //     );
-  //     if (isMounted) {
-  //       updateNotificationReadStatus(id!, updatedNotifications);
-  //     }
-  //   };
+    const processNotifications = async (
+      notifications: NotificationDataFirebaseDB[],
+    ) => {
+      const updatedNotifications = await Promise.all(
+        notifications.map(handleNotifications),
+      );
+      if (isMounted) {
+        updateNotificationReadStatus(id!, updatedNotifications);
+      }
+    };
 
-  //   const unsubscribe = firestore()
-  //     .collection(firebaseDB.collections.users)
-  //     .doc(id!)
-  //     .onSnapshot(async snapshot => {
-  //       if (snapshot.exists) {
-  //         const notifications = snapshot.get(
-  //           'notifications',
-  //         ) as NotificationDataFirebaseDB[];
-  //         await processNotifications(notifications);
-  //       }
-  //     });
+    const unsubscribe = firestore()
+      .collection(firebaseDB.collections.users)
+      .doc(id!)
+      .onSnapshot(async snapshot => {
+        if (snapshot.exists) {
+          const notifications = snapshot.get(
+            'notifications',
+          ) as NotificationDataFirebaseDB[];
+          await processNotifications(notifications);
+        }
+      });
 
-  //   return () => {
-  //     isMounted = false;
-  //     unsubscribe();
-  //   };
-  // }, [allowPushNotifications, id]);
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, [allowPushNotifications, id]);
 
   return (
     <DrawerContentScrollView
