@@ -123,6 +123,9 @@ dependencies {
     // facebook login
     implementation('com.facebook.android:facebook-android-sdk:latest.release')
 
+        implementation "com.facebook.react:react-native:+"  // From node_modules
+
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

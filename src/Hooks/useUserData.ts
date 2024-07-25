@@ -217,13 +217,14 @@ export const useUserData = () => {
 
   // effect use
   useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
     if (netInfo.isConnected) {
       const handleUserData = async () => {
         if (offlineUserData.length) {
           await handleOfflineUser();
         }
         if (offlineMealData.length) {
-          handleOfflineMealData();
+          await handleOfflineMealData();
         }
         if (offlinePostData.length) {
           await handleOfflinePost();
@@ -231,10 +232,15 @@ export const useUserData = () => {
         if (offlineStoryData.length) {
           await handleOfflineStory();
         }
-        await handleGetUserData();
+        unsubscribe = await handleGetUserData();
       };
       handleUserData();
     }
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [
     handleGetUserData,
     handleOfflineMealData,

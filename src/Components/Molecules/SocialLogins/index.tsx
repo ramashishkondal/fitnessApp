@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, TouchableOpacity, View} from 'react-native';
 
 // 3rd party
@@ -16,6 +16,8 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import {SocialLoginProps} from './types';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
+import ToastError from '../../Atoms/ToastError';
 
 const iconSize = 17;
 
@@ -36,10 +38,11 @@ const googleSignIn = async () => {
   }
 };
 
-const SocialLogins: React.FC<SocialLoginProps> = ({
-  isLoading,
-  setIsLoading,
-}) => {
+const SocialLogins: React.FC<SocialLoginProps> = ({setIsLoading}) => {
+  //state use
+  const [isLoadingSocial, setIsLoadingSocial] = useState<
+    'twitter' | 'google' | null | 'facebook'
+  >(null);
   // netInfo use
   const netInfo = useNetInfo();
 
@@ -53,6 +56,7 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
       return;
     }
     setIsLoading(true);
+    setIsLoadingSocial('google');
     await GoogleSignin.signOut();
     const userData = await googleSignIn();
     dispatch(
@@ -92,23 +96,77 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
         );
       }
     }
+    setIsLoadingSocial(null);
     setIsLoading(false);
   };
-  // const handleFacebookSignIn = async () => {
-  //   if (!netInfo.isConnected) {
-  //     Alert.alert('Network Error', 'Internet connection is disabled');
-  //     return;
-  //   }
-  //   setIsLoading('facebook');
-  //   await LoginManager.logInWithPermissions(['public_profile', 'email']);
-  //   setIsLoading(null);
-  // };
+  const handleFacebookSignIn = async () => {
+    if (!netInfo.isConnected) {
+      Alert.alert('Network Error', 'Internet connection is disabled');
+      return;
+    }
+    try {
+      setIsLoading(true);
+      setIsLoadingSocial('facebook');
+      await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      const a = await AccessToken.getCurrentAccessToken();
+      const fbcreds = auth.FacebookAuthProvider.credential(a?.accessToken!);
+      const creds = await auth().signInWithCredential(fbcreds);
+      console.log('awd', creds.user);
+      await storeUserData(
+        {
+          email: creds.user.email!,
+          firstName: creds.user.displayName?.split(' ')[0]!,
+          lastName:
+            creds.user.displayName?.split(' ')[
+              creds.user.displayName?.split(' ').length - 1
+            ]!,
+          photo: creds.user.photoURL!,
+          id: creds.user.uid,
+          finger: false,
+          gender: null,
+          interests: INTERESETS.map(item => {
+            const {title, selected} = item;
+            return {title, selected};
+          }),
+          preferences: preferencesData,
+          healthData: [],
+          notifications: [],
+          storiesWatched: [],
+        },
+        creds.user.uid,
+      );
+      dispatch(
+        updateSettingsCachedData({isSocial: true, isBiometricEnabled: false}),
+      );
+      sendNotification(
+        {
+          isShownViaPushNotification: false,
+          isUnread: true,
+          message: 'You have successfully registered on FitnessApp !',
+          userId: 'App',
+        },
+        creds.user.uid,
+      ).catch(e => {
+        console.log('error with sending notification', e);
+      });
+      setIsLoading(false);
+      setIsLoadingSocial(null);
+    } catch (e) {
+      ToastError('Error', '' + e);
+    }
+  };
+
   // const TWITTER_CONSTS = {
   //   API_KEY: 'CCFoN3B1il5hGF1bZLlEElT7L',
   //   API_KEY_SECRET: '4IRDzyhUtyV22JlznTodwMajLZgNErs57U1TORaENQ2gU8B5FN',
   // };
   // const handleTwitterLogIn = async () => {
-  //   RNTwitterSignIn.init(TWITTER_CONSTS.API_KEY, TWITTER_CONSTS.API_KEY_SECRET);
+  //   setIsLoading(true);
+  //   setIsLoadingSocial('twitter');
+  //   await RNTwitterSignIn.init(
+  //     TWITTER_CONSTS.API_KEY,
+  //     TWITTER_CONSTS.API_KEY_SECRET,
+  //   );
   //   RNTwitterSignIn.logIn()
   //     .then(loginData => {
   //       console.log(loginData);
@@ -147,29 +205,32 @@ const SocialLogins: React.FC<SocialLoginProps> = ({
   //       }
   //     })
   //     .catch(error => {
+  //       console.log('error', JSON.stringify(error));
   //       console.log(error);
   //     });
+  //   setIsLoading(false);
+  //   setIsLoadingSocial(null);
   // };
 
   return (
     <View style={[styles.logoCtr, SPACING.mt3]}>
       {/* <TouchableOpacity style={styles.logos} onPress={handleTwitterLogIn}>
-        {isLoading ? (
+        {isLoadingSocial == 'twitter' ? (
           <CustomLoading color={COLORS.PRIMARY.PURPLE} />
         ) : (
           ICONS.TwitterLogo({width: iconSize, height: iconSize})
         )}
       </TouchableOpacity> */}
 
-      {/* <TouchableOpacity style={styles.logos} onPress={handleFacebookSignIn}>
-        {isLoading === 'facebook' ? (
+      <TouchableOpacity style={styles.logos} onPress={handleFacebookSignIn}>
+        {isLoadingSocial === 'facebook' ? (
           <CustomLoading color={COLORS.PRIMARY.PURPLE} />
         ) : (
           ICONS.FacebookLogo({width: iconSize, height: iconSize})
         )}
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <TouchableOpacity style={styles.logos} onPress={handleGoogleSignIn}>
-        {isLoading === true ? (
+        {isLoadingSocial === 'google' ? (
           <CustomLoading color={COLORS.PRIMARY.PURPLE} />
         ) : (
           ICONS.GoogleLogo({

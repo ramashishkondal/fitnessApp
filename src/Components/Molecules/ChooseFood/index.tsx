@@ -163,7 +163,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
         onKeyboardDidHide={() => {
           setIsKeyboardShowing(false);
         }}
-        keyboardDismissMode="none"
+        keyboardDismissMode="on-drag"
         enableOnAndroid={true}>
         <View style={[isKeyboardShowing ? {marginBottom: -240} : null]}>
           <View style={styles.foodBowlCtr}>{ICONS.FoodBowl(size)}</View>

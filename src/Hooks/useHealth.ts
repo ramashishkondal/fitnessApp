@@ -73,7 +73,7 @@ export const useHealth = () => {
         const stepsRes = await readRecords('Steps', {
           timeRangeFilter: {
             operator: 'after',
-            startTime: new Date(new Date().setHours(0)).toISOString(),
+            startTime: new Date(new Date().setHours(0, 0, 0)).toISOString(),
           },
         });
         const caloriesRes = await readRecords('TotalCaloriesBurned', {
@@ -88,13 +88,7 @@ export const useHealth = () => {
             startTime: '2024-07-22T18:30:00.000Z',
           },
         });
-        console.log('====================================');
-        console.log(
-          'bmr',
-          bmrRes[1].basalMetabolicRate.inKilocaloriesPerDay,
-          new Date().getHours(),
-        );
-        console.log('====================================');
+
         let bmrPer30mins = 0;
         if (bmrRes.length) {
           bmrPer30mins =

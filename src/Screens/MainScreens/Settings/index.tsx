@@ -64,8 +64,19 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     const checkAvailabilityAndroid = async () => {
       const status = await getSdkStatus();
       if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
-        // Linking.openSettings();
-        openHealthConnectSettings();
+        Alert.alert(
+          'Info',
+          'Please go to the app permissions in the health settings to change it.',
+          [
+            {
+              text: 'OK',
+              onPress: () => openHealthConnectSettings(),
+            },
+            {
+              text: 'Cancel',
+            },
+          ],
+        );
       }
 
       if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
@@ -159,8 +170,9 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: 'I just completed my daily goal in Fitness App',
-        title: 'Daily Achievement',
+        message:
+          'I am using Fitness App for keeps track of my health stats you should download it too.',
+        title: 'Fitness App',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -191,6 +203,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Edit Profile"
           onPress={() => navigation.push('EditProfile', {from: 'Settings'})}
         />
+        <SettingsCard title="Invite Friend" onPress={onShare} />
         {!isSocial ? (
           <SettingsCard
             title={`Enable ${
@@ -221,7 +234,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Give Feedback"
           onPress={() => navigation.push('GiveFeedback')}
         />
-        <SettingsCard title="Invite Friend" onPress={onShare} />
+
         <SettingsCard
           title="About Us"
           onPress={() => navigation.navigate('AboutUs')}
