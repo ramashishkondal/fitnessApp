@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  absolute: {
+    position: 'absolute',
+  },
   textInput: {
     maxWidth: 450,
   },
