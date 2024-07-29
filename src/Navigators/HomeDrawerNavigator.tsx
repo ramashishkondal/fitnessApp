@@ -98,7 +98,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
   const dispatch = useAppDispatch();
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to log out?', [
+    Alert.alert('Logging Out', 'Are you sure you want to log out?', [
       {
         text: 'YES',
         onPress: () => {
@@ -118,9 +118,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     let isMounted = true;
 
     const handleNotifications = async (val: NotificationDataFirebaseDB) => {
-      if (val.isShownViaPushNotification === false && allowPushNotifications) {
+      if (val.isShownViaPushNotification === false) {
         const uD = await getUserData(val.userId);
-        if (isMounted) {
+        if (allowPushNotifications && isMounted) {
           setTimeout(
             onDisplayNotification,
             500,

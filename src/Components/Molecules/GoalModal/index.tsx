@@ -19,6 +19,7 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
     },
     goalAchieved: {modalShown},
   } = useAppSelector(state => state.health);
+  const {id} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
 
   // functions
@@ -27,8 +28,19 @@ const GoalModal: React.FC<GoalModalProps> = ({children}) => {
     if (todaysSteps / totalSteps >= 1 && modalShown === false) {
       setModalVisible(true);
       dispatch(setModalShown(true));
+      // if (id) {
+      //   sendNotification(
+      //     {
+      //       isUnread: true,
+      //       isShownViaPushNotification: false,
+      //       message: 'Daily Goal Achieved',
+      //       userId: 'App',
+      //     },
+      //     id,
+      //   );
+      // }
     }
-  }, [dispatch, modalShown, todaysSteps, totalSteps]);
+  }, [dispatch, id, modalShown, todaysSteps, totalSteps]);
 
   return (
     <SafeAreaView style={styles.parent}>

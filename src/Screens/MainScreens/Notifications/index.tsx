@@ -56,16 +56,6 @@ const Notifications: React.FC = () => {
     setShowMenu(false);
   };
 
-  const markAllUnread = () => {
-    if (notificationsData) {
-      updateNotificationReadStatus(
-        userId!,
-        notificationsData.map(val => ({...val, isUnread: true})),
-      );
-    }
-    setShowMenu(false);
-  };
-
   const markNotificationAsRead = (createdOn: Timestamp) => {
     setShowMenu(false);
     if (notificationsData) {
@@ -119,12 +109,6 @@ const Notifications: React.FC = () => {
         <View style={styles.menuCtr}>
           {showMenu ? (
             <View style={styles.activeMenuCtr}>
-              <Pressable onPress={markAllRead} style={styles.menuTextCtr}>
-                <Text style={styles.menuText}>Mark all as read</Text>
-              </Pressable>
-              <Pressable onPress={markAllUnread} style={styles.menuTextCtr}>
-                <Text style={styles.menuText}>Mark all as unread</Text>
-              </Pressable>
               <Pressable
                 onPress={clearAllNotifications}
                 style={styles.menuTextCtrLast}>

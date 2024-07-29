@@ -33,6 +33,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const {isBiometricEnabled} = useAppSelector(
     state => state.settings.data.cachedData,
   );
+
   const {
     cachedData: {isSocial},
     allowPushNotifications,
@@ -49,14 +50,14 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const logOut = () => {
     Alert.alert('Logging Out', 'Are you sure you want to log out?', [
       {
-        text: 'Ok',
+        text: 'YES',
         onPress: () => {
           dispatch(resetUserData());
           auth().signOut();
         },
       },
       {
-        text: 'Cancel',
+        text: 'NO',
       },
     ]);
   };
@@ -64,19 +65,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     const checkAvailabilityAndroid = async () => {
       const status = await getSdkStatus();
       if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
-        Alert.alert(
-          'Info',
-          'Please go to the app permissions in the health settings to change it.',
-          [
-            {
-              text: 'OK',
-              onPress: () => openHealthConnectSettings(),
-            },
-            {
-              text: 'Cancel',
-            },
-          ],
-        );
+        openHealthConnectSettings();
       }
 
       if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
@@ -171,7 +160,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     try {
       const result = await Share.share({
         message:
-          'I am using Fitness App for keeps track of my health stats you should download it too.',
+          "I'm using a fitness app to track my health stats—it's really helpful. You should consider downloading it too!",
         title: 'Fitness App',
       });
       if (result.action === Share.sharedAction) {
@@ -220,10 +209,12 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           onSwitchValueChange={handlePushNotificationValueChange}
           switchActive={switchActiveNotifications}
         />
-        <SettingsCard
-          title="Reset Password"
-          onPress={() => navigation.navigate('ResetPassword')}
-        />
+        {!isSocial ? (
+          <SettingsCard
+            title="Reset Password"
+            onPress={() => navigation.navigate('ResetPassword')}
+          />
+        ) : null}
         <SettingsCard
           title={`Go to ${
             Platform.OS === 'android' ? 'Health Connect' : 'Health kit'

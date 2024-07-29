@@ -28,7 +28,7 @@ const AddFirstName: React.FC<AddEmailLogInProps> = ({navigation}) => {
 
   const handleSubmit = () => {
     setShouldShowError(true);
-    if (!firstName) {
+    if (firstName.trim() === '') {
       ToastError('Error', 'First name cant be empty!');
       return;
     }
@@ -38,7 +38,7 @@ const AddFirstName: React.FC<AddEmailLogInProps> = ({navigation}) => {
       return;
     }
 
-    dispatch(updateUserData({firstName}));
+    dispatch(updateUserData({firstName: firstName.trim()}));
     navigation.push('AddLastName');
   };
 

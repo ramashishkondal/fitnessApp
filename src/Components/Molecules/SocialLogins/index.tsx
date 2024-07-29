@@ -18,6 +18,7 @@ import {useAppDispatch} from '../../../Redux/Store';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
 import ToastError from '../../Atoms/ToastError';
+import {extractAlphabets} from '../../../Utils/checkValidity';
 
 const iconSize = 17;
 
@@ -68,8 +69,8 @@ const SocialLogins: React.FC<SocialLoginProps> = ({setIsLoading}) => {
         await storeUserData(
           {
             email,
-            firstName: displayName?.split(' ')[0] ?? '',
-            lastName: displayName?.split(' ')[1] ?? '',
+            firstName: extractAlphabets(displayName?.split(' ')[0] ?? ''),
+            lastName: extractAlphabets(displayName?.split(' ')[1] ?? ''),
             photo,
             id,
             finger: false,
@@ -111,44 +112,45 @@ const SocialLogins: React.FC<SocialLoginProps> = ({setIsLoading}) => {
       const a = await AccessToken.getCurrentAccessToken();
       const fbcreds = auth.FacebookAuthProvider.credential(a?.accessToken!);
       const creds = await auth().signInWithCredential(fbcreds);
-      console.log('awd', creds.user);
-      await storeUserData(
-        {
-          email: creds.user.email!,
-          firstName: creds.user.displayName?.split(' ')[0]!,
-          lastName:
-            creds.user.displayName?.split(' ')[
-              creds.user.displayName?.split(' ').length - 1
-            ]!,
-          photo: creds.user.photoURL!,
-          id: creds.user.uid,
-          finger: false,
-          gender: null,
-          interests: INTERESETS.map(item => {
-            const {title, selected} = item;
-            return {title, selected};
-          }),
-          preferences: preferencesData,
-          healthData: [],
-          notifications: [],
-          storiesWatched: [],
-        },
-        creds.user.uid,
-      );
-      dispatch(
-        updateSettingsCachedData({isSocial: true, isBiometricEnabled: false}),
-      );
-      sendNotification(
-        {
-          isShownViaPushNotification: false,
-          isUnread: true,
-          message: 'You have successfully registered on FitnessApp !',
-          userId: 'App',
-        },
-        creds.user.uid,
-      ).catch(e => {
-        console.log('error with sending notification', e);
-      });
+      if (creds) {
+        await storeUserData(
+          {
+            email: creds.user.email!,
+            firstName: creds.user.displayName?.split(' ')[0]!,
+            lastName:
+              creds.user.displayName?.split(' ')[
+                creds.user.displayName?.split(' ').length - 1
+              ]!,
+            photo: creds.user.photoURL!,
+            id: creds.user.uid,
+            finger: false,
+            gender: null,
+            interests: INTERESETS.map(item => {
+              const {title, selected} = item;
+              return {title, selected};
+            }),
+            preferences: preferencesData,
+            healthData: [],
+            notifications: [],
+            storiesWatched: [],
+          },
+          creds.user.uid,
+        );
+        dispatch(
+          updateSettingsCachedData({isSocial: true, isBiometricEnabled: false}),
+        );
+        sendNotification(
+          {
+            isShownViaPushNotification: false,
+            isUnread: true,
+            message: 'You have successfully registered on FitnessApp !',
+            userId: 'App',
+          },
+          creds.user.uid,
+        ).catch(e => {
+          console.log('error with sending notification', e);
+        });
+      }
       setIsLoading(false);
       setIsLoadingSocial(null);
     } catch (e) {

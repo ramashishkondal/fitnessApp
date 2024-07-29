@@ -27,7 +27,7 @@ const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
 
   const handleSubmit = () => {
     setShouldShowError(true);
-    if (!lastName) {
+    if (lastName.trim() === '') {
       ToastError('Error', 'Last name cant be empty!');
       return;
     }
@@ -37,7 +37,7 @@ const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
       return;
     }
 
-    dispatch(updateUserData({lastName}));
+    dispatch(updateUserData({lastName: lastName.trim()}));
     navigation.push('AddFingerprint');
   };
   const handleChangeText = (text: string) => {

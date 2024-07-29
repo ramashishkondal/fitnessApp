@@ -40,9 +40,13 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
 
   // redux use
   const {data} = useAppSelector(state => state.User);
+  const {isBiometricEnabled} = useAppSelector(
+    state => state.settings.data.cachedData,
+  );
   const {password, ...user} = data;
   const dispatch = useAppDispatch();
-
+  console.log('awdawdawdawdawd bi', isBiometricEnabled);
+  console.log('awdawdawdawdawd bi', data.finger);
   // functions
   const handleSubmit = async () => {
     try {
@@ -52,8 +56,9 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
           updateSettingsCachedData({
             email: user.email,
             password,
-            isBiometricEnabled: user.finger,
             shouldAskBiometics: false,
+            isSocial: false,
+            isBiometricEnabled: isBiometricEnabled,
           }),
         );
         dispatch(resetMealData());

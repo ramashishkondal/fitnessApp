@@ -8,7 +8,9 @@ import {
   NativeModules,
   Platform,
   Image,
+  AppState,
 } from 'react-native';
+import {BlurView} from '@react-native-community/blur'; // Add this import
 
 // 3rd party
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
@@ -37,6 +39,7 @@ const SignIn = ({navigation}: SignInProps) => {
     null,
   );
   const [activeOut, setActiveOut] = useState(false);
+  const [isAppBackground, setIsAppBackground] = useState(false); // New state for app background
 
   // netinfo use
   const netInfo = useNetInfo();
@@ -104,6 +107,26 @@ const SignIn = ({navigation}: SignInProps) => {
     }
   }, [cachedData, dispatch]);
 
+  // App state listener
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: string) => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        setIsAppBackground(true);
+      } else {
+        setIsAppBackground(false);
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   // functions
   const handleSignIn = async () => {
     if (!netInfo.isConnected) {
@@ -113,16 +136,16 @@ const SignIn = ({navigation}: SignInProps) => {
       );
       return;
     }
-    if (isValidEmail(email) === false) {
-      ToastError('Error', 'Invalid email address entered.');
-      return;
-    }
     if (email.trim() === '') {
       ToastError('Error', "Email address can't be empty");
       return;
     }
     if (password === '') {
       ToastError('Error', "Password can't be empty");
+      return;
+    }
+    if (isValidEmail(email) === false) {
+      ToastError('Error', 'Invalid email address entered.');
       return;
     }
     try {
@@ -157,6 +180,14 @@ const SignIn = ({navigation}: SignInProps) => {
 
   return (
     <View style={styles.parent}>
+      {isAppBackground && (
+        <BlurView
+          style={styles.absolute} // Ensure you have this style for the BlurView to cover the entire screen
+          blurType="light"
+          blurAmount={10}
+          reducedTransparencyFallbackColor="white"
+        />
+      )}
       <CustomTextInput
         value={email}
         placeHolder={STRING.SIGNIN.EMAIL}

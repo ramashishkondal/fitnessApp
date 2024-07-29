@@ -111,6 +111,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
     <KeyboardAwareScrollView
       style={styles.keyboardAwareScroll}
       extraScrollHeight={Platform.OS === 'ios' ? 160 : -275}
+      contentContainerStyle={{borderRadius: 10}}
       enableOnAndroid={true}>
       <View style={styles.parent}>
         <HeadingText text="Edit User Info" textStyle={SPACING.mt1} />

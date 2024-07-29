@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Alert, Platform, View} from 'react-native';
 
 // custom
@@ -13,7 +13,7 @@ import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
 import {styles} from './styles';
 import {AddProfilePictureProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
-import {updateUserData} from '../../../Redux/Reducers/currentUser';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const iconSize = {width: 80, height: 80, color: COLORS.PRIMARY.PURPLE};
 const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
@@ -34,7 +34,8 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
         {
           text: 'Ok',
           onPress: () => {
-            dispatch(updateUserData({finger: true}));
+            dispatch(updateSettingsCachedData({isBiometricEnabled: true}));
+
             goToAddProfilePicture();
           },
         },
@@ -42,15 +43,9 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
     );
   };
   const handleNotNow = () => {
-    dispatch(updateUserData({finger: false}));
+    dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
     goToAddProfilePicture();
   };
-  useEffect(() => {
-    return () => {
-      dispatch(updateUserData({finger: false}));
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <View style={styles.parent}>

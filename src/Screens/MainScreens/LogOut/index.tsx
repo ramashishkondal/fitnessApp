@@ -9,8 +9,7 @@ import auth from '@react-native-firebase/auth';
 import {CustomLoading} from '../../../Components';
 import {COLORS} from '../../../Constants';
 import {styles} from './styles';
-import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
-import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
+import {useAppDispatch} from '../../../Redux/Store';
 import {LogOutProps} from '../../../Defs';
 import {useFocusEffect} from '@react-navigation/native';
 import {resetUserData} from '../../../Redux/Reducers/currentUser';
@@ -18,7 +17,6 @@ import {resetUserData} from '../../../Redux/Reducers/currentUser';
 const LogOut: React.FC<LogOutProps> = ({navigation}) => {
   // redux use
   const dispatch = useAppDispatch();
-  const {finger} = useAppSelector(state => state.User.data);
 
   // effect use
   useFocusEffect(() => {
@@ -26,7 +24,6 @@ const LogOut: React.FC<LogOutProps> = ({navigation}) => {
       {
         text: 'yes',
         onPress: () => {
-          dispatch(updateSettingsCachedData({isBiometricEnabled: finger}));
           dispatch(resetUserData());
           auth().signOut();
         },

@@ -53,7 +53,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
       .where('email', '==', email)
       .get();
     if (snapshot.docs.length !== 0) {
-      ToastError('Error', 'Email address already exists');
+      ToastError('Error', 'Email address is already registered');
       return;
     }
 
