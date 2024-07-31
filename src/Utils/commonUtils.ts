@@ -54,9 +54,9 @@ export const getTimePassed = (timeInMillis: number): string => {
   const timePassedInMns = Math.ceil(timePassedInSecs / 60);
   const timePassedInHrs = Math.floor(timePassedInMns / 60);
   if (timePassedInSecs <= 60) {
-    return `${Math.floor(timePassedInSecs)} ${
-      Math.floor(timePassedInSecs) > 1 ? 'seconds' : 'second'
-    } ago`;
+    return `${
+      Math.floor(timePassedInSecs) > 0 ? Math.floor(timePassedInSecs) : 0
+    } ${Math.floor(timePassedInSecs) > 1 ? 'seconds' : 'second'} ago`;
   } else if (timePassedInMns <= 60) {
     return `${timePassedInMns} ${
       Math.floor(timePassedInMns) > 1 ? 'minutes' : 'minute'

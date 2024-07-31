@@ -19,6 +19,7 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
 import ToastError from '../../../Components/Atoms/ToastError';
+import CustomTextInputCentered from '../../../Components/Atoms/CustomTextInputCentered';
 
 const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
@@ -72,6 +73,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
       <HeadingText text={STRING.ADD_EMAIL.TITLE} />
       <CustomTextInput
+        value={email}
         placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
         parentStyle={[SPACING.mh2, SPACING.mt5]}
         textInputStyle={styles.textInput}
@@ -80,6 +82,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
         textInputProps={{
           onBlur: () => setActiveOut(true),
           keyboardType: 'email-address',
+          maxLength: 30,
         }}
       />
       {activeOut && email && !isValidEmail(email) ? (

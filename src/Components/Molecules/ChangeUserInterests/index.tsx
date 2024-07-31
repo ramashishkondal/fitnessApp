@@ -23,6 +23,7 @@ const renderItem: ListRenderItem<{
 
 const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   setModalFalse,
+  delayed,
 }) => {
   // state use
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +47,17 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
 
   // functions
   const handleSubmitChange = async () => {
+    if (delayed?.isDelayed && delayed.delayedSetter && delayed.delayedValues) {
+      delayed.delayedSetter({
+        ...delayed.delayedValues,
+        interests: interestDataWithIcons.map(val => {
+          const {selected, title} = val;
+          return {selected, title};
+        }),
+      });
+      setModalFalse();
+      return;
+    }
     if (netInfo.isConnected) {
       setIsLoading(true);
       await firestore()

@@ -11,7 +11,13 @@ import {SingleStoryDb, StoryDb} from './DbModels/story';
 import {PostDb} from './DbModels/post';
 import {UserDb, UserPreferencesAndInterests} from './DbModels/user';
 import {FoodDb, MealDb} from './DbModels/mealData';
-import Toast from 'react-native-toast-message';
+import Toast, {ErrorToast} from 'react-native-toast-message';
+
+const toastConfig = {
+  error: (props: any) => (
+    <ErrorToast {...props} text1NumberOfLines={2} text2NumberOfLines={2} />
+  ),
+};
 
 const App = () => {
   return (
@@ -29,7 +35,7 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <RootNavigator />
-            <Toast />
+            <Toast config={toastConfig} />
           </PersistGate>
           <ModalPortal />
         </Provider>

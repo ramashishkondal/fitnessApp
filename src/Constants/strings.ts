@@ -33,14 +33,14 @@ export const STRING = {
     TEXT_INPUT_PLACEHOLDER: 'Enter your password',
     BUTTON_TEXT: 'Continue',
     CHECKS: {
-      LENGTH: 'Minimum 8 characters',
+      LENGTH: 'Minimum 6 characters',
       CASE: 'At least 1 uppercase',
       NUMBER: 'At least 1 number',
       SPECIAL_CHAR: 'At least 1 special character',
     },
     ERROR: {
       HEADING: 'Invalid Password',
-      BODY_LENGTH: 'Password should have minimum 8 characters.',
+      BODY_LENGTH: 'Password should have minimum 6 characters.',
       BODY_UPPERCASE: '1 uppercase character missing from password.',
       BODY_NUMBER: '1 number missing from password.',
       BODY_SPECIAL_CHARACTER: '1 special character missing from password.',
@@ -133,6 +133,7 @@ export const STRING = {
   CUSTOM_HOME_DETAILS_CARD: {
     BUTTON_TEXT_WARNING: 'Warning',
     BUTTON_TEXT_SAFE: 'On',
+    BUTTON_TEXT_COMPLETED: 'Achieved',
   },
   ADD_FIRST_NAME: {
     TITLE: 'What is your First Name ?',

@@ -31,6 +31,19 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
     fontSize: SIZES.font12,
+    flexWrap: 'wrap',
+    maxWidth: 170,
+  },
+  infoTextOther: {
+    marginBottom: 3,
+    color: COLORS.SECONDARY.GREY,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: '700',
+    fontSize: SIZES.font12,
+    flexWrap: 'wrap',
+  },
+  textCtr: {
+    flexDirection: 'row',
   },
   cardsHeadingText: {
     marginTop: 16,
@@ -41,10 +54,11 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH7,
   },
   nameAndGenderCtr: {
-    flex: 1,
+    // flex: 1,
+    maxWidth: 220,
   },
   firstNameAndLastNameCtr: {
-    flex: 3,
+    flex: 2.9,
   },
   otherCtr: {
     flex: 5,
@@ -62,17 +76,17 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   userPhotoCtr: {
-    flex: 1,
+    // flex: 0.7,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  userPhotoParent: {width: 80, height: 80},
+  userPhotoParent: {width: 60, height: 60},
   userPhoto: {borderRadius: 200},
   pencilPhotoCtr: {
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,0.1)',
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     borderRadius: 200,
@@ -109,7 +123,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   genderCtr: {
-    flex: 2,
+    // flex: 2,
     flexDirection: 'row',
   },
   withModalParent: {

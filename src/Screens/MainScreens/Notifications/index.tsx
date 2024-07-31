@@ -46,15 +46,15 @@ const Notifications: React.FC = () => {
     return () => unsubscribe();
   }, [userId]);
 
-  const markAllRead = () => {
-    if (notificationsData) {
-      updateNotificationReadStatus(
-        userId!,
-        notificationsData?.map(val => ({...val, isUnread: false})),
-      );
-    }
-    setShowMenu(false);
-  };
+  // const markAllRead = () => {
+  //   if (notificationsData) {
+  //     updateNotificationReadStatus(
+  //       userId!,
+  //       notificationsData?.map(val => ({...val, isUnread: false})),
+  //     );
+  //   }
+  //   setShowMenu(false);
+  // };
 
   const markNotificationAsRead = (createdOn: Timestamp) => {
     setShowMenu(false);

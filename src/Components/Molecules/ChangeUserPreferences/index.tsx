@@ -17,6 +17,7 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 
 const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
   setModalFalse,
+  delayed,
 }) => {
   // state use
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +40,14 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
 
   // functions
   const handleSubmitChange = async () => {
+    if (delayed?.isDelayed && delayed.delayedSetter && delayed.delayedValues) {
+      delayed.delayedSetter({
+        ...delayed.delayedValues,
+        preferences: preferencedData.current,
+      });
+      setModalFalse();
+      return;
+    }
     if (netInfo.isConnected) {
       setIsLoading(true);
       await firestore()

@@ -31,6 +31,19 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     fontWeight: '700',
     fontSize: SIZES.font12,
+    flexWrap: 'wrap',
+    maxWidth: 170,
+  },
+  infoTextOther: {
+    marginBottom: 3,
+    color: COLORS.SECONDARY.GREY,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: '700',
+    fontSize: SIZES.font12,
+    flexWrap: 'wrap',
+  },
+  textCtr: {
+    flexDirection: 'row',
   },
   cardsHeadingText: {
     marginTop: 16,

@@ -23,7 +23,10 @@ import {isValidName} from '../../../Utils/checkValidity';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ToastError from '../../Atoms/ToastError';
 
-const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
+const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
+  setModalFalse,
+  delayed,
+}) => {
   // redux use
   const {
     gender,
@@ -55,11 +58,11 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
 
   // functions
   const handleSubmitChange = async () => {
-    if (firstName === '') {
+    if (firstName.trim() === '') {
       ToastError('Error', "First name  can't be empty");
       return;
     }
-    if (lastName === '') {
+    if (lastName.trim() === '') {
       ToastError('Error', "Last name can't be empty");
       return;
     }
@@ -69,6 +72,18 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
     }
     if (!isValidName(lastName)) {
       ToastError('Error', 'Invalid last name entered');
+      return;
+    }
+    if (delayed?.isDelayed && delayed.delayedSetter && delayed.delayedValues) {
+      console.log('');
+      delayed.delayedSetter({
+        ...delayed.delayedValues,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        gender: selectedGender,
+      });
+      setModalFalse();
+      return;
     }
 
     if (netInfo.isConnected) {
@@ -77,8 +92,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
         .collection(firebaseDB.collections.users)
         .doc(id!)
         .update({
-          firstName,
-          lastName,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
           gender: selectedGender,
         })
         .finally(() => setIsLoading(false));
@@ -87,8 +102,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
         realm.create(
           UserDb,
           {
-            firstName: firstName,
-            lastName: lastName,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
             gender: selectedGender,
             id: id!,
             interests,
@@ -155,7 +170,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({setModalFalse}) => {
         </View>
         <CustomButton
           title="Submit"
-          parentStyle={{marginTop: 128, marginBottom: 40}}
+          parentStyle={{marginTop: 82, marginBottom: 40}}
           onPress={handleSubmitChange}
           isLoading={isLoading}
         />

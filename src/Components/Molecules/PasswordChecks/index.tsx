@@ -8,12 +8,7 @@ import {DescriptionText} from '../../Atoms';
 import {PasswordChecksProps} from './types';
 import {styles} from './styles';
 
-const PasswordChecks = ({
-  lengthCheck,
-  caseCheck,
-  numberCheck,
-  specialCharCheck,
-}: PasswordChecksProps) => {
+const PasswordChecks = ({lengthCheck}: PasswordChecksProps) => {
   return (
     <View style={[styles.parent, SPACING.mt1]}>
       <View style={styles.childCtr}>
@@ -25,7 +20,7 @@ const PasswordChecks = ({
           textStyle={styles.text}
         />
       </View>
-      <View style={styles.childCtr}>
+      {/* <View style={styles.childCtr}>
         <View
           style={[styles.square, caseCheck ? styles.squareChecked : null]}
         />
@@ -54,7 +49,7 @@ const PasswordChecks = ({
           text={STRING.ADD_PASSWORD.CHECKS.SPECIAL_CHAR}
           textStyle={styles.text}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

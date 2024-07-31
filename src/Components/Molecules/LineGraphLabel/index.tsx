@@ -4,7 +4,7 @@ import {LineGraphLabelProps} from './types';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
-const LineGraphLabel: React.FC<LineGraphLabelProps> = ({day, steps}) => {
+const LineGraphLabel: React.FC<LineGraphLabelProps> = ({day, steps, index}) => {
   return (
     <View
       style={{
@@ -14,6 +14,7 @@ const LineGraphLabel: React.FC<LineGraphLabelProps> = ({day, steps}) => {
         // paddingHorizontal: 24,
         marginHorizontal: 16,
         borderRadius: SIZES.rounding0,
+        left: index === 1 ? '110%' : 0,
       }}>
       <Text style={{color: 'white', fontFamily: FONT_FAMILY.MEDIUM}}>
         {steps}

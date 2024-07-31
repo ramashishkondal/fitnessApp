@@ -105,7 +105,7 @@ const ChooseFood: React.FC<ChooseFoodProps> = ({setModalFalse}) => {
       return;
     }
     if (mealsSelected.current.foodData.length === 0) {
-      ToastError('Error', 'No food to add selected.');
+      ToastError('Error', 'No food selected.');
       return;
     }
     if (netInfo.isConnected) {

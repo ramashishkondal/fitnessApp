@@ -3,7 +3,7 @@ const emailRegex =
 export const isValidEmail = (email: string) => RegExp(emailRegex).test(email);
 
 export const isValidPassword = {
-  lengthCheck: (password: string) => password.length >= 8,
+  lengthCheck: (password: string) => password.length >= 6,
   caseCheck: (password: string) => RegExp(/[A-Z]/).test(password),
   numberCheck: (password: string) => RegExp(/[0-9]/).test(password),
   specialCharacterCheck: (password: string) =>

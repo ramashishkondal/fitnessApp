@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
@@ -24,7 +24,6 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
     'userInfo' | 'preferences' | null | 'interests'
   >(null);
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
-  console.log('got from params', route.params.from === 'Home');
   const [isEditable, setIsEditable] = useState(false);
 
   // redux use
@@ -39,6 +38,11 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
     id,
   } = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
+  const [delayedValues, setDelayedValues] = useState(
+    route.params.from === 'Home'
+      ? {photo, firstName, lastName, email, interests, preferences, gender, id}
+      : null,
+  );
 
   // netInfo use
   const netInfo = useNetInfo();
@@ -54,7 +58,18 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
           ? () => (
               <TouchableOpacity
                 style={styles.editCtr}
-                onPress={() => setIsEditable(!isEditable)}>
+                onPress={() => {
+                  setIsEditable(!isEditable);
+                  if (isEditable) {
+                    console.log('this ran', delayedValues);
+                    firestore()
+                      .collection(firebaseDB.collections.users)
+                      .doc(id!)
+                      .update({
+                        ...delayedValues,
+                      });
+                  }
+                }}>
                 <Text style={styles.editText}>
                   {isEditable ? 'Done' : 'Edit'}
                 </Text>
@@ -68,11 +83,29 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
   const setModalFalse = () => setActiveModal(null);
   const getActiveModalComp = useCallback(() => {
     if (activeModal === 'userInfo') {
-      return <ChangeUserInfo setModalFalse={setModalFalse} />;
+      return (
+        <ChangeUserInfo
+          setModalFalse={setModalFalse}
+          delayed={{
+            isDelayed: route.params.from === 'Home',
+            delayedSetter: setDelayedValues,
+            delayedValues: delayedValues,
+          }}
+        />
+      );
     } else if (activeModal === 'preferences') {
       return <ChangeUserPreferences setModalFalse={setModalFalse} />;
     } else if (activeModal === 'interests') {
-      return <ChangeUserInterests setModalFalse={setModalFalse} />;
+      return (
+        <ChangeUserInterests
+          setModalFalse={setModalFalse}
+          delayed={{
+            isDelayed: route.params.from === 'Home',
+            delayedSetter: setDelayedValues,
+            delayedValues: delayedValues,
+          }}
+        />
+      );
     } else {
       return null;
     }
@@ -84,7 +117,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
   );
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <Text style={styles.cardsHeadingText}>User Info</Text>
       <View style={styles.userInfoCtr}>
         <View style={styles.userPhotoCtr}>
@@ -104,33 +137,28 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
           ) : null}
         </View>
         <View style={styles.nameAndGenderCtr}>
-          <Text style={styles.infoTextHeading}>
-            Name :{' '}
+          <View style={styles.textCtr}>
+            <Text style={styles.infoTextHeading}>Name : </Text>
             <Text style={styles.infoText} numberOfLines={1}>
-              {firstName + ' ' + lastName}
+              {route.params.from === 'Home'
+                ? delayedValues?.firstName + ' ' + delayedValues?.lastName
+                : firstName + ' ' + lastName}
             </Text>
-          </Text>
-          <Text style={styles.infoTextHeading}>
-            Email :{' '}
-            <Text style={styles.infoText} numberOfLines={1}>
-              {email}
-            </Text>
-          </Text>
+          </View>
+          <View style={styles.textCtr}>
+            <Text style={styles.infoTextHeading}>Email : </Text>
+            <Text style={styles.infoText}>{email}</Text>
+          </View>
+
           {gender ? (
             <Text style={styles.infoTextHeading}>
-              Gender : <Text style={styles.infoText}>{gender}</Text>{' '}
+              Gender :{' '}
+              <Text style={styles.infoText}>{`${gender
+                .charAt(0)
+                .toUpperCase()}${gender.slice(1)}`}</Text>{' '}
             </Text>
           ) : null}
         </View>
-        {/* <View style={styles.firstNameAndLastNameCtr}>
-            <Text style={styles.infoText} numberOfLines={1}>
-              {firstName + ' ' + lastName}
-            </Text>
-            <Text style={styles.infoText} numberOfLines={1}>
-              {email}
-            </Text>
-            {gender ? <Text style={styles.infoText}>{gender}</Text> : null}
-          </View> */}
       </View>
       {isEditable || route.params.from === 'Settings' ? (
         <TouchableOpacity
@@ -151,7 +179,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
                 <CustomCardUserItems text={val.title} key={index} />
               ))
           ) : (
-            <Text style={styles.infoText}>No Preferences selected</Text>
+            <Text style={styles.infoTextOther}>No Preferences selected</Text>
           )}
         </View>
         {isEditable || route.params.from === 'Settings' ? (
@@ -173,7 +201,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
                 }
               })
             ) : (
-              <Text style={styles.infoText}>No Interests selected</Text>
+              <Text style={styles.infoTextOther}>No Interests selected</Text>
             )}
           </View>
           {isEditable || route.params.from === 'Settings' ? (
@@ -237,7 +265,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
           })();
         }}
       />
-    </View>
+    </ScrollView>
   );
 };
 

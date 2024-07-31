@@ -48,10 +48,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
       );
       return;
     }
-    if (!isValidPassword.checkAllValidations(newPassword)) {
+    if (!isValidPassword.lengthCheck(newPassword)) {
       Alert.alert(
         'Invalid new password entered',
-        'Ensure the entered password contains at least one uppercase letter, one special character, one digit, and is at least eight characters long.',
+        'Ensure the entered password is at least six characters long.',
       );
       return;
     }

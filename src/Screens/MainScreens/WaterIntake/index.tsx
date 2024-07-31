@@ -14,7 +14,11 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {COLORS, ICONS} from '../../../Constants';
 import {styles} from './styles';
-import {updateWaterIntake, firebaseDB} from '../../../Utils/userUtils';
+import {
+  updateWaterIntake,
+  firebaseDB,
+  sendNotification,
+} from '../../../Utils/userUtils';
 import {weekday} from '../../../Utils/commonUtils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {HealthData} from '../../../Defs';
@@ -44,6 +48,8 @@ const WaterIntake: React.FC = () => {
     goal: {noOfGlasses, totalCalorie, totalSteps},
   } = useAppSelector(state => state.health.value);
   const {id} = useAppSelector(state => state.User.data);
+  const [notificationSent, setNotificationSent] = useState(false);
+  const [previousWaterIntake, setPreviousWaterIntake] = useState(waterIntake);
   const dispatch = useAppDispatch();
   // const [glassesLength, setGlassesLength] = useState<number>(
   //   waterIntake > noOfGlasses ? waterIntake : noOfGlasses,
@@ -81,7 +87,7 @@ const WaterIntake: React.FC = () => {
                 value: val.waterIntake,
                 week:
                   currentDate.toDateString() === new Date().toDateString()
-                    ? 'today'
+                    ? 'Today'
                     : weekday[currentDate.getDay()],
               };
             }
@@ -97,7 +103,7 @@ const WaterIntake: React.FC = () => {
                 value: val.waterIntake,
                 week:
                   currentDate.toDateString() === new Date().toDateString()
-                    ? 'today'
+                    ? 'Today'
                     : weekday[currentDate.getDay()],
               };
             }
@@ -121,6 +127,28 @@ const WaterIntake: React.FC = () => {
     [glassesLength, waterIntake],
   );
 
+  useEffect(() => {
+    if (
+      waterIntake >= noOfGlasses &&
+      !notificationSent &&
+      waterIntake > previousWaterIntake
+    ) {
+      sendNotification(
+        {
+          isShownViaPushNotification: false,
+          isUnread: true,
+          message: 'Water intake goal achieved',
+          userId: 'App',
+        },
+        id!,
+      );
+      setNotificationSent(true);
+    } else if (waterIntake < noOfGlasses) {
+      setNotificationSent(false);
+    }
+
+    setPreviousWaterIntake(waterIntake);
+  }, [waterIntake, id, noOfGlasses, notificationSent, previousWaterIntake]);
   // functions
   const handleGlassDrank = (i: number) => {
     updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});

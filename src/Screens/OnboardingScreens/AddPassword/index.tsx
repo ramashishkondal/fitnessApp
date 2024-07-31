@@ -43,27 +43,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
       );
       return;
     }
-    if (!isValidPassword.caseCheck(password)) {
-      ToastError(
-        STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.BODY_UPPERCASE,
-      );
-      return;
-    }
-    if (!isValidPassword.numberCheck(password)) {
-      ToastError(
-        STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.BODY_NUMBER,
-      );
-      return;
-    }
-    if (!isValidPassword.specialCharacterCheck(password)) {
-      ToastError(
-        STRING.ADD_PASSWORD.ERROR.HEADING,
-        STRING.ADD_PASSWORD.ERROR.BODY_SPECIAL_CHARACTER,
-      );
-      return;
-    }
+
     dispatch(updateUserData({password}));
     navigation.push('AddFirstName');
   };
@@ -80,12 +60,7 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
         allowPeeking
         textInputProps={{maxLength: 30}}
       />
-      <PasswordChecks
-        lengthCheck={isValidPassword.lengthCheck(password)}
-        caseCheck={isValidPassword.caseCheck(password)}
-        numberCheck={isValidPassword.numberCheck(password)}
-        specialCharCheck={isValidPassword.specialCharacterCheck(password)}
-      />
+      <PasswordChecks lengthCheck={isValidPassword.lengthCheck(password)} />
       <CustomButton
         title={STRING.ADD_PASSWORD.BUTTON_TEXT}
         parentStyle={SPACING.mt96}

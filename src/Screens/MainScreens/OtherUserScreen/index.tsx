@@ -59,7 +59,7 @@ const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
                 <CustomCardUserItems text={val.title} key={index} />
               ))
           ) : (
-            <Text style={styles.infoText}>No Preferences selected</Text>
+            <Text style={styles.infoTextOther}>No Preferences selected</Text>
           )}
         </View>
 
@@ -73,7 +73,7 @@ const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
                 }
               })
             ) : (
-              <Text style={styles.infoText}>No Interests selected</Text>
+              <Text style={styles.infoTextOther}>No Interests selected</Text>
             )}
           </View>
         </View>

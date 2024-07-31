@@ -34,9 +34,13 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
   if (markerPercentage > 33 && markerPercentage < 66) {
     button.style.backgroundColor = '#FDEFE5';
     button.textStyle.color = COLORS.SECONDARY.ORANGE;
-  } else if (markerPercentage > 66) {
+  } else if (markerPercentage > 66 && markerPercentage <= 99) {
     button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
     button.text = STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_SAFE;
+    button.textStyle.color = COLORS.PRIMARY.PURPLE;
+  } else if (markerPercentage >= 100) {
+    button.style.backgroundColor = COLORS.PRIMARY.LIGHT_PURPLE;
+    button.text = STRING.CUSTOM_HOME_DETAILS_CARD.BUTTON_TEXT_COMPLETED;
     button.textStyle.color = COLORS.PRIMARY.PURPLE;
   }
 
