@@ -5,10 +5,11 @@ import {ICONS} from '../../../Constants';
 import {BackNavigatorProps} from './types';
 import {useNavigation} from '@react-navigation/native';
 import {styles} from './styles';
+import DeviceInfo from 'react-native-device-info';
 
 const size = {
-  width: RFValue(22),
-  height: RFValue(30),
+  width: DeviceInfo.isTablet() ? 26 : RFValue(22),
+  height: DeviceInfo.isTablet() ? 28 : RFValue(30),
   color: '#317FFF',
 };
 const BackNavigator: React.FC<BackNavigatorProps> = ({canGoBack}) => {

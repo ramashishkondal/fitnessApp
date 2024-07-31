@@ -10,6 +10,7 @@ import ActiveCarousel from '../../../Components/Molecules/ActiveCarousel';
 import {CustomButton, DescriptionText, HeadingText} from '../../../Components';
 import PremiumSelectorCard from '../../../Components/Molecules/PremiumSelectorCard';
 import {ScrollView} from 'react-native-gesture-handler';
+import DeviceInfo from 'react-native-device-info';
 
 const GetPremium = () => {
   // state use
@@ -45,7 +46,13 @@ const GetPremium = () => {
         autoPlayInterval={5000}
         scrollAnimationDuration={1000}
         width={SIZES.width}
-        height={Platform.OS === 'ios' ? SIZES.height / 3.7 : SIZES.height / 3.8}
+        height={
+          Platform.OS === 'ios'
+            ? SIZES.height / 3.7
+            : DeviceInfo.isTablet()
+            ? SIZES.height / 2.8
+            : SIZES.height / 3.8
+        }
         data={carouselItems}
         onSnapToItem={index => setActiveCarousel(index)}
         renderItem={({index, item}) => (

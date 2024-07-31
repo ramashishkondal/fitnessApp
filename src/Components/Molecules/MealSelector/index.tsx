@@ -4,6 +4,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {COLORS} from '../../../Constants';
 import {MealSelectorProps} from './types';
 import {styles} from './styles';
+import DeviceInfo from 'react-native-device-info';
 
 const MealSelector: React.FC<MealSelectorProps> = ({title, mealTime}) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -29,7 +30,7 @@ const MealSelector: React.FC<MealSelectorProps> = ({title, mealTime}) => {
   return (
     <View style={styles.parent}>
       <BouncyCheckbox
-        size={20}
+        size={DeviceInfo.isTablet() ? 28 : 20}
         fillColor={COLORS.PRIMARY.PURPLE}
         unFillColor={COLORS.PRIMARY.GREY}
         innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}

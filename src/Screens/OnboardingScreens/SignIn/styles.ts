@@ -1,6 +1,7 @@
 import {FONT_FAMILY} from './../../../Constants/commonStyles';
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   textInput: {
-    maxWidth: 450,
+    maxWidth: DeviceInfo.isTablet() ? 580 : 450,
   },
   text: {
     fontSize: SIZES.font14,
@@ -31,5 +32,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'flex-end',
+    marginRight: DeviceInfo.isTablet() ? 180 : 0,
   },
 });

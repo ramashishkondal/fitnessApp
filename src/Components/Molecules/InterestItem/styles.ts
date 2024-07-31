@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
     flex: 1,
+    padding: DeviceInfo.isTablet() ? 16 : 0,
   },
   child: {
     flex: 1,

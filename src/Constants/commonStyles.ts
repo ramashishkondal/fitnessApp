@@ -36,7 +36,7 @@ export const ANIMATIONS = {
   sizeIncrease3: 1.15,
 };
 
-const HEADER_CONST = DeviceInfo.isTablet() ? RFValue(11) : RFValue(13);
+const HEADER_CONST = DeviceInfo.isTablet() ? RFValue(9) : RFValue(13);
 export const SIZES = {
   icon: DeviceInfo.isTablet() ? RFValue(12) : RFValue(13),
   spacing: DeviceInfo.isTablet() ? RFValue(7) : RFValue(8),
@@ -143,7 +143,7 @@ export const SPACING = StyleSheet.create({
     marginHorizontal: 8,
   },
   mh2: {
-    marginHorizontal: 40,
+    marginHorizontal: DeviceInfo.isTablet() ? 80 : 40,
   },
   mh3: {
     marginHorizontal: 50,

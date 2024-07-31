@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -9,10 +10,10 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY.PURPLE,
     // paddingHorizontal: 104,
     // paddingVertical: 14,
-    height: RFValue(44),
-    width: RFValue(260),
+    height: DeviceInfo.isTablet() ? 80 : RFValue(44),
+    width: DeviceInfo.isTablet() ? 500 : RFValue(260),
 
-    borderRadius: SIZES.rounding3,
+    borderRadius: DeviceInfo.isTablet() ? 40 : SIZES.rounding3,
   },
   buttonCtr: {},
   text: {

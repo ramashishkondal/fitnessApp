@@ -13,6 +13,7 @@ import Animated, {
 import {COLORS, STRING} from '../../../Constants';
 import {CustomHomeDetailsCardProps} from './types';
 import {styles} from './styles';
+import DeviceInfo from 'react-native-device-info';
 
 const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
   title,
@@ -60,7 +61,13 @@ const CustomHomeDetailsCard: React.FC<CustomHomeDetailsCardProps> = ({
       <TouchableOpacity style={styles.allDetailsCtr} onPress={handleOnPress}>
         <View style={styles.iconCtr}>
           {/* {icon(size)} */}
-          <Image source={source} style={{width: 40, height: 40}} />
+          <Image
+            source={source}
+            style={{
+              width: DeviceInfo.isTablet() ? 50 : 40,
+              height: DeviceInfo.isTablet() ? 50 : 40,
+            }}
+          />
         </View>
         <View style={styles.childCtr}>
           <View style={styles.upperCtr}>

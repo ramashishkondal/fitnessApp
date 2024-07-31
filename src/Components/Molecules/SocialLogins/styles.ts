@@ -10,5 +10,9 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
     padding: 11,
     marginHorizontal: 10,
+    minWidth: 56,
+    minHeight: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

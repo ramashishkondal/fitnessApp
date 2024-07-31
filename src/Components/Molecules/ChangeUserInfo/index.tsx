@@ -75,10 +75,9 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
       return;
     }
     if (delayed?.isDelayed && delayed.delayedSetter && delayed.delayedValues) {
-      console.log('');
       delayed.delayedSetter({
         ...delayed.delayedValues,
-        firstName: firstName.trim(),
+        firstName: firstName.replace(/\s+/g, ' '),
         lastName: lastName.trim(),
         gender: selectedGender,
       });
@@ -92,8 +91,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
         .collection(firebaseDB.collections.users)
         .doc(id!)
         .update({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
+          firstName: firstName.replace(/\s+/g, ' '),
+          lastName: lastName.replace(/\s+/g, ' '),
           gender: selectedGender,
         })
         .finally(() => setIsLoading(false));
@@ -102,8 +101,8 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
         realm.create(
           UserDb,
           {
-            firstName: firstName.trim(),
-            lastName: lastName.trim(),
+            firstName: firstName.replace(/\s+/g, ' '),
+            lastName: lastName.replace(/\s+/g, ' '),
             gender: selectedGender,
             id: id!,
             interests,

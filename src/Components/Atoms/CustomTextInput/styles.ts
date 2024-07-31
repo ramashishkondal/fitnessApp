@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -16,7 +17,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    padding: 10,
+    padding: DeviceInfo.isTablet() ? 20 : 10,
     flex: 19,
     flexDirection: 'row',
     paddingHorizontal: 15,

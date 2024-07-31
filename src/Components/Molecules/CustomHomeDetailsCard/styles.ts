@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -8,16 +9,16 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.PRIMARY.DARK_GREY,
     flexGrow: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: DeviceInfo.isTablet() ? 32 : 16,
     justifyContent: 'center',
-    paddingVertical: 16,
+    paddingVertical: DeviceInfo.isTablet() ? 32 : 16,
   },
   allDetailsCtr: {
     flexGrow: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconCtr: {flex: 0.8},
+  iconCtr: {flex: DeviceInfo.isTablet() ? 0.6 : 0.8},
   childCtr: {
     flexDirection: 'column',
     paddingHorizontal: 20,
@@ -44,8 +45,8 @@ export const styles = StyleSheet.create({
   },
   buttonCtr: {},
   lineCtr: {
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: DeviceInfo.isTablet() ? 18 : 16,
+    marginBottom: DeviceInfo.isTablet() ? 10 : 8,
   },
   titleText: {
     fontSize: SIZES.fontH6,

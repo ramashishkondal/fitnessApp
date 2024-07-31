@@ -2,6 +2,7 @@ import {Platform, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -14,7 +15,12 @@ export const styles = StyleSheet.create({
   activeCarouselCtr: {
     position: 'absolute',
     width: 100,
-    top: Platform.OS === 'ios' ? SIZES.height / 4.25 : SIZES.height / 4.75,
+    top:
+      Platform.OS === 'ios'
+        ? SIZES.height / 4.25
+        : DeviceInfo.isTablet()
+        ? SIZES.height / 3.25
+        : SIZES.height / 4.75,
     left: SIZES.width / 2 - 50,
   },
   childCtr: {

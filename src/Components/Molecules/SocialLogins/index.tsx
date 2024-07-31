@@ -110,7 +110,12 @@ const SocialLogins: React.FC<SocialLoginProps> = ({setIsLoading}) => {
       setIsLoadingSocial('facebook');
       await LoginManager.logInWithPermissions(['public_profile', 'email']);
       const a = await AccessToken.getCurrentAccessToken();
-      const fbcreds = auth.FacebookAuthProvider.credential(a?.accessToken!);
+      if (!a?.accessToken) {
+        setIsLoadingSocial(null);
+        setIsLoading(false);
+        return;
+      }
+      const fbcreds = auth.FacebookAuthProvider.credential(a?.accessToken);
       const creds = await auth().signInWithCredential(fbcreds);
       if (creds) {
         await storeUserData(

@@ -2,6 +2,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,8 +11,8 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   image: {
-    width: 60,
-    height: 60,
+    width: DeviceInfo.isTablet() ? 90 : 60,
+    height: DeviceInfo.isTablet() ? 90 : 60,
     borderRadius: 200,
   },
   notificationCtr: {
@@ -37,9 +38,9 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
     justifyContent: 'center',
     bottom: 4,
-    left: 4,
-    width: 12,
-    height: 12,
+    left: DeviceInfo.isTablet() ? 6 : 4,
+    width: DeviceInfo.isTablet() ? 16 : 12,
+    height: DeviceInfo.isTablet() ? 16 : 12,
   },
   onlineStatusNoInternet: {
     backgroundColor: COLORS.SECONDARY.RED,

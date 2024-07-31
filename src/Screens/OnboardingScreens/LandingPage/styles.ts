@@ -6,6 +6,7 @@ import {
   SPACING,
 } from '../../../Constants/commonStyles';
 import {RFValue} from 'react-native-responsive-fontsize';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 245,
+    height: DeviceInfo.isTablet() ? 600 : 245,
     ...SPACING.mt2,
   },
   signInText1: {
