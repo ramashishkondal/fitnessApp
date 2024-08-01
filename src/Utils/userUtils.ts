@@ -171,7 +171,7 @@ export const storePostComment = async (
       {
         isShownViaPushNotification: false,
         isUnread: true,
-        message: 'commented on your post',
+        message: `left a comment on your post "${comment.comment}" !`,
         userId: comment.userId,
       },
       notification.sendNotificationToUserId,

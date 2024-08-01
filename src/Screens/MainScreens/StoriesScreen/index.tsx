@@ -1,12 +1,13 @@
 // libs
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, Pressable, Text, View, TouchableOpacity} from 'react-native';
-
-// 3rd party
 import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useFocusEffect} from '@react-navigation/native';
-import * as Progress from 'react-native-progress';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 // custom
 import {CustomImage} from '../../../Components';
@@ -21,6 +22,7 @@ import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS, SIZES} from '../../../Constants';
+import {useFocusEffect} from '@react-navigation/native';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -58,7 +60,17 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   // focus effect use
   useFocusEffect(() => () => storyTimer.clear());
-  const [progress, setProgress] = useState(0);
+
+  // Reanimated values
+  const progress = useSharedValue(0);
+
+  // Animated style for progress bar
+  const animatedStyle = useAnimatedStyle(() => ({
+    width: `${progress.value * 100}%`,
+    backgroundColor: COLORS.PRIMARY.PURPLE,
+    height: 4,
+  }));
+
   // functions
   const goNext = () => {
     if (showMenu) {
@@ -137,6 +149,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
       setUserIndex(userIndex - 1);
     }
   };
+
   const handleStoryDelete = () => {
     if (showMenu) {
       setShowMenu(false);
@@ -161,13 +174,20 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const storyTimer = new Timer(goNext);
-  console.log('progress value is ', progress);
-  // useEffect(() => {
-  //   if (!stories[index].storyType.includes('video')) {
-  //     const timeId = setInterval(() => setProgress(p => p + 0.01), 100);
-  //     setTimeout(() => clearInterval(timeId), 10000);
-  //   }
-  // }, [index, stories]);
+
+  useEffect(() => {
+    if (stories[index].storyType.includes('video')) {
+      videoRef.current?.seek(0);
+      progress.value = 0;
+    } else {
+      progress.value = withTiming(1, {duration: 10000});
+    }
+
+    return () => {
+      progress.value = 0;
+    };
+  }, [index, progress, stories]);
+
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
       <View style={[styles.topInfoCtr, {top: insets.top}]}>
@@ -175,28 +195,27 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
           {Array(stories.length)
             .fill(0)
             .map((_val, i) => {
-              // if (i === index) {
-              //   return (
-              //     <Progress.Bar
-              //       progress={progress}
-              //       // width={SIZES.width}
-              //       style={{
-              //         borderWidth: 0.5,
-              //         borderColor: 'grey',
-              //         backgroundColor: 'white',
-              //         height: 4,
-              //         flex: 1,
-              //       }}
-              //       color={COLORS.PRIMARY.PURPLE}
-              //     />
-              //   );
-              // }
-              return (
-                <View
-                  key={i}
-                  style={[styles.line, i === index ? styles.lineActive : null]}
-                />
-              );
+              if (i === index) {
+                return (
+                  <View style={styles.line}>
+                    <Animated.View
+                      key={i}
+                      style={[
+                        {
+                          borderWidth: 0.5,
+                          borderColor: 'grey',
+                          backgroundColor: 'white',
+                          height: 4,
+                          // flex: 1,
+                          borderRadius: 200,
+                        },
+                        animatedStyle,
+                      ]}
+                    />
+                  </View>
+                );
+              }
+              return <View key={i} style={styles.line} />;
             })}
         </View>
         <View style={styles.userInfoCtr}>
@@ -226,12 +245,6 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
           {showMenu ? (
             <TouchableOpacity
               style={{
-                // backgroundColor: 'white',
-                // position: 'absolute',
-                // right: 0,
-                // marginRight: 32,
-                // padding: 8,
-                // borderRadius: 4,
                 elevation: 20,
                 shadowColor: 'black',
                 shadowOpacity: 0.3,
@@ -282,24 +295,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
               ref={videoRef}
               style={styles.video}
               onLoad={({duration}) => {
-                // if (duration < 15) {
-                //   const timeId = setInterval(() => {
-                //     console.log(
-                //       'interval ran',
-                //       duration,
-                //       parseFloat((1 / duration).toFixed(2)),
-                //     );
-                //     setProgress(p => p + parseFloat((1 / duration).toFixed(2)));
-                //   }, 1000);
-                //   setTimeout(() => clearInterval(timeId), duration * 1000);
-                // } else {
-                //   const timeId = setInterval(
-                //     () => setProgress(p => p + 0.1),
-                //     1000,
-                //   );
-                //   setTimeout(() => clearInterval(timeId), 10000);
-                // }
                 storyTimer.start(duration < 10 ? duration * 1000 : 10000);
+                progress.value = withTiming(1, {
+                  duration: (duration < 10 ? duration * 1000 : 10000) - 100,
+                });
               }}
               resizeMode="cover"
               bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}

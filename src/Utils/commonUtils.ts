@@ -191,3 +191,9 @@ export const debounce = <T extends (...args: any[]) => void>(
     timeout = setTimeout(func, delay, ...args);
   };
 };
+export const isValidURL = (uri: string) => {
+  // Regular expression to match localStorage URIs
+  const urlPattern =
+    /^(https?:\/\/)?((([a-zA-Z0-9\-\.]+)\.[a-zA-Z]{2,6})|localhost)(:[0-9]{1,5})?(\/[^\s]*)?$/i;
+  return urlPattern.test(uri);
+};
