@@ -15,5 +15,5 @@ export const styles = StyleSheet.create({
     ...SPACING.mtMedium,
     ...SPACING.mh1,
   },
-  buttonStyle: {flex: 3, alignSelf: 'center'},
+  buttonStyle: {flex: 4, alignSelf: 'center', marginTop: 40},
 });

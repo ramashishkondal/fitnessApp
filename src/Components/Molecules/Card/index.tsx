@@ -15,6 +15,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {ANIMATIONS, COLORS} from '../../../Constants';
 import {CardProps} from './types';
 import {styles} from './styles';
+import DeviceInfo from 'react-native-device-info';
 
 const size = {
   width: 72,
@@ -46,7 +47,7 @@ const Card: React.FC<CardProps> = ({text, icon, onToggle, isChecked}) => {
         </View>
         <View style={styles.checkboxCtr}>
           <BouncyCheckbox
-            size={22}
+            size={DeviceInfo.isTablet() ? 30 : 22}
             fillColor={COLORS.PRIMARY.PURPLE}
             unFillColor={COLORS.PRIMARY.GREY}
             innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}

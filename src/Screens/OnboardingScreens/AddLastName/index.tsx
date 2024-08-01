@@ -37,7 +37,7 @@ const AddLastName: React.FC<AddEmailLogInProps> = ({navigation}) => {
       return;
     }
 
-    dispatch(updateUserData({lastName: lastName.trim()}));
+    dispatch(updateUserData({lastName: lastName.replace(/\s+/g, ' ')}));
     navigation.push('AddFingerprint');
   };
   const handleChangeText = (text: string) => {

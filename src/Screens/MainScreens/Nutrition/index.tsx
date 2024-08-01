@@ -19,6 +19,7 @@ import {NutritionProps} from '../../../Defs/navigators';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {getPercentage} from '../../../Utils/commonUtils';
+import DeviceInfo from 'react-native-device-info';
 
 const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
   // state use
@@ -133,8 +134,8 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
             <PieChart
               donut
               showText
-              radius={80}
-              innerRadius={65}
+              radius={DeviceInfo.isTablet() ? 120 : 80}
+              innerRadius={DeviceInfo.isTablet() ? 100 : 65}
               data={proteinData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
@@ -143,8 +144,8 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
             <PieChart
               donut
               showText
-              radius={60}
-              innerRadius={45}
+              radius={DeviceInfo.isTablet() ? 95 : 60}
+              innerRadius={DeviceInfo.isTablet() ? 75 : 45}
               data={carbsData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
             />
@@ -153,8 +154,8 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
             <PieChart
               donut
               showText
-              radius={40}
-              innerRadius={25}
+              radius={DeviceInfo.isTablet() ? 70 : 40}
+              innerRadius={DeviceInfo.isTablet() ? 50 : 25}
               data={fatData}
               innerCircleColor={COLORS.PRIMARY.DARK_GREY}
               edgesRadius={120}

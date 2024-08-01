@@ -51,6 +51,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         }
         if (onSuccess) {
           onSuccess(result.assets[0].uri, result.assets[0].type);
+          bottomSheetModalCameraOptionsRef.current?.close();
         }
       }
       if (mediaType === 'mixed') {
@@ -70,6 +71,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
         }
         if (onSuccess) {
           onSuccess(result.assets[0].uri, result.assets[0].type);
+          bottomSheetModalCameraOptionsRef.current?.close();
         }
       }
       setModalVisible(false);

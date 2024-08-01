@@ -38,7 +38,7 @@ const AddFirstName: React.FC<AddEmailLogInProps> = ({navigation}) => {
       return;
     }
 
-    dispatch(updateUserData({firstName: firstName.trim()}));
+    dispatch(updateUserData({firstName: firstName.replace(/\s+/g, ' ')}));
     navigation.push('AddLastName');
   };
 

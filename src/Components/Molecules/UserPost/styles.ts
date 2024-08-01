@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
   },
   photo: {
-    height: 300,
+    height: DeviceInfo.isTablet() ? 500 : 300,
     flex: 1,
   },
   menuText: {

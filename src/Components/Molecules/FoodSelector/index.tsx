@@ -6,6 +6,7 @@ import {FoodSelectorProps} from './types';
 import {styles} from './styles';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
+import DeviceInfo from 'react-native-device-info';
 
 const FoodSelector: React.FC<FoodSelectorProps> = ({
   foodItem,
@@ -51,7 +52,7 @@ const FoodSelector: React.FC<FoodSelectorProps> = ({
       </View>
       <BouncyCheckbox
         style={styles.bouncyCheckbox}
-        size={20}
+        size={DeviceInfo.isTablet() ? 28 : 20}
         fillColor={COLORS.PRIMARY.PURPLE}
         unFillColor={COLORS.PRIMARY.GREY}
         innerIconStyle={{borderColor: COLORS.PRIMARY.GREY}}

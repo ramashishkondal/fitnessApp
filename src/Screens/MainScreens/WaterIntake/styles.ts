@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES, SPACING} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,8 +11,8 @@ export const styles = StyleSheet.create({
   glassesCtr: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    columnGap: 40,
-    rowGap: 40,
+    columnGap: DeviceInfo.isTablet() ? 120 : 40,
+    rowGap: DeviceInfo.isTablet() ? 80 : 40,
     paddingHorizontal: 30,
     justifyContent: 'flex-start',
     ...SPACING.mtMedium,

@@ -10,10 +10,11 @@ import {AddInterestsProps} from '../../../Defs';
 import {useAppDispatch} from '../../../Redux/Store';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import {ScrollView} from 'react-native-gesture-handler';
+import DeviceInfo from 'react-native-device-info';
 
 const iconSizeInterests = {
-  width: 35,
-  height: 35,
+  width: DeviceInfo.isTablet() ? 45 : 35,
+  height: DeviceInfo.isTablet() ? 45 : 35,
 };
 const AddInterests: React.FC<AddInterestsProps> = ({navigation}) => {
   // redux use

@@ -1,13 +1,14 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
     backgroundColor: COLORS.SECONDARY.WHITE,
     borderRadius: SIZES.rounding2,
-    padding: 11,
+    padding: DeviceInfo.isTablet() ? 32 : 11,
     minWidth: SIZES.width / 2.8,
     justifyContent: 'center',
   },

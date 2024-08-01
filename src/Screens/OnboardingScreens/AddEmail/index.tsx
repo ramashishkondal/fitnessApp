@@ -19,7 +19,6 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import firestore from '@react-native-firebase/firestore';
 import {firebaseDB} from '../../../Utils/userUtils';
 import ToastError from '../../../Components/Atoms/ToastError';
-import CustomTextInputCentered from '../../../Components/Atoms/CustomTextInputCentered';
 
 const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use

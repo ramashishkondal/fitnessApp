@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants';
 import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -10,7 +11,7 @@ export const styles = StyleSheet.create({
   editText: {
     color: '#348AFE',
     fontFamily: FONT_FAMILY.SEMI_BOLD,
-    fontSize: SIZES.font15,
+    fontSize: RFValue(15),
     fontWeight: '500',
   },
   editCtr: {
@@ -32,7 +33,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: SIZES.font12,
     flexWrap: 'wrap',
-    maxWidth: 170,
+    maxWidth: '90%',
   },
   infoTextOther: {
     marginBottom: 3,
@@ -54,8 +55,8 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.fontH7,
   },
   nameAndGenderCtr: {
-    // flex: 1,
-    maxWidth: 220,
+    flex: 1,
+    maxWidth: '70%',
   },
   firstNameAndLastNameCtr: {
     flex: 2.9,

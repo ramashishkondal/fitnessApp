@@ -61,13 +61,36 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
                 onPress={() => {
                   setIsEditable(!isEditable);
                   if (isEditable) {
-                    console.log('this ran', delayedValues);
-                    firestore()
-                      .collection(firebaseDB.collections.users)
-                      .doc(id!)
-                      .update({
-                        ...delayedValues,
+                    if (netInfo.isConnected) {
+                      firestore()
+                        .collection(firebaseDB.collections.users)
+                        .doc(id!)
+                        .update({
+                          ...delayedValues,
+                        });
+                    } else {
+                      realm.write(() => {
+                        realm.create(
+                          UserDb,
+                          {
+                            id: id!,
+                            preferences: delayedValues?.preferences.map(
+                              val => val,
+                            ),
+                            firstName: delayedValues?.firstName,
+                            lastName: delayedValues?.lastName,
+                            interests: delayedValues?.interests.map(val => val),
+                            gender: delayedValues?.gender,
+                            photo:
+                              delayedValues?.photo === photo
+                                ? undefined
+                                : delayedValues?.photo,
+                          },
+                          UpdateMode.Modified,
+                        );
                       });
+                      dispatch(updateUserData(delayedValues!));
+                    }
                   }
                 }}>
                 <Text style={styles.editText}>
@@ -77,7 +100,21 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
             )
           : undefined,
     });
-  }, [isEditable, navigation, route.params.from]);
+  }, [
+    delayedValues,
+    dispatch,
+    firstName,
+    gender,
+    id,
+    interests,
+    isEditable,
+    lastName,
+    navigation,
+    netInfo.isConnected,
+    photo,
+    realm,
+    route.params.from,
+  ]);
 
   // functions
   const setModalFalse = () => setActiveModal(null);
@@ -94,7 +131,16 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
         />
       );
     } else if (activeModal === 'preferences') {
-      return <ChangeUserPreferences setModalFalse={setModalFalse} />;
+      return (
+        <ChangeUserPreferences
+          setModalFalse={setModalFalse}
+          delayed={{
+            isDelayed: route.params.from === 'Home',
+            delayedSetter: setDelayedValues,
+            delayedValues: delayedValues,
+          }}
+        />
+      );
     } else if (activeModal === 'interests') {
       return (
         <ChangeUserInterests
@@ -109,124 +155,157 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
     } else {
       return null;
     }
-  }, [activeModal]);
+  }, [activeModal, delayedValues, route.params.from]);
   const ActiveModalComponent = getActiveModalComp();
   const handleWithModalFalse = useCallback(
     (): void => setActiveModal(null),
     [],
   );
 
+  const userData = useMemo(() => {
+    if (route.params.from === 'Home') {
+      return delayedValues;
+    }
+    return {
+      photo,
+      firstName,
+      lastName,
+      email,
+      interests,
+      preferences,
+      gender,
+      id,
+    };
+  }, [
+    delayedValues,
+    email,
+    firstName,
+    gender,
+    id,
+    interests,
+    lastName,
+    photo,
+    preferences,
+    route.params.from,
+  ]);
   return (
-    <ScrollView style={styles.parent}>
-      <Text style={styles.cardsHeadingText}>User Info</Text>
-      <View style={styles.userInfoCtr}>
-        <View style={styles.userPhotoCtr}>
-          <CustomImage
-            source={{uri: photo}}
-            parentStyle={styles.userPhotoParent}
-            imageStyle={styles.userPhoto}
-          />
-          {isEditable || route.params.from === 'Settings' ? (
-            <TouchableOpacity
-              style={styles.pencilPhotoCtr}
-              onPress={() => setPhotoModalVisible(true)}>
-              <View style={styles.pencilBackPhotoCtr}>
-                {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
-              </View>
-            </TouchableOpacity>
-          ) : null}
-        </View>
-        <View style={styles.nameAndGenderCtr}>
-          <View style={styles.textCtr}>
-            <Text style={styles.infoTextHeading}>Name : </Text>
-            <Text style={styles.infoText} numberOfLines={1}>
-              {route.params.from === 'Home'
-                ? delayedValues?.firstName + ' ' + delayedValues?.lastName
-                : firstName + ' ' + lastName}
-            </Text>
+    <>
+      <ScrollView style={styles.parent}>
+        <Text style={styles.cardsHeadingText}>User Info</Text>
+        <View style={styles.userInfoCtr}>
+          <View style={styles.userPhotoCtr}>
+            <CustomImage
+              source={{uri: userData?.photo}}
+              parentStyle={styles.userPhotoParent}
+              imageStyle={styles.userPhoto}
+            />
+            {isEditable || route.params.from === 'Settings' ? (
+              <TouchableOpacity
+                style={styles.pencilPhotoCtr}
+                onPress={() => setPhotoModalVisible(true)}>
+                <View style={styles.pencilBackPhotoCtr}>
+                  {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+                </View>
+              </TouchableOpacity>
+            ) : null}
           </View>
-          <View style={styles.textCtr}>
-            <Text style={styles.infoTextHeading}>Email : </Text>
-            <Text style={styles.infoText}>{email}</Text>
-          </View>
+          <View style={styles.nameAndGenderCtr}>
+            <View style={styles.textCtr}>
+              <Text style={styles.infoTextHeading}>Name : </Text>
+              <Text style={styles.infoText} numberOfLines={1}>
+                {userData?.firstName + ' ' + userData?.lastName}
+              </Text>
+            </View>
+            <View style={styles.textCtr}>
+              <Text style={styles.infoTextHeading}>Email : </Text>
+              <Text style={styles.infoText}>{email}</Text>
+            </View>
 
-          {gender ? (
-            <Text style={styles.infoTextHeading}>
-              Gender :{' '}
-              <Text style={styles.infoText}>{`${gender
-                .charAt(0)
-                .toUpperCase()}${gender.slice(1)}`}</Text>{' '}
-            </Text>
-          ) : null}
-        </View>
-      </View>
-      {isEditable || route.params.from === 'Settings' ? (
-        <TouchableOpacity
-          style={styles.pencilCtr}
-          onPress={() => setActiveModal('userInfo')}>
-          <View style={styles.pencilBackCtr}>
-            {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+            {userData?.gender ? (
+              <Text style={styles.infoTextHeading}>
+                Gender :{' '}
+                <Text style={styles.infoText}>{`${userData?.gender
+                  .charAt(0)
+                  .toUpperCase()}${userData?.gender.slice(1)}`}</Text>{' '}
+              </Text>
+            ) : null}
           </View>
-        </TouchableOpacity>
-      ) : null}
-      <View style={styles.otherCtr}>
-        <Text style={styles.cardsHeadingText}>Preferences</Text>
-        <View style={styles.cardCtr}>
-          {preferences.some(val => val.selected) ? (
-            preferences
-              .filter(val => val.selected === true)
-              .map((val, index) => (
-                <CustomCardUserItems text={val.title} key={index} />
-              ))
-          ) : (
-            <Text style={styles.infoTextOther}>No Preferences selected</Text>
-          )}
         </View>
         {isEditable || route.params.from === 'Settings' ? (
           <TouchableOpacity
             style={styles.pencilCtr}
-            onPress={() => setActiveModal('preferences')}>
+            onPress={() => setActiveModal('userInfo')}>
             <View style={styles.pencilBackCtr}>
               {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
             </View>
           </TouchableOpacity>
         ) : null}
-        <View>
-          <Text style={styles.cardsHeadingText}>Interests</Text>
+        <View style={styles.otherCtr}>
+          <Text style={styles.cardsHeadingText}>Preferences</Text>
           <View style={styles.cardCtr}>
-            {interests.some(val => val.selected) ? (
-              interests.map((val, index) => {
-                if (val.selected) {
-                  return <CustomCardUserItems text={val.title} key={index} />;
-                }
-              })
+            {userData?.preferences.some(val => val.selected) ? (
+              userData?.preferences
+                .filter(val => val.selected === true)
+                .map((val, index) => (
+                  <CustomCardUserItems text={val.title} key={index} />
+                ))
             ) : (
-              <Text style={styles.infoTextOther}>No Interests selected</Text>
+              <Text style={styles.infoTextOther}>No Preferences selected</Text>
             )}
           </View>
           {isEditable || route.params.from === 'Settings' ? (
             <TouchableOpacity
               style={styles.pencilCtr}
-              onPress={() => setActiveModal('interests')}>
+              onPress={() => setActiveModal('preferences')}>
               <View style={styles.pencilBackCtr}>
                 {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
               </View>
             </TouchableOpacity>
           ) : null}
+          <View>
+            <Text style={styles.cardsHeadingText}>Interests</Text>
+            <View style={styles.cardCtr}>
+              {userData?.interests.some(val => val.selected) ? (
+                userData?.interests.map((val, index) => {
+                  if (val.selected) {
+                    return <CustomCardUserItems text={val.title} key={index} />;
+                  }
+                })
+              ) : (
+                <Text style={styles.infoTextOther}>No Interests selected</Text>
+              )}
+            </View>
+            {isEditable || route.params.from === 'Settings' ? (
+              <TouchableOpacity
+                style={styles.pencilCtr}
+                onPress={() => setActiveModal('interests')}>
+                <View style={styles.pencilBackCtr}>
+                  {ICONS.Pencil({width: 10, height: 10, color: 'white'})}
+                </View>
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
-      </View>
-      <WithModal
-        modalVisible={activeModal !== null}
-        setModalFalse={handleWithModalFalse}
-        parentStyle={styles.withModalParent}>
-        {ActiveModalComponent}
-      </WithModal>
+        <WithModal
+          modalVisible={activeModal !== null}
+          setModalFalse={handleWithModalFalse}
+          parentStyle={styles.withModalParent}>
+          {ActiveModalComponent}
+        </WithModal>
+      </ScrollView>
       <SelectCustomPhoto
         setPhoto={undefined}
         modalVisible={photoModalVisible}
         setModalVisible={setPhotoModalVisible}
         onSuccess={(uri: string) => {
           (async () => {
+            console.log('yayeet', route.params.from, delayedValues);
+
+            if (route.params.from === 'Home' && delayedValues) {
+              setDelayedValues({...delayedValues, photo: uri});
+              setPhotoModalVisible(false);
+              return;
+            }
             if (!netInfo.isConnected) {
               if (id) {
                 realm.write(() => {
@@ -246,6 +325,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
                 });
               }
               dispatch(updateUserData({photo: uri}));
+              setPhotoModalVisible(false);
             } else {
               try {
                 const reference = storage().ref(
@@ -265,7 +345,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
           })();
         }}
       />
-    </ScrollView>
+    </>
   );
 };
 

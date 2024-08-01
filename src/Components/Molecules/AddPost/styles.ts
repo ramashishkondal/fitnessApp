@@ -81,4 +81,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 300,
     // borderWidth: 1,
   },
+  customButtonCtr: {
+    flexGrow: 1,
+    alignItems: 'flex-end',
+  },
 });

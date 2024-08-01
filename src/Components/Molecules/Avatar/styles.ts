@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   avatarCtr: {
@@ -18,8 +19,8 @@ export const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   image: {
-    width: 80,
-    height: 80,
+    width: DeviceInfo.isTablet() ? 160 : 80,
+    height: DeviceInfo.isTablet() ? 160 : 80,
     borderRadius: 200,
   },
 });

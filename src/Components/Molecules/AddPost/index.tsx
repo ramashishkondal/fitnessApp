@@ -175,7 +175,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           />
         </View>
       ) : null}
-      <View style={styles.footerCtr}>
+      {/* <View style={styles.footerCtr}>
         <View style={styles.childFooterCtr}>
           <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
             {ICONS.Camera({
@@ -210,6 +210,42 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           onPress={handlePost}
           isLoading={isLoading}
         />
+      </View> */}
+      <View style={styles.footerCtr}>
+        <View style={styles.childFooterCtr}>
+          <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
+            {ICONS.Camera({
+              width: 24,
+              height: 24,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={openGallery} style={styles.iconsCtr}>
+            {ICONS.Gallery({
+              width: 24,
+              height: 24,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconsCtr}
+            onPress={() => setIsEmojiShown(!isEmojiShown)}>
+            {ICONS.SmileyGood({
+              width: 24,
+              height: 24,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.customButtonCtr}>
+          <CustomButton
+            title="Post"
+            parentStyle={styles.buttonParentStyle}
+            textStyle={{fontSize: SIZES.font13}}
+            onPress={handlePost}
+            isLoading={isLoading}
+          />
+        </View>
       </View>
     </>
   );
