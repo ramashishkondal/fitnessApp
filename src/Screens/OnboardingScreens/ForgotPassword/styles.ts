@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     fontWeight: SIZES.fontBold1,
   },
   textInput: {
-    textAlign: 'center',
+    // textAlign: 'center',
+    paddingHorizontal: 24,
   },
 });
