@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
     fontSize: SIZES.font12,
     flexWrap: 'wrap',
     maxWidth: '90%',
+    marginRight: 40,
   },
   infoTextOther: {
     marginBottom: 3,

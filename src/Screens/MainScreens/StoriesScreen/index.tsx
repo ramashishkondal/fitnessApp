@@ -1,6 +1,6 @@
 // libs
 import React, {useRef, useState} from 'react';
-import {Alert, Pressable, Text, View} from 'react-native';
+import {Alert, Pressable, Text, View, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
@@ -19,8 +19,7 @@ import {
 import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {COLORS, ICONS} from '../../../Constants';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SIZES} from '../../../Constants';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -33,6 +32,8 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // state use
   const [userIndex, setUserIndex] = useState(route.params.index);
   const [index, setIndex] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
+
   const stories = allStoryData[userIndex].stories.filter(z => {
     const dd = new Date(z.storyCreatedOn);
     const now = new Date();
@@ -60,6 +61,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // functions
   const goNext = () => {
     console.log('goNext called with', index);
+    if (showMenu) {
+      setShowMenu(false);
+      return;
+    }
     if (index === 0 && stories.length === 1) {
       updateStoriesWatchedArray(
         userId!,
@@ -100,6 +105,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const handleLeftSwipe = () => {
+    if (showMenu) {
+      setShowMenu(false);
+      return;
+    }
     if (userIndex < allStoryData.length - 1) {
       setUserIndex(userIndex + 1);
       setIndex(0);
@@ -107,6 +116,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const handleRightSwipe = () => {
+    if (showMenu) {
+      setShowMenu(false);
+      return;
+    }
     if (userIndex > 0) {
       setUserIndex(userIndex - 1);
       setIndex(0);
@@ -114,6 +127,10 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const handleLeftTap = () => {
+    if (showMenu) {
+      setShowMenu(false);
+      return;
+    }
     if (index > 0) {
       setIndex(index - 1);
     } else if (index === 0 && userIndex !== 0) {
@@ -121,6 +138,9 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
     }
   };
   const handleStoryDelete = () => {
+    if (showMenu) {
+      setShowMenu(false);
+    }
     Alert.alert('Warning', 'Are you sure you want to delete the story?', [
       {
         text: 'YES',
@@ -168,15 +188,43 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
               {allStoryData[userIndex].userName}
             </Text>
           </View>
-          <TouchableOpacity onPress={handleStoryDelete}>
-            {userId === allStoryData[userIndex].storyByUserId
-              ? ICONS.GarbageCan({
-                  width: 25,
-                  height: 25,
-                  color: COLORS.PRIMARY.GREY,
-                })
-              : null}
-          </TouchableOpacity>
+          {userId === allStoryData[userIndex].storyByUserId ? (
+            <Pressable
+              onPress={() => {
+                setShowMenu(true);
+              }}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+              <View style={styles.dots} />
+            </Pressable>
+          ) : null}
+          {showMenu ? (
+            <TouchableOpacity
+              style={{
+                // backgroundColor: 'white',
+                // position: 'absolute',
+                // right: 0,
+                // marginRight: 32,
+                // padding: 8,
+                // borderRadius: 4,
+                elevation: 20,
+                shadowColor: 'black',
+                shadowOpacity: 0.3,
+                shadowOffset: {width: 0, height: 10},
+                shadowRadius: 10,
+                position: 'absolute',
+                backgroundColor: 'white',
+                zIndex: 1,
+                borderRadius: SIZES.rounding0,
+                right: 16,
+                padding: 8,
+                top: 8,
+              }}
+              onPress={handleStoryDelete}>
+              <Text style={{fontSize: SIZES.font15}}>Delete</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
       <GestureRecognizer

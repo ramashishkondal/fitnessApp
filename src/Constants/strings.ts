@@ -10,7 +10,7 @@ export const STRING = {
   LANDING_PAGE: {
     TITLE: 'Welcome to Fitness App',
     TITLE_DESCRIPTION:
-      'The best UI Kit for your next health and fitness project',
+      'Reach your health goals with Fitness App, tracking your diet, water intake, and steps daily.',
     BUTTON_TEXT: 'Get Started',
     SIGNIN_1: 'Already have an account?',
     SIGNIN_2: 'Sign in',

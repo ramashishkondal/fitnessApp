@@ -59,6 +59,8 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
               <TouchableOpacity
                 style={styles.editCtr}
                 onPress={() => {
+                  setPhotoModalVisible(false);
+
                   setIsEditable(!isEditable);
                   if (isEditable) {
                     if (netInfo.isConnected) {
@@ -297,6 +299,44 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
         setPhoto={undefined}
         modalVisible={photoModalVisible}
         setModalVisible={setPhotoModalVisible}
+        onDelete={() => {
+          if (route.params.from === 'Home' && delayedValues) {
+            setDelayedValues({...delayedValues, photo: ''});
+            setPhotoModalVisible(false);
+            return;
+          }
+          if (!netInfo.isConnected) {
+            if (id) {
+              realm.write(() => {
+                realm.create(
+                  UserDb,
+                  {
+                    photo: '',
+                    firstName,
+                    lastName,
+                    interests,
+                    preferences,
+                    gender,
+                    id,
+                  },
+                  UpdateMode.Modified,
+                );
+              });
+            }
+            dispatch(updateUserData({photo: ''}));
+            setPhotoModalVisible(false);
+          } else {
+            try {
+              firestore()
+                .collection(firebaseDB.collections.users)
+                .doc(id!)
+                .update({photo: ''});
+            } catch (e) {
+              console.log(e);
+            }
+          }
+          setPhotoModalVisible(false);
+        }}
         onSuccess={(uri: string) => {
           (async () => {
             console.log('yayeet', route.params.from, delayedValues);

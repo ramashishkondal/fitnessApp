@@ -78,7 +78,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
       delayed.delayedSetter({
         ...delayed.delayedValues,
         firstName: firstName.replace(/\s+/g, ' '),
-        lastName: lastName.trim(),
+        lastName: lastName.replace(/\s+/g, ' '),
         gender: selectedGender,
       });
       setModalFalse();

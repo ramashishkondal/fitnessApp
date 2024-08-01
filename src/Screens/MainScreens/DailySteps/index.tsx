@@ -319,22 +319,16 @@ const DailySteps: React.FC = () => {
                 pointerLabelComponent: (
                   items: {value: number; week: string}[],
                 ) => {
-                  console.log('====================================');
-                  console.log(
-                    lineData
-                      .slice()
-                      .reverse()
-                      .findIndex(val => val.week === items[0].week),
-                  );
-                  console.log('====================================');
-                  return LineGraphLabel({
-                    day: items[0].week,
-                    steps: items[0].value,
-                    index: lineData
-                      .slice()
-                      .reverse()
-                      .findIndex(val => val.week === items[0].week),
-                  });
+                  if (items[0].week && items[0].value) {
+                    return LineGraphLabel({
+                      day: items[0].week,
+                      steps: items[0].value,
+                      index: lineData
+                        .slice()
+                        .reverse()
+                        .findIndex(val => val.week === items[0].week),
+                    });
+                  }
                 },
               }}
             />

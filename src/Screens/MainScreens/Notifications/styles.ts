@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
     zIndex: -1,
     flex: 1,
   },
+
   flatList: {
     marginVertical: 16,
   },

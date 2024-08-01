@@ -21,6 +21,14 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 8,
   },
+  dots: {
+    width: 6,
+    height: 6,
+    backgroundColor: COLORS.SECONDARY.WHITE,
+    borderRadius: 200,
+    marginRight: 24,
+    marginTop: 2,
+  },
   line: {
     flex: 1,
     backgroundColor: 'white',

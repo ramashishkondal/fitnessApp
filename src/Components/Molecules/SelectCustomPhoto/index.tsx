@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 
 // 3rd party
 import {
@@ -31,6 +31,7 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   BottomSheetModalStyle,
   mediaType = 'photo',
   onSuccess,
+  onDelete,
 }) => {
   // effect use
   useEffect(() => {
@@ -141,6 +142,23 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                 color: COLORS.PRIMARY.PURPLE,
               })}
             </TouchableOpacity>
+            {onDelete ? (
+              <TouchableOpacity
+                style={styles.icons}
+                onPress={() => {
+                  Alert.alert(
+                    'Warning',
+                    'Are you sure you want to remove your profile picture',
+                    [{text: 'YES', onPress: onDelete}, {text: 'NO'}],
+                  );
+                }}>
+                {ICONS.GarbageCan({
+                  width: iconSize,
+                  height: iconSize,
+                  color: COLORS.PRIMARY.PURPLE,
+                })}
+              </TouchableOpacity>
+            ) : null}
           </View>
         </BottomSheetView>
       </BottomSheetModal>

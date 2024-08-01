@@ -279,7 +279,7 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
                         val.freq
                       ).toFixed(1)
                     : (val.data.calories * val.freq).toFixed(1)}{' '}
-                  cals
+                  cal
                 </Text>
               </View>
             </View>
