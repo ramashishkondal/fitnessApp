@@ -15,62 +15,65 @@ const eyeIconSize = {
   width: 18,
   height: 18,
 };
-const CustomTextInput: React.FC<CustomTextInputCenteredProps> = React.memo(
-  ({
-    placeHolder,
-    parentStyle,
-    iconCtrStyle,
-    textInputStyle,
-    onChangeText,
-    icon,
-    autoFocus,
-    hasError,
-    value,
-    allowPeeking = false,
-    textInputProps,
-  }) => {
-    // state use
-    const [isTextSecure, setIsTextSecure] = useState(allowPeeking);
+const CustomTextInputCentered: React.FC<CustomTextInputCenteredProps> =
+  React.memo(
+    ({
+      placeHolder,
+      parentStyle,
+      iconCtrStyle,
+      textInputStyle,
+      onChangeText,
+      icon,
+      autoFocus,
+      hasError,
+      value,
+      allowPeeking = false,
+      textInputProps,
+    }) => {
+      // state use
+      const [isTextSecure, setIsTextSecure] = useState(allowPeeking);
 
-    // ref use
-    const textInputRef = useRef<TextInput>(null);
+      // ref use
+      const textInputRef = useRef<TextInput>(null);
 
-    return (
-      <Animated.View
-        style={[
-          styles.parent,
-          parentStyle,
-          hasError ? styles.parentError : null,
-        ]}>
-        {icon ? (
-          <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View>
-        ) : null}
-        <TextInput
-          ref={textInputRef}
-          placeholder={placeHolder}
-          style={[styles.textInput, textInputStyle]}
-          placeholderTextColor={COLORS.SECONDARY.LIGHT_GREY}
-          onChangeText={onChangeText}
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoFocus={autoFocus}
-          value={value}
-          secureTextEntry={isTextSecure}
-          textAlign={value ? 'center' : undefined}
-          {...textInputProps}
-        />
-        {allowPeeking ? (
-          <TouchableOpacity
-            style={[styles.iconCtr, iconCtrStyle]}
-            onPress={() => setIsTextSecure(!isTextSecure)}>
-            {isTextSecure
-              ? ICONS.EyeClose(eyeIconSize)
-              : ICONS.EyeOpen(eyeIconSize)}
-          </TouchableOpacity>
-        ) : null}
-      </Animated.View>
-    );
-  },
-);
+      return (
+        <Animated.View
+          style={[
+            styles.parent,
+            parentStyle,
+            hasError ? styles.parentError : null,
+          ]}>
+          {icon ? (
+            <View style={[styles.iconCtr, iconCtrStyle]}>{icon}</View>
+          ) : null}
+          <TextInput
+            ref={textInputRef}
+            placeholder={placeHolder}
+            style={[styles.textInput, textInputStyle]}
+            placeholderTextColor={COLORS.SECONDARY.LIGHT_GREY}
+            onChangeText={onChangeText}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoFocus={autoFocus}
+            value={value}
+            multiline={false}
+            numberOfLines={1}
+            secureTextEntry={isTextSecure}
+            textAlign={value ? 'center' : undefined}
+            {...textInputProps}
+          />
+          {allowPeeking ? (
+            <TouchableOpacity
+              style={[styles.iconCtr, iconCtrStyle]}
+              onPress={() => setIsTextSecure(!isTextSecure)}>
+              {isTextSecure
+                ? ICONS.EyeClose(eyeIconSize)
+                : ICONS.EyeOpen(eyeIconSize)}
+            </TouchableOpacity>
+          ) : null}
+        </Animated.View>
+      );
+    },
+  );
 
-export default CustomTextInput;
+export default CustomTextInputCentered;

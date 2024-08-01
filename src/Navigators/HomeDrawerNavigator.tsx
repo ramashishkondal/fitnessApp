@@ -98,7 +98,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
   const dispatch = useAppDispatch();
   const handleLogout = () => {
-    Alert.alert('Logging Out', 'Are you sure you want to log out?', [
+    Alert.alert('Log Out', 'Are you sure you want to log out?', [
       {
         text: 'YES',
         onPress: () => {

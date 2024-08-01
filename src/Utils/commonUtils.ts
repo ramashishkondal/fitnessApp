@@ -112,6 +112,7 @@ export class Timer {
   };
 
   start = (delay: number) => {
+    console.log('start running');
     this.remainingTime = delay;
     this.timerId = setTimeout(this.callback, this.remainingTime);
   };

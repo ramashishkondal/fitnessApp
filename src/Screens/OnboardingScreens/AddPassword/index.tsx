@@ -1,7 +1,7 @@
 // libs
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {styles} from './styles';
-import {View} from 'react-native';
+import {AppState, View} from 'react-native';
 
 // 3rd party
 import {useAppDispatch} from '../../../Redux/Store';
@@ -15,7 +15,7 @@ import {
   WithOnboarding,
   HeadingText,
 } from '../../../Components';
-import {SPACING, STRING} from '../../../Constants';
+import {COLORS, ICONS, SIZES, SPACING, STRING} from '../../../Constants';
 import {isValidPassword} from '../../../Utils/checkValidity';
 import {AddPasswordProps} from '../../../Defs';
 import ToastError from '../../../Components/Atoms/ToastError';
@@ -47,9 +47,40 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
     dispatch(updateUserData({password}));
     navigation.push('AddFirstName');
   };
+  // App state listener
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh2]}>
+      {appStateVisible !== 'active' && (
+        <View style={styles.absolute}>
+          {ICONS.EyeClose({
+            width: SIZES.width / 4,
+            height: SIZES.width / 4,
+            color: COLORS.SECONDARY.GREY,
+          })}
+        </View>
+      )}
       <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
       <CustomTextInput
         placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}

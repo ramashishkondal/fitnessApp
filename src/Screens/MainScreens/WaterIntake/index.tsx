@@ -137,8 +137,8 @@ const WaterIntake: React.FC = () => {
         {
           isShownViaPushNotification: false,
           isUnread: true,
-          message: 'Water intake goal achieved',
-          userId: 'App',
+          message: "You've achieved your water intake goal for the day!",
+          userId: 'App-Water',
         },
         id!,
       );

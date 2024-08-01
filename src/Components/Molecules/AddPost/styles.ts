@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     flex: 1,
   },
+
   parentPressable: {
     flex: 1,
   },

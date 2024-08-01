@@ -28,17 +28,33 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>com.googleusercontent.apps.330526479136-roetu8aldkq38nd4apvnck1h2k9rvb0n</string>
+					<string>fb1158156518828095</string>
 				</array>
 			</dict>
 		</array>
+
 		<key>CFBundleVersion</key>
 		<string>$(CURRENT_PROJECT_VERSION)</string>
+
 		<key>FacebookAppID</key>
 		<string>1158156518828095</string>
 		<key>FacebookClientToken</key>
 		<string>eafac8d57553819ead2b94a6d1b7ce11</string>
 		<key>FacebookDisplayName</key>
 		<string>fitnessApp</string>
+
+		<!-- Optional Facebook settings -->
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
+		</array>
+
+		<key>NSUserTrackingUsageDescription</key>
+		<string>We use your information to provide a better experience and improve the app.</string>
+
 		<key>LSRequiresIPhoneOS</key>
 		<true />
 		<key>NSAppTransportSecurity</key>

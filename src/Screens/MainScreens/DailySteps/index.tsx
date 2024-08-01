@@ -327,6 +327,7 @@ const DailySteps: React.FC = () => {
                         .slice()
                         .reverse()
                         .findIndex(val => val.week === items[0].week),
+                      length: lineData.length,
                     });
                   }
                 },

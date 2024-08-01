@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    padding: DeviceInfo.isTablet() ? 20 : 10,
+    paddingVertical: DeviceInfo.isTablet() ? 20 : 10,
     flex: 19,
     flexDirection: 'row',
     paddingHorizontal: 15,

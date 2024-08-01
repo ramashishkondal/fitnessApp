@@ -79,10 +79,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
           // An error happened.
           console.log('error', error);
           Alert.alert('Error', 'The current password provided does not match.');
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
-
-    setIsLoading(false);
   };
 
   return (

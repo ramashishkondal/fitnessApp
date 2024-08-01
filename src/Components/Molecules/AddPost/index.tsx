@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Platform,
   Pressable,
   Alert,
 } from 'react-native';
@@ -83,7 +82,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   const storeDataInRealmDb = (postPhoto: string, postCaption: string) => {
     realm.write(() => {
       realm.create(PostDb, {
-        caption: postCaption,
+        caption: postCaption.replace(/\s+/g, ' '),
         photo: postPhoto,
       });
     });
@@ -100,7 +99,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           setIsLoading(true);
 
           await storePost({
-            caption,
+            caption: caption.replace(/\s+/g, ' '),
             userId,
             createdOn: Timestamp.fromDate(new Date()),
             photo,
@@ -114,7 +113,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           });
         }
       } else {
-        storeDataInRealmDb(photo, caption);
+        storeDataInRealmDb(photo, caption.replace(/\s+/g, ' '));
         setModalFalse();
       }
     } catch (e) {
@@ -129,8 +128,8 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
         onPress={() => setIsEmojiShown(false)}>
         <KeyboardAwareScrollView
           style={styles.parent}
-          // extraHeight={60}
-          extraScrollHeight={Platform.OS === 'ios' ? 160 : -100}
+          // extraHeight={160}
+          // extraScrollHeight={Platform.OS === 'ios' ? 160 : -100}
           enableOnAndroid={true}>
           <View>
             <HeadingText
@@ -151,14 +150,17 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
                   placeholder="Add a Caption"
                   style={styles.textInput}
                   multiline
+                  scrollEnabled={false}
                   placeholderTextColor={COLORS.SECONDARY.LIGHT_GREY}
                   onPress={() => setIsEmojiShown(false)}
                 />
               </View>
             </View>
-            {photo ? (
-              <Image source={{uri: photo}} style={styles.image} />
-            ) : null}
+            <View style={{marginBottom: 180}}>
+              {photo ? (
+                <Image source={{uri: photo}} style={styles.image} />
+              ) : null}
+            </View>
           </View>
         </KeyboardAwareScrollView>
       </Pressable>

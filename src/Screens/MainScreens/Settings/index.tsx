@@ -1,6 +1,15 @@
 // libs
-import React, {useState} from 'react';
-import {Alert, Linking, Platform, Share, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  Linking,
+  NativeEventEmitter,
+  NativeModules,
+  Platform,
+  Share,
+  Text,
+  View,
+} from 'react-native';
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
@@ -43,12 +52,10 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const [switchActiveNotifications, setSwitchActiveNotifications] = useState(
     allowPushNotifications,
   );
-  // const [switchActiveFinger, setSwitchActiveFinger] =
-  //   useState(isBiometricEnabled);
 
   // functions
   const logOut = () => {
-    Alert.alert('Logging Out', 'Are you sure you want to log out?', [
+    Alert.alert('Log Out', 'Are you sure you want to log out?', [
       {
         text: 'YES',
         onPress: () => {
@@ -98,15 +105,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         );
   };
   const handlePushNotificationValueChange = async (val: boolean) => {
-    // if (val === false) {
-    //   setSwitchActiveNotifications(val);
-    //   dispatch(updateSettingPushNotification(val));
-    // }
     if (Platform.OS === 'android' && Platform.Version >= 33) {
-      // if (notificationPerm === 'granted' || val === false) {
-      // setSwitchActiveNotifications(val);
-      //   dispatch(updateSettingPushNotification(val));
-      // }
       setSwitchActiveNotifications(val);
       dispatch(updateSettingPushNotification(val));
       if (val) {
@@ -176,12 +175,85 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       Alert.alert(error.message);
     }
   };
-  const handleFingerPrint = async () => {
-    // dispatch(updateSettingsCachedData({email,password:}))
-    // await storeBiometricData(!switchActiveFinger, id!);
-    dispatch(
-      updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
-    );
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const {FingerPrintModule} = NativeModules;
+      const fingerPrintEventEmitter = new NativeEventEmitter(FingerPrintModule);
+      const onAuthSuccess = () => {
+        console.log('Authentication Succeeded:');
+        dispatch(updateSettingsCachedData({isBiometricEnabled: true}));
+        // Handle successful authentication
+      };
+
+      const onAuthError = () => {
+        console.log('Authentication Error:');
+        dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+        // Handle authentication error
+      };
+
+      const onAuthFailed = () => {
+        console.log('Authentication Failed:');
+        dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+        // Handle authentication failure
+      };
+
+      const authSuccessListener = fingerPrintEventEmitter.addListener(
+        'auth_success',
+        onAuthSuccess,
+      );
+
+      const authErrorListener = fingerPrintEventEmitter.addListener(
+        'auth_error',
+        onAuthError,
+      );
+
+      const authFailedListener = fingerPrintEventEmitter.addListener(
+        'auth_failed',
+        onAuthFailed,
+      );
+      return () => {
+        authSuccessListener.remove();
+        authErrorListener.remove();
+        authFailedListener.remove();
+      };
+    }
+  }, [dispatch]);
+  const handleFingerPrint = async (val: boolean) => {
+    if (Platform.OS === 'android') {
+      const handleErrorBiometric = (error: string) => {
+        console.log('error in auth fingerprint', error);
+      };
+
+      dispatch(
+        updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
+      );
+      console.log('bio', val);
+      if (val) {
+        NativeModules.FingerPrintModule.authenticateFingerPrint().catch(
+          handleErrorBiometric,
+        );
+      }
+      return;
+    } else {
+      try {
+        dispatch(
+          updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
+        );
+        if (val) {
+          await NativeModules.FaceIdModule.authenticateWithFaceID();
+        }
+      } catch (error: any) {
+        dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+        if (error.message === 'Authentication failed') {
+          return;
+        }
+        if (error.code === 'auth/network-request-failed') {
+          ToastError('Authentication Error', error.code);
+          return;
+        }
+        ToastError('Authentication Error', error.message);
+      }
+    }
   };
 
   return (

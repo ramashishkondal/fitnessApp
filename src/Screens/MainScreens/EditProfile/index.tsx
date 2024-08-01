@@ -17,11 +17,12 @@ import {UpdateMode} from 'realm';
 import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import CustomCardUserItems from '../../../Components/Molecules/CustomCardUserItems';
 import {EditProfileProps} from '../../../Defs/navigators';
+import ChangeUserAvatar from '../../../Components/Molecules/ChangeUserAvatar';
 
 const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
   // state use
   const [activeModal, setActiveModal] = useState<
-    'userInfo' | 'preferences' | null | 'interests'
+    'userInfo' | 'preferences' | null | 'interests' | 'avatar'
   >(null);
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
@@ -146,6 +147,17 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
     } else if (activeModal === 'interests') {
       return (
         <ChangeUserInterests
+          setModalFalse={setModalFalse}
+          delayed={{
+            isDelayed: route.params.from === 'Home',
+            delayedSetter: setDelayedValues,
+            delayedValues: delayedValues,
+          }}
+        />
+      );
+    } else if (activeModal === 'avatar') {
+      return (
+        <ChangeUserAvatar
           setModalFalse={setModalFalse}
           delayed={{
             isDelayed: route.params.from === 'Home',
@@ -299,6 +311,9 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
         setPhoto={undefined}
         modalVisible={photoModalVisible}
         setModalVisible={setPhotoModalVisible}
+        onAvatar={() => {
+          setActiveModal('avatar');
+        }}
         onDelete={() => {
           if (route.params.from === 'Home' && delayedValues) {
             setDelayedValues({...delayedValues, photo: ''});

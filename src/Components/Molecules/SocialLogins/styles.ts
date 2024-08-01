@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   logoCtr: {
@@ -10,8 +11,8 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
     padding: 11,
     marginHorizontal: 10,
-    minWidth: 56,
-    minHeight: 56,
+    minWidth: DeviceInfo.isTablet() ? 56 : undefined,
+    minHeight: DeviceInfo.isTablet() ? 56 : undefined,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -17,6 +17,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
   parentStyle,
   handleLoadEnd = () => {},
   resizeMode,
+  onLoad,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
@@ -31,7 +32,12 @@ const CustomImage: React.FC<CustomImageProps> = ({
       <FastImage
         source={source}
         style={[styles.image, imageStyle]}
-        onLoadStart={() => setIsLoading(true)}
+        onLoadStart={() => {
+          setIsLoading(true);
+          if (onLoad) {
+            onLoad();
+          }
+        }}
         onLoadEnd={() => {
           setIsLoading(false);
           handleLoadEnd();

@@ -26,7 +26,8 @@ export const STRING = {
     TITLE: 'What is your email address?',
     TEXT_INPUT_PLACEHOLDER: 'Enter your email address',
     BUTTON_TEXT: 'Continue',
-    EMAIL_ERROR: 'Invalid Email Address',
+    EMAIL_ERROR: 'Please enter a valid email address.',
+    EMAIL_ERROR_EMPTY: 'Please enter your email address.',
   },
   ADD_PASSWORD: {
     TITLE: "Now let's setup your password",

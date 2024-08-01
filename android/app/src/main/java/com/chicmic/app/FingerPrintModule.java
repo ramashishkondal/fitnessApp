@@ -11,13 +11,15 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 public class FingerPrintModule extends ReactContextBaseJavaModule {
@@ -60,6 +62,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationError(errorCode, errString);
                         Toast.makeText(reactContext,
                                 "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                        sendEventToReactNative("auth_error", "Authentication error: " + errString);
                         promise.reject("auth_error", "Authentication error: " + errString);
                     }
 
@@ -68,6 +71,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationSucceeded(result);
                         Toast.makeText(reactContext,
                                 "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                        sendEventToReactNative("auth_success", "Authentication succeeded!");
                         promise.resolve("Authentication succeeded!");
                     }
 
@@ -76,6 +80,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationFailed();
                         Toast.makeText(reactContext, "Authentication failed",
                                 Toast.LENGTH_SHORT).show();
+                        sendEventToReactNative("auth_failed", "Authentication failed");
                         promise.reject("auth_failed", "Authentication failed");
                     }
                 });
@@ -96,13 +101,16 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
 
                 biometricPrompt.authenticate(promptInfo);
             }
-        });
-    }
 
-    @ReactMethod
-    public Map<String, Object> getConstants() {
-        final Map<String, Object> constants = new HashMap<>();
-        constants.put("DEFAULT", "xyz Abcd");
-        return constants;
+            private void sendEventToReactNative(String eventName, String message) {
+                WritableMap params = Arguments.createMap();
+                params.putString("message", message);
+                ReactContext reactContext = getReactApplicationContext();
+                if (reactContext != null) {
+                    reactContext.getJSModule(com.facebook.react.modules.core.RCTNativeAppEventEmitter.class)
+                            .emit(eventName, params);
+                }
+            }
+        });
     }
 }

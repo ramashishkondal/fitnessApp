@@ -15,4 +15,5 @@ export type SelectCustomPhotoProps = {
   mediaType?: MediaType;
   onSuccess?: (uri: string, type?: string) => void;
   onDelete?: () => void;
+  onAvatar?: () => void;
 };

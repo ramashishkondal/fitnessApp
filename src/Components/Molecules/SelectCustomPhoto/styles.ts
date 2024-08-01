@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#EEE5FF',
     padding: 10,
     borderRadius: SIZES.rounding3,
+    justifyContent: 'center',
   },
   bottomSheetModalBackground: {
     borderRadius: SIZES.rounding3,

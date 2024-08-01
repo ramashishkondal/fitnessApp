@@ -9,9 +9,15 @@ import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import {CustomErrorTextProps} from './types';
 import {styles} from './styles';
 
-const CustomErrorText: React.FC<CustomErrorTextProps> = ({text}) => {
+const CustomErrorText: React.FC<CustomErrorTextProps> = ({
+  text,
+  parentStyle,
+}) => {
   return (
-    <Animated.View style={styles.parent} entering={FadeIn} exiting={FadeOut}>
+    <Animated.View
+      style={[styles.parent, parentStyle]}
+      entering={FadeIn}
+      exiting={FadeOut}>
       <Text style={styles.text}>{text}</Text>
     </Animated.View>
   );

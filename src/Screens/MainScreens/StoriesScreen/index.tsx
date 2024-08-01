@@ -1,11 +1,12 @@
 // libs
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Alert, Pressable, Text, View, TouchableOpacity} from 'react-native';
 
 // 3rd party
 import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {useFocusEffect} from '@react-navigation/native';
+import * as Progress from 'react-native-progress';
 
 // custom
 import {CustomImage} from '../../../Components';
@@ -19,7 +20,7 @@ import {
 import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {SIZES} from '../../../Constants';
+import {COLORS, SIZES} from '../../../Constants';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
@@ -57,10 +58,9 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
 
   // focus effect use
   useFocusEffect(() => () => storyTimer.clear());
-
+  const [progress, setProgress] = useState(0);
   // functions
   const goNext = () => {
-    console.log('goNext called with', index);
     if (showMenu) {
       setShowMenu(false);
       return;
@@ -161,19 +161,43 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const storyTimer = new Timer(goNext);
-
+  console.log('progress value is ', progress);
+  // useEffect(() => {
+  //   if (!stories[index].storyType.includes('video')) {
+  //     const timeId = setInterval(() => setProgress(p => p + 0.01), 100);
+  //     setTimeout(() => clearInterval(timeId), 10000);
+  //   }
+  // }, [index, stories]);
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
       <View style={[styles.topInfoCtr, {top: insets.top}]}>
         <View style={styles.topCurrentStoryLineCtr}>
           {Array(stories.length)
             .fill(0)
-            .map((_val, i) => (
-              <View
-                key={i}
-                style={[styles.line, i === index ? styles.lineActive : null]}
-              />
-            ))}
+            .map((_val, i) => {
+              // if (i === index) {
+              //   return (
+              //     <Progress.Bar
+              //       progress={progress}
+              //       // width={SIZES.width}
+              //       style={{
+              //         borderWidth: 0.5,
+              //         borderColor: 'grey',
+              //         backgroundColor: 'white',
+              //         height: 4,
+              //         flex: 1,
+              //       }}
+              //       color={COLORS.PRIMARY.PURPLE}
+              //     />
+              //   );
+              // }
+              return (
+                <View
+                  key={i}
+                  style={[styles.line, i === index ? styles.lineActive : null]}
+                />
+              );
+            })}
         </View>
         <View style={styles.userInfoCtr}>
           <View style={styles.customImageCtr}>
@@ -258,7 +282,24 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
               ref={videoRef}
               style={styles.video}
               onLoad={({duration}) => {
-                storyTimer.start(duration < 15 ? duration * 1000 : 10000);
+                // if (duration < 15) {
+                //   const timeId = setInterval(() => {
+                //     console.log(
+                //       'interval ran',
+                //       duration,
+                //       parseFloat((1 / duration).toFixed(2)),
+                //     );
+                //     setProgress(p => p + parseFloat((1 / duration).toFixed(2)));
+                //   }, 1000);
+                //   setTimeout(() => clearInterval(timeId), duration * 1000);
+                // } else {
+                //   const timeId = setInterval(
+                //     () => setProgress(p => p + 0.1),
+                //     1000,
+                //   );
+                //   setTimeout(() => clearInterval(timeId), 10000);
+                // }
+                storyTimer.start(duration < 10 ? duration * 1000 : 10000);
               }}
               resizeMode="cover"
               bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
@@ -271,7 +312,9 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
             source={{uri: stories[index].storyUrl}}
             parentStyle={styles.customImage}
             activityIndicatorSize={'large'}
-            handleLoadEnd={() => storyTimer.start(10000)}
+            handleLoadEnd={() => {
+              storyTimer.start(10000);
+            }}
           />
         )}
       </GestureRecognizer>

@@ -63,7 +63,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
         if (postData.userId === id) {
           await storePostComment(postData.postId, {
             userId: id,
-            comment: comment.trim(),
+            comment: comment.replace(/\s+/g, ' '),
             createdOn: Timestamp.fromDate(new Date()),
           });
           setIsLoading(false);
@@ -75,7 +75,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
           route.params.postId,
           {
             userId: id,
-            comment,
+            comment: comment.replace(/\s+/g, ' '),
             createdOn: Timestamp.fromDate(new Date()),
           },
           {

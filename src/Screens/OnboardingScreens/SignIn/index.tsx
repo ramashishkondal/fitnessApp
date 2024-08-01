@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Text,
@@ -9,15 +9,14 @@ import {
   Platform,
   Image,
   AppState,
+  NativeEventEmitter,
 } from 'react-native';
-import {BlurView} from '@react-native-community/blur'; // Add this import
 
 // 3rd party
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 // custom
 import {
-  WithOnboarding,
   CustomButton,
   CustomTextInput,
   SocialLogins,
@@ -26,11 +25,19 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {isValidEmail} from '../../../Utils/checkValidity';
 import {SignInProps} from '../../../Defs';
-import {STRING, SPACING, IMAGES} from '../../../Constants';
+import {
+  STRING,
+  SPACING,
+  IMAGES,
+  COLORS,
+  ICONS,
+  SIZES,
+} from '../../../Constants';
 import {styles} from './styles';
 import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 import {useNetInfo} from '@react-native-community/netinfo';
 import ToastError from '../../../Components/Atoms/ToastError';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SignIn = ({navigation}: SignInProps) => {
   // state use
@@ -39,7 +46,7 @@ const SignIn = ({navigation}: SignInProps) => {
     null,
   );
   const [activeOut, setActiveOut] = useState(false);
-  const [isAppBackground, setIsAppBackground] = useState(false); // New state for app background
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // netinfo use
   const netInfo = useNetInfo();
@@ -57,6 +64,28 @@ const SignIn = ({navigation}: SignInProps) => {
   useEffect(() => {
     const handleBiometricAuth = () => {
       if (Platform.OS === 'android') {
+        const {FingerPrintModule} = NativeModules;
+        const fingerPrintEventEmitter = new NativeEventEmitter(
+          FingerPrintModule,
+        );
+        const onAuthSuccess = () => {
+          setIsLoading('continue');
+          console.log('loggin you in');
+          auth()
+            .signInWithEmailAndPassword(cachedData.email, cachedData.password)
+            .catch(handleErrorAuth)
+            .finally(() => {
+              setIsLoading(null);
+            });
+          // Handle successful authentication
+        };
+
+        const authSuccessListener = fingerPrintEventEmitter.addListener(
+          'auth_success',
+          onAuthSuccess,
+        );
+
+        setIsLoading('continue');
         const handleErrorAuth = (error: any) => {
           if (error.code === 'auth/network-request-failed') {
             ToastError(
@@ -65,21 +94,36 @@ const SignIn = ({navigation}: SignInProps) => {
             );
           }
         };
+
         const handleErrorBiometric = (error: string) => {
-          if (error === 'Authentication failed') {
-            return;
-          }
           console.log('error in auth fingerprint', error);
+          if (error === 'Authentication failed') {
+            setIsLoading(null);
+          }
         };
-        NativeModules.FingerPrintModule.authenticateFingerPrint()
-          .then(() => {
-            auth()
-              .signInWithEmailAndPassword(cachedData.email, cachedData.password)
-              .catch(handleErrorAuth);
-          })
-          .catch(handleErrorBiometric);
+
+        const authenticateAndSignIn = async () => {
+          try {
+            await NativeModules.FingerPrintModule.authenticateFingerPrint();
+          } catch (error: any) {
+            if (error.code) {
+              handleErrorAuth(error);
+            } else {
+              handleErrorBiometric(error);
+            }
+          } finally {
+            setIsLoading(null);
+          }
+        };
+
+        // Call the function
+        authenticateAndSignIn();
+        return () => {
+          authSuccessListener.remove();
+        };
       } else {
         const handleFaceIDAuthentication = async () => {
+          setIsLoading('continue');
           try {
             await NativeModules.FaceIdModule.authenticateWithFaceID();
             await auth().signInWithEmailAndPassword(
@@ -95,6 +139,8 @@ const SignIn = ({navigation}: SignInProps) => {
               return;
             }
             ToastError('Authentication Error', error.message);
+          } finally {
+            setIsLoading(null);
           }
         };
         if (cachedData.isBiometricEnabled) {
@@ -108,19 +154,22 @@ const SignIn = ({navigation}: SignInProps) => {
   }, [cachedData, dispatch]);
 
   // App state listener
-  useEffect(() => {
-    const handleAppStateChange = (nextAppState: string) => {
-      if (nextAppState === 'background' || nextAppState === 'inactive') {
-        setIsAppBackground(true);
-      } else {
-        setIsAppBackground(false);
-      }
-    };
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
-    const subscription = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
-    );
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
 
     return () => {
       subscription.remove();
@@ -129,6 +178,7 @@ const SignIn = ({navigation}: SignInProps) => {
 
   // functions
   const handleSignIn = async () => {
+    setIsSubmitted(true);
     if (!netInfo.isConnected) {
       Alert.alert(
         STRING.COMMON_ERRORS.NETWORK_ERROR.TITLE,
@@ -136,16 +186,11 @@ const SignIn = ({navigation}: SignInProps) => {
       );
       return;
     }
-    if (email.trim() === '') {
-      ToastError('Error', "Email address can't be empty");
-      return;
-    }
-    if (password === '') {
-      ToastError('Error', "Password can't be empty");
-      return;
-    }
-    if (isValidEmail(email) === false) {
-      ToastError('Error', 'Invalid email address entered.');
+    if (
+      email.trim() === '' ||
+      password === '' ||
+      isValidEmail(email) === false
+    ) {
       return;
     }
     try {
@@ -179,66 +224,79 @@ const SignIn = ({navigation}: SignInProps) => {
   };
 
   return (
-    <View style={styles.parent}>
-      {isAppBackground && (
-        <BlurView
-          style={styles.absolute} // Ensure you have this style for the BlurView to cover the entire screen
-          blurType="light"
-          blurAmount={10}
-          reducedTransparencyFallbackColor="white"
+    <KeyboardAwareScrollView
+      style={{flex: 1, backgroundColor: COLORS.PRIMARY.GREY}}
+      keyboardShouldPersistTaps="always">
+      <View style={styles.parent}>
+        {appStateVisible !== 'active' && (
+          <View style={styles.absolute}>
+            {ICONS.EyeClose({
+              width: SIZES.width / 4,
+              height: SIZES.width / 4,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </View>
+        )}
+        <CustomTextInput
+          value={email}
+          placeHolder={STRING.SIGNIN.EMAIL}
+          icon={<Image source={IMAGES.USER} style={{width: 18, height: 18}} />}
+          parentStyle={[SPACING.mt5, styles.textInput]}
+          onChangeText={setEmail}
+          textInputProps={{
+            onBlur: () => setActiveOut(true),
+            keyboardType: 'email-address',
+          }}
         />
-      )}
-      <CustomTextInput
-        value={email}
-        placeHolder={STRING.SIGNIN.EMAIL}
-        icon={<Image source={IMAGES.USER} style={{width: 18, height: 18}} />}
-        parentStyle={[SPACING.mt5, styles.textInput]}
-        onChangeText={setEmail}
-        textInputProps={{
-          onBlur: () => setActiveOut(true),
-          keyboardType: 'email-address',
-        }}
-      />
-      {activeOut && email && !isValidEmail(email) ? (
-        <CustomErrorText text="Invalid Email Address" />
-      ) : null}
-      <CustomTextInput
-        placeHolder={STRING.SIGNIN.PASSWORD}
-        icon={<Image source={IMAGES.LOCK} style={{width: 32, height: 32}} />}
-        parentStyle={[SPACING.mt3, styles.textInput]}
-        onChangeText={setPassword}
-        allowPeeking
-      />
-      <TouchableOpacity
-        onPress={handleForgotPassword}
-        style={styles.forgotPasswordCtr}
-        disabled={isLoading !== null}>
-        <Text style={styles.forgotPasswordText}>
-          {STRING.SIGNIN.FORGOT_PASSWORD}
+        {(activeOut && email && !isValidEmail(email)) ||
+        (isSubmitted && email && !isValidEmail(email)) ? (
+          <CustomErrorText text="Invalid Email Address" />
+        ) : null}
+        {isSubmitted && !email ? (
+          <CustomErrorText text="Email address can't be empty" />
+        ) : null}
+        {}
+        <CustomTextInput
+          placeHolder={STRING.SIGNIN.PASSWORD}
+          icon={<Image source={IMAGES.LOCK} style={{width: 32, height: 32}} />}
+          parentStyle={[SPACING.mt3, styles.textInput]}
+          onChangeText={setPassword}
+          allowPeeking
+        />
+        {isSubmitted && !password ? (
+          <CustomErrorText text="Password can't be empty" />
+        ) : null}
+        <TouchableOpacity
+          onPress={handleForgotPassword}
+          style={styles.forgotPasswordCtr}
+          disabled={isLoading !== null}>
+          <Text style={styles.forgotPasswordText}>
+            {STRING.SIGNIN.FORGOT_PASSWORD}
+          </Text>
+        </TouchableOpacity>
+        <Text style={[styles.text, SPACING.mtMedium]}>
+          {STRING.SIGNIN.SIGN_IN_WITH}
         </Text>
-      </TouchableOpacity>
-      <Text style={[styles.text, SPACING.mtMedium]}>
-        {STRING.SIGNIN.SIGN_IN_WITH}
-      </Text>
-      <SocialLogins
-        isLoading={isLoading === 'socialLogin'}
-        setIsLoading={(val: boolean) => {
-          if (val) {
-            setIsLoading('socialLogin');
-          } else {
-            setIsLoading(null);
-          }
-        }}
-      />
-      <CustomButton
-        title={STRING.SIGNIN.BUTTON_TEXT}
-        parentStyle={styles.customButtonParent}
-        onPress={handleSignIn}
-        isLoading={isLoading === 'continue'}
-        disabled={isLoading === 'socialLogin'}
-      />
-    </View>
+        <SocialLogins
+          isLoading={isLoading === 'socialLogin'}
+          setIsLoading={(val: boolean) => {
+            if (val) {
+              setIsLoading('socialLogin');
+            } else {
+              setIsLoading(null);
+            }
+          }}
+        />
+        <CustomButton
+          title={STRING.SIGNIN.BUTTON_TEXT}
+          parentStyle={styles.customButtonParent}
+          onPress={handleSignIn}
+          isLoading={isLoading === 'continue'}
+          disabled={isLoading === 'socialLogin'}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
-export default WithOnboarding(SignIn);
+export default SignIn;

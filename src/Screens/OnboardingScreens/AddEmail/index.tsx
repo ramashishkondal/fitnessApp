@@ -24,6 +24,7 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   // state use
   const [email, setEmail] = useState<string>('');
   const [activeOut, setActiveOut] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // ref use
   const emailRef = useRef(email);
@@ -33,18 +34,10 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
 
   // functions
   const handleSubmit = useCallback(async () => {
+    setIsSubmitted(true);
     const currentEmail = emailRef.current;
 
-    if (currentEmail === '') {
-      ToastError('Error', "Email Address can't be empty");
-      return;
-    }
-
-    if (!isValidEmail(currentEmail)) {
-      ToastError(
-        'Invalid email address',
-        'Make sure entered email address is valid',
-      );
+    if (currentEmail.trim() === '' || !isValidEmail(currentEmail)) {
       return;
     }
 
@@ -71,22 +64,34 @@ const AddEmail: React.FC<AddEmailLogInProps> = ({navigation}) => {
   return (
     <View style={[styles.parent, SPACING.mt5, SPACING.mh1]}>
       <HeadingText text={STRING.ADD_EMAIL.TITLE} />
-      <CustomTextInput
-        value={email}
-        placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
-        parentStyle={[SPACING.mh2, SPACING.mt5]}
-        textInputStyle={styles.textInput}
-        onChangeText={handleEmailChange}
-        autoFocus
-        textInputProps={{
-          onBlur: () => setActiveOut(true),
-          keyboardType: 'email-address',
-          maxLength: 30,
-        }}
-      />
-      {activeOut && email && !isValidEmail(email) ? (
-        <CustomErrorText text={STRING.ADD_EMAIL.EMAIL_ERROR} />
-      ) : null}
+      <View style={{}}>
+        <CustomTextInput
+          value={email}
+          placeHolder={STRING.ADD_EMAIL.TEXT_INPUT_PLACEHOLDER}
+          parentStyle={[SPACING.mh2, SPACING.mt5, {alignSelf: 'center'}]}
+          textInputStyle={styles.textInput}
+          onChangeText={handleEmailChange}
+          autoFocus
+          textInputProps={{
+            onBlur: () => setActiveOut(true),
+            keyboardType: 'email-address',
+            maxLength: 50,
+          }}
+        />
+        {(isSubmitted && email && !isValidEmail(email)) ||
+        (activeOut && email && !isValidEmail(email)) ? (
+          <CustomErrorText
+            text={STRING.ADD_EMAIL.EMAIL_ERROR}
+            parentStyle={SPACING.mh2}
+          />
+        ) : null}
+        {isSubmitted && !email ? (
+          <CustomErrorText
+            text={STRING.ADD_EMAIL.EMAIL_ERROR_EMPTY}
+            parentStyle={SPACING.mh2}
+          />
+        ) : null}
+      </View>
       <CustomButton
         title={STRING.ADD_EMAIL.BUTTON_TEXT}
         parentStyle={SPACING.mtXLarge}

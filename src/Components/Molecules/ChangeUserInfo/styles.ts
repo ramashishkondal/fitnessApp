@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   customTextInputStyle: {
-    textAlign: 'center',
+    // textAlign: 'center',
+    paddingHorizontal: 24,
   },
 });

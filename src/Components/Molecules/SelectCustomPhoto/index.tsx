@@ -20,8 +20,7 @@ import {COLORS, ICONS} from '../../../Constants';
 import {SelectCustomPhotoProps} from './types';
 import {styles} from './styles';
 import BackDropSheet from '../BackdropSheet';
-
-const iconSize = 60;
+import FastImage from 'react-native-fast-image';
 
 const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   modalVisible,
@@ -32,7 +31,9 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
   mediaType = 'photo',
   onSuccess,
   onDelete,
+  onAvatar,
 }) => {
+  const iconSize = onAvatar ? 45 : 60;
   // effect use
   useEffect(() => {
     if (modalVisible) {
@@ -142,6 +143,20 @@ const SelectCustomPhoto: React.FC<SelectCustomPhotoProps> = ({
                 color: COLORS.PRIMARY.PURPLE,
               })}
             </TouchableOpacity>
+            {onAvatar ? (
+              <TouchableOpacity style={styles.icons} onPress={onAvatar}>
+                <FastImage
+                  source={{
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fitnessapp-44851.appspot.com/o/media%2FAvatars%2Favatar_1.jpg?alt=media&token=2272128b-8507-46cc-aca7-83517cedce92',
+                  }}
+                  style={{
+                    width: 55,
+                    height: 55,
+                    borderRadius: 200,
+                  }}
+                />
+              </TouchableOpacity>
+            ) : null}
             {onDelete ? (
               <TouchableOpacity
                 style={styles.icons}

@@ -8,4 +8,5 @@ export type CustomImageProps = {
   activityIndicatorSize?: ActivityIndicatorProps['size'];
   handleLoadEnd?: () => void;
   resizeMode?: FastImageProps['resizeMode'];
+  onLoad?: () => void;
 };

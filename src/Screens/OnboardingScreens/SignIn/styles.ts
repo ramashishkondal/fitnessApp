@@ -11,6 +11,12 @@ export const styles = StyleSheet.create({
   },
   absolute: {
     position: 'absolute',
+    width: SIZES.width,
+    height: '100%',
+    zIndex: 10,
+    backgroundColor: COLORS.PRIMARY.GREY,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     maxWidth: DeviceInfo.isTablet() ? 580 : 450,
@@ -22,6 +28,7 @@ export const styles = StyleSheet.create({
   },
   customButtonParent: {
     marginTop: 78,
+    marginBottom: 16,
   },
   forgotPasswordText: {
     color: COLORS.PRIMARY.PURPLE,
