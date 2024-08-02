@@ -18,6 +18,7 @@ import {updateUserData} from '../../../Redux/Reducers/currentUser';
 import CustomCardUserItems from '../../../Components/Molecules/CustomCardUserItems';
 import {EditProfileProps} from '../../../Defs/navigators';
 import ChangeUserAvatar from '../../../Components/Molecules/ChangeUserAvatar';
+import {isValidURL} from '../../../Utils/commonUtils';
 
 const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
   // state use
@@ -44,7 +45,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
       ? {photo, firstName, lastName, email, interests, preferences, gender, id}
       : null,
   );
-
+  console.log('photo is ', photo);
   // netInfo use
   const netInfo = useNetInfo();
 
@@ -65,12 +66,35 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
                   setIsEditable(!isEditable);
                   if (isEditable) {
                     if (netInfo.isConnected) {
-                      firestore()
-                        .collection(firebaseDB.collections.users)
-                        .doc(id!)
-                        .update({
-                          ...delayedValues,
-                        });
+                      console.log('logging', isValidURL(delayedValues?.photo!));
+
+                      if (
+                        !delayedValues?.photo ||
+                        isValidURL(delayedValues?.photo)
+                      ) {
+                        firestore()
+                          .collection(firebaseDB.collections.users)
+                          .doc(id!)
+                          .update({
+                            ...delayedValues,
+                          });
+                      } else {
+                        (async () => {
+                          try {
+                            const reference = storage().ref(
+                              'media/' + 'profilePictures' + id + '/' + 'photo',
+                            );
+                            await reference.putFile(delayedValues.photo);
+                            const url = await reference.getDownloadURL();
+                            await firestore()
+                              .collection(firebaseDB.collections.users)
+                              .doc(id!)
+                              .update({...delayedValues, photo: url});
+                          } catch (e) {
+                            console.log(e);
+                          }
+                        })();
+                      }
                     } else {
                       realm.write(() => {
                         realm.create(
