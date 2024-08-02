@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Alert,
+  Platform,
 } from 'react-native';
 
 import {
@@ -129,7 +130,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
         <KeyboardAwareScrollView
           style={styles.parent}
           // extraHeight={160}
-          // extraScrollHeight={Platform.OS === 'ios' ? 160 : -100}
+          extraScrollHeight={Platform.OS === 'ios' ? 160 : -100}
           enableOnAndroid={true}>
           <View>
             <HeadingText
@@ -163,92 +164,58 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
             </View>
           </View>
         </KeyboardAwareScrollView>
+
+        {isEmojiShown ? (
+          <View style={styles.EmojiSelectorCtr}>
+            <EmojiSelector
+              onEmojiSelected={emoji => {
+                setCaption(caption + emoji);
+              }}
+              showTabs={false}
+              showSectionTitles
+              columns={8}
+              theme={COLORS.SECONDARY.GREY}
+            />
+          </View>
+        ) : null}
+
+        <View style={styles.footerCtr}>
+          <View style={styles.childFooterCtr}>
+            <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
+              {ICONS.Camera({
+                width: 24,
+                height: 24,
+                color: COLORS.SECONDARY.GREY,
+              })}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={openGallery} style={styles.iconsCtr}>
+              {ICONS.Gallery({
+                width: 24,
+                height: 24,
+                color: COLORS.SECONDARY.GREY,
+              })}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconsCtr}
+              onPress={() => setIsEmojiShown(!isEmojiShown)}>
+              {ICONS.SmileyGood({
+                width: 24,
+                height: 24,
+                color: COLORS.SECONDARY.GREY,
+              })}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.customButtonCtr}>
+            <CustomButton
+              title="Post"
+              parentStyle={styles.buttonParentStyle}
+              textStyle={{fontSize: SIZES.font13}}
+              onPress={handlePost}
+              isLoading={isLoading}
+            />
+          </View>
+        </View>
       </Pressable>
-      {isEmojiShown ? (
-        <View style={styles.EmojiSelectorCtr}>
-          <EmojiSelector
-            onEmojiSelected={emoji => {
-              setCaption(caption + emoji);
-            }}
-            showTabs={false}
-            showSectionTitles
-            columns={8}
-            theme={COLORS.SECONDARY.GREY}
-          />
-        </View>
-      ) : null}
-      {/* <View style={styles.footerCtr}>
-        <View style={styles.childFooterCtr}>
-          <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
-            {ICONS.Camera({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={openGallery} style={styles.iconsCtr}>
-            {ICONS.Gallery({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setIsEmojiShown(state => !state);
-            }}
-            style={styles.iconsCtr}>
-            {ICONS.SmileyGood({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-        </View>
-        <CustomButton
-          title="Post"
-          parentStyle={styles.buttonParentStyle}
-          textStyle={{fontSize: SIZES.font13}}
-          onPress={handlePost}
-          isLoading={isLoading}
-        />
-      </View> */}
-      <View style={styles.footerCtr}>
-        <View style={styles.childFooterCtr}>
-          <TouchableOpacity onPress={openCamera} style={styles.iconsCtr}>
-            {ICONS.Camera({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={openGallery} style={styles.iconsCtr}>
-            {ICONS.Gallery({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconsCtr}
-            onPress={() => setIsEmojiShown(!isEmojiShown)}>
-            {ICONS.SmileyGood({
-              width: 24,
-              height: 24,
-              color: COLORS.SECONDARY.GREY,
-            })}
-          </TouchableOpacity>
-        </View>
-        <View style={styles.customButtonCtr}>
-          <CustomButton
-            title="Post"
-            parentStyle={styles.buttonParentStyle}
-            textStyle={{fontSize: SIZES.font13}}
-            onPress={handlePost}
-            isLoading={isLoading}
-          />
-        </View>
-      </View>
     </>
   );
 };

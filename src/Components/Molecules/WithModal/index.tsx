@@ -19,6 +19,8 @@ const WithModal: React.FC<WithModalProps> = ({
 }) => {
   return (
     <Modal
+      animationInTiming={150}
+      hideModalContentWhileAnimating
       isVisible={modalVisible}
       onBackdropPress={setModalFalse}
       swipeDirection={'down'}

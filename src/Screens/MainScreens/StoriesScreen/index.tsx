@@ -1,5 +1,5 @@
 // libs
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, Pressable, Text, View, TouchableOpacity} from 'react-native';
 import Video, {VideoRef, BufferingStrategyType} from 'react-native-video';
 import GestureRecognizer from 'react-native-swipe-gestures';
@@ -26,7 +26,11 @@ import {useFocusEffect} from '@react-navigation/native';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   // constants
-  const allStoryData = route.params.allStoryData;
+  const allStoryData = useMemo(
+    () => route.params.allStoryData,
+    [route.params.allStoryData],
+  );
+  const [storyPaused, setStoryPause] = useState(false);
 
   // redux use
   const {id: userId} = useAppSelector(state => state.User.data);
@@ -37,23 +41,27 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   const [index, setIndex] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
 
-  const stories = allStoryData[userIndex].stories.filter(z => {
-    const dd = new Date(z.storyCreatedOn);
-    const now = new Date();
+  const stories = useMemo(
+    () =>
+      allStoryData[userIndex].stories.filter(z => {
+        const dd = new Date(z.storyCreatedOn);
+        const now = new Date();
 
-    // Calculate the difference in milliseconds between now and dd
-    const timeDiff = now.getTime() - dd.getTime();
+        // Calculate the difference in milliseconds between now and dd
+        const timeDiff = now.getTime() - dd.getTime();
 
-    // Convert 24 hours to milliseconds
-    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+        // Convert 24 hours to milliseconds
+        const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
 
-    // Check if the time difference is greater than or equal to 24 hours
-    if (timeDiff >= twentyFourHoursInMs) {
-      return false;
-    }
+        // Check if the time difference is greater than or equal to 24 hours
+        if (timeDiff >= twentyFourHoursInMs) {
+          return false;
+        }
 
-    return true;
-  });
+        return true;
+      }),
+    [allStoryData, userIndex],
+  );
 
   // ref use
   const videoRef = useRef<VideoRef>(null);
@@ -174,8 +182,14 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
   };
 
   const storyTimer = new Timer(goNext);
-
   useEffect(() => {
+    setStoryPause(false);
+  }, [index]);
+  useEffect(() => {
+    if (storyPaused) {
+      progress.value = 1;
+      return;
+    }
     if (stories[index].storyType.includes('video')) {
       videoRef.current?.seek(0);
       progress.value = 0;
@@ -186,7 +200,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
     return () => {
       progress.value = 0;
     };
-  }, [index, progress, stories]);
+  }, [index, progress, stories, storyPaused]);
 
   return (
     <View style={styles.parent} key={`${userIndex}-${index}`}>
@@ -235,6 +249,7 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
             <Pressable
               onPress={() => {
                 setShowMenu(true);
+                setStoryPause(true);
               }}
               hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
               <View style={styles.dots} />
@@ -244,22 +259,11 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
           ) : null}
           {showMenu ? (
             <TouchableOpacity
-              style={{
-                elevation: 20,
-                shadowColor: 'black',
-                shadowOpacity: 0.3,
-                shadowOffset: {width: 0, height: 10},
-                shadowRadius: 10,
-                position: 'absolute',
-                backgroundColor: 'white',
-                zIndex: 1,
-                borderRadius: SIZES.rounding0,
-                right: 16,
-                padding: 8,
-                top: 8,
-              }}
+              style={styles.menuCtr}
               onPress={handleStoryDelete}>
-              <Text style={{fontSize: SIZES.font15}}>Delete</Text>
+              <Text style={{fontSize: SIZES.font15, color: 'black'}}>
+                Delete
+              </Text>
             </TouchableOpacity>
           ) : null}
         </View>

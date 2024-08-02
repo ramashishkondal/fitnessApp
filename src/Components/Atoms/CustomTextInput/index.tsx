@@ -1,20 +1,15 @@
-// libs
 import React, {useRef, useState} from 'react';
-import {TextInput, View} from 'react-native';
-
-// 3rd party
+import {TextInput, View, TouchableOpacity} from 'react-native';
 import Animated from 'react-native-reanimated';
-
-// custom
 import {styles} from './styles';
 import {CustomTextInputProps} from './types';
 import {COLORS, ICONS} from '../../../Constants';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const eyeIconSize = {
   width: 18,
   height: 18,
 };
+
 const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
   ({
     placeHolder,
@@ -29,10 +24,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = React.memo(
     allowPeeking = false,
     textInputProps,
   }) => {
-    // state use
     const [isTextSecure, setIsTextSecure] = useState(allowPeeking);
-
-    // ref use
     const textInputRef = useRef<TextInput>(null);
 
     return (

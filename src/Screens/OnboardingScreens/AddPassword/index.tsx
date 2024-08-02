@@ -12,13 +12,13 @@ import {
   CustomButton,
   CustomTextInput,
   PasswordChecks,
-  WithOnboarding,
   HeadingText,
 } from '../../../Components';
 import {COLORS, ICONS, SIZES, SPACING, STRING} from '../../../Constants';
 import {isValidPassword} from '../../../Utils/checkValidity';
 import {AddPasswordProps} from '../../../Defs';
 import ToastError from '../../../Components/Atoms/ToastError';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
   // state use
@@ -71,34 +71,38 @@ const AddPassword: React.FC<AddPasswordProps> = ({navigation}) => {
   }, []);
 
   return (
-    <View style={[styles.parent, SPACING.mt5, SPACING.mh2]}>
-      {appStateVisible !== 'active' && (
-        <View style={styles.absolute}>
-          {ICONS.EyeClose({
-            width: SIZES.width / 4,
-            height: SIZES.width / 4,
-            color: COLORS.SECONDARY.GREY,
-          })}
-        </View>
-      )}
-      <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
-      <CustomTextInput
-        placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}
-        parentStyle={[[SPACING.mt64, {marginHorizontal: 12}]]}
-        textInputStyle={styles.textInput}
-        onChangeText={setPassword}
-        autoFocus
-        allowPeeking
-        textInputProps={{maxLength: 30}}
-      />
-      <PasswordChecks lengthCheck={isValidPassword.lengthCheck(password)} />
-      <CustomButton
-        title={STRING.ADD_PASSWORD.BUTTON_TEXT}
-        parentStyle={SPACING.mt96}
-        onPress={handleSubmit}
-      />
-    </View>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="handled"
+      style={{flex: 1, backgroundColor: COLORS.PRIMARY.GREY}}>
+      <View style={[styles.parent, SPACING.mt5, SPACING.mh2]}>
+        {appStateVisible !== 'active' && (
+          <View style={styles.absolute}>
+            {ICONS.EyeClose({
+              width: SIZES.width / 4,
+              height: SIZES.width / 4,
+              color: COLORS.SECONDARY.GREY,
+            })}
+          </View>
+        )}
+        <HeadingText text={STRING.ADD_PASSWORD.TITLE} textStyle={SPACING.mh1} />
+        <CustomTextInput
+          placeHolder={STRING.ADD_PASSWORD.TEXT_INPUT_PLACEHOLDER}
+          parentStyle={[[SPACING.mt64, {marginHorizontal: 12}]]}
+          textInputStyle={styles.textInput}
+          onChangeText={setPassword}
+          autoFocus
+          allowPeeking
+          textInputProps={{maxLength: 30}}
+        />
+        <PasswordChecks lengthCheck={isValidPassword.lengthCheck(password)} />
+        <CustomButton
+          title={STRING.ADD_PASSWORD.BUTTON_TEXT}
+          parentStyle={SPACING.mt96}
+          onPress={handleSubmit}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
-export default WithOnboarding(AddPassword);
+export default AddPassword;

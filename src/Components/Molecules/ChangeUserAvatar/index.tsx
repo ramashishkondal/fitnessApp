@@ -10,17 +10,33 @@ import storage from '@react-native-firebase/storage';
 import {useAppSelector} from '../../../Redux/Store';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {ChangeUserAvatarProps} from './types';
+import {useNetInfo} from '@react-native-community/netinfo';
+// import Toast from 'react-native-toast-message';
+// import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
 
 const ChangeUserAvatar = ({setModalFalse, delayed}: ChangeUserAvatarProps) => {
   const [avatar, setAvatar] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  console.log('awdaw', avatar);
+
+  const netInfo = useNetInfo();
 
   const {id} = useAppSelector(state => state.User.data);
 
   const handleSubmit = async () => {
     setIsLoading(true);
-
+    if (!netInfo.isConnected) {
+      setIsLoading(false);
+      setModalFalse();
+      // Toast.show({
+      //   type: 'info',
+      //   text1: 'Avatar Update Pending',
+      //   position: 'top',
+      //   text2: "Your avatar will be updated once you're online.",
+      //   text1Style: {fontFamily: FONT_FAMILY.REGULAR, fontSize: SIZES.font13},
+      //   text2Style: {fontFamily: FONT_FAMILY.REGULAR, fontSize: SIZES.font10},
+      //   swipeable: true,
+      // });
+    }
     try {
       const url = await storage()
         .ref('media/Avatars/' + avatar + '.jpg')

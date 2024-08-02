@@ -27,12 +27,13 @@ export const styles = StyleSheet.create({
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
     color: 'black',
+    minWidth: 140,
     maxWidth: 240,
     // alignSelf: 'center',
   },
   footerCtr: {
     backgroundColor: COLORS.SECONDARY.WHITE,
-    position: 'absolute',
+    position: 'relative',
     bottom: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
@@ -65,12 +66,11 @@ export const styles = StyleSheet.create({
     borderRadius: 200,
   },
   textInputCtr: {
-    flexGrow: 1,
+    // flexGrow: 1,
     justifyContent: 'center',
   },
   EmojiSelectorCtr: {
     height: 300,
-    bottom: 100,
     alignItems: 'flex-end',
     marginHorizontal: 16,
     backgroundColor: 'white',

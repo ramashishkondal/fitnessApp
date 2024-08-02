@@ -158,7 +158,9 @@ const SignIn = ({navigation}: SignInProps) => {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
   useEffect(() => {
+    console.log('Setting up AppState listener');
     const subscription = AppState.addEventListener('change', nextAppState => {
+      console.log('AppState change detected:', nextAppState);
       if (
         appState.current.match(/inactive|background/) &&
         nextAppState === 'active'
@@ -172,6 +174,7 @@ const SignIn = ({navigation}: SignInProps) => {
     });
 
     return () => {
+      console.log('Removing AppState listener');
       subscription.remove();
     };
   }, []);
@@ -226,9 +229,9 @@ const SignIn = ({navigation}: SignInProps) => {
   return (
     <KeyboardAwareScrollView
       style={{flex: 1, backgroundColor: COLORS.PRIMARY.GREY}}
-      keyboardShouldPersistTaps="always">
+      keyboardShouldPersistTaps="handled">
       <View style={styles.parent}>
-        {appStateVisible !== 'active' && (
+        {appStateVisible !== 'active' && Platform.OS === 'ios' && (
           <View style={styles.absolute}>
             {ICONS.EyeClose({
               width: SIZES.width / 4,

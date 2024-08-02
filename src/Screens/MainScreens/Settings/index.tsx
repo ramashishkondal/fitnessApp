@@ -175,6 +175,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       Alert.alert(error.message);
     }
   };
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       const {FingerPrintModule} = NativeModules;
@@ -218,7 +219,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       };
     }
   }, [dispatch]);
-  const handleFingerPrint = async (val: boolean) => {
+  const handleBiometric = async (val: boolean) => {
     if (Platform.OS === 'android') {
       const handleErrorBiometric = (error: string) => {
         console.log('error in auth fingerprint', error);
@@ -272,7 +273,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
             }`}
             hasSwitch
             switchActive={isBiometricEnabled}
-            onSwitchValueChange={handleFingerPrint}
+            onSwitchValueChange={handleBiometric}
           />
         ) : null}
         <SettingsCard

@@ -6,20 +6,10 @@ export const styles = StyleSheet.create({
   parent: {
     maxWidth: '100%',
     flex: 1,
-    justifyContent: 'space-between',
   },
-  addCommentCtr: {
-    flexDirection: 'row',
-    marginHorizontal: 24,
-    marginVertical: 32,
-    // alignItems:
-  },
-  customImageParent: {
-    width: 50,
-    height: 50,
-  },
-  customImage: {
-    borderRadius: 200,
+
+  parentPressable: {
+    flex: 1,
   },
   titleText: {
     fontSize: SIZES.font19,
@@ -27,24 +17,25 @@ export const styles = StyleSheet.create({
     textAlign: 'left',
   },
   image: {
-    height: SIZES.height / 2,
-    width: '100%',
+    height: SIZES.height / 3,
+    marginHorizontal: 16,
+    marginVertical: 16,
     borderRadius: SIZES.rounding2,
   },
-  captionText: {marginTop: 8, fontSize: SIZES.font13},
+  captionText: {marginTop: 8, fontSize: SIZES.font13, marginHorizontal: 16},
   textInput: {
     marginHorizontal: 8,
     fontFamily: FONT_FAMILY.REGULAR,
-    // flexGrow: 1,
     color: 'black',
+    minWidth: 140,
     maxWidth: 240,
-    minWidth: 200,
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
   footerCtr: {
-    position: 'absolute',
+    backgroundColor: COLORS.SECONDARY.WHITE,
+    position: 'relative',
     bottom: 1,
-    flexGrow: 1,
+    flexWrap: 'wrap',
     flexDirection: 'row',
     borderTopWidth: 1,
     marginHorizontal: 16,
@@ -54,7 +45,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 40,
-    backgroundColor: 'white',
   },
   childFooterCtr: {flexDirection: 'row'},
   iconsCtr: {marginHorizontal: 8},
@@ -62,13 +52,25 @@ export const styles = StyleSheet.create({
     maxWidth: SIZES.width / 4,
     maxHeight: SIZES.height / 22,
   },
-  customButtonCtr: {
-    flexGrow: 1,
-    alignItems: 'flex-end',
+  addPostCtr: {
+    flexDirection: 'row',
+    marginHorizontal: 24,
+    marginVertical: 16,
+    // alignItems: 'center',
+  },
+  customImageParent: {
+    width: 50,
+    height: 50,
+  },
+  customImage: {
+    borderRadius: 200,
+  },
+  textInputCtr: {
+    // flexGrow: 1,
+    justifyContent: 'center',
   },
   EmojiSelectorCtr: {
     height: 300,
-    bottom: 100,
     alignItems: 'flex-end',
     marginHorizontal: 16,
     backgroundColor: 'white',
@@ -78,5 +80,10 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: -300},
     shadowRadius: 300,
+    // borderWidth: 1,
+  },
+  customButtonCtr: {
+    flexGrow: 1,
+    alignItems: 'flex-end',
   },
 });

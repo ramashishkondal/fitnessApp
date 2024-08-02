@@ -15,7 +15,7 @@ import {
   DescriptionText,
   PerformanceCard,
 } from '../../../Components';
-import {COLORS, ICONS, SPACING, STRING} from '../../../Constants';
+import {COLORS, ICONS, SIZES, SPACING, STRING} from '../../../Constants';
 import InsidePieChart from '../../../Components/Molecules/InsidePieChart';
 import {date, getPercentage, weekday} from '../../../Utils/commonUtils';
 import {styles} from './styles';
@@ -253,7 +253,6 @@ const DailySteps: React.FC = () => {
       />
     );
   }, [stepsCompletionPercentage]);
-
   return (
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
@@ -296,6 +295,7 @@ const DailySteps: React.FC = () => {
               endFillColor1="#FBDA95"
               hideDataPoints
               hideRules
+              width={SIZES.width / 1.15}
               overflowBottom={-1}
               thickness={4}
               yAxisTextStyle={{color: COLORS.SECONDARY.GREY}}
@@ -310,7 +310,7 @@ const DailySteps: React.FC = () => {
                 pointerStripColor: 'lightgray',
                 pointerStripWidth: 2,
                 pointerColor: 'lightgray',
-                pointerLabelWidth: 150,
+                pointerLabelWidth: SIZES.width / 2.8,
                 activatePointersOnLongPress: true,
                 autoAdjustPointerLabelPosition: true,
                 shiftPointerLabelX: 200,

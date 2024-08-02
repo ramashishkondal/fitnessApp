@@ -2184,7 +2184,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.10.8):
     - React-Core
-  - react-native-video (6.4.2):
+  - react-native-video (6.4.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2198,7 +2198,7 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-video/Video (= 6.4.2)
+    - react-native-video/Video (= 6.4.3)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2206,7 +2206,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-video/Video (6.4.2):
+  - react-native-video/Video (6.4.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2456,7 +2456,7 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
-  - RealmJS (12.11.1):
+  - RealmJS (12.12.1):
     - React
   - RecaptchaInterop (100.0.0)
   - RNAppleHealthKit (1.7.0):
@@ -2492,7 +2492,7 @@ PODS:
     - Firebase/Storage (= 10.29.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.17.1):
+  - RNGestureHandler (2.18.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2544,7 +2544,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.32.0):
+  - RNScreens (3.33.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2943,7 +2943,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: b7daa1a8df36095a032dff095a1ea8963cb48371
-  react-native-video: d655ca67dc43e14a50dcf8225f6875f06c0523ae
+  react-native-video: 3d5881ee6643a9a87e0e259b742c2d07aee7b27e
   React-nativeconfig: 21d89c65ca39875fad2c5c465e0e013e514eba21
   React-NativeModulesApple: e2e180dae4486b2978fcf3564cc4c8de4b453a68
   React-perflogger: 3d31e0d1e8ad891e43a09ac70b7b17a79773003a
@@ -2967,7 +2967,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 86b9c5bccd239d91da33e08b4c58c6a40b7fdb48
   React-utils: 8e9c5cd66f0788e156a1fcb5cd69593ec8607611
   ReactCommon: eb4c4a9c43fcc0d93f922d0fdada24638429e515
-  RealmJS: ecd23895a68689ce2c048d28df3d699cf76cedb7
+  RealmJS: f4f6d27b325b1c1b402eb0aa5ee79e9d5f603293
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNAppleHealthKit: 60a6beefdd89a75811e9a8873a5e24f351dee681
   RNBootSplash: e025d4ee98d942ee6c8b495a6fe66339a6b5f6dd
@@ -2979,12 +2979,12 @@ SPEC CHECKSUMS:
   RNFBFirestore: 9b5e7d645787f02d5d16c4e060e778e9da762e02
   RNFBMessaging: 62b6c25f58225a73067c7aef25947f41aa6088c5
   RNFBStorage: a86f59a4adae00b3061e55257d6c3d70851a1810
-  RNGestureHandler: 5538c370587d7e757667b9283ca867dd7635f154
+  RNGestureHandler: fc0d83b45872ee937ecc9814012d9b48586b4d7a
   RNGoogleSignin: 08dc4ba7eac2096c7fecfe109f0950fa4683c803
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNReanimated: f6b214732ff303cb815ac81b26bbfd2070b69f43
-  RNScreens: fd2722bcc59f36a629205af8cc7b48e4bc0d09f5
+  RNScreens: 7868e19bb8b7643a990fd7a7e037796c4c9b4ff9
   RNSVG: 3001c6aa5fbcf5383f98c2d61bf8b91b9ebda75c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d

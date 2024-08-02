@@ -87,7 +87,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.parent}>
+    <KeyboardAwareScrollView
+      style={styles.parent}
+      keyboardShouldPersistTaps="handled">
       <View style={[styles.child, SPACING.mt5, SPACING.mh1]}>
         <HeadingText text="Reset Password" />
         <CustomTextInput
