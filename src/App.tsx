@@ -4,7 +4,7 @@ import RootNavigator from './Navigators/RootNavigator';
 import {Provider} from 'react-redux';
 import {persistor, store} from './Redux/Store';
 import {PersistGate} from 'redux-persist/integration/react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, TextInput} from 'react-native-gesture-handler';
 import {ModalPortal} from 'react-native-modals';
 import {RealmProvider} from '@realm/react';
 import {SingleStoryDb, StoryDb} from './DbModels/story';
@@ -14,6 +14,7 @@ import {FoodDb, MealDb} from './DbModels/mealData';
 import Toast, {ErrorToast} from 'react-native-toast-message';
 import DeviceInfo from 'react-native-device-info';
 import {COLORS} from './Constants';
+import {TextStyle, Text} from 'react-native';
 
 const toastConfig = {
   error: (props: any) => {
@@ -37,8 +38,24 @@ const toastConfig = {
     );
   },
 };
+interface ExtendedText extends Text {
+  defaultProps: {
+    allowFontScaling: boolean;
+    style?: TextStyle;
+  };
+}
+
+interface ExtendedTextInput extends TextInput {
+  defaultProps: {
+    allowFontScaling: boolean;
+  };
+}
 
 const App = () => {
+  (Text as unknown as ExtendedText).defaultProps = {allowFontScaling: false};
+  (TextInput as unknown as ExtendedTextInput).defaultProps = {
+    allowFontScaling: false,
+  };
   return (
     <RealmProvider
       schema={[
