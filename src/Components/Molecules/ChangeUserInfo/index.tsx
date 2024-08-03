@@ -31,8 +31,6 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
   const {
     gender,
     id,
-    preferences,
-    interests,
     firstName: fn,
     lastName: ln,
   } = useAppSelector(state => state.User.data);
@@ -105,8 +103,7 @@ const ChangeUserInfo: React.FC<ChangeUserInfoProps> = ({
             lastName: lastName.replace(/\s+/g, ' '),
             gender: selectedGender,
             id: id!,
-            interests,
-            preferences,
+            syncStatus: 'pending',
           },
           UpdateMode.Modified,
         );

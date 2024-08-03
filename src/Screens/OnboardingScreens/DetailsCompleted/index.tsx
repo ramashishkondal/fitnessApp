@@ -39,14 +39,15 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const {data} = useAppSelector(state => state.User);
+  const {
+    data: {password, ...user},
+  } = useAppSelector(state => state.User);
   const {isBiometricEnabled} = useAppSelector(
     state => state.settings.data.cachedData,
   );
-  const {password, ...user} = data;
+
   const dispatch = useAppDispatch();
-  console.log('awdawdawdawdawd bi', isBiometricEnabled);
-  console.log('awdawdawdawdawd bi', data.finger);
+
   // functions
   const handleSubmit = async () => {
     try {
@@ -82,12 +83,16 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
           url = await reference.getDownloadURL();
         }
         if (userCredentials !== undefined) {
-          user.photo = url;
-          user.id = userCredentials.user.uid;
-          user.healthData = [];
-          user.notifications = [];
-          user.storiesWatched = [];
-          await storeUserData(user, user.id);
+          await storeUserData(
+            {
+              ...user,
+              photo: url,
+              id: userCredentials.user.uid,
+              notifications: [],
+              storiesWatched: [],
+            },
+            userCredentials.user.uid,
+          );
           await sendNotification(
             {
               message: 'You have successfully registered on FitnessApp !',
@@ -115,7 +120,9 @@ const DetailsCompleted: React.FC<DetailsCompletedProps> = ({navigation}) => {
   };
 
   return (
-    <ImageBackground source={IMAGES.DETIALS_COMPLETED} style={{flex: 1}}>
+    <ImageBackground
+      source={IMAGES.DETIALS_COMPLETED}
+      style={styles.backgroundImage}>
       <View style={styles.parent}>
         <View style={styles.childCtr}>
           <View style={styles.logoCtr}>{ICONS.Logo(logoSize)}</View>

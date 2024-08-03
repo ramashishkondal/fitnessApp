@@ -23,8 +23,7 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const {preferences, id, firstName, lastName, interests, gender} =
-    useAppSelector(state => state.User.data);
+  const {preferences, id} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
 
   // netInfo use
@@ -66,10 +65,6 @@ const ChangeUserPreferences: React.FC<ChangeUserPreferencesProps> = ({
           {
             id: id!,
             preferences: preferencedData.current.map(val => val),
-            firstName,
-            lastName,
-            interests,
-            gender,
           },
           UpdateMode.Modified,
         );

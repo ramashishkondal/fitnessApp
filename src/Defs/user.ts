@@ -5,12 +5,10 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
-  finger: boolean;
   photo: string;
   gender: 'male' | 'female' | null;
   preferences: Array<{title: string; selected: boolean}>;
   interests: Array<{title: string; selected: boolean}>;
-  healthData: Array<HealthData>;
   storiesWatched: Array<string>;
   notifications: NotificationsData;
   createdOn: string;

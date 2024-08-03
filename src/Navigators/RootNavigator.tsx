@@ -5,6 +5,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import BootSplash from 'react-native-bootsplash';
+import firestore from '@react-native-firebase/firestore';
 
 // custom
 import OnboardingNav from './OnboardingNavigator';
@@ -19,6 +20,7 @@ GoogleSignin.configure({
   webClientId:
     '330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com',
 });
+firestore().settings({persistence: false});
 const RootNavigator = () => {
   // state use
   const [initializing, setInitializing] = useState(true);

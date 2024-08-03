@@ -9,7 +9,11 @@ import {ModalPortal} from 'react-native-modals';
 import {RealmProvider} from '@realm/react';
 import {SingleStoryDb, StoryDb} from './DbModels/story';
 import {PostDb} from './DbModels/post';
-import {UserDb, UserPreferencesAndInterests} from './DbModels/user';
+import {
+  NotificationsDb,
+  UserDb,
+  UserPreferencesAndInterests,
+} from './DbModels/user';
 import {FoodDb, MealDb} from './DbModels/mealData';
 import Toast, {ErrorToast} from 'react-native-toast-message';
 import DeviceInfo from 'react-native-device-info';
@@ -64,6 +68,7 @@ const App = () => {
         PostDb,
         UserDb,
         UserPreferencesAndInterests,
+        NotificationsDb,
         MealDb,
         FoodDb,
       ]}>

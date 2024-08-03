@@ -29,8 +29,7 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   // redux use
-  const {preferences, id, firstName, lastName, gender, interests} =
-    useAppSelector(state => state.User.data);
+  const {id, interests} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
 
   // netInfo use
@@ -80,10 +79,7 @@ const ChangeUserInterests: React.FC<ChangeUserInterestsProps> = ({
               const {selected, title} = val;
               return {selected, title};
             }),
-            firstName,
-            lastName,
-            preferences,
-            gender,
+            syncStatus: 'pending',
           },
           UpdateMode.Modified,
         );

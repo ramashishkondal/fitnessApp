@@ -1,32 +1,35 @@
 import {ObjectSchema, Realm} from 'realm';
+import {NotificationsData} from '../Defs/user';
 
 export class UserDb extends Realm.Object {
   id!: string;
-  firstName?: string;
-  lastName?: string;
-  photo?: string;
-  gender?: 'male' | 'female' | null;
-  preferences?: Array<{title: string; selected: boolean}>;
-  interests?: Array<{title: string; selected: boolean}>;
+  firstName!: string;
+  lastName!: string;
+  photo!: string;
+  gender!: 'male' | 'female' | null;
+  email!: string;
+  preferences!: Array<{title: string; selected: boolean}>;
+  interests!: Array<{title: string; selected: boolean}>;
+  storiesWatched!: Array<string>;
+  notifications!: NotificationsData;
+  createdOn!: string;
+  syncStatus!: 'synced' | 'pending' | 'failed';
+
   public static readonly schema: ObjectSchema = {
     name: 'UserData',
     properties: {
-      id: {
-        type: 'string',
-      },
-      firstName: {
-        type: 'string',
-      },
-      lastName: {
-        type: 'string',
-      },
-      photo: {
-        type: 'string',
-        optional: true,
-      },
+      id: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      photo: 'string',
       gender: 'string?',
-      preferences: 'PreferenceAndInterests[]',
-      interests: 'PreferenceAndInterests[]',
+      email: 'string',
+      preferences: {type: 'list', objectType: 'PreferenceAndInterests'},
+      interests: {type: 'list', objectType: 'PreferenceAndInterests'},
+      storiesWatched: {type: 'list', objectType: 'string'},
+      notifications: {type: 'list', objectType: 'Notifications'},
+      createdOn: 'string',
+      syncStatus: 'string?',
     },
     primaryKey: 'id',
   };
@@ -39,13 +42,29 @@ export class UserPreferencesAndInterests extends Realm.Object {
   public static readonly schema: ObjectSchema = {
     name: 'PreferenceAndInterests',
     properties: {
-      title: {
-        type: 'string',
-      },
-      selected: {
-        type: 'bool',
-      },
+      title: 'string',
+      selected: 'bool',
     },
     primaryKey: 'title',
+  };
+}
+
+export class NotificationsDb extends Realm.Object {
+  userId!: string;
+  message!: string;
+  createdOn!: string;
+  isUnread!: boolean;
+  isShownViaPushNotification!: boolean;
+
+  public static readonly schema: ObjectSchema = {
+    name: 'Notifications',
+    properties: {
+      userId: 'string',
+      message: 'string',
+      createdOn: 'string',
+      isUnread: 'bool',
+      isShownViaPushNotification: 'bool',
+    },
+    primaryKey: 'userId',
   };
 }

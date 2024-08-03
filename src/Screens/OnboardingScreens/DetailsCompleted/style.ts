@@ -3,6 +3,9 @@ import {COLORS, SIZES, SPACING} from '../../../Constants';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 export const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
   parent: {
     flex: 1,
     // backgroundColor: '#7150C5',
