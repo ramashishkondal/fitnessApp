@@ -1,12 +1,6 @@
 // libs
-import React, {useEffect} from 'react';
-import {
-  Alert,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-  View,
-} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {NativeEventEmitter, NativeModules, Platform, View} from 'react-native';
 
 // custom
 import {
@@ -29,6 +23,10 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   const {isBiometricEnabled} = useAppSelector(
     state => state.settings.data.cachedData,
   );
+
+  const goToAddProfilePicture = useCallback(() => {
+    navigation.push('AddProfilePicture');
+  }, [navigation]);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -54,7 +52,7 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
       };
 
       const authSuccessListener = fingerPrintEventEmitter.addListener(
-        'auth_success',
+        'auth_success_AddFingerPrint',
         onAuthSuccess,
       );
 
@@ -73,32 +71,22 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
         authFailedListener.remove();
       };
     }
-  }, [dispatch]);
-  const handleBiometric = async (val: boolean) => {
+  }, [dispatch, goToAddProfilePicture]);
+  const handleBiometric = async () => {
     if (Platform.OS === 'android') {
       const handleErrorBiometric = (error: string) => {
         console.log('error in auth fingerprint', error);
       };
 
-      dispatch(
-        updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
+      NativeModules.FingerPrintModule.authenticateFingerPrint().catch(
+        handleErrorBiometric,
       );
-      console.log('bio', val);
-      if (!val) {
-        NativeModules.FingerPrintModule.authenticateFingerPrint().catch(
-          handleErrorBiometric,
-        );
-      }
+
       return;
     } else {
       try {
-        dispatch(
-          updateSettingsCachedData({isBiometricEnabled: !isBiometricEnabled}),
-        );
-        if (val) {
-          await NativeModules.FaceIdModule.authenticateWithFaceID();
-          goToAddProfilePicture();
-        }
+        await NativeModules.FaceIdModule.authenticateWithFaceID();
+        goToAddProfilePicture();
       } catch (error: any) {
         dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
         if (error.message === 'Authentication failed') {
@@ -114,9 +102,6 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   };
 
   // functions
-  const goToAddProfilePicture = () => {
-    navigation.push('AddProfilePicture');
-  };
   // const handleBiometricAdded = () => {
   //   Alert.alert(
   //     `${Platform.OS === 'android' ? 'Fingerprint' : 'Face ID'}`,
@@ -137,6 +122,7 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
   // };
   const handleNotNow = () => {
     dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+
     goToAddProfilePicture();
   };
   console.log(isBiometricEnabled);
@@ -177,7 +163,9 @@ const AddFingerprint: React.FC<AddProfilePictureProps> = ({navigation}) => {
           //   );
           //   return;
           // }
-          handleBiometric(isBiometricEnabled);
+          dispatch(updateSettingsCachedData({isBiometricEnabled: true}));
+
+          handleBiometric();
         }}
       />
       <CustomButton

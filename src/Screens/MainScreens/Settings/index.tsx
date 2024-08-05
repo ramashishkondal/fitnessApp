@@ -199,7 +199,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       };
 
       const authSuccessListener = fingerPrintEventEmitter.addListener(
-        'auth_success',
+        'auth_success_AddFingerPrint',
         onAuthSuccess,
       );
 

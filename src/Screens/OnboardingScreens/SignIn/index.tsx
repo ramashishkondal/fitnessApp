@@ -69,14 +69,19 @@ const SignIn = ({navigation}: SignInProps) => {
           FingerPrintModule,
         );
         const onAuthSuccess = () => {
-          setIsLoading('continue');
-          console.log('loggin you in');
-          auth()
-            .signInWithEmailAndPassword(cachedData.email, cachedData.password)
-            .catch(handleErrorAuth)
-            .finally(() => {
-              setIsLoading(null);
-            });
+          console.log('====================================');
+          console.log(cachedData.shouldSignIn);
+          console.log('====================================');
+          if (cachedData.shouldSignIn) {
+            setIsLoading('continue');
+            console.log('loggin you in');
+            auth()
+              .signInWithEmailAndPassword(cachedData.email, cachedData.password)
+              .catch(handleErrorAuth)
+              .finally(() => {
+                setIsLoading(null);
+              });
+          }
           // Handle successful authentication
         };
 
@@ -118,9 +123,7 @@ const SignIn = ({navigation}: SignInProps) => {
 
         // Call the function
         authenticateAndSignIn();
-        return () => {
-          authSuccessListener.remove();
-        };
+        return () => authSuccessListener.remove();
       } else {
         const handleFaceIDAuthentication = async () => {
           setIsLoading('continue');
@@ -151,7 +154,7 @@ const SignIn = ({navigation}: SignInProps) => {
     if (cachedData.isBiometricEnabled) {
       handleBiometricAuth();
     }
-  }, [cachedData, dispatch]);
+  }, [cachedData]);
 
   // App state listener
   const appState = useRef(AppState.currentState);

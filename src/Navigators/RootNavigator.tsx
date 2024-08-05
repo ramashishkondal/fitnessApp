@@ -1,8 +1,12 @@
 // libs
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {NativeModules} from 'react-native';
 
 // 3rd party
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import BootSplash from 'react-native-bootsplash';
 
@@ -15,6 +19,8 @@ import {updateUserData} from '../Redux/Reducers/currentUser';
 import GoalModal from '../Components/Molecules/GoalModal';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
+const {FingerPrintModule} = NativeModules;
+
 GoogleSignin.configure({
   webClientId:
     '330526479136-sqf4ju2hq123ofkr2nak9hhc7ctg63gv.apps.googleusercontent.com',
@@ -23,6 +29,9 @@ const RootNavigator = () => {
   // state use
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+
+  const routeNameRef = useRef<string>();
+  const navigationRef = useRef<NavigationContainerRef>(null);
 
   // redux use
   const dispatch = useAppDispatch();
@@ -50,7 +59,18 @@ const RootNavigator = () => {
   }
 
   return (
-    <NavigationContainer onReady={() => BootSplash.hide({fade: true})}>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        BootSplash.hide({fade: true});
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        FingerPrintModule.setCurrentRoute(routeNameRef.current); // Set the initial route
+      }}
+      onStateChange={() => {
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+        routeNameRef.current = currentRouteName;
+        FingerPrintModule.setCurrentRoute(currentRouteName); // Update route on state change
+      }}>
       {user ? (
         <GoalModal>
           <AppNavigator />

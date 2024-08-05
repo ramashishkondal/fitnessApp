@@ -27,6 +27,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    private String currentRoute = "";
 
     FingerPrintModule(ReactApplicationContext context) {
         super(context);
@@ -38,6 +39,10 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
+    @ReactMethod
+    public void setCurrentRoute(String route) {
+        currentRoute = route;
+    }
     @ReactMethod
     public void authenticateFingerPrint(Promise promise) {
         Log.d("FingerPrintModule", "authenticateFingerPrint called");
@@ -71,7 +76,13 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
                         super.onAuthenticationSucceeded(result);
                         Toast.makeText(reactContext,
                                 "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                        sendEventToReactNative("auth_success", "Authentication succeeded!");
+                                if ("SignIn".equals(currentRoute)) {
+                            sendEventToReactNative("auth_success", "Authentication succeeded!");
+                        }
+                        else{
+                            sendEventToReactNative("auth_success_AddFingerPrint", "Authentication succeeded!");
+                        }
+
                         promise.resolve("Authentication succeeded!");
                     }
 

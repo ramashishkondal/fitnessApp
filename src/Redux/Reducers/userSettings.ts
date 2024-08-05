@@ -8,6 +8,7 @@ export type UserSettings = {
     email: string;
     shouldAskBiometics: boolean;
     isSocial: boolean;
+    shouldSignIn: boolean;
   };
 };
 
@@ -20,6 +21,7 @@ const initialState: {data: UserSettings} = {
       email: '',
       shouldAskBiometics: true,
       isSocial: false,
+      shouldSignIn: false,
     },
   },
 };

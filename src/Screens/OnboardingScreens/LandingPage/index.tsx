@@ -13,15 +13,20 @@ import {SPACING, STRING, IMAGES} from '../../../Constants/';
 import {LandingPageProps} from '../../../Defs';
 import {styles} from './styles';
 import {useNetInfo} from '@react-native-community/netinfo';
+import {useAppDispatch} from '../../../Redux/Store';
+import {updateSettingsCachedData} from '../../../Redux/Reducers/userSettings';
 
 const LandingPage: React.FC<LandingPageProps> = ({navigation}) => {
   const netInfo = useNetInfo();
+  const dispatch = useAppDispatch();
   // functions
   const goToSignIn = () => {
+    dispatch(updateSettingsCachedData({shouldSignIn: true}));
     navigation.push('SignIn');
   };
   const goToStarting = () => {
     if (netInfo.isConnected) {
+      dispatch(updateSettingsCachedData({shouldSignIn: false}));
       navigation.navigate('AddEmail');
     } else {
       Alert.alert(
