@@ -13,6 +13,7 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import CustomImage from '../CustomImage';
 import {appStackParamList, homeDrawerParamList} from '../../../Defs';
 import {styles} from './styles';
+import {IMAGES} from '../../../Constants';
 
 const CustomDrawerRight: React.FC = () => {
   // state use
@@ -36,7 +37,10 @@ const CustomDrawerRight: React.FC = () => {
   };
   return (
     <TouchableOpacity style={styles.parent} onPress={handlePress}>
-      <CustomImage source={{uri: photo ?? ''}} imageStyle={styles.image} />
+      <CustomImage
+        source={photo ? {uri: photo} : IMAGES.DEFAULT_USER}
+        imageStyle={styles.image}
+      />
       <View
         style={[
           styles.onlineStatus,

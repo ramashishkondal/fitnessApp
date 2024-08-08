@@ -1,4 +1,5 @@
 export const IMAGES = {
+  DEFAULT_USER: require('../Assets/Images/defaultUser.jpeg'),
   LANDING_PAGE: require('../Assets/Images/landingPageImage.jpeg'),
   DETIALS_COMPLETED: require('../Assets/Images/background.png'),
   USER: require('../Assets/Images/User.png'),

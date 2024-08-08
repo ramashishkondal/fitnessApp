@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import {styles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {CustomImage, SelectCustomPhoto, WithModal} from '../../../Components';
-import {ICONS} from '../../../Constants';
+import {ICONS, IMAGES} from '../../../Constants';
 import ChangeUserInfo from '../../../Components/Molecules/ChangeUserInfo';
 import ChangeUserPreferences from '../../../Components/Molecules/ChangeUserPreferences';
 import ChangeUserInterests from '../../../Components/Molecules/ChangeUserInterests';
@@ -233,7 +233,9 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
         <View style={styles.userInfoCtr}>
           <View style={styles.userPhotoCtr}>
             <CustomImage
-              source={{uri: userData?.photo}}
+              source={
+                userData?.photo ? {uri: userData?.photo} : IMAGES.DEFAULT_USER
+              }
               parentStyle={styles.userPhotoParent}
               imageStyle={styles.userPhoto}
             />

@@ -11,6 +11,7 @@ import {ScrollView, Text, View} from 'react-native';
 import {styles} from './styles';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {OtherUserScreenProps} from '../../../Defs/navigators';
+import {IMAGES} from '../../../Constants';
 
 const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
   route: {
@@ -28,7 +29,9 @@ const OtherUserScreen: React.FC<OtherUserScreenProps> = ({
       <View style={styles.userInfoCtr}>
         <View style={styles.userPhotoCtr}>
           <CustomImage
-            source={{uri: userData.photo}}
+            source={
+              userData.photo ? {uri: userData.photo} : IMAGES.DEFAULT_USER
+            }
             parentStyle={styles.userPhotoParent}
             imageStyle={styles.userPhoto}
           />
