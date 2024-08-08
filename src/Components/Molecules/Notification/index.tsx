@@ -11,8 +11,9 @@ import {CustomImage, DescriptionText} from '../../Atoms';
 import {styles} from './styles';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {User} from '../../../Defs';
-import {Swipeable} from 'react-native-gesture-handler';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
+import {IMAGES} from '../../../Constants';
+import {Swipeable} from 'react-native-gesture-handler';
 
 const Notification: React.FC<NotificationProps> = ({
   userId,
@@ -59,7 +60,9 @@ const Notification: React.FC<NotificationProps> = ({
         <View style={styles.CustomImageCtr}>
           {userData ? (
             <CustomImage
-              source={{uri: userData.photo}}
+              source={
+                userData.photo ? {uri: userData.photo} : IMAGES.DEFAULT_USER
+              }
               parentStyle={styles.customImageParentStyle}
               imageStyle={styles.customImageStyle}
             />

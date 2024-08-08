@@ -69,11 +69,13 @@ const ChangeUserAvatar = ({setModalFalse, delayed}: ChangeUserAvatarProps) => {
   return (
     <View style={styles.parent}>
       <HeadingText text="Change User Avatar" textStyle={{marginTop: 16}} />
-      <SelectAvatars
-        avatar={avatar}
-        setSelectedAvatar={setAvatar}
-        setPhoto={() => {}}
-      />
+      <View style={{marginLeft: -22, maxHeight: 350}}>
+        <SelectAvatars
+          avatar={avatar}
+          setSelectedAvatar={setAvatar}
+          setPhoto={() => {}}
+        />
+      </View>
       <CustomButton
         title="Change"
         parentStyle={{marginBottom: 240}}
