@@ -13,6 +13,7 @@ import {
 
 // 3rd party
 import auth from '@react-native-firebase/auth';
+import {debounce} from 'lodash';
 
 // custom
 import {styles} from './styles';
@@ -155,7 +156,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       dispatch(updateSettingPushNotification(val));
     }
   };
-  const onShare = async () => {
+  const onShare = debounce(async () => {
     try {
       const result = await Share.share({
         message:
@@ -174,7 +175,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
     } catch (error: any) {
       Alert.alert(error.message);
     }
-  };
+  }, 500);
 
   useEffect(() => {
     if (Platform.OS === 'android') {

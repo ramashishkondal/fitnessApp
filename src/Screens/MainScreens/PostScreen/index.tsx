@@ -58,6 +58,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   // functions
   const postComment = async () => {
     setIsLoading(true);
+    setComment('');
     try {
       if (id !== null && comment.trim() !== '' && postData?.postId) {
         if (postData.userId === id) {
@@ -69,8 +70,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
           setIsLoading(false);
           return;
         }
-
-        setComment('');
         await storePostComment(
           route.params.postId,
           {

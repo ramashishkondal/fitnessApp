@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 // custom
 import {styles} from './styles';
 import {UserPostProps} from './types';
-import {COLORS, ICONS, SIZES} from '../../../Constants';
+import {COLORS, ICONS, IMAGES, SIZES} from '../../../Constants';
 import {CustomImage, DescriptionText} from '../../Atoms';
 import {getTimePassed} from '../../../Utils/commonUtils';
 import {appStackParamList, User} from '../../../Defs';
@@ -99,7 +99,9 @@ const UserPost: React.FC<UserPostProps> = ({
           }}>
           {userData ? (
             <CustomImage
-              source={{uri: userData?.photo}}
+              source={
+                userData.photo ? {uri: userData?.photo} : IMAGES.DEFAULT_USER
+              }
               imageStyle={styles.userPhoto}
             />
           ) : null}
