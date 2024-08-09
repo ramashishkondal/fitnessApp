@@ -11,7 +11,7 @@ import {StoryProps} from './types';
 import {AppNavigationProps} from '../../../Defs/navigators';
 import {useAppSelector} from '../../../Redux/Store';
 import {CustomImage} from '../../Atoms';
-import {COLORS} from '../../../Constants';
+import {COLORS, IMAGES} from '../../../Constants';
 import {Timestamp} from '@react-native-firebase/firestore';
 
 const Story: React.FC<StoryProps> = ({allStoryData, index}) => {
@@ -41,7 +41,11 @@ const Story: React.FC<StoryProps> = ({allStoryData, index}) => {
       ]}
       onPress={goToStoriesScreen}>
       <CustomImage
-        source={{uri: allStoryData[index].userPhoto}}
+        source={
+          allStoryData[index].userPhoto
+            ? {uri: allStoryData[index].userPhoto}
+            : IMAGES.DEFAULT_USER
+        }
         imageStyle={styles.photo}
       />
     </TouchableOpacity>

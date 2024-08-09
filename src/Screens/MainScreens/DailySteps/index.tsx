@@ -17,7 +17,7 @@ import {
 } from '../../../Components';
 import {COLORS, ICONS, SIZES, SPACING, STRING} from '../../../Constants';
 import InsidePieChart from '../../../Components/Molecules/InsidePieChart';
-import {date, getPercentage, weekday} from '../../../Utils/commonUtils';
+import {getPercentage, weekday} from '../../../Utils/commonUtils';
 import {styles} from './styles';
 import LineGraphLabel from '../../../Components/Molecules/LineGraphLabel';
 
@@ -37,9 +37,12 @@ const DailySteps: React.FC = () => {
   const {
     todaysSteps,
     nutrition,
-    hasPermission,
     goal: {totalSteps},
   } = useAppSelector(state => state.health.value);
+  const {healthConnectPermissions} = useAppSelector(
+    state => state.settings.data,
+  );
+  const {createdOn} = useAppSelector(state => state.User.data);
   const dispatch = useAppDispatch();
 
   // state dependent constants
@@ -54,18 +57,30 @@ const DailySteps: React.FC = () => {
   // effect use
   useEffect(() => {
     if (Platform.OS === 'ios') {
+      const dateAfter = () => {
+        // Parse the createdOn date
+        const accountCreationDate = new Date(createdOn);
+
+        // Get today's date
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        // Calculate the date for exactly 7 days ago
+        const pastWeek = new Date(today);
+        pastWeek.setDate(today.getDate() - 7);
+
+        // Compare the dates
+        if (accountCreationDate >= pastWeek) {
+          return accountCreationDate;
+        }
+
+        // Return the pastWeek date if createdOn is older than 7 days ago
+        return pastWeek;
+      };
+      const startDate = dateAfter().toISOString();
       AppleHealthKit.getDailyStepCountSamples(
         {
-          startDate: new Date(
-            date.today().getFullYear(),
-            date.today().getMonth(),
-            date.today().getDate() - 6,
-          ).toISOString(),
-          endDate: new Date(
-            date.today().getFullYear(),
-            date.today().getMonth(),
-            date.today().getDate(),
-          ).toISOString(),
+          startDate: startDate,
+          endDate: new Date().toISOString(),
         },
         (error, result) => {
           if (!error) {
@@ -125,19 +140,35 @@ const DailySteps: React.FC = () => {
           if (authority === 'denied') {
             await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
           }
+          const dateAfter = () => {
+            // Parse the createdOn date
+            const accountCreationDate = new Date(createdOn);
+
+            // Get today's date
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            // Calculate the date for exactly 7 days ago
+            const pastWeek = new Date(today);
+            pastWeek.setDate(today.getDate() - 7);
+
+            // Compare the dates
+            if (accountCreationDate >= pastWeek) {
+              return accountCreationDate;
+            }
+
+            // Return the pastWeek date if createdOn is older than 7 days ago
+            return pastWeek;
+          };
+
+          const startTimeForsteps = dateAfter();
+          console.log('====================================');
+          console.log('sadwdawdawd', startTimeForsteps);
+          console.log('====================================');
           const stepsResRaw = await readRecords('Steps', {
             timeRangeFilter: {
               operator: 'between',
-              startTime: new Date(
-                date.today().getFullYear(),
-                date.today().getMonth(),
-                date.today().getDate() - 7,
-              ).toISOString(),
-              endTime: new Date(
-                date.today().getFullYear(),
-                date.today().getMonth(),
-                date.today().getDate(),
-              ).toISOString(),
+              startTime: startTimeForsteps.toISOString(),
+              endTime: new Date().toISOString(),
             },
           });
 
@@ -237,11 +268,17 @@ const DailySteps: React.FC = () => {
           console.log('Error encountered - ', e);
         }
       };
-      if (hasPermission) {
+      if (healthConnectPermissions.steps) {
         androidHealthSetup();
       }
     }
-  }, [dispatch, totalSteps, hasPermission, todaysSteps]);
+  }, [
+    dispatch,
+    totalSteps,
+    healthConnectPermissions.steps,
+    todaysSteps,
+    createdOn,
+  ]);
 
   // callback use
   const centerLabelComponent = useCallback(() => {
@@ -278,12 +315,15 @@ const DailySteps: React.FC = () => {
         totalInfoName="Daily Goal"
         parentStyle={SPACING.mtMedium}
       />
-      {hasPermission && lineData?.some(val => val) && lineData.length > 1 ? (
+      {healthConnectPermissions.steps &&
+      lineData?.some(val => val) &&
+      lineData.length > 1 ? (
         <View style={styles.lineChartCtr}>
           <Text style={styles.lineChartHeadingText}>Statistics</Text>
           {lineData ? (
             <LineChart
               isAnimated
+              curveType={1}
               adjustToWidth
               yAxisExtraHeight={10}
               curved

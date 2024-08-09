@@ -42,6 +42,7 @@ import EyeClose from '../Assets/Svgs/eyeClose.svg';
 import Search from '../Assets/Svgs/search.svg';
 import GarbageCan from '../Assets/Svgs/garbageCan.svg';
 import Avatar from '../Assets/Svgs/avatar.svg';
+import defaultAvatar from '../Assets/Svgs/defaultAvatar.svg';
 
 import {
   Fashion,
@@ -99,6 +100,8 @@ export const ICONS = {
   ...HOME_SCREEN,
   ...NUTRITION,
   Avatar: (params: iconProps) => Avatar({...iconStyle({...params})}),
+  defaultAvatar: (params: iconProps) =>
+    defaultAvatar({...iconStyle({...params})}),
   GarbageCan: (params: iconProps) => GarbageCan({...iconStyle({...params})}),
   Pencil: (params: iconProps) => Pencil({...iconStyle({...params})}),
   EyeOpen: (params: iconProps) => EyeOpen({...iconStyle({...params})}),

@@ -21,7 +21,7 @@ import {
 import {useAppSelector} from '../../../Redux/Store';
 import {Timestamp} from '@react-native-firebase/firestore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {COLORS, SIZES} from '../../../Constants';
+import {COLORS, IMAGES, SIZES} from '../../../Constants';
 import {useFocusEffect} from '@react-navigation/native';
 
 const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
@@ -235,7 +235,11 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
         <View style={styles.userInfoCtr}>
           <View style={styles.customImageCtr}>
             <CustomImage
-              source={{uri: allStoryData[userIndex].userPhoto}}
+              source={
+                allStoryData[userIndex].userPhoto
+                  ? {uri: allStoryData[userIndex].userPhoto}
+                  : IMAGES.DEFAULT_USER
+              }
               imageStyle={styles.userImage}
               parentStyle={styles.customImageParent}
             />
@@ -250,6 +254,8 @@ const StoriesScreen: React.FC<StoriesScreenProps> = ({navigation, route}) => {
               onPress={() => {
                 setShowMenu(true);
                 setStoryPause(true);
+                videoRef.current?.seek(20000);
+                videoRef.current?.pause();
               }}
               hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
               <View style={styles.dots} />

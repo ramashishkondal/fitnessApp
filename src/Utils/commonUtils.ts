@@ -1,4 +1,4 @@
-import notifee from '@notifee/react-native';
+import notifee, {AndroidStyle} from '@notifee/react-native';
 
 export const onDisplayNotification = async (message: string) => {
   // Request permissions (required for iOS)
@@ -15,12 +15,19 @@ export const onDisplayNotification = async (message: string) => {
   await notifee.displayNotification({
     title: 'Notification',
     body: message,
+    // style: {
+    // },
+
     android: {
       channelId,
       smallIcon: 'logo',
       largeIcon: 'logo',
       pressAction: {
         id: 'default',
+      },
+      style: {
+        type: AndroidStyle.BIGTEXT,
+        text: message,
       },
     },
   });

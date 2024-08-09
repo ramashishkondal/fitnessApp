@@ -207,7 +207,8 @@ const SignIn = ({navigation}: SignInProps) => {
           email,
           password,
           isSocial: false,
-          isBiometricEnabled: false,
+          isBiometricEnabled:
+            cachedData.email === email && cachedData.isBiometricEnabled,
         }),
       );
     } catch (e) {

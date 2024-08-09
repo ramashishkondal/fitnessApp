@@ -5,6 +5,7 @@ import currentlyOnScreenReducer from './currentlyOnScreen';
 import healthReducer from './health';
 import dailyMealsReducer from './dailyMeal';
 import settingsReducer from './userSettings';
+import communityReducer from './community';
 
 const rootReducer = combineReducers({
   User: userReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   health: healthReducer,
   dailyMeals: dailyMealsReducer,
   settings: settingsReducer,
+  community: communityReducer,
 });
 
 export type RootReducer = typeof rootReducer;

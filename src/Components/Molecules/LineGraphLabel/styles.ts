@@ -10,9 +10,10 @@ export const styles = StyleSheet.create({
     // paddingHorizontal: 24,
     marginHorizontal: 16,
     borderRadius: SIZES.rounding0,
+    marginBottom: 30,
   },
   parent1: {
-    left: '110%',
+    // left: '50%',
   },
   text: {
     color: 'white',

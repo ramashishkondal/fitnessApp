@@ -329,7 +329,12 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation, route}) => {
         <WithModal
           modalVisible={activeModal !== null}
           setModalFalse={handleWithModalFalse}
-          parentStyle={styles.withModalParent}>
+          parentStyle={[
+            styles.withModalParent,
+            activeModal === 'avatar'
+              ? {marginTop: 150, marginBottom: 158}
+              : null,
+          ]}>
           {ActiveModalComponent}
         </WithModal>
       </ScrollView>

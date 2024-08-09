@@ -72,6 +72,17 @@ export const INTERESETS = [
   {title: 'Vegan', icon: INTERESTS.Vegan(iconSizeInterests), selected: false},
 ];
 
+export const cleanText = (inputText: string) => {
+  return inputText
+    .trim() // Remove leading and trailing whitespace from the entire string
+    .split('\n') // Split the text into lines
+    .map(line => line.trim()) // Trim each line
+    .filter(line => line !== '') // Remove empty lines
+    .map(line => line.replace(/\s+/g, ' ')) // Replace multiple spaces with a single space in each line
+    .join('\n') // Join the lines back together with a single newline
+    .replace(/''/g, '||'); // Replace '' with ||
+};
+
 export const foodData: Array<Omit<Meal, 'id'>> = [
   {
     name: 'Apple',

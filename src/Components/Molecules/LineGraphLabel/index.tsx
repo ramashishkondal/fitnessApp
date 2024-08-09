@@ -16,7 +16,7 @@ const LineGraphLabel: React.FC<LineGraphLabelProps> = ({
   //   return 1;
   // })();
   return (
-    <View style={[styles.parent, index === -1 ? styles.parent1 : null]}>
+    <View style={[styles.parent, index > 1 ? styles.parent1 : null]}>
       <Text style={styles.text}>{steps}</Text>
       <Text style={styles.text}>{day}</Text>
     </View>

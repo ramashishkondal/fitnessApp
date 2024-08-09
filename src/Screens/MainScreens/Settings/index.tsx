@@ -1,4 +1,3 @@
-// libs
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
@@ -6,16 +5,14 @@ import {
   NativeEventEmitter,
   NativeModules,
   Platform,
+  ScrollView,
   Share,
   Text,
   View,
+  AppState,
 } from 'react-native';
-
-// 3rd party
 import auth from '@react-native-firebase/auth';
 import {debounce} from 'lodash';
-
-// custom
 import {styles} from './styles';
 import {STRING} from '../../../Constants';
 import SettingsCard from '../../../Components/Molecules/SettingsCard';
@@ -24,7 +21,6 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/Store';
 import {
   updateSettingPushNotification,
   updateSettingsCachedData,
-  // updateSettingsCachedData,
 } from '../../../Redux/Reducers/userSettings';
 import {
   getSdkStatus,
@@ -33,28 +29,24 @@ import {
 } from 'react-native-health-connect';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
 import RNRestart from 'react-native-restart';
-// import {storeBiometricData} from '../../../Utils/userUtils';
 import ToastError from '../../../Components/Atoms/ToastError';
 import {resetUserData} from '../../../Redux/Reducers/currentUser';
 
 const Settings: React.FC<SettingsProps> = ({navigation}) => {
-  // redux use
   const dispatch = useAppDispatch();
   const {isBiometricEnabled} = useAppSelector(
     state => state.settings.data.cachedData,
   );
-
   const {
     cachedData: {isSocial},
     allowPushNotifications,
   } = useAppSelector(state => state.settings.data);
 
-  // state use
   const [switchActiveNotifications, setSwitchActiveNotifications] = useState(
     allowPushNotifications,
   );
+  const [appState, setAppState] = useState(AppState.currentState);
 
-  // functions
   const logOut = () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
       {
@@ -69,6 +61,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       },
     ]);
   };
+
   const goToHealthSettings = () => {
     const checkAvailabilityAndroid = async () => {
       const status = await getSdkStatus();
@@ -87,6 +80,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         ToastError('Error', 'Health Connect update required');
       }
     };
+
     Platform.OS === 'android'
       ? checkAvailabilityAndroid()
       : Alert.alert(
@@ -105,6 +99,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           ],
         );
   };
+
   const handlePushNotificationValueChange = async (val: boolean) => {
     if (Platform.OS === 'android' && Platform.Version >= 33) {
       setSwitchActiveNotifications(val);
@@ -116,8 +111,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
         if (notificationAuth === 'granted') {
           setSwitchActiveNotifications(val);
           dispatch(updateSettingPushNotification(val));
-        }
-        if (notificationAuth === 'blocked') {
+        } else if (notificationAuth === 'blocked') {
           Alert.alert(
             'Notifications permissions denied',
             'You have to allow Notification permissions from the App settings to use notification feature of the app',
@@ -156,6 +150,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       dispatch(updateSettingPushNotification(val));
     }
   };
+
   const onShare = debounce(async () => {
     try {
       const result = await Share.share({
@@ -184,42 +179,76 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       const onAuthSuccess = () => {
         console.log('Authentication Succeeded:');
         dispatch(updateSettingsCachedData({isBiometricEnabled: true}));
-        // Handle successful authentication
       };
 
       const onAuthError = () => {
         console.log('Authentication Error:');
         dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
-        // Handle authentication error
       };
 
       const onAuthFailed = () => {
         console.log('Authentication Failed:');
         dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
-        // Handle authentication failure
       };
 
       const authSuccessListener = fingerPrintEventEmitter.addListener(
         'auth_success_AddFingerPrint',
         onAuthSuccess,
       );
-
       const authErrorListener = fingerPrintEventEmitter.addListener(
         'auth_error',
         onAuthError,
       );
-
       const authFailedListener = fingerPrintEventEmitter.addListener(
         'auth_failed',
         onAuthFailed,
       );
+      const authNoFingerPrintAndPIN = fingerPrintEventEmitter.addListener(
+        'error_no_finger_enrolled',
+        onAuthFailed,
+      );
+
       return () => {
         authSuccessListener.remove();
         authErrorListener.remove();
         authFailedListener.remove();
+        authNoFingerPrintAndPIN.remove();
       };
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
+      dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: string) => {
+      if (nextAppState === 'active' && appState !== 'active') {
+        NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
+          dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+        });
+      }
+      setAppState(
+        nextAppState as
+          | 'active'
+          | 'background'
+          | 'inactive'
+          | 'unknown'
+          | 'extension',
+      );
+    };
+
+    const appStateListener = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+    return () => {
+      appStateListener.remove();
+    };
+  }, [appState, dispatch]);
+
   const handleBiometric = async (val: boolean) => {
     if (Platform.OS === 'android') {
       const handleErrorBiometric = (error: string) => {
@@ -259,7 +288,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>{STRING.SETTINGS.TITLE}</Text>
       <View style={styles.editProfileCtr}>
         <SettingsCard
@@ -299,14 +328,13 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           title="Give Feedback"
           onPress={() => navigation.push('GiveFeedback')}
         />
-
         <SettingsCard
           title="About Us"
           onPress={() => navigation.navigate('AboutUs')}
         />
         <SettingsCard title="Log Out" onPress={logOut} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

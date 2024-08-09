@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../../Constants';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 export const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
@@ -12,11 +13,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRightWidth: 1,
     borderColor: COLORS.SECONDARY.GREY,
-    alignItems: 'flex-start',
+    alignItems: DeviceInfo.isTablet() ? 'center' : 'flex-start',
   },
   rightCtr: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: DeviceInfo.isTablet() ? 'center' : 'flex-start',
   },
   textCtrLeft: {
     marginLeft: 32,

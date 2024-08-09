@@ -31,6 +31,9 @@ import {Timestamp} from '@react-native-firebase/firestore';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {useRealm} from '@realm/react';
 import {PostDb} from '../../../DbModels/post';
+import {cleanText} from '../../../Constants/commonConstants';
+import Toast from 'react-native-toast-message';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   // constants
@@ -81,9 +84,24 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
   };
 
   const storeDataInRealmDb = (postPhoto: string, postCaption: string) => {
+    Toast.show({
+      type: 'info',
+      text1: 'Syncing status pending',
+      text2: "Your post is saved and will be shared once you're back online.",
+      position: 'bottom',
+      text1Style: {
+        fontFamily: FONT_FAMILY.REGULAR,
+        fontSize: SIZES.font13,
+      },
+      text2Style: {
+        fontFamily: FONT_FAMILY.REGULAR,
+        fontSize: SIZES.font10,
+      },
+      swipeable: true,
+    });
     realm.write(() => {
       realm.create(PostDb, {
-        caption: postCaption.replace(/\s+/g, ' '),
+        caption: cleanText(postCaption),
         photo: postPhoto,
       });
     });
@@ -100,7 +118,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           setIsLoading(true);
 
           await storePost({
-            caption: caption.replace(/\s+/g, ' '),
+            caption: cleanText(caption),
             userId,
             createdOn: Timestamp.fromDate(new Date()),
             photo,
@@ -114,7 +132,7 @@ const AddPost: React.FC<AddPostProps> = ({setModalFalse}) => {
           });
         }
       } else {
-        storeDataInRealmDb(photo, caption.replace(/\s+/g, ' '));
+        storeDataInRealmDb(photo, cleanText(caption));
         setModalFalse();
       }
     } catch (e) {

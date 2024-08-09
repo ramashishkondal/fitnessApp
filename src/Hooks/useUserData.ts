@@ -20,6 +20,9 @@ import {
 } from '../Utils/userUtils';
 import {useAppSelector, useAppDispatch} from '../Redux/Store';
 import {useNetInfo} from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
+import {SIZES} from '../Constants';
+import {FONT_FAMILY} from '../Constants/commonStyles';
 
 export const useUserData = () => {
   // netInfo use
@@ -220,19 +223,97 @@ export const useUserData = () => {
     let unsubscribe: (() => void) | undefined;
     if (netInfo.isConnected) {
       const handleUserData = async () => {
-        if (offlineUserData.length) {
-          await handleOfflineUser();
+        try {
+          if (offlineUserData.length) {
+            Toast.show({
+              type: 'info',
+              text1: 'Syncing data',
+              text2: 'Syncing offline user data.',
+              position: 'bottom',
+              text1Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font13,
+              },
+              text2Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font10,
+              },
+              swipeable: true,
+            });
+            await handleOfflineUser();
+          }
+          if (offlineMealData.length) {
+            Toast.show({
+              type: 'info',
+              text1: 'Syncing data',
+              text2: 'Syncing offline user data.',
+              position: 'bottom',
+              text1Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font13,
+              },
+              text2Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font10,
+              },
+              swipeable: true,
+            });
+            await handleOfflineMealData();
+          }
+          if (offlinePostData.length) {
+            Toast.show({
+              type: 'info',
+              text1: 'Syncing data',
+              text2: 'Syncing offline user data.',
+              position: 'bottom',
+              text1Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font13,
+              },
+              text2Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font10,
+              },
+              swipeable: true,
+            });
+            await handleOfflinePost();
+          }
+          if (offlineStoryData.length) {
+            Toast.show({
+              type: 'info',
+              text1: 'Syncing data',
+              text2: 'Syncing offline user data.',
+              position: 'bottom',
+              text1Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font13,
+              },
+              text2Style: {
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: SIZES.font10,
+              },
+              swipeable: true,
+            });
+            await handleOfflineStory();
+          }
+          unsubscribe = await handleGetUserData();
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Syncing data failed',
+            text2: 'Syncing offline user data failed.',
+            position: 'bottom',
+            text1Style: {
+              fontFamily: FONT_FAMILY.REGULAR,
+              fontSize: SIZES.font13,
+            },
+            text2Style: {
+              fontFamily: FONT_FAMILY.REGULAR,
+              fontSize: SIZES.font10,
+            },
+            swipeable: true,
+          });
         }
-        if (offlineMealData.length) {
-          await handleOfflineMealData();
-        }
-        if (offlinePostData.length) {
-          await handleOfflinePost();
-        }
-        if (offlineStoryData.length) {
-          await handleOfflineStory();
-        }
-        unsubscribe = await handleGetUserData();
       };
       handleUserData();
     }

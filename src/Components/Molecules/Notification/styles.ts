@@ -2,6 +2,7 @@ import {StyleSheet, Platform} from 'react-native';
 import {COLORS} from '../../../Constants';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FONT_FAMILY, SIZES} from '../../../Constants/commonStyles';
+import DeviceInfo from 'react-native-device-info';
 
 export const styles = StyleSheet.create({
   parent: {
@@ -19,8 +20,8 @@ export const styles = StyleSheet.create({
   },
   customImageParentStyle: {
     flex: 1,
-    maxHeight: 55,
-    minWidth: 55,
+    maxHeight: DeviceInfo.isTablet() ? 70 : 55,
+    maxWidth: DeviceInfo.isTablet() ? 70 : 55,
     padding: 5,
     borderRadius: 200,
   },

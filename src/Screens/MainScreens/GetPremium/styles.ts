@@ -15,13 +15,6 @@ export const styles = StyleSheet.create({
   activeCarouselCtr: {
     position: 'absolute',
     width: 100,
-    top:
-      Platform.OS === 'ios'
-        ? SIZES.height / 4.25
-        : DeviceInfo.isTablet()
-        ? SIZES.height / 3.25
-        : SIZES.height / 4.75,
-    left: SIZES.width / 2 - 50,
   },
   childCtr: {
     flex: 3,

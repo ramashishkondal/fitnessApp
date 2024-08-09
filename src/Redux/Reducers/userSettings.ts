@@ -10,6 +10,10 @@ export type UserSettings = {
     isSocial: boolean;
     shouldSignIn: boolean;
   };
+  healthConnectPermissions: {
+    steps: boolean;
+    calories: boolean;
+  };
 };
 
 const initialState: {data: UserSettings} = {
@@ -22,6 +26,10 @@ const initialState: {data: UserSettings} = {
       shouldAskBiometics: true,
       isSocial: false,
       shouldSignIn: false,
+    },
+    healthConnectPermissions: {
+      steps: false,
+      calories: false,
     },
   },
 };
@@ -42,12 +50,24 @@ export const settingsSlice = createSlice({
     ) {
       state.data.cachedData = {...state.data.cachedData, ...action.payload};
     },
+    updateSettingsHealthConnectPermissions(
+      state,
+      action: PayloadAction<Partial<UserSettings['healthConnectPermissions']>>,
+    ) {
+      state.data.healthConnectPermissions = {
+        ...state.data.healthConnectPermissions,
+        ...action.payload,
+      };
+    },
   },
 });
 
 const {actions, reducer} = settingsSlice;
 
-export const {updateSettingPushNotification, updateSettingsCachedData} =
-  actions;
+export const {
+  updateSettingPushNotification,
+  updateSettingsCachedData,
+  updateSettingsHealthConnectPermissions,
+} = actions;
 
 export default reducer;

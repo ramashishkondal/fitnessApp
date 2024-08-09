@@ -51,10 +51,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     todaysSteps,
     waterIntake,
     nutrition,
-    hasPermission,
     goal: {noOfGlasses, totalSteps, totalCalorie},
   } = useAppSelector(state => state.health.value);
   const {firstName, id} = useAppSelector(state => state.User.data);
+  const {healthConnectPermissions} = useAppSelector(
+    state => state.settings.data,
+  );
+
+  console.log(
+    healthConnectPermissions.calories,
+    healthConnectPermissions.steps,
+  );
 
   // getting health data
   useHealth();
@@ -241,7 +248,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         />
       </View>
       <View style={styles.spacer} />
-      {!hasPermission ? (
+      {!(
+        healthConnectPermissions.calories && healthConnectPermissions.steps
+      ) ? (
         <WarningLabel
           text={`${
             Platform.OS === 'android'

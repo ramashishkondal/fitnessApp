@@ -12,6 +12,7 @@ import {CustomImage, DescriptionText} from '../../Atoms';
 import {getTimePassed} from '../../../Utils/commonUtils';
 import {firebaseDB} from '../../../Utils/userUtils';
 import {User} from '../../../Defs';
+import {IMAGES} from '../../../Constants';
 
 const Comment: React.FC<CommentProps> = ({
   comment: {userId, commentCreatedOnInMillis, comment},
@@ -40,7 +41,9 @@ const Comment: React.FC<CommentProps> = ({
         <View style={styles.customImageCtr}>
           {userData ? (
             <CustomImage
-              source={{uri: userData.photo}}
+              source={
+                userData.photo ? {uri: userData.photo} : IMAGES.DEFAULT_USER
+              }
               imageStyle={styles.userPhoto}
             />
           ) : null}

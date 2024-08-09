@@ -17,7 +17,7 @@ import {
   Story,
   WithModal,
 } from '../../../Components';
-import {ICONS, STRING} from '../../../Constants';
+import {ICONS, SIZES, STRING} from '../../../Constants';
 import {CommunityProps} from '../../../Defs/navigators';
 import {StoryData, firebaseDB, storeStory} from '../../../Utils/userUtils';
 import {styles} from './styles';
@@ -26,6 +26,8 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import {useObject, useRealm} from '@realm/react';
 import {StoryDb} from '../../../DbModels/story';
 import {UpdateMode} from 'realm';
+import Toast from 'react-native-toast-message';
+import {FONT_FAMILY} from '../../../Constants/commonStyles';
 
 const postSignSize = {
   width: 20,
@@ -140,8 +142,39 @@ const Community: React.FC<CommunityProps> = ({navigation}) => {
   const storeStoryDataInRealmDb = (storyType: string, storyUrl: string) => {
     if (storyDataFromOffline?.stories.some(val => val.storyUrl === storyUrl)) {
       console.log('already exists in db');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Your story is already added.',
+        position: 'bottom',
+        text1Style: {
+          fontFamily: FONT_FAMILY.REGULAR,
+          fontSize: SIZES.font13,
+        },
+        text2Style: {
+          fontFamily: FONT_FAMILY.REGULAR,
+          fontSize: SIZES.font10,
+        },
+        swipeable: true,
+      });
       return;
     }
+    Toast.show({
+      type: 'info',
+      text1: 'Syncing status pending',
+      text2:
+        "Your story is saved and will be uploaded once you're back online.",
+      position: 'bottom',
+      text1Style: {
+        fontFamily: FONT_FAMILY.REGULAR,
+        fontSize: SIZES.font13,
+      },
+      text2Style: {
+        fontFamily: FONT_FAMILY.REGULAR,
+        fontSize: SIZES.font10,
+      },
+      swipeable: true,
+    });
     console.log('adding this ', storyType, storyUrl);
     realm.write(() => {
       if (storyDataFromOffline) {

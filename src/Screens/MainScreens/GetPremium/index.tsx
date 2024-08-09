@@ -1,6 +1,13 @@
 // libs
 import React, {useState} from 'react';
-import {Alert, Image, Platform, Text, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  Platform,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 // custom
 import {styles} from './styles';
@@ -19,6 +26,7 @@ const GetPremium = () => {
     'monthly' | 'yearly' | null
   >('monthly');
 
+  const {width} = useWindowDimensions();
   // state dependent constants
   const carouselItems = [
     {
@@ -50,7 +58,7 @@ const GetPremium = () => {
           Platform.OS === 'ios'
             ? SIZES.height / 3.7
             : DeviceInfo.isTablet()
-            ? SIZES.height / 2.8
+            ? width / 1.715
             : SIZES.height / 3.8
         }
         data={carouselItems}
@@ -59,13 +67,25 @@ const GetPremium = () => {
           <View key={index} style={styles.imageCtr}>
             <Image
               source={item.image}
-              style={{width: SIZES.width}}
+              style={{width: width}}
               resizeMode="contain"
             />
           </View>
         )}
       />
-      <View style={styles.activeCarouselCtr}>
+      <View
+        style={[
+          styles.activeCarouselCtr,
+          {
+            top:
+              Platform.OS === 'ios'
+                ? SIZES.height / 4.25
+                : DeviceInfo.isTablet()
+                ? width / 2
+                : SIZES.height / 4.75,
+            left: width / 2 - 50,
+          },
+        ]}>
         <ActiveCarousel
           activeIndex={activeCarousel}
           length={carouselItems.length}
