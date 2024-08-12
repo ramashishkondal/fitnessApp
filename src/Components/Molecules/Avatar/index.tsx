@@ -20,6 +20,7 @@ const Avatar: React.FC<AvatarProps> = ({
   selectedItem,
   setSelectedItem,
   setPhoto,
+  avatarParentStyle,
 }) => {
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -35,7 +36,7 @@ const Avatar: React.FC<AvatarProps> = ({
     console.log('photo item is ', item);
   };
   return (
-    <Animated.View style={[styles.parent, animatedStyle]}>
+    <Animated.View style={[styles.parent, avatarParentStyle, animatedStyle]}>
       <Pressable
         style={[
           styles.avatarCtr,

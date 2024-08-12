@@ -125,7 +125,7 @@ const Nutrition: React.FC<NutritionProps> = ({navigation}) => {
     <ScrollView style={styles.parent}>
       <Text style={styles.titleText}>
         {STRING.NUTRITION.TITLE[1]}{' '}
-        <Text style={styles.calorieText}>{caloriesBurned}</Text>{' '}
+        <Text style={styles.calorieText}>{Math.round(caloriesBurned)}</Text>{' '}
         {STRING.NUTRITION.TITLE[2]}
       </Text>
       <View style={styles.childCtr}>

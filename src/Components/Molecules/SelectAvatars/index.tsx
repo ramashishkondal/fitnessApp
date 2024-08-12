@@ -19,6 +19,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
   avatar,
   setPhoto,
   setSelectedAvatar,
+  avatarParentStyle,
 }) => {
   const renderItem: ListRenderItem<AvatarData> = ({item}) => (
     <Avatar
@@ -26,6 +27,7 @@ const SelectAvatars: React.FC<SelectAvatarsProps> = ({
       selectedItem={avatar}
       setSelectedItem={setSelectedAvatar}
       setPhoto={setPhoto}
+      avatarParentStyle={avatarParentStyle}
     />
   );
   return (

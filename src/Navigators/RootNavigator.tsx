@@ -1,6 +1,6 @@
 // libs
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 
 // 3rd party
 import {
@@ -63,13 +63,17 @@ const RootNavigator = () => {
       ref={navigationRef}
       onReady={() => {
         BootSplash.hide({fade: true});
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-        FingerPrintModule.setCurrentRoute(routeNameRef.current); // Set the initial route
+        if (Platform.OS === 'android') {
+          routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+          FingerPrintModule.setCurrentRoute(routeNameRef.current); // Set the initial route
+        }
       }}
       onStateChange={() => {
-        const currentRouteName = navigationRef.current.getCurrentRoute().name;
-        routeNameRef.current = currentRouteName;
-        FingerPrintModule.setCurrentRoute(currentRouteName); // Update route on state change
+        if (Platform.OS === 'android') {
+          const currentRouteName = navigationRef.current.getCurrentRoute().name;
+          routeNameRef.current = currentRouteName;
+          FingerPrintModule.setCurrentRoute(currentRouteName); // Update route on state change
+        }
       }}>
       {user ? (
         <GoalModal>

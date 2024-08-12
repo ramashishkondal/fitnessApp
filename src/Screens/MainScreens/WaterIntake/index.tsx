@@ -149,6 +149,7 @@ const WaterIntake: React.FC = () => {
 
     setPreviousWaterIntake(waterIntake);
   }, [waterIntake, id, noOfGlasses, notificationSent, previousWaterIntake]);
+
   // functions
   const handleGlassDrank = (i: number) => {
     updateWaterIntake(id!, i + 1, {totalCalorie, totalSteps, noOfGlasses});

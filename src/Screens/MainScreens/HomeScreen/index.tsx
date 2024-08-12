@@ -31,7 +31,6 @@ import {
 } from '../../../Redux/Reducers/dailyMeal';
 import {firebaseDB} from '../../../Utils/userUtils';
 import firestore from '@react-native-firebase/firestore';
-import {useHealth} from '../../../Hooks/useHealth';
 import {updateHealthData} from '../../../Redux/Reducers/health';
 import {
   openHealthConnectSettings,
@@ -39,6 +38,7 @@ import {
   SdkAvailabilityStatus,
 } from 'react-native-health-connect';
 import ToastError from '../../../Components/Atoms/ToastError';
+import {useHealth} from '../../../Hooks/useHealth';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // redux use
@@ -46,6 +46,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   // const [isActivityPermissionsEnabled, setIsActivityPermissionsEnabled] =
   //   useState(true);
   const [greeting, setGreeting] = useState('');
+
+  // getting health data
+  useHealth();
 
   const {
     todaysSteps,
@@ -62,9 +65,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     healthConnectPermissions.calories,
     healthConnectPermissions.steps,
   );
-
-  // getting health data
-  useHealth();
 
   // Update greeting based on time
   const updateGreeting = () => {
@@ -218,7 +218,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           handleOnPress={goToNutrition}
           source={IMAGES.NUTRITION}
           status={STRING.HOME_SCREEN.detailsString(
-            nutrition,
+            Math.round(nutrition),
             totalCalorie,
             STRING.HOME_SCREEN.CALORIES,
           )}

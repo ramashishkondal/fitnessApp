@@ -1,17 +1,14 @@
 import {
   Alert,
-  Linking,
   Platform,
   NativeEventEmitter,
   NativeModules,
   AppState, // <- Import AppState
 } from 'react-native';
-import {check, PERMISSIONS, request} from 'react-native-permissions';
 import AppleHealthKit, {HealthValue} from 'react-native-health';
 import {AppleHealthPermissions} from '../Constants/commonConstants';
 import {updateHealthData} from '../Redux/Reducers/health';
 import {date} from '../Utils/commonUtils';
-import RNRestart from 'react-native-restart';
 import {useAppDispatch, useAppSelector} from '../Redux/Store';
 import {useCallback, useEffect, useState} from 'react'; // <- Import useState
 import {
@@ -37,53 +34,10 @@ export const useHealth = () => {
 
   // functions
   const androidHealthSetup = useCallback(async () => {
-    const checkPermissionsActivityRecognition = async () => {
-      const authority = await check(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
-      if (authority === 'denied' || authority === 'blocked') {
-        dispatch(updateHealthData({hasPermission: false}));
-        return false;
-      }
-      return true;
-    };
-
+    if (!createdOn) {
+      return;
+    }
     try {
-      const hasPermissionActivityRecognition =
-        await checkPermissionsActivityRecognition();
-      if (!hasPermissionActivityRecognition) {
-        const userAllowedActivityRecognition = await request(
-          PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION,
-        );
-        if (
-          userAllowedActivityRecognition === 'blocked' ||
-          userAllowedActivityRecognition === 'denied'
-        ) {
-          Alert.alert(
-            'Activity Recognition permissions denied',
-            'You have to allow Activity recognition from the App settings to use full features of the app',
-            [
-              {
-                text: 'Ok',
-                onPress: () => {
-                  Alert.alert(
-                    'Restart App',
-                    'The app needs to be restarted to apply any changes made to the permissions. Please click "OK" to restart now.',
-                    [
-                      {text: 'OK', onPress: RNRestart.restart},
-                      {text: 'Cancel'},
-                    ],
-                  );
-                  Linking.openSettings();
-                },
-              },
-              {
-                text: 'Cancel',
-              },
-            ],
-          );
-          return;
-        }
-      }
-
       const isInitializedHealthConnect = await initialize();
       if (isInitializedHealthConnect) {
         // get data from health connect
@@ -272,6 +226,9 @@ export const useHealth = () => {
   ]);
 
   const iosHealthSetup = useCallback(() => {
+    if (!createdOn) {
+      return;
+    }
     const endDate = date.today().toISOString();
     const dateAfter = () => {
       // Parse the createdOn date
@@ -404,7 +361,7 @@ export const useHealth = () => {
     return () => {
       subscription.remove();
     };
-  }, [appState, androidHealthSetup, iosHealthSetup]);
+  }, [androidHealthSetup, appState, iosHealthSetup]);
 
   // Initial Setup
   useEffect(() => {

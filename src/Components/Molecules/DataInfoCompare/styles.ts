@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   rightCtr: {
     flex: 1,
-    alignItems: DeviceInfo.isTablet() ? 'center' : 'flex-start',
+    alignItems: DeviceInfo.isTablet() ? 'center' : 'flex-end',
   },
   textCtrLeft: {
     marginLeft: 32,

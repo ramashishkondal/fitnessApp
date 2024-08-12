@@ -1,3 +1,4 @@
+import {ViewStyle} from 'react-native';
 import {AvatarData} from '../SelectAvatars/types';
 
 export type AvatarProps = {
@@ -5,4 +6,5 @@ export type AvatarProps = {
   selectedItem: string;
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
   setPhoto: React.Dispatch<React.SetStateAction<string>>;
+  avatarParentStyle?: ViewStyle;
 };

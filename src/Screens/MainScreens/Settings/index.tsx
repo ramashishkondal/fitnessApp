@@ -218,17 +218,21 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
-      dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
-    });
+    if (Platform.OS === 'android') {
+      NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
+        dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+      });
+    }
   }, [dispatch]);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState === 'active' && appState !== 'active') {
-        NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
-          dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
-        });
+        if (Platform.OS === 'android') {
+          NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
+            dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+          });
+        }
       }
       setAppState(
         nextAppState as

@@ -5,7 +5,6 @@ import {Text, View, ScrollView, Platform} from 'react-native';
 // 3rd party
 import {LineChart, PieChart} from 'react-native-gifted-charts';
 import AppleHealthKit from 'react-native-health';
-import {PERMISSIONS, check, request} from 'react-native-permissions';
 import {readRecords} from 'react-native-health-connect';
 
 // custom
@@ -85,35 +84,50 @@ const DailySteps: React.FC = () => {
         (error, result) => {
           if (!error) {
             console.log('res is', result);
+            const parsedRes = result.map(val => {
+              return {
+                value: Math.round(val.value),
+                week: weekday[new Date(val.startDate).getDay()],
+              };
+            });
 
-            setLineData(
-              result.map(val => {
-                console.log('val', val);
-                return {
-                  value: Math.round(val.value),
-                  week: weekday[new Date(val.startDate).getDay()],
-                };
-              }),
+            const parsedReducer = parsedRes.reduce(
+              (acc: {value: number; week: string}[], val) => {
+                const index = acc.findIndex(v => v.week === val.week);
+
+                if (index >= 0) {
+                  // Update the existing object
+                  acc[index].value += val.value;
+                } else {
+                  // Add the new object to the accumulator
+                  acc.push(val);
+                }
+
+                return acc;
+              },
+              [],
             );
-            const bestStepsDay = result.reduce(
+
+            setLineData(parsedReducer);
+            const bestStepsDay = parsedReducer.reduce(
               (acc, val) => {
                 if (val.value >= acc.value) {
                   return {
                     value: val.value,
-                    week: weekday[new Date(val.startDate).getDay()],
+                    week: val.week,
                   };
                 }
                 return acc;
               },
               {value: todaysSteps, week: 'Today'},
             );
-            const worstStepsDay = result.reduce(
+            const worstStepsDay = parsedReducer.reduce(
               (acc, val) => {
                 console.log('acc', acc, val);
                 if (val.value <= acc.value) {
                   return {
                     value: val.value,
-                    week: weekday[new Date(val.startDate).getDay()],
+                    week: val.week,
                   };
                 }
                 return acc;
@@ -132,13 +146,9 @@ const DailySteps: React.FC = () => {
       );
     } else {
       const androidHealthSetup = async () => {
-        console.log('android setup start');
         try {
-          const authority = await check(
-            PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION,
-          );
-          if (authority === 'denied') {
-            await request(PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION);
+          if (!healthConnectPermissions.steps) {
+            return;
           }
           const dateAfter = () => {
             // Parse the createdOn date
@@ -390,7 +400,7 @@ const DailySteps: React.FC = () => {
               color: COLORS.SECONDARY.ORANGE,
             })}
             onDay={rating.best.week}
-            value={rating.best.value}
+            value={Math.round(rating.best.value)}
             performanceText="Best Performance"
           />
         )}
@@ -400,7 +410,7 @@ const DailySteps: React.FC = () => {
           <PerformanceCard
             icon={ICONS.SmileyBad({width: 20, height: 20})}
             onDay={rating?.worst.week}
-            value={rating?.worst.value}
+            value={Math.round(rating?.worst.value)}
             performanceText="Worst Performance"
           />
         )}
