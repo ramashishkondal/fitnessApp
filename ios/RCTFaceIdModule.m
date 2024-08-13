@@ -46,4 +46,16 @@ RCT_EXPORT_METHOD(authenticateWithFaceID:(RCTPromiseResolveBlock)resolve rejecte
     }
 }
 
+RCT_EXPORT_METHOD(isBiometricAvailable:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    LAContext *context = [[LAContext alloc] init];
+    NSError *error = nil;
+    
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        resolve(@(YES));  // Biometric authentication is available
+    } else {
+        resolve(@(NO));   // Biometric authentication is not available
+    }
+}
+
 @end

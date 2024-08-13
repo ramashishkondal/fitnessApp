@@ -98,7 +98,7 @@ const GoalAchieved: React.FC<GoalAchievedProps> = ({setModalFalse}) => {
                 centerLabelComponent={centerLabelComponent}
               />
               <DataInfoCompare
-                doneItems={nutrition}
+                doneItems={Math.floor(nutrition)}
                 total={totalSteps}
                 doneItemsInfoName="Cal Burned"
                 totalInfoName="Daily Goal"

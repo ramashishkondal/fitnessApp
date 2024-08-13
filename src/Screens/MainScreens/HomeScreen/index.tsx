@@ -249,7 +249,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       </View>
       <View style={styles.spacer} />
       {!(
-        healthConnectPermissions.calories && healthConnectPermissions.steps
+        (healthConnectPermissions.calories && healthConnectPermissions.steps) ||
+        Platform.OS === 'ios'
       ) ? (
         <WarningLabel
           text={`${

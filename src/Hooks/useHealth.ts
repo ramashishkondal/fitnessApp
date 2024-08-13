@@ -268,10 +268,37 @@ export const useHealth = () => {
         );
         return;
       }
-      const handleHealthKitStepsData = (error: string, result: HealthValue) => {
+
+      // AppleHealthKit.getAuthStatus(AppleHealthPermissions, (error, res) => {
+      //   const perms = res.permissions.read.every(val => {
+      //     if (val === 2) {
+      //       return true;
+      //     }
+      //     return false;
+      //   });
+      //   if (!perms) {
+      //     dispatch(
+      //       updateSettingsHealthConnectPermissions({
+      //         steps: false,
+      //         calories: false,
+      //       }),
+      //     );
+      //   }
+      //   console.log('res is', res);
+      //   console.log('err is', error);
+      // });
+
+      const handleHealthKitStepsData = (
+        error: string,
+        result: HealthValue[],
+      ) => {
         if (!error) {
           console.log('steps changed', result);
-          dispatch(updateHealthData({todaysSteps: result.value}));
+          dispatch(
+            updateHealthData({
+              todaysSteps: result.reduce((acc, val) => acc + val.value, 0),
+            }),
+          );
           dispatch(
             updateSettingsHealthConnectPermissions({
               steps: true,
@@ -283,8 +310,8 @@ export const useHealth = () => {
       };
 
       healthKitEventEmitter.addListener('healthKit:StepCount:new', () => {
-        AppleHealthKit.getStepCount(
-          {includeManuallyAdded: true},
+        AppleHealthKit.getDailyStepCountSamples(
+          {includeManuallyAdded: true, startDate},
           handleHealthKitStepsData,
         );
       });
@@ -325,12 +352,12 @@ export const useHealth = () => {
 
       const handleStepsDataUnattached = (
         error: string,
-        result: HealthValue,
+        result: HealthValue[],
       ) => {
         if (!error) {
           dispatch(
             updateHealthData({
-              todaysSteps: result.value,
+              todaysSteps: result.reduce((acc, val) => acc + val.value, 0),
             }),
           );
           dispatch(updateSettingsHealthConnectPermissions({steps: true}));
@@ -339,8 +366,16 @@ export const useHealth = () => {
         }
         console.log('error encountered while getting steps data -  ', error);
       };
+      console.log('start date is ', startDate);
 
-      AppleHealthKit.getStepCount({}, handleStepsDataUnattached);
+      AppleHealthKit.getDailyStepCountSamples(
+        {startDate},
+        handleStepsDataUnattached,
+      );
+      AppleHealthKit.getActiveEnergyBurned(
+        {startDate, endDate},
+        handleEnergyBurnedData,
+      );
     });
   }, [createdOn, dispatch]);
 

@@ -319,7 +319,7 @@ const DailySteps: React.FC = () => {
         />
       </View>
       <DataInfoCompare
-        doneItems={nutrition}
+        doneItems={Math.round(nutrition)}
         total={totalSteps}
         doneItemsInfoName="Cal Burned"
         totalInfoName="Daily Goal"

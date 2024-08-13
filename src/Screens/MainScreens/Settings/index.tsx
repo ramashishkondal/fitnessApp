@@ -222,6 +222,20 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
         dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
       });
+    } else {
+      async function checkBiometricAvailability() {
+        try {
+          const isAvailable =
+            await NativeModules.FaceIdModule.isBiometricAvailable();
+          if (!isAvailable) {
+            dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+          }
+          console.log('Biometric available:', isAvailable);
+        } catch (error) {
+          console.error('Error checking biometric availability:', error);
+        }
+      }
+      checkBiometricAvailability();
     }
   }, [dispatch]);
 
@@ -232,6 +246,20 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           NativeModules.FingerPrintModule.checkFingerPrint().catch(() => {
             dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
           });
+        } else {
+          async function checkBiometricAvailability() {
+            try {
+              const isAvailable =
+                await NativeModules.FaceIdModule.isBiometricAvailable();
+              if (!isAvailable) {
+                dispatch(updateSettingsCachedData({isBiometricEnabled: false}));
+              }
+              console.log('Biometric available:', isAvailable);
+            } catch (error) {
+              console.error('Error checking biometric availability:', error);
+            }
+          }
+          checkBiometricAvailability();
         }
       }
       setAppState(
