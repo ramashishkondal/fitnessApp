@@ -32,7 +32,6 @@ const Avatar: React.FC<AvatarProps> = ({
     );
     setSelectedItem(item.name);
     setPhoto(item.name);
-    console.log('photo item is ', item);
   };
   return (
     <Animated.View style={[styles.parent, animatedStyle]}>
