@@ -112,7 +112,6 @@ export class Timer {
   };
 
   start = (delay: number) => {
-    console.log('start running');
     this.remainingTime = delay;
     this.timerId = setTimeout(this.callback, this.remainingTime);
   };
@@ -184,10 +183,8 @@ export const debounce = <T extends (...args: any[]) => void>(
   let timeout: NodeJS.Timeout | null = null;
   return (...args: Parameters<T>) => {
     if (timeout) {
-      console.log('timeout cleared');
       clearTimeout(timeout);
     }
-    console.log('set timeout ');
     timeout = setTimeout(func, delay, ...args);
   };
 };

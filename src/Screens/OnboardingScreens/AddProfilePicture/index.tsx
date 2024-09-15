@@ -37,7 +37,6 @@ const AddProfilePicture: React.FC<AddProfilePictureProps> = ({navigation}) => {
   };
   const handleSubmit = () => {
     if (photo !== '') {
-      console.log('photo is ', photo);
       dispatch(updateUserData({photo}));
       navigation.push('AddPreferences');
     } else {
