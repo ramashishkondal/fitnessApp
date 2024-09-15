@@ -23,7 +23,7 @@ const MealSelector: React.FC<MealSelectorProps> = ({title, mealTime}) => {
         mealTime.dinner = !isChecked;
         break;
       default:
-        console.log('edae');
+        console.log('default value in meal selector');
     }
     setIsChecked(!isChecked);
   };

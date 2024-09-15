@@ -110,7 +110,6 @@ const DietDataItem = ({item, timeOfMeal}: DietDataItemProps) => {
       <TouchableOpacity
         style={styles.deleteCtr}
         onPress={() => {
-          console.log('delete pressed');
           const filteredItems = item.filter(val => val.name !== name);
           switch (timeOfMeal) {
             case 'Breakfast':

@@ -33,7 +33,6 @@ const Notification: React.FC<NotificationProps> = ({
       .onSnapshot(snapshot => {
         const data = snapshot.data() as User;
         if (data) {
-          console.log(data);
           setUserData(data);
         }
       });
